@@ -287,6 +287,25 @@ def write_version(vid, chapters, label, source_file, has_xiezi=True, title_list=
         'has_xiezi': has_xiezi,
         'total_chars': sum(x['chars'] for x in chapters),
     }
+    # v120 源文件第100回分隔符缺失（合并在第99回），补一个占位文件避免阅读器ch100读不到
+    if vid=='v120':
+        expected_nums = set(range(1,121))
+        exist_nums = set(c['num'] for c in chapters if c['id'].startswith('hui_'))
+        missing = sorted(expected_nums - exist_nums)
+        for mn in missing:
+            placeholder = (f'【版本说明】本回（第{mn}回）在底本（袁无涯原刊本原始扫描文本）'
+                           f'中与前后回合并，未作独立分隔。请参阅前后回相关情节。\n'
+                           f'本版本以尽量保持原貌为原则，未做人为拆分。\n')
+            fn=f'ch{mn:03d}.txt'
+            with open(os.path.join(fan_dir,fn),'w',encoding='utf-8') as f: f.write(placeholder)
+            with open(os.path.join(jian_dir,fn),'w',encoding='utf-8') as f: f.write(t2s.convert(placeholder))
+            with open(os.path.join(bai_dir,fn),'w',encoding='utf-8') as f: f.write(t2s.convert(placeholder))
+            # 把这一回到 TOC
+            tname = title_list[mn-1] if title_list and 0<=mn-1<len(title_list) else f'第{mn}回'
+            toc.append({'id':f'hui_{mn}','num':mn,'title':f'第{mn}回 '+tname,'chars':len(placeholder),'file':fn,'placeholder':True})
+        toc.sort(key=lambda x:x['num'])
+        meta['chapters']=toc
+        meta['total_hui']=120
     with open(os.path.join(outdir,'chapters.json'),'w',encoding='utf-8') as f:
         json.dump(meta,f,ensure_ascii=False,indent=2)
     with open(os.path.join(outdir,'index.json'),'w',encoding='utf-8') as f:
