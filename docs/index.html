@@ -483,6 +483,29 @@
   <div id="reasoningRules"></div>
   <h3 style="font-family:var(--font-serif); letter-spacing:4px; margin:32px 0 16px; font-size:22px; border-left:4px solid var(--vermilion-deep); padding-left:12px;">版本差异推演</h3>
   <div id="versionDiff"></div>
+
+  <h3 style="font-family:var(--font-serif); letter-spacing:4px; margin:32px 0 16px; font-size:22px; border-left:4px solid var(--vermilion-deep); padding-left:12px;">本体知识图谱 · 交互查询</h3>
+  <div class="kg-panel" style="background:var(--paper); border:1px solid var(--ink-light); border-radius:4px; padding:18px; margin-bottom:14px;">
+    <div class="kg-toolbar" style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:12px;">
+      <label style="font-family:var(--font-serif); font-size:15px;">中心节点:</label>
+      <select id="kgCenter" style="flex:1; min-width:180px;"></select>
+      <label style="font-family:var(--font-serif); font-size:15px;">跳数:</label>
+      <select id="kgHop" style="width:80px;">
+        <option value="1">1跳</option>
+        <option value="2" selected>2跳</option>
+        <option value="3">3跳</option>
+      </select>
+      <label style="font-family:var(--font-serif); font-size:15px;">关系筛选:</label>
+      <select id="kgRel" style="min-width:140px;">
+        <option value="_all">全部关系</option>
+      </select>
+      <button id="kgQueryBtn" class="zha-btn" style="padding:6px 18px;">查询推演</button>
+      <button id="kgReasonBtn" class="zha-btn" style="padding:6px 18px; background:var(--vermilion-deep);">智能推理</button>
+    </div>
+    <div id="kgSummary" style="font-family:var(--font-serif); font-size:14px; color:var(--ink-muted); min-height:24px;"></div>
+    <div id="kgResult" class="echart" style="width:100%; height:620px; margin-top:10px; border:1px dashed var(--ink-light); border-radius:4px; background:#fdfaf3;"></div>
+    <div id="kgReasonBox" style="margin-top:12px; padding:14px; background:#f4ead3; border-left:4px solid var(--vermilion-deep); font-family:var(--font-serif); font-size:15px; line-height:1.9; display:none;"></div>
+  </div>
 </section>
 
 <!-- ===== 版本阅读 ===== -->
@@ -4450,6 +4473,272 @@ function updateLangTip() {
   tip.innerHTML = `当前语体：<strong>${LANG_LABEL[currentLang]}</strong>${extra}`;
 }
 
+// ========== 本体知识图谱（交互查询+推理） ==========
+let KG = null;
+let kg_chart = null;
+const KG_COLORS = {
+  hero:'#c0392b', event:'#e67e22', place:'#27ae60', version:'#2980b9',
+  organization:'#8e44ad', scholar:'#16a085', work_aca:'#d35400', derivative:'#7f8c8d'
+};
+const KG_LABEL = {
+  hero:'人物', event:'事件', place:'地点', version:'版本',
+  organization:'组织', scholar:'学者', work_aca:'学术成果', derivative:'衍生作品'
+};
+const REL_LABEL = {
+  '结拜为兄弟':'结义','敌对':'敌对','师徒':'师徒','上下级':'统属',
+  '亲属':'亲属','参与':'参与','活动于':'活动','登场于':'登场',
+  '位于':'位于','发生于':'发生于','上下级':'统属','创作':'创作',
+  '评点':'评点','研究':'研究','学术论战':'论战','演化自':'演化',
+  '改编自':'改编','收录于':'收录'
+};
+const KG_CLASS_MAP = {
+  hero:'人物类', event:'事件类', place:'空间类', version:'文学作品类',
+  organization:'组织类', scholar:'学术主体类', work_aca:'学术成果类', derivative:'衍生作品类'
+};
+
+async function initKg(){
+  try{
+    const res = await fetch('data/kg_abox.json');
+    KG = await res.json();
+  }catch(e){
+    $('#kgSummary').textContent='本体数据加载失败：'+e.message;
+    return;
+  }
+  // 补events
+  try{
+    const b = await fetch('data/_baseline.json').then(r=>r.json());
+    KG.events = b.events;
+  }catch(e){KG.events=[];}
+  // 建索引
+  KG.nodeById = {};
+  const collect=(arr,type)=>arr.forEach(x=>{ if(x.id){KG.nodeById[x.id] = {...x, _type:type};} });
+  collect(KG.heroes,'hero'); collect(KG.versions,'version'); collect(KG.scholars,'scholar');
+  collect(KG.works_aca,'work_aca'); collect(KG.derivatives,'derivative');
+  collect(KG.places,'place'); collect(KG.organizations,'organization');
+  if(KG.events) collect(KG.events,'event');
+
+  // 关系类型下拉
+  const relSet = new Set(KG.relations.map(r=>r.type));
+  const relSel = $('#kgRel');
+  [...relSet].sort().forEach(t=>{
+    const o=document.createElement('option'); o.value=t; o.textContent=REL_LABEL[t]||t; relSel.appendChild(o);
+  });
+
+  // 中心节点下拉：默认人物优先+地点+事件+版本
+  const centerSel = $('#kgCenter');
+  const groups = [
+    {name:'核心人物', list:['hero_001','hero_002','hero_003','hero_004','hero_005','hero_006','hero_007','hero_008','hero_009','hero_013','hero_014','hero_017','hero_022','hero_036','p_cg','p_wl','p_gq']},
+    {name:'关键事件', list:['e04','e06','e08','e10','e14','e19','e23','e25','e30','e32']},
+    {name:'重要地点', list:['p_dongjing','p_liangshanpo','p_damingfu','p_jiangzhou','p_zhuijiazhuang','p_zengtou']},
+    {name:'版本/评点者', list:['jin70','v120','rongyutang','jin_shengtan','li_zhi','yuan_wuya','shen_yaguan']}
+  ];
+  groups.forEach(g=>{
+    const grp=document.createElement('optgroup'); grp.label=g.name;
+    g.list.forEach(id=>{
+      const n=KG.nodeById[id]; if(!n) return;
+      const o=document.createElement('option'); o.value=id; o.textContent=n.name; grp.appendChild(o);
+    });
+    centerSel.appendChild(grp);
+  });
+
+  // 初始
+  kg_chart = echarts.init($('#kgResult'));
+  $('#kgQueryBtn').onclick = runKgQuery;
+  $('#kgReasonBtn').onclick = runKgReasoning;
+  centerSel.onchange = runKgQuery;
+  $('#kgHop').onchange = runKgQuery;
+  relSel.onchange = runKgQuery;
+  window.addEventListener('resize', ()=>kg_chart&&kg_chart.resize());
+  centerSel.value='hero_006';
+  runKgQuery();
+}
+
+function getNodeLabel(id){
+  const n=KG.nodeById[id]; return n?n.name:id;
+}
+function getNodeType(id){
+  const n=KG.nodeById[id]; return n?n._type:'unknown';
+}
+
+function buildSubgraph(centerId, hop, relFilter){
+  const nodes=new Map(), edges=[], visited=new Set();
+  const queue=[{id:centerId, d:0}];
+  visited.add(centerId);
+  while(queue.length){
+    const {id,d}=queue.shift();
+    if(!KG.nodeById[id]) continue;
+    nodes.set(id, {id, name:getNodeLabel(id), type:getNodeType(id)});
+    if(d>=hop) continue;
+    KG.relations.forEach(r=>{
+      if(relFilter!=='_all' && r.type!==relFilter) return;
+      let other=null, dir=null;
+      if(r.from===id){other=r.to; dir='out';}
+      else if(r.to===id){other=r.from; dir='in';}
+      if(!other) return;
+      edges.push({from:r.from, to:r.to, type:r.type, dir});
+      if(!visited.has(other)){visited.add(other); queue.push({id:other, d:d+1});}
+      if(!nodes.has(other) && KG.nodeById[other]){
+        nodes.set(other, {id:other, name:getNodeLabel(other), type:getNodeType(other)});
+      }
+    });
+  }
+  // 去重边
+  const seen=new Set(); const uniq=[];
+  edges.forEach(e=>{
+    const k=e.from+'|'+e.type+'|'+e.to; if(seen.has(k))return; seen.add(k); uniq.push(e);
+  });
+  return {nodes:[...nodes.values()], edges:uniq};
+}
+
+function runKgQuery(){
+  if(!KG) return;
+  const center=$('#kgCenter').value;
+  const hop=parseInt($('#kgHop').value);
+  const rel=$('#kgRel').value;
+  const g=buildSubgraph(center,hop,rel);
+
+  const cn=KG.nodeById[center];
+  const typeCnt={};
+  g.nodes.forEach(n=>{typeCnt[n._type||n.type]=(typeCnt[n._type||n.type]||0)+1;});
+  const relCnt={};
+  g.edges.forEach(e=>{relCnt[e.type]=(relCnt[e.type]||0)+1;});
+  $('#kgSummary').innerHTML = `中心节点：<strong>${cn.name}</strong>（${KG_LABEL[getNodeType(center)]}）· ${hop}跳邻居 · 节点 ${g.nodes.length} · 关系 ${g.edges.length} · ` +
+    Object.entries(typeCnt).map(([t,c])=>`${KG_LABEL[t]||t} ${c}`).join(' · ');
+  $('#kgReasonBox').style.display='none';
+
+  const cat = [...new Set(g.nodes.map(n=>n.type))].map(t=>({name:KG_LABEL[t]||t, itemStyle:{color:KG_COLORS[t]||'#999'}}));
+  const catIdx = {}; cat.forEach((c,i)=>catIdx[c.name]=i);
+
+  const option={
+    tooltip:{
+      formatter:(p)=>{
+        if(p.dataType==='node'){
+          const n=KG.nodeById[p.data.id]; const t=getNodeType(p.data.id);
+          let info=`【${KG_LABEL[t]}】${n.name}<br/>ID: ${p.data.id}<br/>`;
+          if(t==='hero') info += `星宿: ${n.star||'-'} · 座次: ${n.rank||'-'} · 绰号: ${n.nick||'-'} · 结局: ${n.fate||'-'}`;
+          else if(t==='event') info += `回目: ${n.chapters||'-'} · ${n.desc||''}`;
+          else if(t==='place') info += `今地: ${n.modern_name||'-'} · ${n.location||''}`;
+          else if(t==='version') info += `${n.family||''} · ${n.year||''}`;
+          else if(t==='derivative') info += `${n.type||''} · ${n.year||''}`;
+          return info;
+        }else{
+          return `${getNodeLabel(p.data.from)} —<em style="color:${KG_COLORS[p.data._relColor]||'#c0392b'}">【${REL_LABEL[p.data._type]||p.data._type}】</em>→ ${getNodeLabel(p.data.to)}`;
+        }
+      }
+    },
+    legend:[{data:cat.map(c=>c.name), top:10, textStyle:{fontFamily:'var(--font-serif)', color:'#4a2f1a'}}],
+    series:[{
+      type:'graph', layout:'force', roam:true, draggable:true,
+      categories:cat, label:{show:true, position:'right', fontSize:12, fontFamily:'var(--font-serif)', color:'#3a2410'},
+      labelLayout:{hideOverlap:true},
+      force:{repulsion:380, edgeLength:[70,180], gravity:0.08},
+      lineStyle:{color:'source', curveness:0.12, width:1.4, opacity:0.75},
+      emphasis:{focus:'adjacency', lineStyle:{width:3}},
+      data:g.nodes.map(n=>{
+        const isCenter = n.id===center;
+        return {
+          id:n.id, name:n.name, category:KG_LABEL[n.type],
+          symbolSize: isCenter?36:(n.type==='event'?28:(n.type==='place'?22:18)),
+          itemStyle:{color:KG_COLORS[n.type]||'#888', borderColor:isCenter?'#8b0000':'#fff', borderWidth:isCenter?3:1,
+                     shadowBlur:isCenter?15:0, shadowColor:'rgba(139,0,0,0.4)'},
+          label:{fontWeight:isCenter?'bold':'normal', fontSize:isCenter?14:12}
+        };
+      }),
+      edges:g.edges.map(e=>({
+        source:e.from, target:e.to, _type:e.type,
+        label:{show:g.nodes.length<25, fontSize:10, formatter:REL_LABEL[e.type]||e.type, color:'#8b6b4a'},
+        lineStyle:{width:e.type==='结拜为兄弟'||e.type==='敌对'?2.2:1.3,
+                   color:e.type==='敌对'?'#c0392b':(e.type==='结拜为兄弟'?'#2980b9':'source'),
+                   curveness:0.1}
+      }))
+    }]
+  };
+  kg_chart.setOption(option, true);
+}
+
+// 简单规则推理：人物派系推断/共战关系/路径
+function runKgReasoning(){
+  if(!KG) return;
+  const center=$('#kgCenter').value;
+  const cn=KG.nodeById[center]; const ct=getNodeType(center);
+  const box=$('#kgReasonBox'); box.style.display='block';
+  let html=`<h4 style="margin:0 0 10px; font-size:17px; color:#8b0000;">🔍 推理结果 · 以【${cn.name}】为中心</h4>`;
+
+  // 找其1跳邻居分组
+  const friends=[], enemies=[], brothers=[], mentors=[], supSub=[], fam=[], parts=[], places=[];
+  KG.relations.forEach(r=>{
+    if(r.from!==center && r.to!==center) return;
+    const other = r.from===center?r.to:r.from;
+    const on=KG.nodeById[other]; if(!on) return;
+    const line = `<span style="background:#fff; padding:2px 8px; border-radius:3px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #d9c79c;">${on.name}</span>`;
+    if(r.type==='结拜为兄弟') brothers.push(line);
+    else if(r.type==='敌对') enemies.push(line);
+    else if(r.type==='师徒') mentors.push(line);
+    else if(r.type==='上下级') supSub.push(line);
+    else if(r.type==='亲属') fam.push(line);
+    else if(r.type==='参与'){
+      if(on._type==='event') parts.push(`<b style="color:#c0392b;">${on.name}</b>`);
+    }
+    else if(r.type==='活动于') places.push(on.name);
+  });
+
+  if(ct==='hero'){
+    // 派系推断：若其首领出现
+    const leader = KG.relations.find(r=>r.to===center && r.type==='上下级');
+    if(leader) html += `<p><b>派系归属：</b>根据"上下级"关系，<b>${cn.name}</b>归属于<b>${getNodeLabel(leader.from)}</b>一系。</p>`;
+    // 同阵营共战
+    html += `<p><b>结义兄弟（${brothers.length}）：</b>${brothers.join('')||'无直接记录'}</p>`;
+    html += `<p><b>敌对关系（${enemies.length}）：</b>${enemies.join('')||'无直接记录'}</p>`;
+    html += `<p><b>师徒关系（${mentors.length}）：</b>${mentors.join('')||'无'}</p>`;
+    html += `<p><b>上下级（${supSub.length}）：</b>${supSub.join('')||'独立行动'}</p>`;
+    html += `<p><b>亲属（${fam.length}）：</b>${fam.join('')||'无'}</p>`;
+    html += `<p><b>参与事件（${parts.length}）：</b>${parts.join('、')||'无'}</p>`;
+    html += `<p><b>主要活动地：</b>${places.join('、')||'未登记'}</p>`;
+    // 间接敌友：兄弟的兄弟是朋友；上下级的兄弟也是友；敌对的兄弟是敌
+    const friendIds=new Set(), enemyIds=new Set();
+    KG.relations.forEach(r=>{
+      if(r.from===center && r.type==='结拜为兄弟'){ friendIds.add(r.to); KG.nodeById[r.to];
+        KG.relations.forEach(r2=>{
+          if(r2.from===r.to && (r2.type==='结拜为兄弟'||r2.type==='亲属') && r2.to!==center) friendIds.add(r2.to);
+          if(r2.from===r.to && r2.type==='敌对') enemyIds.add(r2.to);
+        });
+      }
+    });
+    if(enemyIds.size) html += `<p style="margin-top:8px;"><b style="color:#c0392b;">⚔ 推理结论 · 推断敌对（通过结义兄弟传递）：</b>${[...enemyIds].map(id=>KG.nodeById[id]?KG.nodeById[id].name:id).filter(x=>x).join('、')}</p>`;
+  } else if(ct==='event'){
+    const parts2=[], where='';
+    KG.relations.forEach(r=>{
+      if(r.to===center && r.type==='参与') parts2.push(getNodeLabel(r.from));
+      if(r.from===center && r.type==='发生于') where=`<b>发生地点：</b>${getNodeLabel(r.to)}。`;
+    });
+    html += `<p><b>核心参与者（${parts2.length}）：</b>${parts2.join('、')}</p>`;
+    if(where) html += `<p>${where}</p>`;
+    html += `<p style="color:#8b6b4a; font-size:14px;">事件回目：${cn.chapters||'—'}。${cn.desc||''}</p>`;
+  } else if(ct==='place'){
+    const here=[], evs=[];
+    KG.relations.forEach(r=>{
+      if(r.to===center && r.type==='活动于') here.push(getNodeLabel(r.from));
+      if(r.to===center && r.type==='发生于') evs.push(getNodeLabel(r.from));
+    });
+    html += `<p><b>活动人物（${here.length}）：</b>${here.join('、')||'无'}</p>`;
+    html += `<p><b>发生事件（${evs.length}）：</b>${evs.join('、')||'无'}</p>`;
+    html += `<p style="color:#8b6b4a; font-size:14px;">今地：${cn.modern_name||'—'} · ${cn.location||''} · 现存：${cn.remains||'无记载'}</p>`;
+  } else if(ct==='version'){
+    html += `<p>版本体系：<b>${cn.family||'—'}</b> · 刊刻时间：${cn.year||'—'}</p>`;
+    html += `<p>${cn.desc||cn.feature||''}</p>`;
+    const evo=[], cmt=[];
+    KG.relations.forEach(r=>{
+      if(r.to===center && r.type==='演化自') evo.push(getNodeLabel(r.from));
+      if(r.to===center && r.type==='评点') cmt.push(getNodeLabel(r.from));
+    });
+    if(evo.length) html += `<p><b>版本演化源流：</b>← ${evo.join(' ← ')}</p>`;
+    if(cmt.length) html += `<p><b>评点者：</b>${cmt.join('、')}</p>`;
+  } else {
+    html += `<p>该节点可通过调整"跳数"和"关系筛选"查看完整关系网络。</p>`;
+  }
+  box.innerHTML = html;
+}
+
 function renderReader() {
   $('#versionSelect').value = currentVid;
   currentChIdx = 0;
@@ -5037,6 +5326,7 @@ renderReasoning();
 populateVersionSelect();
 initCharts();
 setTimeout(()=>initRelationGraph(), 100);
+setTimeout(()=>initKg(), 200);
 
 // 滚动高亮导航
 window.addEventListener('scroll', ()=>{
