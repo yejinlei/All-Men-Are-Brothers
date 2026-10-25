@@ -1,78 +1,66 @@
 {
- "versions": [
-  {
-   "id": "v120",
-   "name": "水浒全传（百二十回）",
-   "count": 120
+  "jinshengtan": {
+    "label": "金圣叹评本·贯华堂70回本",
+    "era": "明崇祯十四年（1641）",
+    "base": "jin",
+    "system": "七十回本（金本体系，楔子+70回惊恶梦）",
+    "ch_count": 71,
+    "commentary": "jin_pi"
   },
-  {
-   "id": "v100",
-   "name": "忠义水浒传（百回本）",
-   "count": 101
+  "v70": {
+    "label": "第五才子书·七十回本",
+    "era": "明崇祯",
+    "base": "jin",
+    "system": "七十回本",
+    "ch_count": 71,
+    "commentary": "jin_pi"
   },
-  {
-   "id": "v70",
-   "name": "第五才子书（七十回）",
-   "count": 71
+  "jin70": {
+    "label": "金批水浒传（繁体·70回）",
+    "era": "明崇祯",
+    "base": "jin",
+    "system": "七十回本",
+    "ch_count": 71,
+    "commentary": "jin_pi"
   },
-  {
-   "id": "jin70",
-   "name": "金圣叹评本（繁体底本）",
-   "count": 70
+  "jin70_pi": {
+    "label": "金圣叹批评本·全三语",
+    "era": "明崇祯",
+    "base": "jin",
+    "system": "七十回本",
+    "ch_count": 71,
+    "commentary": "jin_pi"
   },
-  {
-   "id": "jiqin",
-   "name": "水浒传（冀勤校注本）",
-   "count": 101
+  "v100": {
+    "label": "忠义水浒传·容与堂百回本",
+    "era": "明万历三十八年（1610）",
+    "base": "rong",
+    "system": "百回繁本（引首+100回，征辽+征方腊，无田虎王庆）",
+    "ch_count": 101,
+    "commentary": "lizhuo"
   },
-  {
-   "id": "jin70_pi",
-   "name": "金圣叹批评本（全批·繁）",
-   "count": 71
+  "jiqin": {
+    "label": "忠义水浒传·冀勤校注百回本",
+    "era": "当代校注本",
+    "base": "rong",
+    "system": "百回繁本（以容与堂为底本校注）",
+    "ch_count": 101,
+    "commentary": "jiqin"
   },
-  {
-   "id": "jinshengtan",
-   "name": "金圣叹批评本（全批·简）",
-   "count": 71
+  "v120": {
+    "label": "水浒全传·袁无涯百二十回本",
+    "era": "明万历四十二年（1614）",
+    "base": "yuan",
+    "system": "百二十回繁本（引首+120回，征辽+田虎+王庆+方腊）",
+    "ch_count": 121,
+    "commentary": "yuanwy"
   },
-  {
-   "id": "zsk",
-   "name": "征四寇（简本后段）",
-   "count": 38
+  "zsk": {
+    "label": "征四寇·简本后段",
+    "era": "明清简本系统",
+    "base": "jianben",
+    "system": "简本后段（82-118回，招安至征方腊中段）",
+    "ch_count": 37,
+    "commentary": ""
   }
- ],
- "commentaries": [
-  {
-   "id": "jinpi",
-   "name": "金圣叹批（贯华堂七十回本）",
-   "file": "jinpi_comments.json",
-   "suitableVersions": ["v70", "jin70", "jin70_pi", "jinshengtan"],
-   "dynasty": "明崇祯十四年（1641）",
-   "note": "金圣叹批改本，共70回，含回前总批、夹批、眉批。"
-  },
-  {
-   "id": "lizhuo",
-   "name": "李卓吾批（容与堂百回本）",
-   "file": "lizhuo_comments.json",
-   "suitableVersions": ["v100", "jiqin"],
-   "dynasty": "明万历三十八年（1610）",
-   "note": "今学界一般认为实出叶昼托名。本文件收录回末总评及经典眉批精粹，含《忠义水浒传叙》、怀林述语等序文与小说艺术论要点。"
-  },
-  {
-   "id": "yuanwy",
-   "name": "袁无涯批（百二十回全传本）",
-   "file": "yuanwy_comments.json",
-   "suitableVersions": ["v120"],
-   "dynasty": "明万历四十二年（1614）前后",
-   "note": "杨定见整理李贽批语，含发凡、回末总评与旁批精粹，侧重忠奸斗争、招安悲剧。"
-  },
-  {
-   "id": "jiqin_note",
-   "name": "冀勤校注（百回本名物注释）",
-   "file": "jiqin_notes.json",
-   "suitableVersions": ["v100", "jiqin"],
-   "dynasty": "当代整理",
-   "note": "人民文学出版社百回本冀勤校注，约6741条名物、制度、语言注释。"
-  }
- ]
 }

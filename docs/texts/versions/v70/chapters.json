@@ -1,504 +1,507 @@
 {
- "version_id": "v70",
- "version_name": "第五才子书（七十回）",
- "count": 71,
- "chapters": [
-  {
-   "id": 0,
-   "idx": 0,
-   "title": "楔子",
-   "file": "ch000_xiezi.txt",
-   "size": 4019
-  },
-  {
-   "id": 1,
-   "idx": 1,
-   "title": "第1回",
-   "file": "ch001.txt",
-   "size": 17068
-  },
-  {
-   "id": 2,
-   "idx": 2,
-   "title": "第2回",
-   "file": "ch002.txt",
-   "size": 41285
-  },
-  {
-   "id": 3,
-   "idx": 3,
-   "title": "第3回",
-   "file": "ch003.txt",
-   "size": 23522
-  },
-  {
-   "id": 4,
-   "idx": 4,
-   "title": "第4回",
-   "file": "ch004.txt",
-   "size": 33721
-  },
-  {
-   "id": 5,
-   "idx": 5,
-   "title": "第5回",
-   "file": "ch005.txt",
-   "size": 23541
-  },
-  {
-   "id": 6,
-   "idx": 6,
-   "title": "第6回",
-   "file": "ch006.txt",
-   "size": 23043
-  },
-  {
-   "id": 7,
-   "idx": 7,
-   "title": "第7回",
-   "file": "ch007.txt",
-   "size": 22168
-  },
-  {
-   "id": 8,
-   "idx": 8,
-   "title": "第8回",
-   "file": "ch008.txt",
-   "size": 16639
-  },
-  {
-   "id": 9,
-   "idx": 9,
-   "title": "第9回",
-   "file": "ch009.txt",
-   "size": 23422
-  },
-  {
-   "id": 10,
-   "idx": 10,
-   "title": "第10回",
-   "file": "ch010.txt",
-   "size": 18493
-  },
-  {
-   "id": 11,
-   "idx": 11,
-   "title": "第11回",
-   "file": "ch011.txt",
-   "size": 19915
-  },
-  {
-   "id": 12,
-   "idx": 12,
-   "title": "第12回",
-   "file": "ch012.txt",
-   "size": 17210
-  },
-  {
-   "id": 13,
-   "idx": 13,
-   "title": "第13回",
-   "file": "ch013.txt",
-   "size": 18755
-  },
-  {
-   "id": 14,
-   "idx": 14,
-   "title": "第14回",
-   "file": "ch014.txt",
-   "size": 18004
-  },
-  {
-   "id": 15,
-   "idx": 15,
-   "title": "第15回",
-   "file": "ch015.txt",
-   "size": 22214
-  },
-  {
-   "id": 16,
-   "idx": 16,
-   "title": "第16回",
-   "file": "ch016.txt",
-   "size": 24749
-  },
-  {
-   "id": 17,
-   "idx": 17,
-   "title": "第17回",
-   "file": "ch017.txt",
-   "size": 26143
-  },
-  {
-   "id": 18,
-   "idx": 18,
-   "title": "第18回",
-   "file": "ch018.txt",
-   "size": 23331
-  },
-  {
-   "id": 19,
-   "idx": 19,
-   "title": "第19回",
-   "file": "ch019.txt",
-   "size": 24164
-  },
-  {
-   "id": 20,
-   "idx": 20,
-   "title": "第20回",
-   "file": "ch020.txt",
-   "size": 21543
-  },
-  {
-   "id": 21,
-   "idx": 21,
-   "title": "第21回",
-   "file": "ch021.txt",
-   "size": 32955
-  },
-  {
-   "id": 22,
-   "idx": 22,
-   "title": "第22回",
-   "file": "ch022.txt",
-   "size": 20150
-  },
-  {
-   "id": 23,
-   "idx": 23,
-   "title": "第23回",
-   "file": "ch023.txt",
-   "size": 22394
-  },
-  {
-   "id": 24,
-   "idx": 24,
-   "title": "第24回",
-   "file": "ch024.txt",
-   "size": 57296
-  },
-  {
-   "id": 25,
-   "idx": 25,
-   "title": "第25回",
-   "file": "ch025.txt",
-   "size": 19116
-  },
-  {
-   "id": 26,
-   "idx": 26,
-   "title": "第26回",
-   "file": "ch026.txt",
-   "size": 29106
-  },
-  {
-   "id": 27,
-   "idx": 27,
-   "title": "第27回",
-   "file": "ch027.txt",
-   "size": 18510
-  },
-  {
-   "id": 28,
-   "idx": 28,
-   "title": "第28回",
-   "file": "ch028.txt",
-   "size": 17268
-  },
-  {
-   "id": 29,
-   "idx": 29,
-   "title": "第29回",
-   "file": "ch029.txt",
-   "size": 17036
-  },
-  {
-   "id": 30,
-   "idx": 30,
-   "title": "第30回",
-   "file": "ch030.txt",
-   "size": 23848
-  },
-  {
-   "id": 31,
-   "idx": 31,
-   "title": "第31回",
-   "file": "ch031.txt",
-   "size": 24458
-  },
-  {
-   "id": 32,
-   "idx": 32,
-   "title": "第32回",
-   "file": "ch032.txt",
-   "size": 33088
-  },
-  {
-   "id": 33,
-   "idx": 33,
-   "title": "第33回",
-   "file": "ch033.txt",
-   "size": 22507
-  },
-  {
-   "id": 34,
-   "idx": 34,
-   "title": "第34回",
-   "file": "ch034.txt",
-   "size": 25230
-  },
-  {
-   "id": 35,
-   "idx": 35,
-   "title": "第35回",
-   "file": "ch035.txt",
-   "size": 26608
-  },
-  {
-   "id": 36,
-   "idx": 36,
-   "title": "第36回",
-   "file": "ch036.txt",
-   "size": 22527
-  },
-  {
-   "id": 37,
-   "idx": 37,
-   "title": "第37回",
-   "file": "ch037.txt",
-   "size": 26553
-  },
-  {
-   "id": 38,
-   "idx": 38,
-   "title": "第38回",
-   "file": "ch038.txt",
-   "size": 28748
-  },
-  {
-   "id": 39,
-   "idx": 39,
-   "title": "第39回",
-   "file": "ch039.txt",
-   "size": 36112
-  },
-  {
-   "id": 40,
-   "idx": 40,
-   "title": "第40回",
-   "file": "ch040.txt",
-   "size": 20526
-  },
-  {
-   "id": 41,
-   "idx": 41,
-   "title": "第41回",
-   "file": "ch041.txt",
-   "size": 29509
-  },
-  {
-   "id": 42,
-   "idx": 42,
-   "title": "第42回",
-   "file": "ch042.txt",
-   "size": 24114
-  },
-  {
-   "id": 43,
-   "idx": 43,
-   "title": "第43回",
-   "file": "ch043.txt",
-   "size": 31304
-  },
-  {
-   "id": 44,
-   "idx": 44,
-   "title": "第44回",
-   "file": "ch044.txt",
-   "size": 28796
-  },
-  {
-   "id": 45,
-   "idx": 45,
-   "title": "第45回",
-   "file": "ch045.txt",
-   "size": 33433
-  },
-  {
-   "id": 46,
-   "idx": 46,
-   "title": "第46回",
-   "file": "ch046.txt",
-   "size": 23258
-  },
-  {
-   "id": 47,
-   "idx": 47,
-   "title": "第47回",
-   "file": "ch047.txt",
-   "size": 26044
-  },
-  {
-   "id": 48,
-   "idx": 48,
-   "title": "第48回",
-   "file": "ch048.txt",
-   "size": 17247
-  },
-  {
-   "id": 49,
-   "idx": 49,
-   "title": "第49回",
-   "file": "ch049.txt",
-   "size": 26738
-  },
-  {
-   "id": 50,
-   "idx": 50,
-   "title": "第50回",
-   "file": "ch050.txt",
-   "size": 21970
-  },
-  {
-   "id": 51,
-   "idx": 51,
-   "title": "第51回",
-   "file": "ch051.txt",
-   "size": 25245
-  },
-  {
-   "id": 52,
-   "idx": 52,
-   "title": "第52回",
-   "file": "ch052.txt",
-   "size": 23050
-  },
-  {
-   "id": 53,
-   "idx": 53,
-   "title": "第53回",
-   "file": "ch053.txt",
-   "size": 30389
-  },
-  {
-   "id": 54,
-   "idx": 54,
-   "title": "第54回",
-   "file": "ch054.txt",
-   "size": 22334
-  },
-  {
-   "id": 55,
-   "idx": 55,
-   "title": "第55回",
-   "file": "ch055.txt",
-   "size": 20804
-  },
-  {
-   "id": 56,
-   "idx": 56,
-   "title": "第56回",
-   "file": "ch056.txt",
-   "size": 23135
-  },
-  {
-   "id": 57,
-   "idx": 57,
-   "title": "第57回",
-   "file": "ch057.txt",
-   "size": 24041
-  },
-  {
-   "id": 58,
-   "idx": 58,
-   "title": "第58回",
-   "file": "ch058.txt",
-   "size": 22750
-  },
-  {
-   "id": 59,
-   "idx": 59,
-   "title": "第59回",
-   "file": "ch059.txt",
-   "size": 22608
-  },
-  {
-   "id": 60,
-   "idx": 60,
-   "title": "第60回",
-   "file": "ch060.txt",
-   "size": 24692
-  },
-  {
-   "id": 61,
-   "idx": 61,
-   "title": "第61回",
-   "file": "ch061.txt",
-   "size": 28097
-  },
-  {
-   "id": 62,
-   "idx": 62,
-   "title": "第62回",
-   "file": "ch062.txt",
-   "size": 32110
-  },
-  {
-   "id": 63,
-   "idx": 63,
-   "title": "第63回",
-   "file": "ch063.txt",
-   "size": 21987
-  },
-  {
-   "id": 64,
-   "idx": 64,
-   "title": "第64回",
-   "file": "ch064.txt",
-   "size": 21047
-  },
-  {
-   "id": 65,
-   "idx": 65,
-   "title": "第65回",
-   "file": "ch065.txt",
-   "size": 19264
-  },
-  {
-   "id": 66,
-   "idx": 66,
-   "title": "第66回",
-   "file": "ch066.txt",
-   "size": 19657
-  },
-  {
-   "id": 67,
-   "idx": 67,
-   "title": "第67回",
-   "file": "ch067.txt",
-   "size": 23845
-  },
-  {
-   "id": 68,
-   "idx": 68,
-   "title": "第68回",
-   "file": "ch068.txt",
-   "size": 23403
-  },
-  {
-   "id": 69,
-   "idx": 69,
-   "title": "第69回",
-   "file": "ch069.txt",
-   "size": 18351
-  },
-  {
-   "id": 70,
-   "idx": 70,
-   "title": "第70回",
-   "file": "ch070.txt",
-   "size": 17688
-  }
- ]
+  "id": "v70",
+  "label": "第五才子书（七十回本·金圣叹贯华堂本，惊恶梦结尾）",
+  "source": "jinshengtan_70hui.txt",
+  "chapters": [
+    {
+      "id": "xiezi_0",
+      "num": 0,
+      "title": "楔子张天师祈禳瘟疫 洪太尉误走妖魔",
+      "chars": 1331,
+      "file": "ch000.txt"
+    },
+    {
+      "id": "hui_1",
+      "num": 1,
+      "title": "第一回 张",
+      "chars": 5691,
+      "file": "ch001.txt"
+    },
+    {
+      "id": "hui_2",
+      "num": 2,
+      "title": "第二回 王",
+      "chars": 13780,
+      "file": "ch002.txt"
+    },
+    {
+      "id": "hui_3",
+      "num": 3,
+      "title": "第三回 史",
+      "chars": 7845,
+      "file": "ch003.txt"
+    },
+    {
+      "id": "hui_4",
+      "num": 4,
+      "title": "第四回 赵",
+      "chars": 11266,
+      "file": "ch004.txt"
+    },
+    {
+      "id": "hui_5",
+      "num": 5,
+      "title": "第五回 小",
+      "chars": 7848,
+      "file": "ch005.txt"
+    },
+    {
+      "id": "hui_6",
+      "num": 6,
+      "title": "第六回 九",
+      "chars": 7686,
+      "file": "ch006.txt"
+    },
+    {
+      "id": "hui_7",
+      "num": 7,
+      "title": "第七回 花",
+      "chars": 7389,
+      "file": "ch007.txt"
+    },
+    {
+      "id": "hui_8",
+      "num": 8,
+      "title": "第八回 林",
+      "chars": 5542,
+      "file": "ch008.txt"
+    },
+    {
+      "id": "hui_9",
+      "num": 9,
+      "title": "第九回 柴",
+      "chars": 7805,
+      "file": "ch009.txt"
+    },
+    {
+      "id": "hui_10",
+      "num": 10,
+      "title": "第十回 林",
+      "chars": 6164,
+      "file": "ch010.txt"
+    },
+    {
+      "id": "hui_11",
+      "num": 11,
+      "title": "第十一回 ",
+      "chars": 6641,
+      "file": "ch011.txt"
+    },
+    {
+      "id": "hui_12",
+      "num": 12,
+      "title": "第十二回 ",
+      "chars": 5734,
+      "file": "ch012.txt"
+    },
+    {
+      "id": "hui_13",
+      "num": 13,
+      "title": "第十三回 ",
+      "chars": 6255,
+      "file": "ch013.txt"
+    },
+    {
+      "id": "hui_14",
+      "num": 14,
+      "title": "第十四回 ",
+      "chars": 5998,
+      "file": "ch014.txt"
+    },
+    {
+      "id": "hui_15",
+      "num": 15,
+      "title": "第十五回 ",
+      "chars": 7408,
+      "file": "ch015.txt"
+    },
+    {
+      "id": "hui_16",
+      "num": 16,
+      "title": "第十六回 ",
+      "chars": 8258,
+      "file": "ch016.txt"
+    },
+    {
+      "id": "hui_17",
+      "num": 17,
+      "title": "第十七回 ",
+      "chars": 8717,
+      "file": "ch017.txt"
+    },
+    {
+      "id": "hui_18",
+      "num": 18,
+      "title": "第十八回 ",
+      "chars": 7777,
+      "file": "ch018.txt"
+    },
+    {
+      "id": "hui_19",
+      "num": 19,
+      "title": "第十九回 ",
+      "chars": 8056,
+      "file": "ch019.txt"
+    },
+    {
+      "id": "hui_20",
+      "num": 20,
+      "title": "第二十回 ",
+      "chars": 7183,
+      "file": "ch020.txt"
+    },
+    {
+      "id": "hui_21",
+      "num": 21,
+      "title": "第二十一回 ",
+      "chars": 10996,
+      "file": "ch021.txt"
+    },
+    {
+      "id": "hui_22",
+      "num": 22,
+      "title": "第二十二回 ",
+      "chars": 6713,
+      "file": "ch022.txt"
+    },
+    {
+      "id": "hui_23",
+      "num": 23,
+      "title": "第二十三回 ",
+      "chars": 7473,
+      "file": "ch023.txt"
+    },
+    {
+      "id": "hui_24",
+      "num": 24,
+      "title": "第二十四回 ",
+      "chars": 19133,
+      "file": "ch024.txt"
+    },
+    {
+      "id": "hui_25",
+      "num": 25,
+      "title": "第二十五回 ",
+      "chars": 6365,
+      "file": "ch025.txt"
+    },
+    {
+      "id": "hui_26",
+      "num": 26,
+      "title": "第二十六回 ",
+      "chars": 9701,
+      "file": "ch026.txt"
+    },
+    {
+      "id": "hui_27",
+      "num": 27,
+      "title": "第二十七回 ",
+      "chars": 6163,
+      "file": "ch027.txt"
+    },
+    {
+      "id": "hui_28",
+      "num": 28,
+      "title": "第二十八回 ",
+      "chars": 5747,
+      "file": "ch028.txt"
+    },
+    {
+      "id": "hui_29",
+      "num": 29,
+      "title": "第二十九回 ",
+      "chars": 5673,
+      "file": "ch029.txt"
+    },
+    {
+      "id": "hui_30",
+      "num": 30,
+      "title": "第三十回 ",
+      "chars": 7958,
+      "file": "ch030.txt"
+    },
+    {
+      "id": "hui_31",
+      "num": 31,
+      "title": "第三十一回 ",
+      "chars": 8153,
+      "file": "ch031.txt"
+    },
+    {
+      "id": "hui_32",
+      "num": 32,
+      "title": "第三十二回 ",
+      "chars": 11037,
+      "file": "ch032.txt"
+    },
+    {
+      "id": "hui_33",
+      "num": 33,
+      "title": "第三十三回 ",
+      "chars": 7508,
+      "file": "ch033.txt"
+    },
+    {
+      "id": "hui_34",
+      "num": 34,
+      "title": "第三十四回 ",
+      "chars": 8405,
+      "file": "ch034.txt"
+    },
+    {
+      "id": "hui_35",
+      "num": 35,
+      "title": "第三十五回 ",
+      "chars": 8867,
+      "file": "ch035.txt"
+    },
+    {
+      "id": "hui_36",
+      "num": 36,
+      "title": "第三十六回 ",
+      "chars": 7510,
+      "file": "ch036.txt"
+    },
+    {
+      "id": "hui_37",
+      "num": 37,
+      "title": "第三十七回 ",
+      "chars": 8852,
+      "file": "ch037.txt"
+    },
+    {
+      "id": "hui_38",
+      "num": 38,
+      "title": "第三十八回 ",
+      "chars": 9583,
+      "file": "ch038.txt"
+    },
+    {
+      "id": "hui_39",
+      "num": 39,
+      "title": "第三十九回 ",
+      "chars": 12051,
+      "file": "ch039.txt"
+    },
+    {
+      "id": "hui_40",
+      "num": 40,
+      "title": "第四十回 ",
+      "chars": 6840,
+      "file": "ch040.txt"
+    },
+    {
+      "id": "hui_41",
+      "num": 41,
+      "title": "第四十一回 ",
+      "chars": 9851,
+      "file": "ch041.txt"
+    },
+    {
+      "id": "hui_42",
+      "num": 42,
+      "title": "第四十二回 ",
+      "chars": 8037,
+      "file": "ch042.txt"
+    },
+    {
+      "id": "hui_43",
+      "num": 43,
+      "title": "第四十三回 ",
+      "chars": 10445,
+      "file": "ch043.txt"
+    },
+    {
+      "id": "hui_44",
+      "num": 44,
+      "title": "第四十四回 ",
+      "chars": 9611,
+      "file": "ch044.txt"
+    },
+    {
+      "id": "hui_45",
+      "num": 45,
+      "title": "第四十五回 ",
+      "chars": 11156,
+      "file": "ch045.txt"
+    },
+    {
+      "id": "hui_46",
+      "num": 46,
+      "title": "第四十六回 ",
+      "chars": 7755,
+      "file": "ch046.txt"
+    },
+    {
+      "id": "hui_47",
+      "num": 47,
+      "title": "第四十七回 ",
+      "chars": 8681,
+      "file": "ch047.txt"
+    },
+    {
+      "id": "hui_48",
+      "num": 48,
+      "title": "第四十八回 ",
+      "chars": 5752,
+      "file": "ch048.txt"
+    },
+    {
+      "id": "hui_49",
+      "num": 49,
+      "title": "第四十九回 ",
+      "chars": 8930,
+      "file": "ch049.txt"
+    },
+    {
+      "id": "hui_50",
+      "num": 50,
+      "title": "第五十回 ",
+      "chars": 7331,
+      "file": "ch050.txt"
+    },
+    {
+      "id": "hui_51",
+      "num": 51,
+      "title": "第五十一回 ",
+      "chars": 8422,
+      "file": "ch051.txt"
+    },
+    {
+      "id": "hui_52",
+      "num": 52,
+      "title": "第五十二回 ",
+      "chars": 7687,
+      "file": "ch052.txt"
+    },
+    {
+      "id": "hui_53",
+      "num": 53,
+      "title": "第五十三回 ",
+      "chars": 10146,
+      "file": "ch053.txt"
+    },
+    {
+      "id": "hui_54",
+      "num": 54,
+      "title": "第五十四回 ",
+      "chars": 7457,
+      "file": "ch054.txt"
+    },
+    {
+      "id": "hui_55",
+      "num": 55,
+      "title": "第五十五回 ",
+      "chars": 6945,
+      "file": "ch055.txt"
+    },
+    {
+      "id": "hui_56",
+      "num": 56,
+      "title": "第五十六回 ",
+      "chars": 7718,
+      "file": "ch056.txt"
+    },
+    {
+      "id": "hui_57",
+      "num": 57,
+      "title": "第五十七回 ",
+      "chars": 8026,
+      "file": "ch057.txt"
+    },
+    {
+      "id": "hui_58",
+      "num": 58,
+      "title": "第五十八回 ",
+      "chars": 7587,
+      "file": "ch058.txt"
+    },
+    {
+      "id": "hui_59",
+      "num": 59,
+      "title": "第五十九回 ",
+      "chars": 7553,
+      "file": "ch059.txt"
+    },
+    {
+      "id": "hui_60",
+      "num": 60,
+      "title": "第六十回 ",
+      "chars": 8240,
+      "file": "ch060.txt"
+    },
+    {
+      "id": "hui_61",
+      "num": 61,
+      "title": "第六十一回 ",
+      "chars": 9391,
+      "file": "ch061.txt"
+    },
+    {
+      "id": "hui_62",
+      "num": 62,
+      "title": "第六十二回 ",
+      "chars": 10717,
+      "file": "ch062.txt"
+    },
+    {
+      "id": "hui_63",
+      "num": 63,
+      "title": "第六十三回 ",
+      "chars": 7330,
+      "file": "ch063.txt"
+    },
+    {
+      "id": "hui_64",
+      "num": 64,
+      "title": "第六十四回 ",
+      "chars": 7032,
+      "file": "ch064.txt"
+    },
+    {
+      "id": "hui_65",
+      "num": 65,
+      "title": "第六十五回 ",
+      "chars": 6427,
+      "file": "ch065.txt"
+    },
+    {
+      "id": "hui_66",
+      "num": 66,
+      "title": "第六十六回 ",
+      "chars": 6556,
+      "file": "ch066.txt"
+    },
+    {
+      "id": "hui_67",
+      "num": 67,
+      "title": "第六十七回 ",
+      "chars": 7962,
+      "file": "ch067.txt"
+    },
+    {
+      "id": "hui_68",
+      "num": 68,
+      "title": "第六十八回 ",
+      "chars": 7804,
+      "file": "ch068.txt"
+    },
+    {
+      "id": "hui_69",
+      "num": 69,
+      "title": "第六十九回 ",
+      "chars": 6122,
+      "file": "ch069.txt"
+    },
+    {
+      "id": "hui_70",
+      "num": 70,
+      "title": "第七十回 忠义堂石碣受天文 梁山泊英雄惊恶梦",
+      "chars": 5916,
+      "file": "ch070.txt"
+    }
+  ],
+  "total_hui": 70,
+  "has_xiezi": true,
+  "total_chars": 571689
 }
