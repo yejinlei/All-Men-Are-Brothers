@@ -41,6 +41,9 @@ background-repeat:no-repeat;background-position:right 12px center;}
 .cmt-btn.active.cm-jinpi{color:#b8860b;background:#fff8e6;border-color:#d4a83b;}
 .cmt-btn.active.cm-lizhuo{color:#8b4513;background:#faf1e7;border-color:#a96639;}
 .cmt-btn.active.cm-yuanwy{color:#2e5a88;background:#eef3f8;border-color:#4a7aa8;}
+.cmt-btn.active.cm-zhongbo{color:#7a5195;background:#f6f0fa;border-color:#a887c0;}
+.cmt-btn.active.cm-wangping{color:#5a7d3a;background:#f2f6e9;border-color:#86a866;}
+.cmt-btn.active.cm-chengzhu{color:#2f6f6f;background:#edf5f5;border-color:#5f9c9c;}
 .cmt-btn.active.cm-jiqin{color:#4a7a49;background:#eef5ec;border-color:#6b9a6a;}
 
 /* 勾选开关（仿红楼梦参考图） */
@@ -85,6 +88,21 @@ background-repeat:no-repeat;background-position:right 12px center;}
 .cmt-yuanwy::before{background:#2e5a88;}
 .cmt-yuanwy .cmt-tag{background:#2e5a88;}
 
+/* 钟伯敬（青莲） */
+.cmt-zhongbo{background:#f4eefa;}
+.cmt-zhongbo::before{background:#7a5195;}
+.cmt-zhongbo .cmt-tag{background:#7a5195;}
+
+/* 王望如（苔绿） */
+.cmt-wangping{background:#f0f4e7;}
+.cmt-wangping::before{background:#5a7d3a;}
+.cmt-wangping .cmt-tag{background:#5a7d3a;}
+
+/* 程穆衡注略（黛青） */
+.cmt-chengzhu{background:#eaf3f3;}
+.cmt-chengzhu::before{background:#2f6f6f;}
+.cmt-chengzhu .cmt-tag{background:#2f6f6f;}
+
 /* 冀勤校注（竹青） */
 .cmt-jiqin{background:#eef5ec;}
 .cmt-jiqin::before{background:#2f5d50;}
@@ -128,13 +146,13 @@ body.cmt-only .cmt-block{margin:18px 0;}
       <span class="brand" onclick="location.href='index.html'">水浒传</span>
 
       <span class="tool-group">
-        <span class="tool-label">回目：</span>
-        <select id="selChap" class="chap-select"></select>
+        <span class="tool-label">版本：</span>
+        <span class="btn-group" id="verGroup"></span>
       </span>
 
       <span class="tool-group">
-        <span class="tool-label">版本：</span>
-        <span class="btn-group" id="verGroup"></span>
+        <span class="tool-label">回目：</span>
+        <select id="selChap" class="chap-select" title="快速选择回目"></select>
       </span>
 
       <span class="tool-group">
@@ -153,6 +171,9 @@ body.cmt-only .cmt-block{margin:18px 0;}
           <button class="ui-btn cmt-btn cm-jinpi" data-cmt="jinpi">金批</button>
           <button class="ui-btn cmt-btn cm-lizhuo" data-cmt="lizhuo">容本</button>
           <button class="ui-btn cmt-btn cm-yuanwy" data-cmt="yuanwy">袁本</button>
+          <button class="ui-btn cmt-btn cm-zhongbo" data-cmt="zhongbo">钟批</button>
+          <button class="ui-btn cmt-btn cm-wangping" data-cmt="wangping">王评</button>
+          <button class="ui-btn cmt-btn cm-chengzhu" data-cmt="chengzhu">程注</button>
           <button class="ui-btn cmt-btn cm-jiqin" data-cmt="jiqin">冀注</button>
         </span>
       </span>
@@ -185,7 +206,7 @@ const state = {
   onlyCmt: localStorage.getItem('sh_only')==='1',
   withBai: localStorage.getItem('sh_bai')==='1',
   versions: [], chapters: {},
-  comments: { jinpi:null, jiqin:null, lizhuo:null, yuanwy:null },
+  comments: { jinpi:null, jiqin:null, lizhuo:null, yuanwy:null, zhongbo:null, wangping:null, chengzhu:null },
   baiCache: {}
 };
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -200,7 +221,10 @@ const CMT={
   jinpi:{tag:'金批',who:'金圣叹',cls:'cmt-jinpi',color:'#8b1a1a',file:'jinpi_comments.json',okVer:['v70','jin70','jin70_pi','jinshengtan'],extract:d=>d.jin70_pi||d.jinpi||d},
   lizhuo:{tag:'容本',who:'李卓吾',cls:'cmt-lizhuo',color:'#8b4513',file:'lizhuo_comments.json',okVer:['v100','jiqin'],extract:d=>d},
   yuanwy:{tag:'袁本',who:'袁无涯',cls:'cmt-yuanwy',color:'#2e5a88',file:'yuanwy_comments.json',okVer:['v120'],extract:d=>d},
-  jiqin:{tag:'冀注',who:'冀勤校注',cls:'cmt-jiqin',color:'#2f5d50',file:'jiqin_notes.json',okVer:['v100','jiqin'],extract:d=>d}
+  jiqin:{tag:'冀注',who:'冀勤校注',cls:'cmt-jiqin',color:'#2f5d50',file:'jiqin_notes.json',okVer:['v100','jiqin'],extract:d=>d},
+  zhongbo:{tag:'钟批',who:'钟伯敬',cls:'cmt-zhongbo',color:'#7a5195',file:'zhongbo_comments.json',okVer:['v100','jiqin'],extract:d=>d},
+  wangping:{tag:'王评',who:'王望如',cls:'cmt-wangping',color:'#5a7d3a',file:'wangping_comments.json',okVer:['v70','jin70','jin70_pi','jinshengtan'],extract:d=>d},
+  chengzhu:{tag:'程注',who:'程穆衡',cls:'cmt-chengzhu',color:'#2f6f6f',file:'chengzhu_notes.json',okVer:['v100','jiqin'],extract:d=>d}
 };
 
 async function loadJSON(p){const r=await fetch(p);if(!r.ok)throw new Error('fail '+p);return r.json();}
@@ -255,7 +279,12 @@ function markVer(){document.querySelectorAll('.ver-btn').forEach(b=>b.classList.
 
 async function loadVer(first){
   if(!state.chapters[state.vid]){
-    try{state.chapters[state.vid]=await loadJSON('texts/versions/'+state.vid+'/chapters.json');}
+    try{
+      const raw=await loadJSON('texts/versions/'+state.vid+'/chapters.json');
+      state.chapters[state.vid]=Array.isArray(raw)
+        ? {count:raw.length,chapters:raw,version_name:((state.versions.find(v=>v.id===state.vid)||{}).name||state.vid)}
+        : raw;
+    }
     catch(e){document.getElementById('contentWrap').innerHTML='<div class="loading">该版本尚未整理完成</div>';return;}
   }
   const cnt=state.chapters[state.vid].count;
@@ -263,7 +292,7 @@ async function loadVer(first){
 
   const sel=document.getElementById('selChap');sel.innerHTML='';
   state.chapters[state.vid].chapters.forEach((c,i)=>{
-    const o=document.createElement('option');o.value=i;o.textContent=`${i+1}. ${c.title||'第'+(i+1)+'回'}`;sel.appendChild(o);
+    const o=document.createElement('option');o.value=i;o.textContent=(c.title||'第'+(i+1)+'回');o.title=o.textContent;sel.appendChild(o);
   });
   sel.value=state.ch;
   sel.onchange=()=>{state.ch=parseInt(sel.value,10);syncURL();loadChap();};
@@ -291,15 +320,18 @@ async function loadChap(){
   document.getElementById('chapVer').textContent=state.chapters[state.vid].version_name;
   const wrap=document.getElementById('contentWrap');
   wrap.innerHTML='<div class="loading">正在载入正文…</div>';
-  const fn=chap.file;
+  const swap=(f,lang)=>!f?null:(f.indexOf('/')>=0?f.replace(/^fan\//,lang+'/'):lang+'/'+f);
+  const fn = state.lang==='jian' ? (chap.file_simp||swap(chap.file,'jian'))
+           : state.lang==='bai'  ? (chap.file_bai ||swap(chap.file,'bai'))
+           : chap.file;
   if(!fn){wrap.innerHTML='<div class="loading">无此回正文</div>';updPgr();return;}
-  const fp='texts/versions/'+state.vid+'/'+state.lang+'/'+fn;
+  const fp='texts/versions/'+state.vid+'/'+fn;
   const txt=await loadText(fp);
   if(!txt){wrap.innerHTML='<div class="loading">该版本此语体暂未整理<br><small>'+esc(fp)+'</small></div>';updPgr();return;}
 
   let baiH='';
   if(state.withBai&&state.lang!=='bai'){
-    const bf='texts/versions/'+state.vid+'/bai/'+fn;
+    const bf='texts/versions/'+state.vid+'/'+(chap.file_bai||swap(chap.file,'bai'));
     let bt=state.baiCache[bf];
     if(bt===undefined){bt=await loadText(bf);state.baiCache[bf]=bt;}
     if(bt)baiH='<div class="baihua-block"><span class="baihua-label">白话译文</span>'+esc(bt).replace(/\n\s*\n/g,'<br><br>').replace(/\n/g,'')+'</div>';
@@ -336,6 +368,9 @@ async function applyCmt(){
   const blocks=[];
 
   if(state.cmt==='lizhuo'||state.cmt==='yuanwy') collectChapters(data,m,blocks);
+  else if(state.cmt==='wangping') collectWangping(data,m,blocks);
+  else if(state.cmt==='zhongbo') collectZhongbo(data,m,blocks);
+  else if(state.cmt==='chengzhu') collectChengzhu(data,m,blocks);
   else collectDict(data,m,blocks);
 
   if(blocks.length===0){notice('本回暂无'+m.who+'批注。');return;}
@@ -396,6 +431,37 @@ function collectChapters(data,m,blocks){
   if(state.ch<=1&&data.art_theory&&data.art_theory.length){
     blocks.push({where:'bottom',tag:m.tag+'·读法',html:data.art_theory.map(a=>'<div class="cmt-sub"><b style="color:'+m.color+';">「'+esc(a.keyword)+'」</b>（'+esc(a.source)+'）：'+esc(a.point)+'</div>').join('')});
   }
+}
+
+/* —— 王望如：逐回「王望如曰」回末总评 —— */
+function collectWangping(data,m,blocks){
+  const cur=state.chapters[state.vid].chapters[state.ch];
+  const num=(cur&&cur.num!=null)?cur.num:state.ch;
+  const tgt='第'+num+'回';
+  const hits=(data.chapters||[]).filter(c=>c.chapter===tgt);
+  if(!hits.length)return;
+  blocks.push({where:'bottom',tag:m.tag+'·回末总评',html:hits.map(c=>
+    '<div class="cmt-sub"><b style="color:'+m.color+';">〔'+esc(c.vol||'')+'·'+esc(c.type||'总评')+'〕</b>'+esc(c.text)+'</div>').join('')});
+}
+
+/* —— 钟伯敬：卷首《水浒传人品评》 —— */
+function collectZhongbo(data,m,blocks){
+  if(state.ch<=1){
+    const items=(data.pin_ren||[]).map(p=>'<div class="cmt-sub"><b style="color:'+m.color+';">『'+esc(p.name)+'』</b>'+esc(p.text)+'</div>').join('');
+    blocks.push({where:'top',tag:m.tag+'·卷首人品评',preface:true,
+      html:'<div style="font-size:13px;color:#8a7a62;margin-bottom:6px;">—— 明·钟惺（字伯敬）《水浒传人品评》　四知馆刊本卷首</div>'+items+
+           '<div class="cmt-sub" style="font-size:13px;color:#8a7a62;">（钟批本传世仅存前二回正文，回间眉批、侧批待补）</div>'});
+  }
+}
+
+/* —— 程穆衡《水浒传注略》：卷次对应回次 —— */
+function collectChengzhu(data,m,blocks){
+  const no=state.ch<1?1:state.ch;
+  const vols=data.volumes||[];
+  const vol=vols.find(v=>v.no===no)||vols.find(v=>v.no===no+1)||vols.find(v=>v.no===no-1);
+  if(!vol||!vol.items||!vol.items.length)return;
+  blocks.push({where:'bottom',tag:m.tag+'·名物注',html:vol.items.map(it=>
+    '<div class="cmt-sub"><b style="color:'+m.color+';">〔'+esc(it.k)+'〕</b>'+esc(it.v)+'</div>').join('')});
 }
 
 boot().catch(e=>{document.getElementById('contentWrap').innerHTML='<div class="loading">加载失败：'+esc(e.message)+'</div>';console.error(e);});
