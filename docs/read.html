@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>水浒传 · 版本阅读器</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+<style>
+:root{--content-width:960px;}
+.read-wrap{max-width:var(--content-width);margin:0 auto;padding:24px 20px 80px;}
+.read-top{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--border);padding:14px 0;margin:-24px -20px 24px;}
+.read-top-inner{max-width:var(--content-width);margin:0 auto;padding:0 20px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+.brand{font-family:var(--font-serif);font-size:18px;color:var(--vermilion-deep);font-weight:700;letter-spacing:3px;margin-right:20px;cursor:pointer;}
+.brand:hover{color:var(--vermilion);}
+.ctrl{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-muted);}
+.ctrl select{padding:6px 10px;border:1px solid var(--border);border-radius:4px;background:#fff;font-size:13px;color:var(--ink);font-family:var(--font-serif);max-width:260px;}
+.ctrl button{padding:6px 14px;border:1px solid var(--border);background:#fff;border-radius:4px;cursor:pointer;font-size:13px;color:var(--ink);font-family:var(--font-serif);transition:all .2s;}
+.ctrl button:hover{background:var(--vermilion-deep);color:#fff;border-color:var(--vermilion-deep);}
+.ctrl button.active{background:var(--vermilion-deep);color:#fff;border-color:var(--vermilion-deep);}
+.chap-title{font-family:var(--font-serif);text-align:center;font-size:28px;color:var(--vermilion-deep);font-weight:700;letter-spacing:6px;margin:10px 0 6px;}
+.chap-ver{text-align:center;font-size:13px;color:var(--ink-muted);margin-bottom:32px;letter-spacing:2px;}
+.content-wrap{position:relative;font-family:var(--font-serif);font-size:18px;line-height:2;color:var(--ink);}
+.content-wrap p{text-indent:2em;margin:0 0 14px;}
+.content-wrap .poem{text-align:center;color:var(--ink-light);margin:16px auto;font-style:italic;}
+.content-wrap .poem p{text-indent:0;}
+.content-wrap h3{font-family:var(--font-serif);text-align:center;color:var(--vermilion-deep);font-size:20px;margin:32px 0 16px;letter-spacing:4px;}
+.pager{display:flex;justify-content:space-between;margin-top:48px;padding-top:24px;border-top:1px solid var(--border);}
+.pager a{padding:10px 22px;border:1px solid var(--border);border-radius:4px;color:var(--ink);text-decoration:none;font-family:var(--font-serif);font-size:14px;transition:all .2s;}
+.pager a:hover{background:var(--vermilion-deep);color:#fff;border-color:var(--vermilion-deep);}
+.pager .disabled{opacity:.3;pointer-events:none;}
+/* 批注 */
+.comment-anchor{display:inline-block;width:14px;height:14px;line-height:14px;text-align:center;font-size:10px;color:var(--vermilion);background:var(--gold-light, #f7e7b0);border-radius:50%;cursor:pointer;vertical-align:super;margin:0 2px;font-family:sans-serif;font-weight:700;}
+.comment-anchor:hover{background:var(--vermilion);color:#fff;}
+.comment-side{display:none;position:absolute;right:-320px;top:0;width:280px;background:#fff8ea;border-left:3px solid var(--vermilion);padding:12px 14px;font-size:13px;line-height:1.8;color:var(--ink-light);border-radius:0 4px 4px 0;box-shadow:2px 2px 8px rgba(0,0,0,.08);font-family:var(--font-serif);z-index:5;}
+.comment-side.on{display:block;}
+.comment-side .who{color:var(--vermilion-deep);font-weight:700;font-size:12px;margin-bottom:4px;letter-spacing:2px;}
+body.show-comments .comment-anchor{visibility:visible;}
+body:not(.show-comments) .comment-side{display:none !important;}
+.comments-notice{text-align:center;color:var(--ink-muted);font-size:13px;margin-top:40px;padding:12px;background:#f7f1e1;border-radius:4px;}
+/* 响应式 */
+@media(max-width:1400px){.content-wrap{padding-right:0;}.comment-side{position:relative;right:auto;width:100%;margin:10px 0;border-left-width:4px;border-radius:4px;}}
+/* 加载 */
+.loading{text-align:center;padding:60px 0;color:var(--ink-muted);font-family:var(--font-serif);font-size:16px;letter-spacing:4px;}
+</style>
+</head>
+<body>
+<div class="read-wrap">
+  <div class="read-top">
+    <div class="read-top-inner">
+      <span class="brand" onclick="location.href='index.html'">水浒传</span>
+      <span class="ctrl">版本
+        <select id="selVer"></select>
+      </span>
+      <span class="ctrl">回目
+        <select id="selChap"></select>
+      </span>
+      <span class="ctrl">语体
+        <button data-lang="fan" class="active">繁</button>
+        <button data-lang="jian">简</button>
+        <button data-lang="bai">白</button>
+      </span>
+      <span class="ctrl">批注
+        <select id="selCmt">
+          <option value="none">关闭批注</option>
+          <option value="jinpi" selected>金圣叹批</option>
+          <option value="jiqin">冀勤校注</option>
+        </select>
+      </span>
+    </div>
+  </div>
+
+  <h1 class="chap-title" id="chapTitle">加载中…</h1>
+  <div class="chap-ver" id="chapVer"></div>
+
+  <div class="content-wrap" id="contentWrap">
+    <div class="loading">正在载入正文…</div>
+  </div>
+
+  <div class="pager" id="pager"></div>
+</div>
+
+<script>
+/* ========== 状态 ========== */
+const state = {
+  vid: new URLSearchParams(location.search).get('vid') || 'v70',
+  ch: parseInt(new URLSearchParams(location.search).get('ch') || '1', 10),
+  lang: localStorage.getItem('sh_lang') || 'fan',
+  cmt: localStorage.getItem('sh_cmt') || 'jinpi',
+  versions: [],
+  chapters: {},
+  comments: { jinpi:null, jiqin:null }
+};
+
+/* ========== 工具 ========== */
+async function loadJSON(p){ const r=await fetch(p); if(!r.ok) throw new Error('load '+p+' fail'); return r.json(); }
+async function loadText(p){ const r=await fetch(p); if(!r.ok) return null; return r.text(); }
+
+/* ========== 初始化 ========== */
+async function boot(){
+  // 版本列表
+  const idx = await loadJSON('texts/versions/versions_index.json');
+  state.versions = idx.versions;
+  // 下拉
+  const selVer = document.getElementById('selVer');
+  idx.versions.forEach(v=>{
+    const o=document.createElement('option'); o.value=v.id; o.textContent=v.name; selVer.appendChild(o);
+  });
+  selVer.value = state.vid;
+  selVer.onchange = ()=>{ state.vid=selVer.value; state.ch=1; syncURL(); loadVersion(); };
+
+  // 语体按钮
+  document.querySelectorAll('[data-lang]').forEach(b=>{
+    if(b.dataset.lang===state.lang) b.classList.add('active'); else b.classList.remove('active');
+    b.onclick = ()=>{
+      document.querySelectorAll('[data-lang]').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      state.lang = b.dataset.lang;
+      localStorage.setItem('sh_lang', state.lang);
+      loadChapter();
+    };
+  });
+
+  // 批注下拉
+  const selCmt = document.getElementById('selCmt');
+  selCmt.value = state.cmt;
+  selCmt.onchange = ()=>{
+    state.cmt = selCmt.value;
+    localStorage.setItem('sh_cmt', state.cmt);
+    applyComments();
+  };
+
+  await loadVersion(true);
+}
+
+async function loadVersion(first){
+  if(!state.chapters[state.vid]){
+    try{
+      state.chapters[state.vid] = await loadJSON(`texts/versions/${state.vid}/chapters.json`);
+    }catch(e){
+      document.getElementById('contentWrap').innerHTML = '<div class="loading">该版本尚未整理完成</div>';
+      return;
+    }
+  }
+  // 校验章节序号
+  const cnt = state.chapters[state.vid].count;
+  if(state.ch>=cnt) state.ch = cnt-1;
+  if(state.ch<0) state.ch = 0;
+
+  const selChap = document.getElementById('selChap');
+  selChap.innerHTML = '';
+  state.chapters[state.vid].chapters.forEach((c,i)=>{
+    const o=document.createElement('option'); o.value=i; o.textContent=c.title || `第${i}回`; selChap.appendChild(o);
+  });
+  selChap.value = state.ch;
+  selChap.onchange = ()=>{ state.ch=parseInt(selChap.value,10); syncURL(); loadChapter(); };
+
+  if(!first) syncURL();
+  await loadChapter();
+}
+
+function syncURL(){
+  const u = new URL(location.href);
+  u.searchParams.set('vid', state.vid);
+  u.searchParams.set('ch', state.ch);
+  history.replaceState({},'',u.toString());
+}
+
+/* ========== 读取正文 ========== */
+async function loadChapter(){
+  const chap = state.chapters[state.vid].chapters[state.ch];
+  document.getElementById('chapTitle').textContent = chap.title;
+  document.getElementById('chapVer').textContent = state.chapters[state.vid].version_name;
+  const wrap = document.getElementById('contentWrap');
+  wrap.innerHTML = '<div class="loading">正在载入正文…</div>';
+  const fname = chap.file;
+  if(!fname){ wrap.innerHTML='<div class="loading">无此回正文</div>'; updatePager(); return; }
+  // 不同语体路径：fan/fname.txt, jian/fname.txt, bai/fname.txt（三个目录文件名一致）
+  const fp = `texts/versions/${state.vid}/${state.lang}/${fname}`;
+  const txt = await loadText(fp);
+  if(!txt){
+    wrap.innerHTML = `<div class="loading">该版本此语体暂未整理<br><small>${fp}</small></div>`;
+    updatePager();
+    return;
+  }
+  wrap.innerHTML = renderText(txt);
+  updatePager();
+  applyComments();
+}
+
+function renderText(txt){
+  // 先按空行分段
+  const blocks = txt.split(/\n\s*\n/);
+  let html = '';
+  blocks.forEach(b=>{
+    b = b.trim();
+    if(!b) return;
+    const lines = b.split(/\n/).map(l=>l.trim()).filter(Boolean);
+    // 诗歌/韵文：短行、多段、含明显韵文标志
+    const isPoem = (lines.length>=2 && lines.every(l=>l.length<30) &&
+      (/诗|曰|词|古风|偈|吟|赋|歌/.test(lines[0]) || lines.every(l=>/[，。？！,?.!]$/.test(l) || /韵|平|仄/.test(l))));
+    if(isPoem){
+      html += '<div class="poem">';
+      lines.forEach(l=>{ html += '<p>'+escapeHTML(l)+'</p>'; });
+      html += '</div>';
+    }else if(/^第[一二三四五六七八九十百零]+回|^楔子|^引首/.test(lines[0]) && lines[0].length<40){
+      html += '<h3>'+escapeHTML(lines.join(' '))+'</h3>';
+    }else{
+      lines.forEach(l=>{ html += '<p>'+escapeHTML(l)+'</p>'; });
+    }
+  });
+  return html;
+}
+
+function escapeHTML(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function updatePager(){
+  const cnt = state.chapters[state.vid].count;
+  const prev = state.ch-1;
+  const next = state.ch+1;
+  let html = '';
+  if(prev>=0){
+    html += `<a href="#" onclick="goto(${prev});return false;">← 上一回</a>`;
+  }else{
+    html += `<a class="disabled">← 上一回</a>`;
+  }
+  if(next<cnt){
+    html += `<a href="#" onclick="goto(${next});return false;">下一回 →</a>`;
+  }else{
+    html += `<a class="disabled">下一回 →</a>`;
+  }
+  document.getElementById('pager').innerHTML = html;
+}
+function goto(n){ state.ch=n; syncURL(); document.getElementById('selChap').value=n; loadChapter(); window.scrollTo(0,0); }
+
+/* ========== 批注 ========== */
+async function applyComments(){
+  document.body.classList.remove('show-comments');
+  document.querySelectorAll('.comment-anchor,.comment-side,.zongpi-block').forEach(e=>e.remove());
+  if(state.cmt==='none') return;
+
+  let key = state.cmt;
+  if(!state.comments[key]){
+    const path = key==='jinpi' ? 'texts/versions/jinpi_comments.json' : 'texts/versions/jiqin_notes.json';
+    try{ state.comments[key] = await loadJSON(path); }catch(e){ state.comments[key] = {}; }
+  }
+  const data = state.comments[key];
+  // 批注适用版本
+  const okVer = (key==='jinpi') ? ['v70','jin70','jin70_pi','jinshengtan'] : ['v100','jiqin'];
+  if(!okVer.includes(state.vid)){
+    document.getElementById('contentWrap').insertAdjacentHTML('beforeend',
+      `<div class="zongpi-block" style="background:#f7f1e1;border-left:4px solid var(--ink-muted, #999);padding:14px 20px;margin:30px 0;border-radius:0 6px 6px 0;font-size:13px;color:var(--ink-muted);font-family:var(--font-serif);">此批注（${key==='jinpi'?'金圣叹批':'冀勤校注'}）仅适用于对应底本版本，请在版本下拉中切换到相应版本查看。</div>`);
+    return;
+  }
+  // 数据键：金批为 jin70_pi（或第一个 key），冀勤为冀勤字典本
+  const sub = key==='jinpi' ? (data.jin70_pi || data.jinpi || data) : data;
+  const chKey = String(state.ch);
+  const chData = sub[chKey];
+  if(!chData){
+    document.getElementById('contentWrap').insertAdjacentHTML('beforeend',
+      `<div class="zongpi-block" style="background:#f7f1e1;padding:14px 20px;margin:30px 0;border-radius:6px;font-size:13px;color:var(--ink-muted);font-family:var(--font-serif);text-align:center;">本回暂无${key==='jinpi'?'金圣叹':'冀勤'}批注。</div>`);
+    return;
+  }
+  // 解析批注：preface=回前总批；数字键=夹批/注释
+  let html = '<div class="zongpi-block" style="margin-top:40px;">';
+  const who = key==='jinpi' ? '金圣叹' : '冀勤';
+  const color = key==='jinpi' ? 'var(--gold)' : 'var(--jade,#5b8c5a)';
+  // 回前总批
+  if(chData.preface){
+    html += `<div style="background:#f8edd0;border-left:4px solid ${color};padding:14px 20px;margin-bottom:14px;border-radius:0 6px 6px 0;font-size:14px;color:var(--ink-light);font-family:var(--font-serif);line-height:2;">
+      <div style="color:var(--vermilion-deep);font-weight:700;margin-bottom:8px;letter-spacing:3px;">【${who}·回前总批】</div>
+      <div style="white-space:pre-wrap;">${escapeHTML(chData.preface).replace(/\n/g,'<br>')}</div>
+    </div>`;
+  }
+  // 夹批/注释列表
+  const pis = Object.keys(chData).filter(k=>k!=='preface' && chData[k]);
+  if(pis.length){
+    html += `<div style="background:#fdf8ec;border:1px solid var(--border);padding:16px 20px;border-radius:6px;font-size:13px;color:var(--ink-light);font-family:var(--font-serif);line-height:2;">
+      <div style="color:var(--vermilion-deep);font-weight:700;margin-bottom:8px;letter-spacing:3px;">【${who}·夹批校注·共${pis.length}条】</div>`;
+    pis.forEach((k,i)=>{
+      const txt = chData[k];
+      if(typeof txt === 'string'){
+        html += `<div style="padding:4px 0;border-bottom:1px dashed var(--border);"><b style="color:var(--vermilion);margin-right:6px;">[${i+1}]</b>${escapeHTML(txt)}</div>`;
+      }else if(txt && typeof txt==='object'){
+        // 嵌套注释
+        const entries = Object.entries(txt);
+        entries.forEach(([kk,vv])=>{
+          html += `<div style="padding:4px 0;border-bottom:1px dashed var(--border);"><b style="color:var(--vermilion);margin-right:6px;">[${i+1}.${kk}]</b>${escapeHTML(String(vv))}</div>`;
+        });
+      }
+    });
+    html += '</div>';
+  }
+  html += '</div>';
+  document.getElementById('contentWrap').insertAdjacentHTML('beforeend', html);
+}
+
+boot().catch(e=>{
+  document.getElementById('contentWrap').innerHTML = '<div class="loading">加载失败：'+e.message+'</div>';
+  console.error(e);
+});
+</script>
+</body>
+</html>
