@@ -1,0 +1,615 @@
+{
+  "key": "rongyutang",
+  "label": "容与堂本（百回繁本·李卓吾评）",
+  "total_hui_expected": 100,
+  "actual_hui": 100,
+  "total_chars": 807032,
+  "chapters": [
+    {
+      "id": "xiezi_0",
+      "num": 0,
+      "title": "引首",
+      "chars": 1331
+    },
+    {
+      "id": "hui_1",
+      "num": 0,
+      "title": "第一回 张",
+      "chars": 5691
+    },
+    {
+      "id": "hui_2",
+      "num": 0,
+      "title": "第二回 王",
+      "chars": 13780
+    },
+    {
+      "id": "hui_3",
+      "num": 0,
+      "title": "第三回 史",
+      "chars": 7845
+    },
+    {
+      "id": "hui_4",
+      "num": 0,
+      "title": "第四回 赵",
+      "chars": 11266
+    },
+    {
+      "id": "hui_5",
+      "num": 0,
+      "title": "第五回 小",
+      "chars": 7848
+    },
+    {
+      "id": "hui_6",
+      "num": 0,
+      "title": "第六回 九",
+      "chars": 7686
+    },
+    {
+      "id": "hui_7",
+      "num": 0,
+      "title": "第七回 花",
+      "chars": 7389
+    },
+    {
+      "id": "hui_8",
+      "num": 0,
+      "title": "第八回 林",
+      "chars": 5542
+    },
+    {
+      "id": "hui_9",
+      "num": 0,
+      "title": "第九回 柴",
+      "chars": 7805
+    },
+    {
+      "id": "hui_10",
+      "num": 0,
+      "title": "第十回 林",
+      "chars": 6164
+    },
+    {
+      "id": "hui_11",
+      "num": 0,
+      "title": "第十一回",
+      "chars": 6641
+    },
+    {
+      "id": "hui_12",
+      "num": 0,
+      "title": "第十二回",
+      "chars": 5734
+    },
+    {
+      "id": "hui_13",
+      "num": 0,
+      "title": "第十三回",
+      "chars": 6255
+    },
+    {
+      "id": "hui_14",
+      "num": 0,
+      "title": "第十四回",
+      "chars": 5998
+    },
+    {
+      "id": "hui_15",
+      "num": 0,
+      "title": "第十五回",
+      "chars": 7408
+    },
+    {
+      "id": "hui_16",
+      "num": 0,
+      "title": "第十六回",
+      "chars": 8258
+    },
+    {
+      "id": "hui_17",
+      "num": 0,
+      "title": "第十七回",
+      "chars": 8717
+    },
+    {
+      "id": "hui_18",
+      "num": 0,
+      "title": "第十八回",
+      "chars": 7777
+    },
+    {
+      "id": "hui_19",
+      "num": 0,
+      "title": "第十九回",
+      "chars": 8056
+    },
+    {
+      "id": "hui_20",
+      "num": 0,
+      "title": "第二十回",
+      "chars": 7183
+    },
+    {
+      "id": "hui_21",
+      "num": 0,
+      "title": "第二十一回",
+      "chars": 10996
+    },
+    {
+      "id": "hui_22",
+      "num": 0,
+      "title": "第二十二回",
+      "chars": 6713
+    },
+    {
+      "id": "hui_23",
+      "num": 0,
+      "title": "第二十三回",
+      "chars": 7473
+    },
+    {
+      "id": "hui_24",
+      "num": 0,
+      "title": "第二十四回",
+      "chars": 19133
+    },
+    {
+      "id": "hui_25",
+      "num": 0,
+      "title": "第二十五回",
+      "chars": 6365
+    },
+    {
+      "id": "hui_26",
+      "num": 0,
+      "title": "第二十六回",
+      "chars": 9701
+    },
+    {
+      "id": "hui_27",
+      "num": 0,
+      "title": "第二十七回",
+      "chars": 6163
+    },
+    {
+      "id": "hui_28",
+      "num": 0,
+      "title": "第二十八回",
+      "chars": 5747
+    },
+    {
+      "id": "hui_29",
+      "num": 0,
+      "title": "第二十九回",
+      "chars": 5673
+    },
+    {
+      "id": "hui_30",
+      "num": 0,
+      "title": "第三十回",
+      "chars": 7958
+    },
+    {
+      "id": "hui_31",
+      "num": 0,
+      "title": "第三十一回",
+      "chars": 8153
+    },
+    {
+      "id": "hui_32",
+      "num": 0,
+      "title": "第三十二回",
+      "chars": 11037
+    },
+    {
+      "id": "hui_33",
+      "num": 0,
+      "title": "第三十三回",
+      "chars": 7508
+    },
+    {
+      "id": "hui_34",
+      "num": 0,
+      "title": "第三十四回",
+      "chars": 8405
+    },
+    {
+      "id": "hui_35",
+      "num": 0,
+      "title": "第三十五回",
+      "chars": 8867
+    },
+    {
+      "id": "hui_36",
+      "num": 0,
+      "title": "第三十六回",
+      "chars": 7510
+    },
+    {
+      "id": "hui_37",
+      "num": 0,
+      "title": "第三十七回",
+      "chars": 8852
+    },
+    {
+      "id": "hui_38",
+      "num": 0,
+      "title": "第三十八回",
+      "chars": 9583
+    },
+    {
+      "id": "hui_39",
+      "num": 0,
+      "title": "第三十九回",
+      "chars": 12051
+    },
+    {
+      "id": "hui_40",
+      "num": 0,
+      "title": "第四十回",
+      "chars": 6840
+    },
+    {
+      "id": "hui_41",
+      "num": 0,
+      "title": "第四十一回",
+      "chars": 9851
+    },
+    {
+      "id": "hui_42",
+      "num": 0,
+      "title": "第四十二回",
+      "chars": 8037
+    },
+    {
+      "id": "hui_43",
+      "num": 0,
+      "title": "第四十三回",
+      "chars": 10445
+    },
+    {
+      "id": "hui_44",
+      "num": 0,
+      "title": "第四十四回",
+      "chars": 9611
+    },
+    {
+      "id": "hui_45",
+      "num": 0,
+      "title": "第四十五回",
+      "chars": 11156
+    },
+    {
+      "id": "hui_46",
+      "num": 0,
+      "title": "第四十六回",
+      "chars": 7755
+    },
+    {
+      "id": "hui_47",
+      "num": 0,
+      "title": "第四十七回",
+      "chars": 8681
+    },
+    {
+      "id": "hui_48",
+      "num": 0,
+      "title": "第四十八回",
+      "chars": 5752
+    },
+    {
+      "id": "hui_49",
+      "num": 0,
+      "title": "第四十九回",
+      "chars": 8930
+    },
+    {
+      "id": "hui_50",
+      "num": 0,
+      "title": "第五十回",
+      "chars": 7331
+    },
+    {
+      "id": "hui_51",
+      "num": 0,
+      "title": "第五十一回",
+      "chars": 8422
+    },
+    {
+      "id": "hui_52",
+      "num": 0,
+      "title": "第五十二回",
+      "chars": 7687
+    },
+    {
+      "id": "hui_53",
+      "num": 0,
+      "title": "第五十三回",
+      "chars": 10146
+    },
+    {
+      "id": "hui_54",
+      "num": 0,
+      "title": "第五十四回",
+      "chars": 7457
+    },
+    {
+      "id": "hui_55",
+      "num": 0,
+      "title": "第五十五回",
+      "chars": 6945
+    },
+    {
+      "id": "hui_56",
+      "num": 0,
+      "title": "第五十六回",
+      "chars": 7718
+    },
+    {
+      "id": "hui_57",
+      "num": 0,
+      "title": "第五十七回",
+      "chars": 8026
+    },
+    {
+      "id": "hui_58",
+      "num": 0,
+      "title": "第五十八回",
+      "chars": 7587
+    },
+    {
+      "id": "hui_59",
+      "num": 0,
+      "title": "第五十九回",
+      "chars": 7553
+    },
+    {
+      "id": "hui_60",
+      "num": 0,
+      "title": "第六十回",
+      "chars": 8240
+    },
+    {
+      "id": "hui_61",
+      "num": 0,
+      "title": "第六十一回",
+      "chars": 9391
+    },
+    {
+      "id": "hui_62",
+      "num": 0,
+      "title": "第六十二回",
+      "chars": 10717
+    },
+    {
+      "id": "hui_63",
+      "num": 0,
+      "title": "第六十三回",
+      "chars": 7330
+    },
+    {
+      "id": "hui_64",
+      "num": 0,
+      "title": "第六十四回",
+      "chars": 7032
+    },
+    {
+      "id": "hui_65",
+      "num": 0,
+      "title": "第六十五回",
+      "chars": 6427
+    },
+    {
+      "id": "hui_66",
+      "num": 0,
+      "title": "第六十六回",
+      "chars": 6556
+    },
+    {
+      "id": "hui_67",
+      "num": 0,
+      "title": "第六十七回",
+      "chars": 7962
+    },
+    {
+      "id": "hui_68",
+      "num": 0,
+      "title": "第六十八回",
+      "chars": 7804
+    },
+    {
+      "id": "hui_69",
+      "num": 0,
+      "title": "第六十九回",
+      "chars": 6122
+    },
+    {
+      "id": "hui_70",
+      "num": 0,
+      "title": "第七十回",
+      "chars": 5711
+    },
+    {
+      "id": "hui_71",
+      "num": 0,
+      "title": "第七十一回",
+      "chars": 7643
+    },
+    {
+      "id": "hui_72",
+      "num": 0,
+      "title": "第七十二回",
+      "chars": 7709
+    },
+    {
+      "id": "hui_73",
+      "num": 0,
+      "title": "第七十三回",
+      "chars": 7583
+    },
+    {
+      "id": "hui_74",
+      "num": 0,
+      "title": "第七十四回",
+      "chars": 7680
+    },
+    {
+      "id": "hui_75",
+      "num": 0,
+      "title": "第七十五回",
+      "chars": 5219
+    },
+    {
+      "id": "hui_76",
+      "num": 0,
+      "title": "第七十六回",
+      "chars": 8141
+    },
+    {
+      "id": "hui_77",
+      "num": 0,
+      "title": "第七十七回",
+      "chars": 6735
+    },
+    {
+      "id": "hui_78",
+      "num": 0,
+      "title": "第七十八回",
+      "chars": 6466
+    },
+    {
+      "id": "hui_79",
+      "num": 0,
+      "title": "第七十九回",
+      "chars": 6628
+    },
+    {
+      "id": "hui_80",
+      "num": 0,
+      "title": "第八十回",
+      "chars": 9847
+    },
+    {
+      "id": "hui_81",
+      "num": 0,
+      "title": "第八十一回",
+      "chars": 8195
+    },
+    {
+      "id": "hui_82",
+      "num": 0,
+      "title": "第八十二回",
+      "chars": 9634
+    },
+    {
+      "id": "hui_83",
+      "num": 0,
+      "title": "第八十三回",
+      "chars": 8277
+    },
+    {
+      "id": "hui_84",
+      "num": 0,
+      "title": "第八十四回",
+      "chars": 7733
+    },
+    {
+      "id": "hui_85",
+      "num": 0,
+      "title": "第八十五回",
+      "chars": 8382
+    },
+    {
+      "id": "hui_86",
+      "num": 0,
+      "title": "第八十六回",
+      "chars": 6529
+    },
+    {
+      "id": "hui_87",
+      "num": 0,
+      "title": "第八十七回",
+      "chars": 5570
+    },
+    {
+      "id": "hui_88",
+      "num": 0,
+      "title": "第八十八回",
+      "chars": 8548
+    },
+    {
+      "id": "hui_89",
+      "num": 0,
+      "title": "第八十九回",
+      "chars": 7119
+    },
+    {
+      "id": "hui_90",
+      "num": 0,
+      "title": "第九十回",
+      "chars": 5766
+    },
+    {
+      "id": "hui_91",
+      "num": 0,
+      "title": "第九十一回 张顺夜伏金山寺 宋江智取润州城",
+      "chars": 7798
+    },
+    {
+      "id": "hui_92",
+      "num": 0,
+      "title": "第九十二回 卢俊义分兵宣州道 宋公明大战毗陵郡",
+      "chars": 6906
+    },
+    {
+      "id": "hui_93",
+      "num": 0,
+      "title": "第九十三回 混江龙太湖小结义 宋公明苏州大会垓",
+      "chars": 7908
+    },
+    {
+      "id": "hui_94",
+      "num": 0,
+      "title": "第九十四回 宁海军宋江吊孝 涌金门张顺归神",
+      "chars": 8527
+    },
+    {
+      "id": "hui_95",
+      "num": 0,
+      "title": "第九十五回 张顺魂捉方天定 宋江智取宁海军",
+      "chars": 8422
+    },
+    {
+      "id": "hui_96",
+      "num": 0,
+      "title": "第九十六回 卢俊义分兵歙州道 宋公明大战乌龙岭",
+      "chars": 6828
+    },
+    {
+      "id": "hui_97",
+      "num": 0,
+      "title": "第九十七回 睦州城箭射邓元觉 乌龙岭神助宋公明",
+      "chars": 8055
+    },
+    {
+      "id": "hui_98",
+      "num": 0,
+      "title": "第九十八回 卢俊义大战昱岭关 宋公明智取清溪洞",
+      "chars": 10204
+    },
+    {
+      "id": "hui_99",
+      "num": 0,
+      "title": "第九十九回 鲁智深浙江坐化 宋公明衣锦还乡",
+      "chars": 11774
+    },
+    {
+      "id": "hui_100",
+      "num": 0,
+      "title": "第一百回 宋公明神聚蓼儿洼 徽宗帝梦游梁山泊",
+      "chars": 9722
+    }
+  ]
+}

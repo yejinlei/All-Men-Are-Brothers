@@ -1,0 +1,113 @@
+# 水滸傳本體論受控詞表 Shuihu Ontology Controlled Vocabularies
+# 對應 shuihu_kg_ontology.ttl
+
+nickname_category:
+  animal:      # 動物/猛獸類
+    - 及時雨
+    - 玉麒麟
+    - 入雲龍
+    - 智多星
+    - 大刀
+    - 豹子頭
+    - 霹靂火
+    - 雙鞭
+    - 小李廣
+    - 小旋風
+    - 撲天雕
+    - 美髯公
+    - 花和尚
+    - 行者
+    - 雙槍將
+    - 沒羽箭
+    - 青面獸
+    - 金槍手
+    - 急先鋒
+    - 神行太保
+    - 赤髮鬼
+    - 黑旋風
+    - 九紋龍
+    - 沒遮攔
+    - 插翅虎
+    - 混江龍
+    - 立地太歲
+    - 船火兒
+    - 短命二郎
+    - 浪裏白跳
+    - 活閻羅
+    - 病關索
+    - 拚命三郎
+    - 兩頭蛇
+    - 雙尾蠍
+    - 浪子
+  divine:      # 神佛/鬼怪
+    - 托塔天王
+    - 智多星
+    - 入雲龍
+    - 大刀
+    - 霹靂火
+    - 雲裏金剛
+    - 摸着天
+    - 雲裏金剛
+    - 催命判官
+    - 活閃婆
+    - 八臂哪吒
+    - 飛天大聖
+    - 立地太歲
+    - 活閻羅
+    - 險道神
+    - 喪門神
+    - 操刀鬼
+    - 雲裏金剛
+    - 毛頭星
+    - 獨火星
+    - 天傷星
+  office_skill: # 身份技藝
+    - 及時雨（仗義）
+    - 智多星（謀）
+    - 聖手書生
+    - 神醫
+    - 玉臂匠
+    - 鐵面孔目
+    - 神算子
+    - 鐵叫子
+    - 玉幡竿
+    - 通臂猿
+    - 九尾龜
+    - 白日鼠
+    - 鼓上蚤
+    - 金毛犬
+    - 笑面虎
+    - 矮腳虎
+
+forced_type:
+  quan_jian: 權奸所逼
+  zang_guan: 贓官所逼
+  e_ba:     惡霸土豪所逼
+  liang_shan_zhuan: 梁山設計賺上山
+  xiang_jiang: 官軍降將
+  zi_yuan: 自願投奔
+
+fate:
+  zhan_si_fang_la: 征方臘戰死
+  bing_si: 征途中病死
+  ci_si: 被朝廷賜死（鴆酒）
+  zi_jin: 自縊
+  shan_zhong: 征方臘後善終
+  chu_jia: 出家（僧/道）
+  chu_hai: 出海（李俊為暹羅國主）
+  wei_guan: 接受朝廷封官
+  yin_ju: 歸隱
+
+space_type:
+  zhong_yi_tang: 忠義堂
+  jun_zhang: 軍帳
+  shui_zhai: 水寨
+  han_zhai: 旱寨
+  jiu_dian: 酒店（耳目/接應）
+  guan_dao: 官道
+  fa_chang: 法場
+  lao_cheng: 牢城
+  zhuang_yuan: 莊園
+  shu_zhai: 山寨
+  liu_er_wa: 蓼兒窪
+  huang_ni_gang: 黃泥崗

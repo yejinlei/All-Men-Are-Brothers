@@ -1,0 +1,297 @@
+@prefix sh:    <http://localhost/shuihu-kg#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix bibo:  <http://purl.org/ontology/bibo/> .
+
+<http://localhost/shuihu-kg#>
+        a                    owl:Ontology ;
+        dct:title            "《水滸傳》多版本忠義本體（Shuihu-Zhuan Multi-Edition Ontology of Zhongyi）" ;
+        dct:creator          "本體論工程：參考 yejinlei 紅樓本體、西遊本體、三國演義本體之數字人文範式，面向『官逼民反/替天行道/招安歸順/征剿殞滅』之敘事弧建構" ;
+        dct:description      "以施耐庵（羅貫中編次）《水滸傳》為核心文本，兼容文簡本（七十回金聖嘆貫華堂本）、繁本甲系（百回容與堂本/天都外臣序本/李卓吾評本）、繁本乙系（百二十回袁無涯本/楊定見本）與簡本系統（征四寇/插增田虎王慶本/英雄譜本）四大版本族，支持回目對照、異文比對、逼上山類型、招安歸順、征四寇、蓼兒洼神聚等主題建模，並建模金聖歎、李卓吾、袁于令、余象斗四家評點，以及胡適、魯迅、聶紺弩、何滿子、薩孟武等現代論辯。" ;
+        owl:versionInfo      "1.0-multiedition-zhongyi" .
+
+# ============================================================
+# 一、頂層類：事物根類
+# ============================================================
+sh:Thing  a  owl:Class ;
+  rdfs:label "事物（頂層抽象）" ;
+  rdfs:comment "所有本體實體的公共父類。" .
+
+# ============================================================
+# 二、四範疇：物 / 事 / 時 / 地
+# ============================================================
+sh:Wu  a  owl:Class ;
+  rdfs:subClassOf  sh:Thing ;
+  rdfs:label  "物（具體可指認之存在）" ;
+  rdfs:comment "人物、綽號、勢力/身份、兵器、酒食、官職刑罰、器物、馬匹、天象異物、妖魔鬼神。" .
+
+sh:Shi  a  owl:Class ;
+  rdfs:subClassOf  sh:Thing ;
+  rdfs:label  "事（事件、動作、敘事單元）" ;
+  rdfs:comment "逼反事件、戰役、征討、聚義、招安、征剿、蓼兒洼神聚、詩文讖緯、評點文字。" .
+
+sh:ShiJian  a  owl:Class ;
+  rdfs:subClassOf  sh:Thing ;
+  rdfs:label  "時（時間、節序、回目位置）" ;
+  rdfs:comment "年號（宋仁宗/徽宗/欽宗）、歲時節令、回次位置、版本刊刻年代、梁山歲月。" .
+
+sh:Di  a  owl:Class ;
+  rdfs:subClassOf  sh:Thing ;
+  rdfs:label  "地（地點、空間）" ;
+  rdfs:comment "梁山泊、蓼兒窪、宛子城、州府縣治、山寨莊院、酒樓官道、法場牢城。" .
+
+# ============================================================
+# 三、版本族譜：文繁簡四大系統（水滸版本學核心）
+# ============================================================
+
+sh:VersionFamily  a  owl:Class ;
+  rdfs:subClassOf  sh:Wu ;
+  rdfs:label "版本族" ;
+  rdfs:comment "《水滸傳》版本大別為文簡本/繁本甲/繁本乙/簡本四大系統（馬蹄疾、何滿子、聶紺弩、戴不凡諸家版本考）。" .
+
+sh:WenJianBen  a  sh:VersionFamily ;
+  rdfs:label  "文簡本（七十回本系統）" ;
+  sh:familyStemText  "明末崇禎十四年（1641）金聖嘆貫華堂刊《第五才子書施耐庵水滸傳》" ;
+  sh:keyFeature  "金聖歎以袁無涯百二十回本為底本，腰斬招安以後，改原引首+第一回為楔子，改排座次為盧俊義驚惡夢作結，刪去招安、征遼、征田虎王慶、征方臘全部；並加大量精彩評點，成為清代三百年最通行之本。金氏以忠義辯偽著稱，謂『施耐庵本無忠於朝廷之意，獨惡世之誤國者』。" .
+
+sh:FanBenJia  a  sh:VersionFamily ;
+  rdfs:label  "繁本甲系（百回繁本）" ;
+  sh:familyStemText  "明嘉靖間郭勛武定侯刊本→天都外臣序本（1589）→容與堂刊李卓吾評本（1610）→四知館本、芥子園本、鍾伯敬評本、大滌餘人序本" ;
+  sh:keyFeature  "無征田虎王慶二十回，招安後僅征遼、征方臘；文字最雅馴，保留羅貫中編次痕跡；回目對偶精工。容與堂本為今存百回繁本最早最完整之本。" .
+
+sh:FanBenYi  a  sh:VersionFamily ;
+  rdfs:label  "繁本乙系（百二十回全傳本）" ;
+  sh:familyStemText  "明萬曆四十二年（1614）袁無涯原刊《李卓吾評忠義水滸全傳》（楊定見本）" ;
+  sh:keyFeature  "在百回繁本基礎上，插增征田虎、征王慶二十回（第九十一回至一百一十回），使梁山事跡完足；征田虎王慶段藝術水準爭議甚大，魯迅謂『文詞蹇拙，事跡荒誕』，聶紺弩謂其『破壞結構』，亦有學者認為此段保留民間說書遺韻。" .
+
+sh:JianBen  a  sh:VersionFamily ;
+  rdfs:label  "簡本（文詞簡率系統/插增本）" ;
+  sh:familyStemText  "明萬曆間閩建書坊所刊評林本：余象斗雙峰堂《京本增補校正全像忠義水滸志傳評林》（1594）、種德書堂本、劉興我本、聚德堂本、《英雄譜》本（與三國合刻）" ;
+  sh:keyFeature  "文詞簡率樸野，回目整齊對偶，保留大量民間說書痕跡；一般含征田虎王慶（插增本），為百二十回全傳本所據刪改潤色之祖本。" .
+
+# --- 版本 ---
+sh:Edition  a  owl:Class ;
+  rdfs:subClassOf  sh:Wu ;
+  rdfs:label "版本（單一刊本/抄本）" .
+
+sh:belongsToFamily  a  owl:ObjectProperty ;
+  rdfs:domain  sh:Edition ;  rdfs:range   sh:VersionFamily ;
+  rdfs:label "所屬版本族" .
+
+sh:derivedFrom  a  owl:ObjectProperty ;
+  rdfs:domain  sh:Edition ;  rdfs:range   sh:Edition ;
+  owl:inverseOf sh:ancestorOf ;
+  rdfs:label "承自（版本淵源）" .
+sh:ancestorOf  a  owl:ObjectProperty ; rdfs:label "衍生出" .
+
+sh:collatedWith  a  owl:ObjectProperty, owl:SymmetricProperty ;
+  rdfs:domain  sh:Edition ;  rdfs:range   sh:Edition ;
+  rdfs:label "參校" .
+
+sh:hasCommentator  a  owl:ObjectProperty ;
+  rdfs:domain  sh:Edition ;  rdfs:range   sh:Commentator ;
+  rdfs:label "評點者" .
+
+# ============================================================
+# 四、評點者本體（金/李/袁/余四大家）
+# ============================================================
+sh:Commentator  a  owl:Class ;
+  rdfs:subClassOf  sh:Wu ;
+  rdfs:label "評點者" .
+
+# ============================================================
+# 五、核心人物本體（一百單八將+關鍵非梁山人物）
+# ============================================================
+sh:Person  a  owl:Class ;
+  rdfs:subClassOf  sh:Wu ;
+  rdfs:label "人物（含梁山好漢/官軍/奸佞/平民/女性/僧道）" .
+
+sh:Nickname  a  owl:Class ;
+  rdfs:subClassOf  sh:Wu ;
+  rdfs:label "綽號（水滸獨特的身份標識系統）" ;
+  rdfs:comment "綽號分動物類（虎、龍、豹、麟、蛟、雕、蛇、蠍）、神鬼類（魔君、金剛、夜叉、太歲、閻羅）、武藝類（槍/刀/鞭/箭/弓）、身份類（官/吏/僧/道/娼/偷）、氣質類（急/快/智/神/聖）五大系統。" .
+
+sh:hasNickname  a  owl:ObjectProperty ;
+  rdfs:domain  sh:Person ;  rdfs:range  sh:Nickname ;
+  rdfs:label "綽號" .
+
+sh:StarRank  a  owl:Class ;
+  rdfs:subClassOf  sh:Wu ;
+  rdfs:label "星位（天罡三十六/地煞七十二）" .
+
+sh:hasStar  a  owl:ObjectProperty ;
+  rdfs:domain  sh:Person ;  rdfs:range  sh:StarRank ;
+  rdfs:label "對應星曜" .
+
+sh:hasPostInLiangshan  a  owl:DatatypeProperty ;
+  rdfs:domain  sh:Person ;  rdfs:range  xsd:string ;
+  rdfs:label "梁山職司" .
+
+sh:OriginalStatus  a  owl:Class ;
+  rdfs:subClassOf  sh:Wu ;
+  rdfs:label "上山前身份（官/吏/軍/民/僧/道/富/貧/寇）" .
+
+sh:originallyA  a  owl:ObjectProperty ;
+  rdfs:domain  sh:Person ; rdfs:range sh:OriginalStatus ;
+  rdfs:label "上山前身份" .
+
+sh:ForcedType  a  owl:Class ;
+  rdfs:subClassOf  sh:Shi ;
+  rdfs:label "逼上山類型" ;
+  rdfs:comment "金聖歎區分為：權奸逼（林沖）、贓官逼（宋江、武松）、惡霸逼（魯智深救金翠蓮）、梁山賺（盧俊義、朱仝、徐寧、安道全）、降將歸（關勝、呼延灼、董平）、主動投（晁蓋、吳用、三阮、李逵）六大類型。" .
+
+sh:forcedBy  a  owl:ObjectProperty ;
+  rdfs:domain  sh:Person ; rdfs:range sh:ForcedType ;
+  rdfs:label "逼上山類型" .
+
+sh:Fate  a  owl:Class ;
+  rdfs:subClassOf  sh:Shi ;
+  rdfs:label "結局（征方臘戰死/病死/被殺/自縊/善終/為官/出海/出家）" .
+sh:hasFate  a  owl:ObjectProperty ;
+  rdfs:domain sh:Person ; rdfs:range sh:Fate ;
+  rdfs:label "結局歸宿" .
+
+# ============================================================
+# 六、軍事/戰爭/征討本體（水滸獨有）
+# ============================================================
+sh:Battle  a  owl:Class ;
+  rdfs:subClassOf  sh:Shi ;
+  rdfs:label "戰役（含兩贏童貫、三敗高俅、征遼、征田虎、征王慶、征方臘）" .
+
+sh:Weapon  a  owl:Class ;
+  rdfs:subClassOf  sh:Wu ;
+  rdfs:label "兵器（禪杖/戒刀/朴刀/板斧/長槍/弓箭/連環馬/火器）" .
+
+sh:wields  a  owl:ObjectProperty ;
+  rdfs:domain  sh:Person ; rdfs:range  sh:Weapon ;
+  rdfs:label "慣用兵器" .
+
+sh:Faction  a  owl:Class ;
+  rdfs:subClassOf  sh:Wu ;
+  rdfs:label "陣營（梁山/官軍/遼/田虎/王慶/方臘/祝家莊/曾頭市/二龍山/桃花山…）" .
+sh:belongsToFaction  a  owl:ObjectProperty ;
+  rdfs:domain sh:Person ; rdfs:range sh:Faction ;
+  rdfs:label "所屬陣營" .
+
+sh:Formation  a  owl:Class ;
+  rdfs:subClassOf  sh:Shi ;
+  rdfs:label "陣法（連環馬/九宫八卦陣/太乙混天象陣/六花陣）" .
+
+# ============================================================
+# 七、地點與空間本體
+# ============================================================
+sh:Place  a  owl:Class ;
+  rdfs:subClassOf  sh:Di ;
+  rdfs:label "地點（州府縣治/山川/山寨/酒店/法場）" .
+
+sh:SpaceType  a  owl:Class ;
+  rdfs:subClassOf  sh:Di ;
+  rdfs:label "空間類型（忠義堂/水寨/旱寨/酒店/官道/牢城/法場/蓼兒窪）" .
+
+sh:spaceIsA  a  owl:ObjectProperty ;
+  rdfs:domain sh:Place ; rdfs:range sh:SpaceType ;
+  rdfs:label "空間類型" .
+
+# ============================================================
+# 八、酒食/錢糧/器物本體
+# ============================================================
+sh:WineFood  a  owl:Class ;
+  rdfs:subClassOf  sh:Wu ;
+  rdfs:label "酒食（好酒/熟牛肉/饅頭/鮮魚/果子/蒙汗藥酒）" ;
+  rdfs:comment "水滸獨特的飲食系統：好酒+熟牛肉是好漢身份的標誌；蒙汗藥酒、人肉饅頭是江湖黑暗面的象徵。" .
+
+sh:Money  a  owl:Class ;
+  rdfs:subClassOf  sh:Wu ;
+  rdfs:label "銀錢（兩/貫/銀子/金子/珠寶）" .
+
+# ============================================================
+# 九、官職刑罰本體
+# ============================================================
+sh:Office  a  owl:Class ;
+  rdfs:subClassOf  sh:Wu ;
+  rdfs:label "官職（押司/都頭/提轄/教頭/節度使/太尉/安撫使）" .
+sh:heldOffice  a  owl:ObjectProperty ;
+  rdfs:domain sh:Person ; rdfs:range sh:Office ;
+  rdfs:label "曾任官職" .
+
+sh:Punishment  a  owl:Class ;
+  rdfs:subClassOf  sh:Shi ;
+  rdfs:label "刑罰（刺配/脊杖/發配牢城/抄斬/凌遲/賜鴆酒）" .
+
+# ============================================================
+# 十、詩詞讖緯與草蛇灰線
+# ============================================================
+sh:Poem  a  owl:Class ;
+  rdfs:subClassOf  sh:Shi ;
+  rdfs:label "詩詞讚語" .
+
+sh:Prophecy  a  owl:Class ;
+  rdfs:subClassOf  sh:Shi ;
+  rdfs:label "讖緯預言（洪太尉誤走妖魔、碣文排座次、羅真人法語、宋江預夢）" .
+
+sh:Foreshadow  a  owl:Class ;
+  rdfs:subClassOf  sh:Shi ;
+  rdfs:label "草蛇灰線（金聖歎所揭示的敘事伏脈法）" ;
+  rdfs:comment "金批水滸揭示多種草蛇灰線：哨棒過景陽岡、葫蘆提風雪山神廟、白龍廟小聚義、黃泥崗生辰綱、盧俊義噩夢、蓼兒窪相似…" .
+
+# ============================================================
+# 十一、忠義核心概念本體
+# ============================================================
+sh:ZhongyiConcept  a  owl:Class ;
+  rdfs:subClassOf  sh:Wu ;
+  rdfs:label "忠義核心概念" ;
+  rdfs:comment "忠/義/替天行道/招安/造反/歸順/豪傑/兄弟/朝廷/奸賊/盧俊義噩夢" .
+
+sh:Debate  a  owl:Class ;
+  rdfs:subClassOf  sh:Shi ;
+  rdfs:label "論辯（忠義之辯：金聖歎/李贄/胡適/魯迅/聶紺弩/薩孟武/何滿子/孫述宇互駁）" .
+
+# ============================================================
+# 十二、人物關係（不同於紅樓親緣，水滸核心是結義/主從/讎殺）
+# ============================================================
+sh:swornBrotherOf  a  owl:ObjectProperty, owl:SymmetricProperty ;
+  rdfs:domain  sh:Person ;  rdfs:range  sh:Person ;
+  rdfs:label  "結拜兄弟" .
+
+sh:lordOf  a  owl:ObjectProperty ;
+  rdfs:domain  sh:Person ;  rdfs:range  sh:Person ;
+  rdfs:label  "首領/主公之於部屬（宋吳之於眾頭領）" .
+
+sh:saves  a  owl:ObjectProperty ;
+  rdfs:domain  sh:Person ;  rdfs:range  sh:Person ;
+  rdfs:label  "搭救之恩" .
+
+sh:kills  a  owl:ObjectProperty ;
+  rdfs:domain  sh:Person ;  rdfs:range  sh:Person ;
+  rdfs:label  "殺死（含仇殺、戰場、法場、賜死、自盡）" .
+
+sh:deceivedByLiangshan  a  owl:ObjectProperty ;
+  rdfs:domain sh:Person ; rdfs:range sh:Person ;
+  rdfs:label "被梁山賺上山（吳用設計：盧俊義/朱仝/徐寧/安道全/李應/蕭讓/金大堅）" .
+
+sh:betrays  a  owl:ObjectProperty ;
+  rdfs:domain  sh:Person ;  rdfs:range  sh:Person ;
+  rdfs:label  "出賣（陸謙之於林沖、閻婆惜之於宋江、劉高之於花榮）" .
+
+sh:masterOf  a  owl:ObjectProperty ;
+  rdfs:domain  sh:Person ;  rdfs:range  sh:Person ;
+  rdfs:label  "師徒（王進→史進/林沖→曹正/宋清？→盧俊義→燕青/羅真人→公孫勝）" .
+
+sh:relativeOf  a  owl:ObjectProperty, owl:SymmetricProperty ;
+  rdfs:domain  sh:Person ;  rdfs:range  sh:Person ;
+  rdfs:label  "親屬（兄弟/夫妻/叔嫂/父子/舅甥）" .
+
+# ============================================================
+# 十三、推論規則示例（基於本體的推理）
+# ============================================================
+# 規則1：凡「被梁山賺上山」且「原身份為富豪/官員/良民」者，必非自願
+# 規則2：凡「征方臘後存活」且「未接受封官」者，結局必善終（燕青/李俊/公孫勝/武松/魯智深）
+# 規則3：凡「結義兄弟 + 一為首領 + 一為部屬 且共同戰死於同一戰役」，必為忠義典範
+# 規則4：凡「被奸佞陷害賜死」者，必是忠義之臣（宋江/盧俊義/李逵）
+# 規則5：凡「殺死奸夫淫婦者」必為受逼之吏民（武松殺潘金蓮/石秀殺潘巧雲/宋江殺閻婆惜）
