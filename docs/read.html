@@ -2,45 +2,117 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>水浒传 · 版本阅读器</title>
-<meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="css/style.css">
 <style>
-:root{--content-width:960px;}
-.read-wrap{max-width:var(--content-width);margin:0 auto;padding:24px 20px 80px;}
-.read-top{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--border);padding:14px 0;margin:-24px -20px 24px;}
-.read-top-inner{max-width:var(--content-width);margin:0 auto;padding:0 20px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
-.brand{font-family:var(--font-serif);font-size:18px;color:var(--vermilion-deep);font-weight:700;letter-spacing:3px;margin-right:20px;cursor:pointer;}
-.brand:hover{color:var(--vermilion);}
-.ctrl{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-muted);}
-.ctrl select{padding:6px 10px;border:1px solid var(--border);border-radius:4px;background:#fff;font-size:13px;color:var(--ink);font-family:var(--font-serif);max-width:260px;}
-.ctrl button{padding:6px 14px;border:1px solid var(--border);background:#fff;border-radius:4px;cursor:pointer;font-size:13px;color:var(--ink);font-family:var(--font-serif);transition:all .2s;}
-.ctrl button:hover{background:var(--vermilion-deep);color:#fff;border-color:var(--vermilion-deep);}
-.ctrl button.active{background:var(--vermilion-deep);color:#fff;border-color:var(--vermilion-deep);}
-.chap-title{font-family:var(--font-serif);text-align:center;font-size:28px;color:var(--vermilion-deep);font-weight:700;letter-spacing:6px;margin:10px 0 6px;}
-.chap-ver{text-align:center;font-size:13px;color:var(--ink-muted);margin-bottom:32px;letter-spacing:2px;}
-.content-wrap{position:relative;font-family:var(--font-serif);font-size:18px;line-height:2;color:var(--ink);}
-.content-wrap p{text-indent:2em;margin:0 0 14px;}
-.content-wrap .poem{text-align:center;color:var(--ink-light);margin:16px auto;font-style:italic;}
-.content-wrap .poem p{text-indent:0;}
-.content-wrap h3{font-family:var(--font-serif);text-align:center;color:var(--vermilion-deep);font-size:20px;margin:32px 0 16px;letter-spacing:4px;}
-.pager{display:flex;justify-content:space-between;margin-top:48px;padding-top:24px;border-top:1px solid var(--border);}
-.pager a{padding:10px 22px;border:1px solid var(--border);border-radius:4px;color:var(--ink);text-decoration:none;font-family:var(--font-serif);font-size:14px;transition:all .2s;}
-.pager a:hover{background:var(--vermilion-deep);color:#fff;border-color:var(--vermilion-deep);}
-.pager .disabled{opacity:.3;pointer-events:none;}
-/* 批注 */
-.comment-anchor{display:inline-block;width:14px;height:14px;line-height:14px;text-align:center;font-size:10px;color:var(--vermilion);background:var(--gold-light, #f7e7b0);border-radius:50%;cursor:pointer;vertical-align:super;margin:0 2px;font-family:sans-serif;font-weight:700;}
-.comment-anchor:hover{background:var(--vermilion);color:#fff;}
-.comment-side{display:none;position:absolute;right:-320px;top:0;width:280px;background:#fff8ea;border-left:3px solid var(--vermilion);padding:12px 14px;font-size:13px;line-height:1.8;color:var(--ink-light);border-radius:0 4px 4px 0;box-shadow:2px 2px 8px rgba(0,0,0,.08);font-family:var(--font-serif);z-index:5;}
-.comment-side.on{display:block;}
-.comment-side .who{color:var(--vermilion-deep);font-weight:700;font-size:12px;margin-bottom:4px;letter-spacing:2px;}
-body.show-comments .comment-anchor{visibility:visible;}
-body:not(.show-comments) .comment-side{display:none !important;}
-.comments-notice{text-align:center;color:var(--ink-muted);font-size:13px;margin-top:40px;padding:12px;background:#f7f1e1;border-radius:4px;}
-/* 响应式 */
-@media(max-width:1400px){.content-wrap{padding-right:0;}.comment-side{position:relative;right:auto;width:100%;margin:10px 0;border-left-width:4px;border-radius:4px;}}
-/* 加载 */
-.loading{text-align:center;padding:60px 0;color:var(--ink-muted);font-family:var(--font-serif);font-size:16px;letter-spacing:4px;}
+/* ========== 阅读器专属 ========== */
+body{background:#fdf8ee;}
+.read-wrap{max-width:860px;margin:0 auto;padding:120px 24px 80px;font-family:var(--font-serif,"KaiTi","STKaiti",serif);}
+
+/* ======== 顶部工具栏（仿红楼梦参考图） ======== */
+.read-top{position:fixed;top:0;left:0;right:0;background:rgba(253,248,238,0.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--border,#e6dcc4);z-index:50;}
+.read-top-inner{max-width:860px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;font-size:15px;color:var(--ink,#3a2a1a);}
+.read-top .brand{font-weight:700;font-size:18px;color:var(--vermilion,#9c2a2a);cursor:pointer;letter-spacing:4px;margin-right:12px;}
+.read-top .brand:hover{color:#c0392b;}
+
+.tool-group{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.tool-label{color:var(--ink-muted,#8a7a62);letter-spacing:2px;font-size:15px;}
+
+/* 回目下拉 */
+.chap-select{appearance:none;background:#fdf3df;border:1px solid var(--border,#e6dcc4);border-radius:6px;padding:7px 34px 7px 14px;font-family:var(--font-serif);font-size:15px;color:var(--ink,#3a2a1a);cursor:pointer;min-width:260px;max-width:460px;
+background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%238a7a62' stroke-width='1.5' fill='none' stroke-linecap='round'/></svg>");
+background-repeat:no-repeat;background-position:right 12px center;}
+.chap-select:focus{outline:none;border-color:var(--vermilion,#9c2a2a);}
+
+/* 版本按钮组（甲戌/己卯/庚辰风格） */
+.ver-btns, .lang-btns{display:inline-flex;gap:4px;flex-wrap:wrap;}
+.ver-btn, .lang-btn{padding:6px 14px;background:transparent;border:1px solid var(--border,#e6dcc4);border-radius:6px;font-family:var(--font-serif);font-size:15px;color:var(--ink,#3a2a1a);cursor:pointer;transition:all .2s;letter-spacing:1px;}
+.ver-btn:hover, .lang-btn:hover{background:#fdf3df;border-color:#d9cba5;}
+.ver-btn.active, .lang-btn.active{background:var(--vermilion,#9c2a2a);color:#fdf3df;border-color:var(--vermilion,#9c2a2a);box-shadow:0 2px 6px rgba(156,42,42,0.15);}
+
+/* 批注按钮组（与版本按钮风格一致，但默认淡色） */
+.cmt-btns{display:inline-flex;gap:4px;flex-wrap:wrap;}
+.cmt-btn{padding:6px 14px;background:transparent;border:1px solid var(--border,#e6dcc4);border-radius:6px;font-family:var(--font-serif);font-size:15px;color:var(--ink,#3a2a1a);cursor:pointer;transition:all .2s;letter-spacing:1px;position:relative;}
+.cmt-btn:hover{background:#fdf3df;}
+.cmt-btn.active{background:#fff;border-color:currentColor;box-shadow:0 2px 6px rgba(0,0,0,0.06);}
+.cmt-btn.active.cm-jinpi{color:#b8860b;background:#fff8e6;border-color:#d4a83b;}
+.cmt-btn.active.cm-lizhuo{color:#8b4513;background:#faf1e7;border-color:#a96639;}
+.cmt-btn.active.cm-yuanwy{color:#2e5a88;background:#eef3f8;border-color:#4a7aa8;}
+.cmt-btn.active.cm-jiqin{color:#4a7a49;background:#eef5ec;border-color:#6b9a6a;}
+
+/* 勾选开关（仿红楼梦参考图） */
+.check-item{display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-size:15px;color:var(--ink-muted,#8a7a62);user-select:none;}
+.check-item input[type=checkbox]{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:2px solid var(--border,#c9bfa3);border-radius:3px;background:#fdf8ee;cursor:pointer;position:relative;transition:all .15s;vertical-align:middle;}
+.check-item input[type=checkbox]:checked{background:var(--vermilion,#9c2a2a);border-color:var(--vermilion,#9c2a2a);}
+.check-item input[type=checkbox]:checked::after{content:"";position:absolute;left:4px;top:1px;width:5px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg);}
+.check-item:hover{color:var(--ink,#3a2a1a);}
+
+/* ======== 正文区 ======== */
+.chap-title{font-size:30px;font-weight:700;text-align:center;color:var(--ink-deep,#261810);margin:0 0 8px;letter-spacing:6px;font-family:var(--font-serif);}
+.chap-ver{text-align:center;color:var(--ink-muted,#8a7a62);font-size:13px;letter-spacing:3px;margin-bottom:40px;padding-bottom:18px;border-bottom:1px solid var(--border,#e6dcc4);}
+
+.content-wrap{font-size:18px;line-height:2;color:var(--ink,#3a2a1a);}
+.content-wrap p{margin:0;text-indent:2em;margin-bottom:4px;}
+.content-wrap h3{font-size:22px;text-align:center;margin:30px 0 18px;letter-spacing:4px;color:var(--ink-deep,#261810);}
+.content-wrap .poem{margin:20px 0;padding:18px 28px;background:#f9f0d9;border-left:3px solid #c5a868;border-radius:0 4px 4px 0;text-align:center;font-size:16px;line-height:2;color:var(--ink-light,#5a4632);}
+.content-wrap .poem p{text-indent:0;margin:2px 0;}
+
+/* 白话文附段 */
+.baihua-block{margin:20px 0 28px;padding:18px 24px;background:#f0efe6;border-left:3px solid #94a38a;border-radius:0 4px 4px 0;font-size:16px;line-height:2;color:#4a5240;}
+.baihua-block .baihua-label{display:inline-block;background:#94a38a;color:#fff;font-size:12px;padding:2px 8px;border-radius:3px;margin-right:10px;letter-spacing:2px;font-family:var(--font-serif);vertical-align:middle;}
+
+/* ======== 批注块（仿红楼梦参考图） ======== */
+.cmt-block{margin:14px 0;padding:12px 18px 12px 20px;border-radius:0 6px 6px 0;font-size:15px;line-height:2;color:var(--ink-light,#5a4632);font-family:var(--font-serif);position:relative;}
+.cmt-block::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:2px;}
+.cmt-block .cmt-tag{display:inline-block;padding:1px 9px;border-radius:12px;font-size:12px;font-weight:700;margin-right:10px;letter-spacing:1px;vertical-align:1px;color:#fff;font-family:var(--font-serif);}
+.cmt-block .cmt-text{white-space:pre-wrap;}
+
+/* 金圣叹（金色系，对应庚辰批颜色） */
+.cmt-jinpi{background:#fdf5e3;border-left:0;}
+.cmt-jinpi::before{background:#b8860b;}
+.cmt-jinpi .cmt-tag{background:#b8860b;}
+
+/* 李卓吾/容与堂（赭石系） */
+.cmt-lizhuo{background:#faf1e7;border-left:0;}
+.cmt-lizhuo::before{background:#8b4513;}
+.cmt-lizhuo .cmt-tag{background:#8b4513;}
+
+/* 袁无涯（青蓝系） */
+.cmt-yuanwy{background:#eef3f8;border-left:0;}
+.cmt-yuanwy::before{background:#2e5a88;}
+.cmt-yuanwy .cmt-tag{background:#2e5a88;}
+
+/* 冀勤校注（竹青系） */
+.cmt-jiqin{background:#eef5ec;border-left:0;}
+.cmt-jiqin::before{background:#4a7a49;}
+.cmt-jiqin .cmt-tag{background:#4a7a49;}
+
+/* 只看批语模式：隐藏正文段落和诗歌、回目标题（除chap-title保留） */
+body.only-comments .content-wrap>p,
+body.only-comments .content-wrap .poem,
+body.only-comments .content-wrap h3,
+body.only-comments .content-wrap .baihua-block{display:none;}
+body.only-comments .cmt-block{margin:18px 0;}
+
+/* 注意提示 */
+.cmt-notice{margin:30px 0;padding:14px 20px;background:#f7f1e1;border-radius:6px;text-align:center;font-size:14px;color:#8a7a62;letter-spacing:1px;font-family:var(--font-serif);line-height:1.8;}
+.cmt-notice b{color:var(--vermilion,#9c2a2a);}
+
+/* ======== 分页 ======== */
+.pager{display:flex;justify-content:space-between;margin-top:50px;padding-top:24px;border-top:1px solid var(--border,#e6dcc4);}
+.pager a{padding:10px 24px;background:#fdf3df;border:1px solid var(--border,#e6dcc4);border-radius:6px;color:var(--ink,#3a2a1a);text-decoration:none;font-size:15px;letter-spacing:2px;font-family:var(--font-serif);transition:all .2s;}
+.pager a:hover{background:var(--vermilion,#9c2a2a);color:#fdf3df;border-color:var(--vermilion,#9c2a2a);}
+.pager a.disabled{color:#c9bfa3;background:#fdf8ee;cursor:not-allowed;pointer-events:none;}
+
+.loading{text-align:center;padding:60px 0;color:var(--ink-muted,#8a7a62);font-family:var(--font-serif);font-size:16px;letter-spacing:4px;}
+
+@media(max-width:760px){
+  .read-wrap{padding:140px 16px 60px;}
+  .chap-select{min-width:0;max-width:100%;width:100%;}
+  .chap-title{font-size:24px;letter-spacing:3px;}
+  .content-wrap{font-size:16px;}
+}
 </style>
 </head>
 <body>
@@ -48,25 +120,40 @@ body:not(.show-comments) .comment-side{display:none !important;}
   <div class="read-top">
     <div class="read-top-inner">
       <span class="brand" onclick="location.href='index.html'">水浒传</span>
-      <span class="ctrl">版本
-        <select id="selVer"></select>
+
+      <span class="tool-group">
+        <span class="tool-label">回目：</span>
+        <select id="selChap" class="chap-select"></select>
       </span>
-      <span class="ctrl">回目
-        <select id="selChap"></select>
+
+      <span class="tool-group">
+        <span class="tool-label">版本：</span>
+        <span class="ver-btns" id="verBtns"></span>
       </span>
-      <span class="ctrl">语体
-        <button data-lang="fan" class="active">繁</button>
-        <button data-lang="jian">简</button>
-        <button data-lang="bai">白</button>
+
+      <span class="tool-group">
+        <span class="tool-label">语体：</span>
+        <span class="lang-btns">
+          <button class="lang-btn" data-lang="fan">繁</button>
+          <button class="lang-btn" data-lang="jian">简</button>
+          <button class="lang-btn" data-lang="bai">白</button>
+        </span>
       </span>
-      <span class="ctrl">批注
-        <select id="selCmt">
-          <option value="none">关闭批注</option>
-          <option value="jinpi" selected>金圣叹批</option>
-          <option value="lizhuo">李卓吾批（容与堂）</option>
-          <option value="yuanwy">袁无涯批（百二十回）</option>
-          <option value="jiqin">冀勤校注</option>
-        </select>
+
+      <span class="tool-group">
+        <span class="tool-label">批注：</span>
+        <span class="cmt-btns" id="cmtBtns">
+          <button class="cmt-btn active" data-cmt="none">关闭</button>
+          <button class="cmt-btn cm-jinpi" data-cmt="jinpi">金批</button>
+          <button class="cmt-btn cm-lizhuo" data-cmt="lizhuo">容本</button>
+          <button class="cmt-btn cm-yuanwy" data-cmt="yuanwy">袁本</button>
+          <button class="cmt-btn cm-jiqin" data-cmt="jiqin">冀注</button>
+        </span>
+      </span>
+
+      <span class="tool-group">
+        <label class="check-item"><input type="checkbox" id="chkOnlyCmt">只看批语</label>
+        <label class="check-item"><input type="checkbox" id="chkBaihua">附白话文</label>
       </span>
     </div>
   </div>
@@ -83,38 +170,89 @@ body:not(.show-comments) .comment-side{display:none !important;}
 
 <script>
 /* ========== 状态 ========== */
+const sp = new URLSearchParams(location.search);
 const state = {
-  vid: new URLSearchParams(location.search).get('vid') || 'v70',
-  ch: parseInt(new URLSearchParams(location.search).get('ch') || '1', 10),
+  vid: sp.get('vid') || 'v70',
+  ch:  parseInt(sp.get('ch') || '1', 10),
   lang: localStorage.getItem('sh_lang') || 'fan',
-  cmt: localStorage.getItem('sh_cmt') || 'jinpi',
+  cmt:  localStorage.getItem('sh_cmt')  || 'jinpi',
+  onlyCmt:  localStorage.getItem('sh_only_cmt') === '1',
+  withBai:  localStorage.getItem('sh_with_bai') === '1',
   versions: [],
   chapters: {},
-  comments: { jinpi:null, jiqin:null, lizhuo:null, yuanwy:null }
+  comments: { jinpi:null, jiqin:null, lizhuo:null, yuanwy:null },
+  baiTxtCache: {}
 };
 
 /* ========== 工具 ========== */
 async function loadJSON(p){ const r=await fetch(p); if(!r.ok) throw new Error('load '+p+' fail'); return r.json(); }
 async function loadText(p){ const r=await fetch(p); if(!r.ok) return null; return r.text(); }
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function cnNum(n){
+  const c=['零','一','二','三','四','五','六','七','八','九','十'];
+  if(n<=10) return c[n];
+  if(n<20) return '十'+(n%10?c[n%10]:'');
+  if(n%10===0) return c[Math.floor(n/10)]+'十';
+  return c[Math.floor(n/10)]+'十'+c[n%10];
+}
+
+/* ========== 版本简称（按钮上显示的） ========== */
+const VER_SHORT = {
+  v120:       '袁本百二',
+  v100:       '容本百回',
+  v70:        '金本七十',
+  jin70:      '金批繁',
+  jin70_pi:   '金批全',
+  jinshengtan:'金批简',
+  jiqin:      '冀勤校注',
+  zsk:        '征四寇'
+};
+const VER_TIP = {
+  v120:'袁无涯百二十回全传本',
+  v100:'容与堂百回繁本',
+  v70:'金圣叹贯华堂七十回本',
+  jin70:'金圣叹评本繁体底本',
+  jin70_pi:'金圣叹批评本全批繁体',
+  jinshengtan:'金圣叹批评本简体',
+  jiqin:'人民文学出版社冀勤校注百回本',
+  zsk:'简本征四寇残段'
+};
+
+/* ========== 批注元数据 ========== */
+const CMT_META = {
+  jinpi:{ name:'金圣叹批', short:'金批', tag:'金批', who:'金圣叹', cls:'cmt-jinpi',
+          file:'jinpi_comments.json', okVer:['v70','jin70','jin70_pi','jinshengtan'],
+          extract: d => d.jin70_pi || d.jinpi || d },
+  lizhuo:{ name:'李卓吾批（容与堂）', short:'容本', tag:'容本·总评', who:'李卓吾', cls:'cmt-lizhuo',
+           file:'lizhuo_comments.json', okVer:['v100','jiqin'], extract: d=>d },
+  yuanwy:{ name:'袁无涯批（百二十回）', short:'袁本', tag:'袁本·总评', who:'袁无涯', cls:'cmt-yuanwy',
+           file:'yuanwy_comments.json', okVer:['v120'], extract: d=>d },
+  jiqin: { name:'冀勤校注', short:'冀注', tag:'冀注', who:'冀勤校注', cls:'cmt-jiqin',
+           file:'jiqin_notes.json', okVer:['v100','jiqin'], extract: d=>d }
+};
 
 /* ========== 初始化 ========== */
 async function boot(){
-  // 版本列表
   const idx = await loadJSON('texts/versions/versions_index.json');
   state.versions = idx.versions;
-  // 下拉
-  const selVer = document.getElementById('selVer');
+
+  // 版本按钮
+  const vb = document.getElementById('verBtns');
   idx.versions.forEach(v=>{
-    const o=document.createElement('option'); o.value=v.id; o.textContent=v.name; selVer.appendChild(o);
+    const b = document.createElement('button');
+    b.className = 'ver-btn'+(v.id===state.vid?' active':'');
+    b.textContent = VER_SHORT[v.id] || v.name.slice(0,4);
+    b.title = VER_TIP[v.id] || v.name;
+    b.dataset.vid = v.id;
+    b.onclick = ()=>{ state.vid = v.id; state.ch=1; syncURL(); buildVerBtns(); loadVersion(); };
+    vb.appendChild(b);
   });
-  selVer.value = state.vid;
-  selVer.onchange = ()=>{ state.vid=selVer.value; state.ch=1; syncURL(); loadVersion(); };
 
   // 语体按钮
-  document.querySelectorAll('[data-lang]').forEach(b=>{
-    if(b.dataset.lang===state.lang) b.classList.add('active'); else b.classList.remove('active');
+  document.querySelectorAll('.lang-btn').forEach(b=>{
+    if(b.dataset.lang===state.lang) b.classList.add('active');
     b.onclick = ()=>{
-      document.querySelectorAll('[data-lang]').forEach(x=>x.classList.remove('active'));
+      document.querySelectorAll('.lang-btn').forEach(x=>x.classList.remove('active'));
       b.classList.add('active');
       state.lang = b.dataset.lang;
       localStorage.setItem('sh_lang', state.lang);
@@ -122,39 +260,58 @@ async function boot(){
     };
   });
 
-  // 批注下拉
-  const selCmt = document.getElementById('selCmt');
-  selCmt.value = state.cmt;
-  selCmt.onchange = ()=>{
-    state.cmt = selCmt.value;
-    localStorage.setItem('sh_cmt', state.cmt);
-    applyComments();
+  // 批注按钮
+  document.querySelectorAll('.cmt-btn').forEach(b=>{
+    if(b.dataset.cmt===state.cmt) b.classList.add('active'); else b.classList.remove('active');
+    b.onclick = ()=>{
+      state.cmt = b.dataset.cmt;
+      localStorage.setItem('sh_cmt', state.cmt);
+      document.querySelectorAll('.cmt-btn').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      applyComments();
+    };
+  });
+
+  // 勾选
+  const chkC = document.getElementById('chkOnlyCmt');
+  const chkB = document.getElementById('chkBaihua');
+  chkC.checked = state.onlyCmt; chkB.checked = state.withBai;
+  document.body.classList.toggle('only-comments', state.onlyCmt);
+  chkC.onchange = ()=>{
+    state.onlyCmt = chkC.checked;
+    localStorage.setItem('sh_only_cmt', state.onlyCmt?'1':'0');
+    document.body.classList.toggle('only-comments', state.onlyCmt);
+  };
+  chkB.onchange = ()=>{
+    state.withBai = chkB.checked;
+    localStorage.setItem('sh_with_bai', state.withBai?'1':'0');
+    loadChapter();
   };
 
   await loadVersion(true);
 }
+function buildVerBtns(){
+  document.querySelectorAll('.ver-btn').forEach(b=>{
+    b.classList.toggle('active', b.dataset.vid===state.vid);
+  });
+}
 
 async function loadVersion(first){
   if(!state.chapters[state.vid]){
-    try{
-      state.chapters[state.vid] = await loadJSON(`texts/versions/${state.vid}/chapters.json`);
-    }catch(e){
-      document.getElementById('contentWrap').innerHTML = '<div class="loading">该版本尚未整理完成</div>';
-      return;
-    }
+    try{ state.chapters[state.vid] = await loadJSON(`texts/versions/${state.vid}/chapters.json`); }
+    catch(e){ document.getElementById('contentWrap').innerHTML='<div class="loading">该版本尚未整理完成</div>'; return; }
   }
-  // 校验章节序号
   const cnt = state.chapters[state.vid].count;
-  if(state.ch>=cnt) state.ch = cnt-1;
-  if(state.ch<0) state.ch = 0;
+  if(state.ch>=cnt) state.ch=cnt-1;
+  if(state.ch<0) state.ch=0;
 
-  const selChap = document.getElementById('selChap');
-  selChap.innerHTML = '';
+  const sel = document.getElementById('selChap');
+  sel.innerHTML='';
   state.chapters[state.vid].chapters.forEach((c,i)=>{
-    const o=document.createElement('option'); o.value=i; o.textContent=c.title || `第${i}回`; selChap.appendChild(o);
+    const o=document.createElement('option'); o.value=i; o.textContent = `${i+1}. ${c.title||'第'+(i+1)+'回'}`; sel.appendChild(o);
   });
-  selChap.value = state.ch;
-  selChap.onchange = ()=>{ state.ch=parseInt(selChap.value,10); syncURL(); loadChapter(); };
+  sel.value = state.ch;
+  sel.onchange = ()=>{ state.ch=parseInt(sel.value,10); syncURL(); loadChapter(); };
 
   if(!first) syncURL();
   await loadChapter();
@@ -162,12 +319,32 @@ async function loadVersion(first){
 
 function syncURL(){
   const u = new URL(location.href);
-  u.searchParams.set('vid', state.vid);
-  u.searchParams.set('ch', state.ch);
+  u.searchParams.set('vid',state.vid); u.searchParams.set('ch',state.ch);
   history.replaceState({},'',u.toString());
 }
 
-/* ========== 读取正文 ========== */
+/* ========== 正文渲染 ========== */
+function renderText(txt){
+  const blocks = txt.split(/\n\s*\n/);
+  let html = '';
+  blocks.forEach(b=>{
+    b = b.trim(); if(!b) return;
+    const lines = b.split(/\n/).map(l=>l.trim()).filter(Boolean);
+    const isPoem = (lines.length>=2 && lines.every(l=>l.length<30) &&
+      (/诗|曰|词|古风|偈|吟|赋|歌/.test(lines[0]) || lines.every(l=>/[，。？！,?.!]$/.test(l))));
+    if(isPoem){
+      html += '<div class="poem">';
+      lines.forEach(l=>{ html += '<p>'+esc(l)+'</p>'; });
+      html += '</div>';
+    }else if(/^第[一二三四五六七八九十百零]+回|^楔子|^引首/.test(lines[0]) && lines[0].length<40){
+      html += '<h3>'+esc(lines.join(' '))+'</h3>';
+    }else{
+      lines.forEach(l=>{ html += '<p>'+esc(l)+'</p>'; });
+    }
+  });
+  return html;
+}
+
 async function loadChapter(){
   const chap = state.chapters[state.vid].chapters[state.ch];
   document.getElementById('chapTitle').textContent = chap.title;
@@ -176,229 +353,211 @@ async function loadChapter(){
   wrap.innerHTML = '<div class="loading">正在载入正文…</div>';
   const fname = chap.file;
   if(!fname){ wrap.innerHTML='<div class="loading">无此回正文</div>'; updatePager(); return; }
-  // 不同语体路径：fan/fname.txt, jian/fname.txt, bai/fname.txt（三个目录文件名一致）
+
   const fp = `texts/versions/${state.vid}/${state.lang}/${fname}`;
   const txt = await loadText(fp);
   if(!txt){
     wrap.innerHTML = `<div class="loading">该版本此语体暂未整理<br><small>${fp}</small></div>`;
-    updatePager();
-    return;
+    updatePager(); return;
   }
-  wrap.innerHTML = renderText(txt);
+
+  // 附白话文：把白话语体作为对照附加在末尾（只有当前语体不是白、且勾选了"附白话文"时）
+  let baiHtml = '';
+  if(state.withBai && state.lang!=='bai'){
+    const bfp = `texts/versions/${state.vid}/bai/${fname}`;
+    let btxt = state.baiTxtCache[bfp];
+    if(btxt===undefined){ btxt = await loadText(bfp); state.baiTxtCache[bfp] = btxt; }
+    if(btxt){
+      baiHtml = `<div class="baihua-block"><span class="baihua-label">白话译文</span>${esc(btxt).replace(/\n\s*\n/g,'<br><br>').replace(/\n/g,'')}</div>`;
+    }
+  }
+
+  wrap.innerHTML = renderText(txt) + baiHtml;
   updatePager();
   applyComments();
 }
 
-function renderText(txt){
-  // 先按空行分段
-  const blocks = txt.split(/\n\s*\n/);
-  let html = '';
-  blocks.forEach(b=>{
-    b = b.trim();
-    if(!b) return;
-    const lines = b.split(/\n/).map(l=>l.trim()).filter(Boolean);
-    // 诗歌/韵文：短行、多段、含明显韵文标志
-    const isPoem = (lines.length>=2 && lines.every(l=>l.length<30) &&
-      (/诗|曰|词|古风|偈|吟|赋|歌/.test(lines[0]) || lines.every(l=>/[，。？！,?.!]$/.test(l) || /韵|平|仄/.test(l))));
-    if(isPoem){
-      html += '<div class="poem">';
-      lines.forEach(l=>{ html += '<p>'+escapeHTML(l)+'</p>'; });
-      html += '</div>';
-    }else if(/^第[一二三四五六七八九十百零]+回|^楔子|^引首/.test(lines[0]) && lines[0].length<40){
-      html += '<h3>'+escapeHTML(lines.join(' '))+'</h3>';
-    }else{
-      lines.forEach(l=>{ html += '<p>'+escapeHTML(l)+'</p>'; });
-    }
-  });
-  return html;
-}
-
-function escapeHTML(s){
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
+/* ========== 分页 ========== */
 function updatePager(){
   const cnt = state.chapters[state.vid].count;
-  const prev = state.ch-1;
-  const next = state.ch+1;
-  let html = '';
-  if(prev>=0){
-    html += `<a href="#" onclick="goto(${prev});return false;">← 上一回</a>`;
-  }else{
-    html += `<a class="disabled">← 上一回</a>`;
-  }
-  if(next<cnt){
-    html += `<a href="#" onclick="goto(${next});return false;">下一回 →</a>`;
-  }else{
-    html += `<a class="disabled">下一回 →</a>`;
-  }
-  document.getElementById('pager').innerHTML = html;
+  const prev = state.ch-1, next = state.ch+1;
+  let h = '';
+  h += prev>=0 ? `<a href="#" onclick="goto(${prev});return false;">← 上一回</a>` : `<a class="disabled">← 上一回</a>`;
+  h += next<cnt ? `<a href="#" onclick="goto(${next});return false;">下一回 →</a>` : `<a class="disabled">下一回 →</a>`;
+  document.getElementById('pager').innerHTML = h;
 }
 function goto(n){ state.ch=n; syncURL(); document.getElementById('selChap').value=n; loadChapter(); window.scrollTo(0,0); }
 
-/* ========== 批注 ========== */
-const CMT_META = {
-  jinpi: { name:'金圣叹批', who:'金圣叹', color:'var(--gold)', file:'jinpi_comments.json',
-           okVer:['v70','jin70','jin70_pi','jinshengtan'], dataKey: d => d.jin70_pi || d.jinpi || d },
-  lizhuo:{ name:'李卓吾批（容与堂）', who:'李卓吾（容与堂本）', color:'#8b4513', file:'lizhuo_comments.json',
-           okVer:['v100','jiqin'], dataKey: d => d },
-  yuanwy:{ name:'袁无涯批（百二十回）', who:'袁无涯评（杨定见本）', color:'#2e5a88', file:'yuanwy_comments.json',
-           okVer:['v120'], dataKey: d => d },
-  jiqin: { name:'冀勤校注', who:'冀勤校注', color:'var(--jade,#5b8c5a)', file:'jiqin_notes.json',
-           okVer:['v100','jiqin'], dataKey: d => d }
-};
-
+/* ========== 批注（嵌入正文块风格，仿红楼梦） ========== */
 async function applyComments(){
+  document.querySelectorAll('.cmt-block,.cmt-notice').forEach(e=>e.remove());
   document.body.classList.remove('show-comments');
-  document.querySelectorAll('.comment-anchor,.comment-side,.zongpi-block').forEach(e=>e.remove());
   if(state.cmt==='none') return;
 
   const key = state.cmt;
   const meta = CMT_META[key];
-  if(!meta){ return; }
+  if(!meta) return;
+  document.body.classList.add('show-comments');
 
   if(!state.comments[key]){
     try{ state.comments[key] = await loadJSON('texts/versions/'+meta.file); }catch(e){ state.comments[key] = null; }
   }
   const data = state.comments[key];
   if(!data){
-    document.getElementById('contentWrap').insertAdjacentHTML('beforeend',
-      `<div class="zongpi-block" style="background:#f7f1e1;padding:14px 20px;margin:30px 0;border-radius:6px;text-align:center;font-size:13px;color:#999;">加载${meta.name}失败。</div>`);
-    return;
+    addNotice(`加载${meta.name}失败。`); return;
   }
   if(!meta.okVer.includes(state.vid)){
-    document.getElementById('contentWrap').insertAdjacentHTML('beforeend',
-      `<div class="zongpi-block" style="background:#f7f1e1;border-left:4px solid #999;padding:14px 20px;margin:30px 0;border-radius:0 6px 6px 0;font-size:13px;color:#777;font-family:var(--font-serif);">此批注（${meta.name}）仅适用于 ${meta.okVer.map(v=>({v100:'百回本',v120:'百二十回',v70:'七十回本',jin70:'金本繁',jin70_pi:'金批本',jinshengtan:'金批简',jiqin:'冀勤校注本'}[v]||v)).join('、')}，请切换到相应版本查看。</div>`);
+    addNotice(`当前版本与<b>${meta.name}</b>底本不匹配，请切换到 ${meta.okVer.map(v=>VER_TIP[v]||v).join(' / ')} 查看。`);
     return;
   }
 
-  // 李卓吾/袁无涯采用新结构：chapters 数组，每条含 chapter/title/chapter_comments（数组，含type/text/anchor）
+  const wrap = document.getElementById('contentWrap');
+  let blocks = []; // {where, html}
+
   if(key==='lizhuo' || key==='yuanwy'){
-    renderCriticComments(data, meta);
+    collectCriticComments(data, meta, blocks);
+  }else{
+    collectDictComments(data, meta, blocks);
+  }
+
+  if(blocks.length===0){
+    addNotice(`本回暂无${meta.name}。`);
     return;
   }
 
-  // 金圣叹/冀勤使用字典结构（键为回目序号）
-  const sub = meta.dataKey(data);
+  // 按顺序插入：where=top 插正文最前；where=bottom 插末尾；where=afterPoem 等暂先简化为top+穿插+bottom
+  // 我们按 blocks 的 where 字段放置：
+  //   preface -> 标题下方、正文第一段之前
+  //   note    -> 每条夹注/校注，按顺序追加在正文末尾（因为没有精确锚点）
+  //   end     -> 回末总评，正文末尾
+  // 先找正文第一段 <p>（不是poem、不是h3、不是baihua-block）
+  const firstP = wrap.querySelector('p');
+  blocks.forEach(b=>{
+    const div = document.createElement('div');
+    div.className = 'cmt-block '+meta.cls;
+    div.innerHTML = `<span class="cmt-tag">${b.tag||meta.tag}</span><span class="cmt-text">${b.html}</span>`;
+    if(b.where==='top' && firstP){
+      firstP.parentElement.insertBefore(div, firstP);
+    }else{
+      wrap.appendChild(div);
+    }
+  });
+}
+
+function addNotice(html){
+  const d = document.createElement('div');
+  d.className = 'cmt-notice';
+  d.innerHTML = html;
+  document.getElementById('contentWrap').appendChild(d);
+}
+
+// 金圣叹、冀勤：字典结构
+function collectDictComments(data, meta, blocks){
+  const sub = meta.extract(data);
   const chKey = String(state.ch);
-  const chData = sub[chKey];
+  let chData = sub[chKey];
+  // 金圣叹数据用 "0","1"... 索引，楔子可能是 "0"；如果当前没找到，尝试相邻键
   if(!chData){
-    document.getElementById('contentWrap').insertAdjacentHTML('beforeend',
-      `<div class="zongpi-block" style="background:#f7f1e1;padding:14px 20px;margin:30px 0;border-radius:6px;font-size:13px;color:#999;font-family:var(--font-serif);text-align:center;">本回暂无${meta.name}。</div>`);
-    return;
+    for(const k of [String(state.ch-1), String(state.ch+1)]){ if(sub[k] && sub[k].preface){ chData=sub[k]; break; } }
   }
-  let html = '<div class="zongpi-block" style="margin-top:40px;">';
+  if(!chData) return;
+
   if(chData.preface){
-    html += `<div style="background:#f8edd0;border-left:4px solid ${meta.color};padding:14px 20px;margin-bottom:14px;border-radius:0 6px 6px 0;font-size:14px;color:var(--ink-light);font-family:var(--font-serif);line-height:2;">
-      <div style="color:var(--vermilion-deep);font-weight:700;margin-bottom:8px;letter-spacing:3px;">【${meta.who}·回前总批】</div>
-      <div style="white-space:pre-wrap;">${escapeHTML(chData.preface).replace(/\n/g,'<br>')}</div>
-    </div>`;
+    blocks.push({
+      where:'top',
+      tag: meta.tag+'·回前批',
+      html: esc(chData.preface).replace(/\n/g,'<br>')
+    });
   }
-  const pis = Object.keys(chData).filter(k=>k!=='preface' && chData[k]);
-  if(pis.length){
-    html += `<div style="background:#fdf8ec;border:1px solid var(--border);padding:16px 20px;border-radius:6px;font-size:13px;color:var(--ink-light);font-family:var(--font-serif);line-height:2;">
-      <div style="color:var(--vermilion-deep);font-weight:700;margin-bottom:8px;letter-spacing:3px;">【${meta.who}·夹批校注·共${pis.length}条】</div>`;
-    pis.forEach((k,i)=>{
-      const txt = chData[k];
-      if(typeof txt === 'string'){
-        html += `<div style="padding:4px 0;border-bottom:1px dashed var(--border);"><b style="color:var(--vermilion);margin-right:6px;">[${i+1}]</b>${escapeHTML(txt)}</div>`;
-      }else if(txt && typeof txt==='object'){
-        Object.entries(txt).forEach(([kk,vv])=>{
-          html += `<div style="padding:4px 0;border-bottom:1px dashed var(--border);"><b style="color:var(--vermilion);margin-right:6px;">[${i+1}.${kk}]</b>${escapeHTML(String(vv))}</div>`;
+  // 其余夹批/校注（键非 preface、且是字符串或对象）
+  const keys = Object.keys(chData).filter(k=>k!=='preface' && k!=='inline_count' && chData[k]);
+  if(keys.length){
+    // 金批夹批 / 冀勤校注逐条列出
+    const items = [];
+    keys.forEach((k,i)=>{
+      const v = chData[k];
+      if(typeof v==='string'){
+        items.push(`<div style="margin:6px 0;padding:6px 0;border-top:1px dashed rgba(0,0,0,0.08);"><b style="color:${colorOf(meta)};margin-right:8px;">〔${i+1}〕</b>${esc(v)}</div>`);
+      }else if(v && typeof v==='object'){
+        Object.entries(v).forEach(([kk,vv])=>{
+          items.push(`<div style="margin:6px 0;padding:6px 0;border-top:1px dashed rgba(0,0,0,0.08);"><b style="color:${colorOf(meta)};margin-right:8px;">〔${i+1}·${esc(kk)}〕</b>${esc(String(vv))}</div>`);
         });
       }
     });
-    html += '</div>';
-  }
-  html += '</div>';
-  document.getElementById('contentWrap').insertAdjacentHTML('beforeend', html);
-}
-
-function renderCriticComments(data, meta){
-  // 用回目标题或序号匹配（容与堂/袁无涯批语的 chapter 字段是中文数字，用 title 模糊匹配）
-  const chapObj = state.chapters[state.vid].chapters[state.ch];
-  const curTitle = chapObj.title || '';
-  // 尝试匹配：先按章节序号；容与堂一百回，state.ch 从0开始，第1回=张天师
-  // chapter 字段形如 "第三回"，curTitle 形如 "第一回 张天师祈禳瘟疫…"
-  // 构造当前回的中文数字
-  const cnNum = ['零','一','二','三','四','五','六','七','八','九','十'];
-  function toCn(n){
-    if(n<=10) return cnNum[n];
-    if(n<20) return '十'+(n%10?cnNum[n%10]:'');
-    if(n%10===0) return cnNum[Math.floor(n/10)]+'十';
-    return cnNum[Math.floor(n/10)]+'十'+cnNum[n%10];
-  }
-  // ch 0 是引首/楔子
-  let target = state.ch===0 ? (curTitle.includes('引首')||curTitle.includes('楔子') ? null : null) : '第'+toCn(state.ch)+'回';
-  if(state.ch===0 && (curTitle.includes('引首')||curTitle.includes('张天师'))) target = '引首+第一回';
-
-  const chaps = data.chapters || [];
-  // 序论（如李贽叙、发凡）
-  let html = '<div class="zongpi-block" style="margin-top:40px;">';
-
-  // 序文/总评（仅第0回/第一回看）
-  if(state.ch<=1){
-    const prefaces = [];
-    chaps.forEach(c=>{
-      (c.preface_comments||[]).forEach(p=>prefaces.push(p));
-    });
-    if(prefaces.length){
-      html += `<div style="background:#f5ead0;border-left:4px solid ${meta.color};padding:14px 20px;margin-bottom:14px;border-radius:0 6px 6px 0;font-size:14px;color:var(--ink-light);font-family:var(--font-serif);line-height:2;">
-        <div style="color:var(--vermilion-deep);font-weight:700;margin-bottom:8px;letter-spacing:3px;">【${meta.who}·序文述语】</div>`;
-      prefaces.forEach(p=>{
-        html += `<div style="margin:10px 0;padding-top:8px;border-top:1px dashed var(--border);">
-          <div style="font-size:12px;color:var(--ink-muted);margin-bottom:4px;">—— ${escapeHTML(p.author||meta.who)}《${escapeHTML(p.source||'评点')}》</div>
-          <div style="white-space:pre-wrap;">${escapeHTML(p.text).replace(/\n/g,'<br>')}</div>
-        </div>`;
+    if(items.length){
+      const label = (meta.key==='jiqin') ? meta.tag+'·名物注释' : meta.tag+'·夹批';
+      blocks.push({
+        where:'bottom',
+        tag: label,
+        html: items.join('')
       });
-      html += '</div>';
     }
   }
+}
+function colorOf(meta){
+  return {jinpi:'#b8860b',lizhuo:'#8b4513',yuanwy:'#2e5a88',jiqin:'#4a7a49'}[Object.keys(CMT_META).find(k=>CMT_META[k]===meta)] || '#999';
+}
 
-  // 找匹配的 chapter
+// 李卓吾/袁无涯：chapters 数组结构
+function collectCriticComments(data, meta, blocks){
+  const chapObj = state.chapters[state.vid].chapters[state.ch];
+  const curTitle = chapObj.title || '';
+
+  // 当前回中文数字
+  let target = state.ch===0 ? null : '第'+cnNum(state.ch)+'回';
+  if(state.ch===0 && /引首|楔子|张天师/.test(curTitle)) target = '引首+第一回';
+
+  const chaps = data.chapters || [];
+
+  // 序文（前两回显示）
+  if(state.ch<=1){
+    const prefaces = [];
+    chaps.forEach(c=>{ (c.preface_comments||[]).forEach(p=>prefaces.push(p)); });
+    prefaces.forEach(p=>{
+      blocks.push({
+        where:'top',
+        tag: meta.tag+'·序',
+        html: `<div style="font-size:13px;color:#8a7a62;margin-bottom:6px;">—— ${esc(p.author||meta.who)}《${esc(p.source||'评点')}》</div>${esc(p.text).replace(/\n/g,'<br>')}`
+      });
+    });
+  }
+
   const matched = chaps.find(c=>{
     if(!c.chapter) return false;
     if(target && c.chapter===target) return true;
-    if(c.chapter==='全书') return false; // 全书总评最后单独列
-    if(curTitle && c.title && curTitle.includes(c.title.slice(0,6))) return true;
+    if(c.chapter==='全书') return false;
+    if(curTitle && c.title && curTitle.replace(/\s/g,'').includes(c.title.slice(0,6).replace(/\s/g,''))) return true;
     return false;
   }) || chaps.find(c=>c.chapter==='全书');
 
   if(matched){
-    const comments = matched.chapter_comments || [];
-    if(comments.length){
-      html += `<div style="background:#fdf8ec;border:1px solid var(--border);padding:16px 20px;border-radius:6px;font-size:14px;color:var(--ink-light);font-family:var(--font-serif);line-height:2;">
-        <div style="color:var(--vermilion-deep);font-weight:700;margin-bottom:10px;letter-spacing:3px;">【${meta.who}·回末总评与眉批精粹】</div>`;
-      comments.forEach((c,i)=>{
-        const label = c.type==='回末总评' ? '回末总评' : (c.type==='眉批'?'眉批':(c.type==='旁批'?'旁批':(c.type==='夹批'?'夹批':c.type||'评')));
-        html += `<div style="padding:8px 0;border-bottom:1px dashed var(--border);">
-          <b style="color:${meta.color};margin-right:8px;font-size:12px;letter-spacing:1px;">[${label}${c.anchor?'·'+escapeHTML(c.anchor):''}]</b>
-          <span>${escapeHTML(c.text)}</span>
-        </div>`;
+    const cms = matched.chapter_comments || [];
+    if(cms.length){
+      const items = cms.map(c=>{
+        const label = c.type==='回末总评'?'回末总评':(c.type==='眉批'?'眉批':(c.type==='旁批'?'旁批':(c.type==='夹批'?'夹批':c.type||'评')));
+        return `<div style="margin:8px 0;padding:8px 0;border-top:1px dashed rgba(0,0,0,0.08);"><b style="color:${colorOf(meta)};margin-right:8px;">〔${label}${c.anchor?'·'+esc(c.anchor):''}〕</b>${esc(c.text)}</div>`;
+      }).join('');
+      blocks.push({
+        where:'bottom',
+        tag: meta.tag+'·回评',
+        html: items
       });
-      html += '</div>';
     }
   }
 
-  // 艺术论（第一回显示）
+  // 艺术论（第一回）
   if(state.ch<=1 && data.art_theory && data.art_theory.length){
-    html += `<div style="background:#eef3ea;border-left:4px solid ${meta.color};padding:14px 20px;margin-top:14px;border-radius:0 6px 6px 0;font-size:13px;color:var(--ink-light);font-family:var(--font-serif);line-height:2;">
-      <div style="color:var(--vermilion-deep);font-weight:700;margin-bottom:8px;letter-spacing:3px;">【${meta.who}·小说艺术论要点】</div>`;
-    data.art_theory.forEach(a=>{
-      html += `<div style="padding:6px 0;"><b style="color:${meta.color};">「${escapeHTML(a.keyword)}」</b>（${escapeHTML(a.source)}）：${escapeHTML(a.point)}</div>`;
+    const items = data.art_theory.map(a=>`<div style="margin:6px 0;"><b style="color:${colorOf(meta)};">「${esc(a.keyword)}」</b>（${esc(a.source)}）：${esc(a.point)}</div>`).join('');
+    blocks.push({
+      where:'bottom',
+      tag: meta.tag+'·读法',
+      html: items
     });
-    html += '</div>';
   }
-
-  html += '</div>';
-  if(html.indexOf('回末总评')<0 && html.indexOf('序文述语')<0 && html.indexOf('艺术论')<0 && (!matched || !(matched.chapter_comments||[]).length)){
-    html = `<div class="zongpi-block" style="background:#f7f1e1;padding:14px 20px;margin:30px 0;border-radius:6px;font-size:13px;color:#999;font-family:var(--font-serif);text-align:center;">本回${meta.name}正在陆续整理中。<br><small style="color:#bbb;">已收录经典回评涉及第1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/21/23/30/38/43/71/82/90/100/119/120 等核心回目。</small></div>`;
-  }
-  document.getElementById('contentWrap').insertAdjacentHTML('beforeend', html);
 }
 
 boot().catch(e=>{
-  document.getElementById('contentWrap').innerHTML = '<div class="loading">加载失败：'+e.message+'</div>';
+  document.getElementById('contentWrap').innerHTML = '<div class="loading">加载失败：'+esc(e.message)+'</div>';
   console.error(e);
 });
 </script>
