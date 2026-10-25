@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>主题研究 · 水浒传本体论</title>
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<style>
+.theme-page{ padding:20px 40px; max-width:1600px; margin:0 auto; }
+.theme-layout{ display:grid; grid-template-columns:300px 1fr; gap:24px; margin-top:20px; }
+.theme-sidebar{ position:sticky; top:80px; height:calc(100vh - 100px); overflow-y:auto; padding-right:12px; }
+.theme-sidebar::-webkit-scrollbar{width:6px;}
+.theme-sidebar::-webkit-scrollbar-thumb{background:var(--paper-dark); border-radius:3px;}
+.theme-card{
+  padding:14px 16px; border:1px solid var(--border); border-radius:8px;
+  background:#fffdf7; margin-bottom:10px; cursor:pointer;
+  transition:all .2s; border-left:4px solid var(--vermilion);
+}
+.theme-card:hover{ transform:translateX(2px); box-shadow:var(--shadow); }
+.theme-card.active{ background:linear-gradient(90deg,#fff8e8,#fff); border-left-width:6px; box-shadow:var(--shadow); }
+.theme-card .t-icon{ font-size:22px; margin-right:8px; }
+.theme-card .t-name{ font-family:var(--font-serif); font-size:17px; font-weight:600; color:var(--ink); }
+.theme-card .t-sub{ font-size:12px; color:var(--ink-muted); margin-top:4px; line-height:1.4; }
+
+.theme-detail{ background:#fffdf7; border:1px solid var(--border); border-radius:12px; padding:36px 44px; box-shadow:var(--shadow); min-height:800px; }
+.theme-header{ border-bottom:1px solid var(--border); padding-bottom:20px; margin-bottom:28px; }
+.theme-header h1{ font-family:var(--font-serif); font-size:32px; color:var(--vermilion-deep); margin-bottom:8px; display:flex; align-items:center; gap:14px; }
+.theme-header .subtitle{ font-family:var(--font-serif); font-size:16px; color:var(--ink-muted); font-style:italic; }
+.theme-abstract{ font-size:16px; line-height:2; text-indent:2em; color:var(--ink-light); margin-bottom:32px; padding:20px 24px; background:var(--paper); border-left:4px solid var(--gold); border-radius:4px; font-family:var(--font-serif); }
+
+.section{ margin-bottom:30px; }
+.section h2{ font-family:var(--font-serif); font-size:20px; color:var(--ink); border-bottom:2px solid var(--vermilion); padding-bottom:6px; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+.section h2 .dot{ width:8px; height:8px; border-radius:50%; background:var(--vermilion); }
+
+.tag-group{ display:flex; flex-wrap:wrap; gap:8px; }
+.tag{ padding:4px 12px; border-radius:16px; font-size:13px; border:1px solid var(--border); background:#fff; font-family:var(--font-serif); }
+.tag.hero{ background:#fef3f0; border-color:#e6b8b0; color:var(--vermilion-deep); }
+.tag.place{ background:#eff6ec; border-color:#b8d0ad; color:#3a5c2e; }
+.tag.event{ background:#fff7e6; border-color:#e6cc99; color:#8b6914; }
+.tag.critic{ background:#f0eaf6; border-color:#c8b5e0; color:#5a3f8c; }
+
+.quote-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.quote-item{ padding:14px 18px; background:var(--paper); border-radius:8px; border-left:3px solid var(--vermilion); }
+.quote-item .who{ font-weight:600; font-family:var(--font-serif); color:var(--vermilion-deep); margin-bottom:6px; font-size:14px; }
+.quote-item .q{ font-family:var(--font-serif); font-size:14px; color:var(--ink-light); line-height:1.7; font-style:italic; }
+
+.fate-list, .pattern-list, .faction-list, .battle-list, .weapon-cats, .critic-list, .path-list, .female-list, .post-list, .translation-list, .version-tree, .controversy-list{ display:grid; gap:12px; }
+.fate-item, .path-item, .female-item{ padding:12px 16px; background:var(--paper); border-radius:8px; border-left:3px solid var(--jade); }
+.fate-item .fname, .path-item .pname, .female-item .ftype{ font-family:var(--font-serif); font-weight:600; color:var(--vermilion-deep); margin-bottom:4px; }
+.fate-item .fhow{ font-size:13px; color:var(--ink-light); margin-bottom:2px; }
+.fate-item .ftype-tag{ display:inline-block; font-size:12px; padding:1px 8px; border-radius:10px; background:#fff; color:var(--jade); border:1px solid var(--jade); }
+
+.pattern-item{ padding:12px 16px; background:var(--paper); border-radius:8px; border-left:3px solid var(--gold); }
+.pattern-item .ptype{ font-family:var(--font-serif); font-weight:600; color:var(--gold); }
+.pattern-item .pdesc{ font-size:13px; color:var(--ink-light); margin:4px 0; }
+.pattern-item .ph{ font-size:12px; color:var(--ink-muted); }
+
+.faction-item{ padding:14px 18px; background:var(--paper); border-radius:8px; border-left:3px solid var(--indigo); }
+.faction-item .fname{ font-family:var(--font-serif); font-weight:600; color:var(--indigo); font-size:16px; margin-bottom:6px; }
+.faction-item .fmeta{ font-size:12px; color:var(--ink-muted); margin-bottom:6px; }
+.faction-item .fmembers{ font-size:13px; color:var(--ink-light); line-height:1.8; }
+.faction-item .ffate{ font-size:13px; color:var(--vermilion-deep); margin-top:6px; font-style:italic; padding:6px 10px; background:#fff; border-radius:4px; }
+
+.battle-phase{ margin-top:14px; }
+.battle-phase h3{ font-family:var(--font-serif); font-size:16px; color:var(--vermilion-deep); margin-bottom:8px; padding-left:10px; border-left:3px solid var(--vermilion); }
+.battle-item{ display:grid; grid-template-columns:1.2fr 1fr 80px 2fr; gap:10px; padding:8px 12px; border-bottom:1px dashed var(--border); font-size:13px; align-items:center; }
+.battle-item .bname{ font-family:var(--font-serif); font-weight:600; }
+.battle-item .bresult{ color:var(--jade); font-weight:600; }
+.battle-item .bresult.lose{ color:var(--vermilion); }
+.battle-item .bsig{ color:var(--ink-muted); font-size:12px; }
+
+.weapon-cat{ background:var(--paper); border-radius:8px; padding:14px 18px; margin-bottom:10px; }
+.weapon-cat h3{ font-family:var(--font-serif); color:#556B2F; margin-bottom:10px; font-size:15px; }
+.weapon-row{ display:grid; grid-template-columns:1fr 1fr 1fr 80px 1.4fr; gap:8px; padding:6px 0; border-bottom:1px dashed var(--border); font-size:13px; }
+.weapon-row.wh{ font-weight:600; color:var(--ink-muted); border-bottom-style:solid; }
+.weapon-row .wh-name{ font-family:var(--font-serif); }
+
+.critic-item{ padding:14px 18px; background:var(--paper); border-radius:8px; display:grid; grid-template-columns:1fr 2fr; gap:14px; margin-bottom:10px; border-left:4px solid var(--vermilion); }
+.critic-item .cname{ font-family:var(--font-serif); font-weight:600; font-size:16px; }
+.critic-item .ctime{ font-size:12px; color:var(--ink-muted); margin:4px 0; }
+.critic-item .cform{ font-size:12px; color:var(--jade); margin-bottom:6px; }
+.critic-item .ccore{ font-size:13px; line-height:1.7; color:var(--ink-light); }
+.critic-item .cbar{ height:4px; background:#fff; border-radius:2px; overflow:hidden; margin-top:8px; }
+.critic-item .cbar span{ display:block; height:100%; background:var(--vermilion); }
+
+.art-theory-item{ padding:10px 14px; background:var(--paper); border-radius:6px; margin-bottom:8px; }
+.art-theory-item .term{ font-family:var(--font-serif); font-weight:600; color:var(--vermilion-deep); }
+.art-theory-item .explain{ font-size:13px; color:var(--ink-light); margin-top:4px; }
+
+.modern-item{ padding:10px 14px; background:var(--paper); border-radius:6px; margin-bottom:8px; border-left:3px solid var(--indigo); }
+.modern-item .mname{ font-family:var(--font-serif); font-weight:600; color:var(--indigo); font-size:14px; }
+.modern-item .mview{ font-size:13px; color:var(--ink-light); margin-top:4px; }
+
+.ver-diff{ display:grid; gap:8px; margin-top:12px; }
+.ver-diff .vd{ padding:10px 14px; background:var(--paper); border-radius:6px; font-size:13px; }
+.ver-diff .vd b{ color:var(--vermilion-deep); font-family:var(--font-serif); }
+
+.era-block{ margin-bottom:18px; }
+.era-block h3{ font-family:var(--font-serif); color:var(--ink); font-size:16px; margin-bottom:8px; padding:8px 12px; background:var(--paper-warm); border-radius:6px; }
+.era-ver{ display:flex; gap:10px; flex-wrap:wrap; margin-left:12px; }
+.era-ver .ev{ padding:8px 12px; background:#fff; border:1px solid var(--border); border-radius:6px; font-size:13px; flex:1 1 260px; }
+.era-ver .ev b{ font-family:var(--font-serif); color:var(--vermilion-deep); }
+.era-ver .ev span{ color:var(--ink-muted); font-size:12px; display:block; margin-top:4px; }
+
+.controversy-item{ padding:14px 18px; background:var(--paper); border-radius:8px; margin-bottom:10px; }
+.controversy-item .ctopic{ font-family:var(--font-serif); font-weight:600; color:var(--vermilion-deep); font-size:15px; margin-bottom:8px; }
+.controversy-item .cview{ font-size:13px; padding:6px 10px; background:#fff; border-radius:4px; margin-bottom:4px; line-height:1.7; }
+.controversy-item .cview b{ color:var(--indigo); }
+
+.rules-list{ padding:14px 18px; background:var(--paper); border-radius:8px; font-size:14px; line-height:2; font-family:var(--font-serif); }
+.rules-list li{ margin-left:20px; }
+.anti-pro{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:12px; }
+.anti-pro .box{ padding:14px 18px; border-radius:8px; }
+.anti-pro .anti{ background:#fef3f0; border-left:4px solid var(--vermilion); }
+.anti-pro .pro{ background:#eff6ec; border-left:4px solid var(--jade); }
+.anti-pro h4{ font-family:var(--font-serif); margin-bottom:8px; }
+.anti-pro ul{ font-size:13px; line-height:1.9; margin-left:18px; }
+
+.death-places{ display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+.death-places .dp{ padding:3px 10px; background:#fff; border:1px solid var(--vermilion); border-radius:12px; font-size:12px; color:var(--vermilion-deep); }
+
+.code-list{ display:flex; flex-wrap:wrap; gap:8px; }
+.code-list .code{ padding:6px 14px; background:var(--paper); border:1px solid var(--indigo); border-radius:20px; font-family:var(--font-serif); font-size:14px; color:var(--indigo); }
+
+.key-stat{ padding:14px 20px; background:linear-gradient(90deg,#fef3f0,#fff7e6); border:1px solid var(--gold); border-radius:8px; margin-top:14px; font-family:var(--font-serif); font-size:14px; line-height:1.9; color:var(--vermilion-deep); }
+
+.post-item{ display:grid; grid-template-columns:100px 120px 2fr; gap:12px; padding:10px 14px; background:var(--paper); border-radius:6px; font-size:13px; margin-bottom:8px; align-items:start; }
+.post-item .p-post{ font-family:var(--font-serif); font-weight:600; color:var(--indigo); }
+.post-item .p-holder{ color:var(--vermilion-deep); }
+
+.official-block{ margin-bottom:16px; }
+.official-block h3{ font-family:var(--font-serif); font-size:15px; color:var(--indigo); margin-bottom:8px; }
+.official-row{ display:grid; grid-template-columns:1fr 1fr 1fr 1.5fr; gap:8px; padding:6px 0; border-bottom:1px dashed var(--border); font-size:13px; }
+.official-row.oh{ font-weight:600; color:var(--ink-muted); }
+
+.trans-row{ display:grid; grid-template-columns:60px 60px 1fr 1.5fr 2fr; gap:10px; padding:8px 10px; border-bottom:1px dashed var(--border); font-size:12px; align-items:center; }
+.trans-row.th{ font-weight:600; color:var(--ink-muted); }
+
+.scholar-view{ padding:14px 18px; background:var(--paper); border-radius:8px; margin-top:12px; font-family:var(--font-serif); font-size:14px; line-height:1.9; border-left:4px solid var(--indigo); }
+
+.knowledge-graph{ margin-top:30px; height:520px; border:1px solid var(--border); border-radius:12px; background:#fffdf7; }
+
+.group-block{ margin-bottom:10px; }
+.group-block h4{ font-family:var(--font-serif); font-size:14px; color:var(--vermilion-deep); margin-bottom:6px; padding:6px 10px; background:var(--paper-warm); border-radius:4px; }
+.group-members{ font-size:13px; line-height:1.9; color:var(--ink-light); padding:0 10px; }
+
+.topbar .nav-links a[href="themes.html"]{ color:var(--vermilion); font-weight:600; }
+
+@media (max-width:1100px){
+  .theme-layout{ grid-template-columns:1fr; }
+  .theme-sidebar{ position:static; height:auto; display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .quote-grid{ grid-template-columns:1fr; }
+  .battle-item{ grid-template-columns:1fr; }
+  .weapon-row{ grid-template-columns:1fr 1fr; }
+  .anti-pro{ grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== 顶部导航 ===== -->
+<header class="topbar">
+  <div class="brand"><span class="seal">水</span><span>水浒传本体论</span></div>
+  <nav class="nav-links" id="navLinks">
+    <a href="index.html#home">首页</a>
+    <a href="index.html#versions">版本学</a>
+    <a href="index.html#heroes">108将</a>
+    <a href="themes.html" class="active">主题研究</a>
+    <a href="kg.html">知识图谱</a>
+    <a href="index.html#places">空间地理</a>
+    <a href="index.html#events">叙事结构</a>
+    <a href="index.html#weapons">兵器职官</a>
+    <a href="index.html#critics">评点学术</a>
+    <a href="index.html#derivatives">续书衍生</a>
+    <a href="read.html">版本阅读</a>
+  </nav>
+</header>
+
+<div class="theme-page">
+  <div style="text-align:center; padding:20px 0 10px;">
+    <h1 style="font-family:var(--font-serif); font-size:38px; color:var(--vermilion-deep); letter-spacing:4px;">主题研究</h1>
+    <p style="color:var(--ink-muted); font-family:var(--font-serif); font-size:15px; margin-top:8px;">
+      Thematic Studies · 忠义命题 · 官逼民反 · 佛道解脱 · 江湖道义 · 兵器谱 · 好汉座次 · 派系网络 · 招安争议<br/>
+      征伐战役 · 四家评点 · 繁简二系 · 女性悲剧 · 官制差遣 · 海外传播 · 上山路径
+    </p>
+  </div>
+
+  <div class="theme-layout">
+    <!-- 左侧主题列表 -->
+    <aside class="theme-sidebar" id="themeSidebar"></aside>
+
+    <!-- 右侧内容 -->
+    <main class="theme-detail" id="themeDetail"></main>
+  </div>
+</div>
+
+<script>
+const THEME_DATA = /*__THEMES__*/[];
+// 动态加载
+fetch('data/themes/themes.json').then(r=>r.json()).then(data=>{
+  window.THEMES = data;
+  renderSidebar();
+  showTheme(data[0].id);
+}).catch(e=>{ console.error(e); document.getElementById('themeDetail').innerHTML='<p style="color:red">主题数据加载失败</p>'; });
+
+function renderSidebar(){
+  const sb = document.getElementById('themeSidebar');
+  sb.innerHTML = THEMES.map(t=>`
+    <div class="theme-card" data-id="${t.id}" onclick="showTheme('${t.id}')">
+      <div><span class="t-icon">${t.icon}</span><span class="t-name">${t.name}</span></div>
+      <div class="t-sub">${t.subtitle}</div>
+    </div>
+  `).join('');
+}
+
+function showTheme(id){
+  document.querySelectorAll('.theme-card').forEach(c=>c.classList.toggle('active', c.dataset.id===id));
+  const t = THEMES.find(x=>x.id===id);
+  if(!t) return;
+  const el = document.getElementById('themeDetail');
+  el.innerHTML = renderTheme(t);
+  // 渲染完后画知识图谱
+  setTimeout(()=>renderGraph(t), 100);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function tagHtml(items, cls){ return items.map(x=>`<span class="tag ${cls}">${x}</span>`).join(''); }
+
+function renderTheme(t){
+  let html = `
+    <div class="theme-header">
+      <h1><span style="font-size:40px">${t.icon}</span>${t.name}<span style="font-size:14px;color:var(--ink-muted);font-weight:normal;margin-left:8px;">${t.subtitle}</span></h1>
+    </div>
+    <div class="theme-abstract">${t.abstract}</div>
+  `;
+
+  // === 通用：英雄/地点/评点家 ===
+  if(t.heroes && t.heroes.length){
+    html += `<div class="section"><h2><span class="dot"></span>关键人物</h2><div class="tag-group">${tagHtml(t.heroes,'hero')}</div></div>`;
+  }
+  if(t.places && t.places.length){
+    html += `<div class="section"><h2><span class="dot"></span>关键地点</h2><div class="tag-group">${tagHtml(t.places,'place')}</div></div>`;
+  }
+  if(t.critics && t.critics.length && !t.critics[0].name){
+    html += `<div class="section"><h2><span class="dot"></span>相关评点家/学者</h2><div class="tag-group">${tagHtml(t.critics,'critic')}</div></div>`;
+  }
+  if(t.events_key && t.events_key.length){
+    html += `<div class="section"><h2><span class="dot"></span>关键事件</h2><div class="tag-group">${tagHtml(t.events_key,'event')}</div></div>`;
+  }
+  if(t.topics){
+    html += `<div class="section"><h2><span class="dot"></span>主题关键词</h2><div class="tag-group">${tagHtml(t.topics,'')}</div></div>`;
+  }
+
+  // === 金句 ===
+  if(t.key_quotes){
+    html += `<div class="section"><h2><span class="dot"></span>经典引文</h2><div class="quote-grid">${
+      t.key_quotes.map(q=>`<div class="quote-item"><div class="who">— ${q.who}</div><div class="q">"${q.q}"</div></div>`).join('')
+    }</div></div>`;
+  }
+
+  // === 主题特化区块 ===
+  if(t.patterns){
+    html += `<div class="section"><h2><span class="dot"></span>逼反路径类型</h2><div class="pattern-list">${
+      t.patterns.map(p=>`<div class="pattern-item"><div class="ptype">${p.type}</div><div class="pdesc">${p.desc}</div><div class="ph">代表：${p.heroes.join('、')}</div></div>`).join('')
+    }</div></div>`;
+  }
+
+  if(t.fates){
+    html += `<div class="section"><h2><span class="dot"></span>善终/殒命人物结局</h2><div class="fate-list">${
+      t.fates.map(f=>`<div class="fate-item"><div class="fname">${f.name}</div><div class="fhow">${f.fate}</div><span class="ftype-tag">${f.type}</span></div>`).join('')
+    }</div></div>`;
+  }
+
+  if(t.code){
+    html += `<div class="section"><h2><span class="dot"></span>江湖道义守则</h2><div class="code-list">${t.code.map(c=>`<span class="code">${c}</span>`).join('')}</div></div>`;
+  }
+
+  if(t.weapon_categories){
+    html += `<div class="section"><h2><span class="dot"></span>十八般兵器分类</h2><div class="weapon-cats">${
+      t.weapon_categories.map(cat=>`
+        <div class="weapon-cat"><h3>${cat.cat}</h3>
+          <div class="weapon-row wh"><div>名称</div><div>持有者</div><div>重量</div><div>说</div></div>
+          ${cat.items.map(w=>`<div class="weapon-row"><div class="wh-name">${w.name}</div><div>${w.hero}</div><div>${w.weight}</div><div style="grid-column:span 2">${w.desc}</div></div>`).join('')}
+        </div>`).join('')
+    }</div></div>`;
+  }
+
+  if(t.groups){
+    html += `<div class="section"><h2><span class="dot"></span>座次组织架构</h2>${
+      t.groups.map(g=>`<div class="group-block"><h4>${g.name}</h4><div class="group-members">${g.members.join('、')}</div></div>`).join('')
+    }</div></div>`;
+  }
+
+  if(t.factions){
+    html += `<div class="section"><h2><span class="dot"></span>七大派系势力版图</h2><div class="faction-list">${
+      t.factions.map(f=>`<div class="faction-item">
+        <div class="fname">${f.name} <span style="font-weight:normal;color:var(--ink-muted);font-size:13px;">（${f.size}）</span></div>
+        <div class="fmeta">核心人物</div>
+        <div class="fmembers">${f.core.join('、')}</div>
+        <div class="ffate">命运：${f.fate}</div>
+      </div>`).join('')
+    }</div></div>`;
+  }
+  if(t.key_rules){
+    html += `<div class="section"><h2><span class="dot"></span>派系命运规律</h2><ul class="rules-list">${t.key_rules.map(r=>`<li>${r}</li>`).join('')}</ul></div>`;
+  }
+
+  if(t.anti_zhaoan){
+    html += `<div class="section"><h2><span class="dot"></span>招安路线之争</h2><div class="anti-pro">
+      <div class="box anti"><h4>❌ 反招安派</h4><ul>${t.anti_zhaoan.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+      <div class="box pro"><h4>✅ 主招安派</h4><ul>${t.pro_zhaoan.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+    </div></div>`;
+  }
+  if(t.versions_diff){
+    html += `<div class="section"><h2><span class="dot"></span>不同版本对该主题的处理</h2><div class="ver-diff">${
+      t.versions_diff.map(v=>`<div class="vd"><b>${v.v}：</b>${v.view}</div>`).join('')
+    }</div></div>`;
+  }
+
+  if(t.battles){
+    html += `<div class="section"><h2><span class="dot"></span>主要战役</h2><div class="battle-list">${
+      t.battles.map(ph=>`
+        <div class="battle-phase"><h3>${ph.phase}</h3>
+          <div class="battle-item" style="font-weight:600;color:var(--ink-muted);border-bottom-style:solid;">
+            <div>战役</div><div>回次</div><div>结果</div><div>阵亡/意义</div>
+          </div>
+          ${ph.items.map(b=>`<div class="battle-item">
+            <div class="bname">${b.name}</div>
+            <div style="font-size:12px;color:var(--ink-muted)">${b.chapter}</div>
+            <div class="bresult ${b.heroes_killed && b.heroes_killed.length>2?'lose':''}">${b.result}</div>
+            <div class="bsig" style="color:${b.heroes_killed && b.heroes_killed.length>2?'var(--vermilion-deep)':'var(--ink-muted)'}">${(b.heroes_killed && b.heroes_killed.length? '阵亡: '+b.heroes_killed+'<br/>' :'')+b.significance}</div>
+          </div>`).join('')}
+        </div>`).join('')
+    }</div></div>`;
+    if(t.death_places) html += `<div class="section"><h2><span class="dot"></span>征方腊阵亡地点</h2><div class="death-places">${t.death_places.map(p=>`<span class="dp">${p}</span>`).join('')}</div></div>`;
+  }
+
+  if(t.critics && t.critics[0] && typeof t.critics[0]==='object'){
+    html += `<div class="section"><h2><span class="dot"></span>评点家谱系</h2><div class="critic-list">${
+      t.critics.map(c=>`<div class="critic-item" style="border-left-color:${c.color||'var(--vermilion)'}">
+        <div><div class="cname">${c.name}</div><div class="ctime">${c.time}</div><div class="cform">${c.form}</div></div>
+        <div class="ccore">${c.core}</div>
+      </div>`).join('')
+    }</div></div>`;
+  }
+  if(t.art_theory){
+    html += `<div class="section"><h2><span class="dot"></span>小说文法论术语</h2><div class="critic-list">${
+      t.art_theory.map(a=>`<div class="art-theory-item"><div class="term">${a.term}</div><div class="explain">${a.explain}</div></div>`).join('')
+    }</div></div>`;
+  }
+  if(t.modern){
+    html += `<div class="section"><h2><span class="dot"></span>近现代学术观点</h2><div class="critic-list">${
+      t.modern.map(m=>`<div class="modern-item"><div class="mname">${m.name}</div><div class="mview">${m.view}</div></div>`).join('')
+    }</div></div>`;
+  }
+
+  if(t.version_tree){
+    html += `<div class="section"><h2><span class="dot"></span>版本演化谱系</h2><div class="version-tree">${
+      t.version_tree.map(era=>`<div class="era-block"><h3>${era.era}</h3><div class="era-ver">${
+        era.versions.map(v=>`<div class="ev"><b>${v.name}</b><span>${v.feature}</span></div>`).join('')
+      }</div></div>`).join('')
+    }</div></div>`;
+  }
+  if(t.controversies){
+    html += `<div class="section"><h2><span class="dot"></span>四大版本学公案</h2><div class="controversy-list">${
+      t.controversies.map(c=>`<div class="controversy-item"><div class="ctopic">${c.topic}</div>${
+        c.views.map(v=>`<div class="cview"><b>${v.who}：</b>${v.v}</div>`).join('')
+      }</div>`).join('')
+    }</div></div>`;
+  }
+
+  if(t.female_types){
+    html += `<div class="section"><h2><span class="dot"></span>四类女性形象</h2><div class="female-list">${
+      t.female_types.map(f=>`<div class="female-item"><div class="ftype">${f.type}</div><div>${f.members.map(m=>'· '+m).join('<br/>')}</div><div style="margin-top:8px;color:var(--vermilion-deep);font-size:13px;font-style:italic;">${f.type_comment}</div></div>`).join('')
+    }</div></div>`;
+  }
+
+  if(t.central_officials){
+    html += `<div class="section"><h2><span class="dot"></span>宋代官制</h2>
+      <div class="official-block"><h3>中央四贼</h3>
+        <div class="official-row oh"><div>人物</div><div>官职</div><div>角色</div><div>结局</div></div>
+        ${t.central_officials.map(o=>`<div class="official-row"><div>${o.name}</div><div>${o.post}</div><div>${o.role}</div><div>${o.end}</div></div>`).join('')}
+      </div>
+      <div class="official-block"><h3>地方贪官</h3>
+        ${t.local_officials.map(o=>`<div class="official-row"><div>${o.name}</div><div>${o.post}</div><div style="grid-column:span 2">${o.role}</div></div>`).join('')}
+      </div>
+      <div class="official-block"><h3>差遣官名</h3>
+        ${t.posts.map(p=>`<div class="post-item"><div class="p-post">${p.post}</div><div class="p-holder">${p.holder}</div><div>${p.explain}</div></div>`).join('')}
+      </div>
+    </div>`;
+  }
+
+  if(t.translations){
+    html += `<div class="section"><h2><span class="dot"></span>重要译本一览</h2>
+      <div class="trans-row th"><div>语言</div><div>年代</div><div>译者</div><div>书名</div><div>备注</div></div>
+      ${t.translations.map(tr=>`<div class="trans-row"><div>${tr.lang}</div><div>${tr.year}</div><div>${tr.translator}</div><div style="font-family:var(--font-serif)">${tr.title}</div><div>${tr.note}</div></div>`).join('')}
+    </div>`;
+    if(t.plaks_view) html += `<div class="scholar-view"><b>浦安迪（Andrew Plaks）：</b>${t.plaks_view}</div>`;
+    if(t.miyazaki_view) html += `<div class="scholar-view"><b>宫崎市定：</b>${t.miyazaki_view}</div>`;
+  }
+
+  if(t.paths){
+    html += `<div class="section"><h2><span class="dot"></span>七种上山路径</h2><div class="path-list">${
+      t.paths.map(p=>`<div class="path-item">
+        <div class="pname">${p.path}</div>
+        <div style="font-size:13px;margin:4px 0;"><b>代表：</b>${p.members.join('、')}</div>
+        <div style="font-size:13px;color:var(--ink-light);margin:4px 0;">${p.fate}</div>
+        <div style="font-size:12px;color:var(--vermilion-deep);font-style:italic;">命运总结：${p.fate_summary}</div>
+      </div>`).join('')
+    }</div></div>`;
+    if(t.key_stat) html += `<div class="key-stat">📊 ${t.key_stat}</div>`;
+  }
+
+  // 知识图谱
+  html += `<div class="section"><h2><span class="dot"></span>主题知识图谱</h2>
+    <p style="color:var(--ink-muted);font-size:13px;margin-bottom:10px;">力导向图：红色=人物 / 金色=事件 / 绿色=地点 / 紫色=评点家 / 朱色=主题中心。拖动节点查看关系。</p>
+    <div class="knowledge-graph" id="kGraph"></div>
+  </div>`;
+
+  return html;
+}
+
+function renderGraph(t){
+  const dom = document.getElementById('kGraph');
+  if(!dom) return;
+  const chart = echarts.init(dom);
+  const nodes = [], links = [];
+  const catIdx = {theme:0, hero:1, event:2, place:3, critic:4};
+  const categories = [
+    {name:'主题',itemStyle:{color:'#C4403A'}},
+    {name:'人物',itemStyle:{color:'#C4403A'}},
+    {name:'事件',itemStyle:{color:'#B8860B'}},
+    {name:'地点',itemStyle:{color:'#6B8E4E'}},
+    {name:'评点家',itemStyle:{color:'#7a5195'}}
+  ];
+  nodes.push({id:t.name, name:t.name, category:0, symbolSize:Math.max(50, 20+t.name.length*2), label:{show:true,fontSize:16,fontWeight:'bold',fontFamily:'serif'}, itemStyle:{color:'#8B0000'}});
+  const seen = new Set([t.name]);
+  function addNode(name, cat, size=20){
+    if(!name || seen.has(name)) return;
+    seen.add(name);
+    nodes.push({id:name, name:name.length>14?name.slice(0,13)+'…':name, category:cat, symbolSize:size, label:{show:true,fontSize:11,fontFamily:'serif'}});
+  }
+  function addLink(from,to){
+    if(!from || !to) return;
+    links.push({source:from,target:to});
+  }
+  (t.heroes||[]).forEach(h=>{addNode(h,1,22);addLink(t.name,h);});
+  (t.events_key||[]).forEach(e=>{addNode(e,2,18);addLink(t.name,e);
+    // 事件-人物简单关联（通过关键词）
+    (t.heroes||[]).slice(0,3).forEach(h=>{
+      if(h.length>=2 && (e.includes(h.slice(0,1))||h.includes(e.slice(0,1)))) addLink(h,e);
+    });
+  });
+  (t.places||[]).forEach(p=>{addNode(p,3,18);addLink(t.name,p);});
+  const criticsList = (t.critics||[]).filter(c=>typeof c==='string');
+  criticsList.forEach(c=>{addNode(c,4,18);addLink(t.name,c);});
+
+  const option = {
+    tooltip:{formatter:p=>p.dataType==='node'?p.data.name:''},
+    legend:[{data:categories.map(c=>c.name),top:5,textStyle:{fontFamily:'serif'}}],
+    series:[{
+      type:'graph',
+      layout:'force',
+      roam:true,
+      draggable:true,
+      label:{show:true,position:'right'},
+      force:{repulsion:260, edgeLength:[60,140], gravity:0.08},
+      categories,
+      data:nodes,
+      links:links,
+      lineStyle:{color:'#aaa',curveness:0.1,width:1},
+      emphasis:{focus:'adjacency',lineStyle:{width:2,color:'#C4403A'}},
+      scaleLimit:{min:0.3,max:3}
+    }]
+  };
+  chart.setOption(option);
+  window.addEventListener('resize',()=>chart.resize());
+}
+</script>
+</body>
+</html>

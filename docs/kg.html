@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>知识图谱 · 水浒传本体论</title>
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<style>
+.kg-page{ padding:20px 40px; max-width:1700px; margin:0 auto; }
+.kg-header{ text-align:center; padding:20px 0 10px; }
+.kg-header h1{ font-family:var(--font-serif); font-size:36px; color:var(--vermilion-deep); letter-spacing:4px; }
+.kg-header p{ color:var(--ink-muted); font-family:var(--font-serif); font-size:14px; margin-top:6px; }
+.kg-controls{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin:16px 0; }
+.kg-controls button{ padding:6px 14px; border:1px solid var(--border); background:#fff; border-radius:20px; cursor:pointer; font-family:var(--font-serif); font-size:13px; transition:.2s; }
+.kg-controls button:hover{ background:var(--vermilion-deep); color:#fff; border-color:var(--vermilion-deep); }
+.kg-controls button.active{ background:var(--vermilion); color:#fff; border-color:var(--vermilion); }
+.kg-stats{ display:flex; justify-content:center; gap:24px; flex-wrap:wrap; margin-bottom:16px; }
+.stat-item{ text-align:center; padding:10px 18px; background:#fffdf7; border:1px solid var(--border); border-radius:8px; min-width:90px; }
+.stat-item .num{ font-family:var(--font-serif); font-size:24px; color:var(--vermilion-deep); font-weight:700; }
+.stat-item .lbl{ font-size:12px; color:var(--ink-muted); }
+.kg-canvas{ background:#fffdf7; border:1px solid var(--border); border-radius:12px; height:760px; box-shadow:var(--shadow); }
+.legend-bar{ display:flex; justify-content:center; gap:18px; flex-wrap:wrap; padding:12px; font-family:var(--font-serif); font-size:13px; }
+.legend-bar span{ display:flex; align-items:center; gap:6px; }
+.legend-bar i{ width:12px; height:12px; border-radius:50%; display:inline-block; }
+.info-panel{ position:fixed; right:30px; top:100px; width:320px; max-height:70vh; overflow-y:auto; background:#fffdf7; border:1px solid var(--border); border-radius:10px; padding:16px; box-shadow:0 4px 20px rgba(0,0,0,.12); font-size:13px; display:none; z-index:50; }
+.info-panel.open{ display:block; }
+.info-panel h3{ font-family:var(--font-serif); font-size:18px; color:var(--vermilion-deep); margin-bottom:8px; border-bottom:1px solid var(--border); padding-bottom:6px; }
+.info-panel .meta{ color:var(--ink-muted); font-size:12px; margin-bottom:10px; }
+.info-panel .rels{ margin-top:10px; }
+.info-panel .rels .rel{ padding:4px 0; border-bottom:1px dashed var(--border); }
+.info-panel .close{ position:absolute; top:8px; right:12px; cursor:pointer; font-size:20px; color:var(--ink-muted); }
+.topbar .nav-links a[href="kg.html"]{ color:var(--vermilion); font-weight:600; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span class="seal">水</span><span>水浒传本体论</span></div>
+  <nav class="nav-links">
+    <a href="index.html#home">首页</a>
+    <a href="index.html#versions">版本学</a>
+    <a href="index.html#heroes">108将</a>
+    <a href="themes.html">主题研究</a>
+    <a href="kg.html" class="active">知识图谱</a>
+    <a href="index.html#places">空间地理</a>
+    <a href="index.html#events">叙事结构</a>
+    <a href="index.html#weapons">兵器职官</a>
+    <a href="index.html#critics">评点学术</a>
+    <a href="index.html#derivatives">续书衍生</a>
+    <a href="read.html">版本阅读</a>
+  </nav>
+</header>
+
+<div class="kg-page">
+  <div class="kg-header">
+    <h1>水 浒 知 识 图 谱</h1>
+    <p>Shuihu Knowledge Graph · OWL2 DL 本体 · Neo4j 兼容 · 自然语言问答就绪</p>
+  </div>
+
+  <div class="kg-stats" id="kgStats"></div>
+
+  <div class="kg-controls">
+    <button class="active" data-filter="all">全景</button>
+    <button data-filter="hero">人物关系</button>
+    <button data-filter="version">版本演化</button>
+    <button data-filter="scholar">评点家学术</button>
+    <button data-filter="place">地理空间</button>
+    <button data-filter="event">事件网络</button>
+    <button data-filter="core">核心宋江圈</button>
+  </div>
+
+  <div class="legend-bar">
+    <span><i style="background:#C4403A"></i>梁山好汉</span>
+    <span><i style="background:#8B0000"></i>核心人物</span>
+    <span><i style="background:#555"></i>朝廷/反派</span>
+    <span><i style="background:#B8860B"></i>事件</span>
+    <span><i style="background:#6B8E4E"></i>地点</span>
+    <span><i style="background:#8B4513"></i>版本</span>
+    <span><i style="background:#4A6B8A"></i>学者</span>
+    <span><i style="background:#6B4423"></i>著作</span>
+    <span><i style="background:#8B5A8C"></i>衍生</span>
+    <span><i style="background:#556B2F"></i>组织</span>
+  </div>
+
+  <div class="kg-canvas" id="kgCanvas"></div>
+</div>
+
+<div class="info-panel" id="infoPanel">
+  <span class="close" onclick="document.getElementById('infoPanel').classList.remove('open')">×</span>
+  <h3 id="ipName"></h3>
+  <div class="meta" id="ipMeta"></div>
+  <div id="ipDesc"></div>
+  <div class="rels" id="ipRels"></div>
+</div>
+
+<script>
+let KG=null, chart=null, currentFilter='all';
+
+Promise.all([
+  fetch('data/kg_abox.json').then(r=>r.json()),
+  fetch('data/heroes/heroes.json').then(r=>r.json()),
+  fetch('data/events/events.json').then(r=>r.json()),
+  fetch('data/places/places.json').then(r=>r.json()),
+]).then(([kg,hd,ed,pd])=>{
+  KG = kg;
+  window.HEROES = hd.heroes||[];
+  window.EVENTS = ed.events||[];
+  window.PLACES = pd.places||[];
+  renderStats();
+  initChart();
+  buildGraph('all');
+}).catch(e=>console.error(e));
+
+function renderStats(){
+  document.getElementById('kgStats').innerHTML = `
+    <div class="stat-item"><div class="num">${KG.heroes.length}</div><div class="lbl">人物</div></div>
+    <div class="stat-item"><div class="num">${KG.relations.length}</div><div class="lbl">关系</div></div>
+    <div class="stat-item"><div class="num">${KG.versions.length}</div><div class="lbl">版本</div></div>
+    <div class="stat-item"><div class="num">${KG.places.length}</div><div class="lbl">地点</div></div>
+    <div class="stat-item"><div class="num">${KG.scholars.length}</div><div class="lbl">学者</div></div>
+    <div class="stat-item"><div class="num">${KG.works_aca.length}</div><div class="lbl">学术著作</div></div>
+    <div class="stat-item"><div class="num">${KG.organizations.length}</div><div class="lbl">组织</div></div>
+    <div class="stat-item"><div class="num">${KG.derivatives.length}</div><div class="lbl">衍生作品</div></div>
+    <div class="stat-item"><div class="num">${KG.relation_types.length}</div><div class="lbl">关系类型</div></div>
+  `;
+}
+
+function initChart(){
+  chart = echarts.init(document.getElementById('kgCanvas'));
+  chart.on('click', p=>{
+    if(p.dataType==='node') showNode(p.data.id, p.data.cat);
+  });
+  window.addEventListener('resize',()=>chart.resize());
+}
+
+function buildGraph(filter){
+  currentFilter = filter;
+  const nodes=[], links=[], nodeMap={};
+  function add(id, cat, size, extra){
+    if(nodeMap[id]) return nodeMap[id];
+    const n = {id, name:id, category:cat, symbolSize:size||18, label:{show:size>=24,fontSize:size>=30?13:11,fontFamily:'serif'}, ...(extra||{})};
+    nodes.push(n); nodeMap[id]=n; return n;
+  }
+
+  // 颜色分类
+  const catMap = {
+    hero:'梁山好汉', heroCore:'核心人物', court:'朝廷/反派',
+    event:'事件', place:'地点', version:'版本',
+    scholar:'学者', work:'著作', derivative:'衍生', org:'组织'
+  };
+  const catColor = {
+    hero:'#C4403A', heroCore:'#8B0000', court:'#555',
+    event:'#B8860B', place:'#6B8E4E', version:'#8B4513',
+    scholar:'#4A6B8A', work:'#6B4423', derivative:'#8B5A8C', org:'#556B2F'
+  };
+
+  const coreHeroes = new Set(['宋江','卢俊义','吴用','公孙胜','林冲','鲁智深','武松','李逵','花荣','杨志','燕青','柴进','高俅','蔡京','戴宗','张顺','扈三娘','晁盖']);
+
+  // --- 构建节点 ---
+  if(filter==='all' || filter==='hero' || filter==='core'){
+    const heroList = KG.heroes;
+    const showHeroes = filter==='core' ? heroList.filter(h=>coreHeroes.has(h.name)||h.rank<=12) : heroList;
+    showHeroes.forEach(h=>{
+      const isCore = coreHeroes.has(h.name) || (h.rank&&h.rank<=12);
+      add(h.name, isCore?'heroCore':'hero', isCore?32:(h.rank<=36?22:14));
+    });
+    // 英雄间关系
+    KG.relations.forEach(r=>{
+      if(!nodeMap[r.from] || !nodeMap[r.to]) return;
+      const fromCat = nodeMap[r.from].category, toCat = nodeMap[r.to].category;
+      if((fromCat==='hero'||fromCat==='heroCore'||fromCat==='court')&&(toCat==='hero'||toCat==='heroCore'||toCat==='court')){
+        links.push({source:r.from,target:r.to,label:{show:false},value:r.type,lineStyle:{width:r.type==='结拜为兄弟'?2:1,color:catColor[fromCat]||'#888',opacity:.5}});
+      }
+    });
+  }
+
+  if(filter==='all' || filter==='version'){
+    KG.versions.forEach(v=>add(v.name,'version',24));
+    KG.relations.forEach(r=>{
+      if(r.type==='演化自' && nodeMap[r.from] && nodeMap[r.to]){
+        links.push({source:r.from,target:r.to,lineStyle:{color:'#8B4513',width:2,type:'dashed'},label:{show:false},value:'演化自'});
+      }
+    });
+  }
+
+  if(filter==='all' || filter==='scholar'){
+    KG.scholars.forEach(s=>add(s.name,'scholar',24));
+    KG.works_aca.forEach(w=>{
+      add(w.title,'work',w.cat==='评点本'?22:16);
+      if(w.author && nodeMap[w.author]) links.push({source:w.author,target:w.title,lineStyle:{color:'#4A6B8A',width:1.5},value:'创作'});
+    });
+    KG.relations.forEach(r=>{
+      if((r.type==='评点'||r.type==='研究') && nodeMap[r.from] && nodeMap[r.to]){
+        links.push({source:r.from,target:r.to,lineStyle:{color:'#8B0000',width:1.2,opacity:.7},value:r.type});
+      }
+    });
+  }
+
+  if(filter==='all' || filter==='place'){
+    KG.places.forEach((p,i)=>add(p.name,'place',i<12?22:14));
+    KG.relations.forEach(r=>{
+      if(r.type==='位于' && nodeMap[r.from] && nodeMap[r.to]){
+        links.push({source:r.from,target:r.to,lineStyle:{color:'#6B8E4E',width:1,opacity:.5},value:'位于'});
+      }
+    });
+  }
+
+  if(filter==='all' || filter==='event'){
+    (EVENTS.length?EVENTS:[]).forEach((e,i)=>add(e.name||e.title,'event',i<10?22:14));
+  }
+
+  if(filter==='all' || filter==='core'){
+    // 朝廷关键人物
+    ['高俅','蔡京','童贯','杨戬','宋徽宗','宿元景','李师师','黄文炳'].forEach(n=>add(n,'court',22));
+    // 核心地点
+    ['梁山泊','东京汴梁','忠义堂','江州','大名府','六和塔','蓼儿洼','二龙山','祝家庄'].forEach(n=>add(n,'place',20));
+    // 核心事件
+    ['洪太尉误走妖魔','林教头风雪山神庙','智取生辰纲','武松打虎','梁山英雄排座次','招安授官','征方腊','鲁智深浙江坐化','神聚蓼儿洼'].forEach(n=>add(n,'event',20));
+    // 核心组织
+    ['梁山泊','朝廷','二龙山','祝家庄','曾头市','方腊义军','田虎义军','王庆义军','大辽'].forEach(n=>add(n,'org',18));
+
+    // 中心宋江辐射
+    if(nodeMap['宋江']){
+      ['李逵','吴用','花荣','晁盖','戴宗','柴进','武松','鲁智深','林冲','卢俊义','高俅','梁山泊','忠义堂','招安授官','神聚蓼儿洼','梁山英雄排座次'].forEach(t=>{
+        if(nodeMap[t] && !links.find(l=>(l.source==='宋江'&&l.target===t)||(l.source===t&&l.target==='宋江'))){
+          links.push({source:'宋江',target:t,lineStyle:{color:'#C4403A',width:1.5,opacity:.7},value:'核心关联'});
+        }
+      });
+    }
+  }
+
+  // 构建 categories 列表（按当前出现的 cat）
+  const usedCats = new Set(nodes.map(n=>n.category));
+  const categories = Object.keys(catMap).filter(c=>usedCats.has(c)).map(c=>({name:catMap[c],itemStyle:{color:catColor[c]}}));
+  nodes.forEach(n=>{ n.category = categories.findIndex(c=>c.name===catMap[n.category]); });
+
+  // 过滤孤立节点（在特定视图下）
+  const connected = new Set();
+  links.forEach(l=>{connected.add(l.source);connected.add(l.target);});
+  const shownNodes = nodes.filter(n=>connected.has(n.id) || n.symbolSize>=24);
+
+  const option = {
+    tooltip:{
+      formatter:p=>{
+        if(p.dataType==='node') return `<b>${p.data.id}</b><br/>类别：${p.data.name}${p.data.desc?('<br/>'+p.data.desc):''}`;
+        if(p.dataType==='edge') return `${p.data.value||'关联'}`;
+        return '';
+      }
+    },
+    legend:[{data:categories.map(c=>c.name),top:10,textStyle:{fontFamily:'serif',fontSize:12}}],
+    series:[{
+      type:'graph',
+      layout:'force',
+      roam:true,
+      draggable:true,
+      label:{show:true,position:'right',formatter:p=>p.data.name},
+      force:{repulsion: filter==='all'?180:300, edgeLength:[60,160], gravity:0.08, friction:0.3},
+      categories,
+      data:shownNodes,
+      links,
+      lineStyle:{curveness:0.1},
+      emphasis:{focus:'adjacency',lineStyle:{width:3}},
+      scaleLimit:{min:0.2,max:4}
+    }]
+  };
+  chart.setOption(option, true);
+}
+
+function showNode(id, catIdx){
+  const panel = document.getElementById('infoPanel');
+  // 查英雄
+  let meta='', desc='', relsHtml='';
+  const h = HEROES.find(x=>x.name===id);
+  if(h){
+    meta = `${h.star||''} · 排行${h.rank||'-'} · ${h.star_group||''} · ${h.faction||''}`;
+    desc = `<div><b>绰号：</b>${h.nickname}</div>
+            <div><b>出身：</b>${h.origin||'-'}</div>
+            <div><b>职位：</b>${h.post||'-'}</div>
+            <div><b>兵器：</b>${h.arms||'-'}</div>
+            <div><b>结局：</b>${h.end||'-'}</div>
+            <div><b>首次出场：</b>${h.appear_chapter||'-'}</div>`;
+  }
+  const v = KG.versions.find(x=>x.name===id);
+  if(v){
+    meta = `${v.date} · ${v.system} · ${v.chapters}回 · ${v.size||''}`;
+    desc = `<div>${(v.features||[]).map(f=>'· '+f).join('<br/>')}</div>`;
+  }
+  const s = KG.scholars.find(x=>x.name===id);
+  if(s){
+    meta = `${s.life||''} · ${s.era||''} · ${s.school||''}`;
+    desc = `<div><b>方向：</b>${s.direction||'-'}</div><div><b>核心观点：</b>${s.core_view||'-'}</div><div><b>著作：</b>${(s.works||[]).join('、')}</div>`;
+  }
+  const pl = PLACES.find(x=>x.name===id);
+  if(pl){
+    meta = `${pl.type||''} · ${pl.province||''}`;
+    desc = `<div>${pl.desc||'-'}</div><div><b>涉及回目：</b>${pl.chapters||'-'}</div>`;
+  }
+  const ev = EVENTS.find(x=>(x.name||x.title)===id);
+  if(ev){
+    meta = `${ev.chapter||''}`;
+    desc = `<div>${ev.desc||ev.summary||'-'}</div>`;
+  }
+
+  // 找相关关系
+  const related = KG.relations.filter(r=>r.from===id||r.to===id).slice(0,30);
+  if(related.length){
+    relsHtml = '<h4 style="margin-top:10px;font-family:serif;color:var(--vermilion-deep)">相关关系 ('+related.length+')</h4>'+
+      related.map(r=>`<div class="rel">${r.from} — <i style="color:var(--vermilion)">${r.type}</i> → ${r.to}<br/><span style="font-size:11px;color:var(--ink-muted)">${r.desc||''}</span></div>`).join('');
+  }
+  document.getElementById('ipName').textContent = id;
+  document.getElementById('ipMeta').textContent = meta;
+  document.getElementById('ipDesc').innerHTML = desc;
+  document.getElementById('ipRels').innerHTML = relsHtml;
+  panel.classList.add('open');
+}
+
+// 控制按钮
+document.querySelectorAll('.kg-controls button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.kg-controls button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    buildGraph(b.dataset.filter);
+  });
+});
+</script>
+</body>
+</html>
