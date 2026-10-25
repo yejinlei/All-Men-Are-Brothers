@@ -155,6 +155,19 @@ function buildGraph(filter){
     scholar:'#4A6B8A', work:'#6B4423', derivative:'#8B5A8C', org:'#556B2F'
   };
 
+  // id → 名称 解析器：本体论关系端点混用 id 与名称，统一解析为「节点名称」，否则边会被静默丢弃
+  const RESOLVE = {};
+  function reg(list, idKey, nameKey){
+    (list||[]).forEach(x=>{ if(x && x[idKey]!=null && x[nameKey]!=null) RESOLVE[String(x[idKey])] = String(x[nameKey]); });
+  }
+  reg(KG.heroes,'id','name');   reg(KG.scholars,'id','name');
+  reg(KG.places,'id','name');   reg(KG.organizations,'id','name');
+  reg(KG.derivatives,'id','name'); reg(KG.versions,'id','name');
+  reg(KG.works_aca,'id','title');
+  reg(window.EVENTS,'id','name'); reg(window.EVENTS,'id','title');
+  reg(window.PLACES,'id','name');
+  const R = v => (v!=null && RESOLVE[String(v)]!==undefined) ? RESOLVE[String(v)] : v;
+
   const coreHeroes = new Set(['宋江','卢俊义','吴用','公孙胜','林冲','鲁智深','武松','李逵','花荣','杨志','燕青','柴进','高俅','蔡京','戴宗','张顺','扈三娘','晁盖']);
 
   // --- 构建节点 ---
@@ -167,10 +180,11 @@ function buildGraph(filter){
     });
     // 英雄间关系
     KG.relations.forEach(r=>{
-      if(!nodeMap[r.from] || !nodeMap[r.to]) return;
-      const fromCat = nodeMap[r.from].category, toCat = nodeMap[r.to].category;
+      const rf=R(r.from), rt=R(r.to);
+      if(!nodeMap[rf] || !nodeMap[rt]) return;
+      const fromCat = nodeMap[rf].category, toCat = nodeMap[rt].category;
       if((fromCat==='hero'||fromCat==='heroCore'||fromCat==='court')&&(toCat==='hero'||toCat==='heroCore'||toCat==='court')){
-        links.push({source:r.from,target:r.to,label:{show:false},value:r.type,lineStyle:{width:r.type==='结拜为兄弟'?2:1,color:catColor[fromCat]||'#888',opacity:.5}});
+        links.push({source:rf,target:rt,label:{show:false},value:r.type,lineStyle:{width:r.type==='结拜为兄弟'?2:1,color:catColor[fromCat]||'#888',opacity:.5}});
       }
     });
   }
@@ -178,8 +192,9 @@ function buildGraph(filter){
   if(filter==='all' || filter==='version'){
     KG.versions.forEach(v=>add(v.name,'version',24));
     KG.relations.forEach(r=>{
-      if(r.type==='演化自' && nodeMap[r.from] && nodeMap[r.to]){
-        links.push({source:r.from,target:r.to,lineStyle:{color:'#8B4513',width:2,type:'dashed'},label:{show:false},value:'演化自'});
+      const rf=R(r.from), rt=R(r.to);
+      if(r.type==='演化自' && nodeMap[rf] && nodeMap[rt]){
+        links.push({source:rf,target:rt,lineStyle:{color:'#8B4513',width:2,type:'dashed'},label:{show:false},value:'演化自'});
       }
     });
   }
@@ -191,8 +206,9 @@ function buildGraph(filter){
       if(w.author && nodeMap[w.author]) links.push({source:w.author,target:w.title,lineStyle:{color:'#4A6B8A',width:1.5},value:'创作'});
     });
     KG.relations.forEach(r=>{
-      if((r.type==='评点'||r.type==='研究') && nodeMap[r.from] && nodeMap[r.to]){
-        links.push({source:r.from,target:r.to,lineStyle:{color:'#8B0000',width:1.2,opacity:.7},value:r.type});
+      const rf=R(r.from), rt=R(r.to);
+      if((r.type==='评点'||r.type==='研究') && nodeMap[rf] && nodeMap[rt]){
+        links.push({source:rf,target:rt,lineStyle:{color:'#8B0000',width:1.2,opacity:.7},value:r.type});
       }
     });
   }
@@ -200,8 +216,9 @@ function buildGraph(filter){
   if(filter==='all' || filter==='place'){
     KG.places.forEach((p,i)=>add(p.name,'place',i<12?22:14));
     KG.relations.forEach(r=>{
-      if(r.type==='位于' && nodeMap[r.from] && nodeMap[r.to]){
-        links.push({source:r.from,target:r.to,lineStyle:{color:'#6B8E4E',width:1,opacity:.5},value:'位于'});
+      const rf=R(r.from), rt=R(r.to);
+      if(r.type==='位于' && nodeMap[rf] && nodeMap[rt]){
+        links.push({source:rf,target:rt,lineStyle:{color:'#6B8E4E',width:1,opacity:.5},value:'位于'});
       }
     });
   }
@@ -229,6 +246,29 @@ function buildGraph(filter){
       });
     }
   }
+
+  if(filter==='all'){
+    KG.derivatives.forEach((d,i)=>add(d.name,'derivative',i<8?22:14));
+    KG.organizations.forEach((o,i)=>add(o.name,'org',i<10?20:13));
+  }
+
+  // 通用关系补全：把上面各分支未渲染的关系类型按「解析后的名称」连边（跳过 864 条冗余的「登场于」）
+  (function(){
+    const seen = new Set(links.map(l=>l.source+'\u0000'+l.target+'\u0000'+l.value));
+    const skip = new Set(['登场于']);
+    const relColor = {'参与':'#B8860B','发生于':'#B8860B','改编自':'#8B5A8C','创作':'#4A6B8A',
+                      '学术论战':'#8B0000','研究':'#8B0000','评点':'#8B0000','位于':'#6B8E4E','演化自':'#8B4513'};
+    KG.relations.forEach(r=>{
+      if(skip.has(r.type)) return;
+      const rf=R(r.from), rt=R(r.to);
+      if(!nodeMap[rf] || !nodeMap[rt] || rf===rt) return;
+      const key = rf+'\u0000'+rt+'\u0000'+r.type;
+      if(seen.has(key)) return;
+      seen.add(key);
+      links.push({source:rf, target:rt, label:{show:false}, value:r.type,
+        lineStyle:{color:relColor[r.type]||'#999', width:r.type==='结拜为兄弟'?2:1, opacity:.45}});
+    });
+  })();
 
   // 构建 categories 列表（按当前出现的 cat）
   const usedCats = new Set(nodes.map(n=>n.category));
@@ -303,10 +343,10 @@ function showNode(id, catIdx){
   }
 
   // 找相关关系
-  const related = KG.relations.filter(r=>r.from===id||r.to===id).slice(0,30);
+  const related = KG.relations.filter(r=>R(r.from)===id||R(r.to)===id).slice(0,30);
   if(related.length){
     relsHtml = '<h4 style="margin-top:10px;font-family:serif;color:var(--vermilion-deep)">相关关系 ('+related.length+')</h4>'+
-      related.map(r=>`<div class="rel">${r.from} — <i style="color:var(--vermilion)">${r.type}</i> → ${r.to}<br/><span style="font-size:11px;color:var(--ink-muted)">${r.desc||''}</span></div>`).join('');
+      related.map(r=>`<div class="rel">${R(r.from)} — <i style="color:var(--vermilion)">${r.type}</i> → ${R(r.to)}<br/><span style="font-size:11px;color:var(--ink-muted)">${r.desc||''}</span></div>`).join('');
   }
   document.getElementById('ipName').textContent = id;
   document.getElementById('ipMeta').textContent = meta;

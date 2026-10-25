@@ -333,7 +333,7 @@ function renderPlaces() {
     const r = st.r;
     const off = r + (big?9:7);
     const d = DIR[ov.anchor || 'r'];
-    return {name:p.name, desc:p.desc, x, y, r, fill:st.fill,
+    return {name:p.name, desc:p.desc, x, y, _ox:x, _oy:y, r, fill:st.fill,
             big, fontS: big?13:11, fw: big?700:500,
             anchor: ov.anchor || 'r', base: ov.anchor || 'r',
             ix: x + d[0]*off, iy: y + d[1]*off,
@@ -366,6 +366,28 @@ function renderPlaces() {
     const R = m.r + 2.5;
     return d < R ? (R-d)*(R-d) : 0;
   }
+  // ⓪ 圆点互斥：同城/近邻点先散开（位移 ≤34px，保留地理关系）
+  for(let it=0; it<260; it++){
+    let moved = 0;
+    for(let a=0; a<nodes.length; a++) for(let b=a+1; b<nodes.length; b++){
+      const A=nodes[a], B=nodes[b];
+      let dx=A.x-B.x, dy=A.y-B.y, d=Math.hypot(dx,dy);
+      const need = A.r + B.r + 2.5;
+      if(d < need){
+        if(d<0.01){ dx=(a<b?1:-1); dy=0.6; d=Math.hypot(dx,dy); }
+        const push=(need-d)/2, ux=dx/d, uy=dy/d;
+        A.x+=ux*push; A.y+=uy*push; B.x-=ux*push; B.y-=uy*push;
+        moved++;
+      }
+    }
+    nodes.forEach(n=>{
+      const ddx=n.x-n._ox, ddy=n.y-n._oy, dd=Math.hypot(ddx,ddy);
+      if(dd>34){ n.x=n._ox+ddx/dd*34; n.y=n._oy+ddy/dd*34; }
+    });
+    if(!moved) break;
+  }
+  nodes.forEach(n=>reposition(n, n.base));
+
   // ① 贪心锚点：按「大点优先」顺序，为每个标签在 8 个方向中挑压盖最少者
   const order = nodes.slice().sort((a,b)=>(b.r-a.r)||(b.fontS-a.fontS));
   const placed = [];
