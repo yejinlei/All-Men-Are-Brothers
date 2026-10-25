@@ -51,10 +51,13 @@ async function boot() {
 /* ---------- 导航切换 ---------- */
 document.querySelectorAll('.nav-links a').forEach(a=>{
   a.addEventListener('click', e=>{
-    e.preventDefault();
     const sec = a.dataset.sec;
+    // 外链（跳到 themes.html / kg.html / read.html 等）不拦截，走默认跳转
+    if(!sec) return;
+    e.preventDefault();
     document.querySelectorAll('.section').forEach(s=>s.classList.add('hidden'));
-    document.getElementById(sec).classList.remove('hidden');
+    const target = document.getElementById(sec);
+    if(target) target.classList.remove('hidden');
     document.querySelectorAll('.nav-links a').forEach(x=>x.classList.remove('active'));
     a.classList.add('active');
     window.scrollTo({top:0, behavior:'smooth'});
