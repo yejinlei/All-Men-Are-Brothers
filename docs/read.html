@@ -63,6 +63,8 @@ body:not(.show-comments) .comment-side{display:none !important;}
         <select id="selCmt">
           <option value="none">关闭批注</option>
           <option value="jinpi" selected>金圣叹批</option>
+          <option value="lizhuo">李卓吾批（容与堂）</option>
+          <option value="yuanwy">袁无涯批（百二十回）</option>
           <option value="jiqin">冀勤校注</option>
         </select>
       </span>
@@ -88,7 +90,7 @@ const state = {
   cmt: localStorage.getItem('sh_cmt') || 'jinpi',
   versions: [],
   chapters: {},
-  comments: { jinpi:null, jiqin:null }
+  comments: { jinpi:null, jiqin:null, lizhuo:null, yuanwy:null }
 };
 
 /* ========== 工具 ========== */
@@ -235,57 +237,73 @@ function updatePager(){
 function goto(n){ state.ch=n; syncURL(); document.getElementById('selChap').value=n; loadChapter(); window.scrollTo(0,0); }
 
 /* ========== 批注 ========== */
+const CMT_META = {
+  jinpi: { name:'金圣叹批', who:'金圣叹', color:'var(--gold)', file:'jinpi_comments.json',
+           okVer:['v70','jin70','jin70_pi','jinshengtan'], dataKey: d => d.jin70_pi || d.jinpi || d },
+  lizhuo:{ name:'李卓吾批（容与堂）', who:'李卓吾（容与堂本）', color:'#8b4513', file:'lizhuo_comments.json',
+           okVer:['v100','jiqin'], dataKey: d => d },
+  yuanwy:{ name:'袁无涯批（百二十回）', who:'袁无涯评（杨定见本）', color:'#2e5a88', file:'yuanwy_comments.json',
+           okVer:['v120'], dataKey: d => d },
+  jiqin: { name:'冀勤校注', who:'冀勤校注', color:'var(--jade,#5b8c5a)', file:'jiqin_notes.json',
+           okVer:['v100','jiqin'], dataKey: d => d }
+};
+
 async function applyComments(){
   document.body.classList.remove('show-comments');
   document.querySelectorAll('.comment-anchor,.comment-side,.zongpi-block').forEach(e=>e.remove());
   if(state.cmt==='none') return;
 
-  let key = state.cmt;
+  const key = state.cmt;
+  const meta = CMT_META[key];
+  if(!meta){ return; }
+
   if(!state.comments[key]){
-    const path = key==='jinpi' ? 'texts/versions/jinpi_comments.json' : 'texts/versions/jiqin_notes.json';
-    try{ state.comments[key] = await loadJSON(path); }catch(e){ state.comments[key] = {}; }
+    try{ state.comments[key] = await loadJSON('texts/versions/'+meta.file); }catch(e){ state.comments[key] = null; }
   }
   const data = state.comments[key];
-  // 批注适用版本
-  const okVer = (key==='jinpi') ? ['v70','jin70','jin70_pi','jinshengtan'] : ['v100','jiqin'];
-  if(!okVer.includes(state.vid)){
+  if(!data){
     document.getElementById('contentWrap').insertAdjacentHTML('beforeend',
-      `<div class="zongpi-block" style="background:#f7f1e1;border-left:4px solid var(--ink-muted, #999);padding:14px 20px;margin:30px 0;border-radius:0 6px 6px 0;font-size:13px;color:var(--ink-muted);font-family:var(--font-serif);">此批注（${key==='jinpi'?'金圣叹批':'冀勤校注'}）仅适用于对应底本版本，请在版本下拉中切换到相应版本查看。</div>`);
+      `<div class="zongpi-block" style="background:#f7f1e1;padding:14px 20px;margin:30px 0;border-radius:6px;text-align:center;font-size:13px;color:#999;">加载${meta.name}失败。</div>`);
     return;
   }
-  // 数据键：金批为 jin70_pi（或第一个 key），冀勤为冀勤字典本
-  const sub = key==='jinpi' ? (data.jin70_pi || data.jinpi || data) : data;
+  if(!meta.okVer.includes(state.vid)){
+    document.getElementById('contentWrap').insertAdjacentHTML('beforeend',
+      `<div class="zongpi-block" style="background:#f7f1e1;border-left:4px solid #999;padding:14px 20px;margin:30px 0;border-radius:0 6px 6px 0;font-size:13px;color:#777;font-family:var(--font-serif);">此批注（${meta.name}）仅适用于 ${meta.okVer.map(v=>({v100:'百回本',v120:'百二十回',v70:'七十回本',jin70:'金本繁',jin70_pi:'金批本',jinshengtan:'金批简',jiqin:'冀勤校注本'}[v]||v)).join('、')}，请切换到相应版本查看。</div>`);
+    return;
+  }
+
+  // 李卓吾/袁无涯采用新结构：chapters 数组，每条含 chapter/title/chapter_comments（数组，含type/text/anchor）
+  if(key==='lizhuo' || key==='yuanwy'){
+    renderCriticComments(data, meta);
+    return;
+  }
+
+  // 金圣叹/冀勤使用字典结构（键为回目序号）
+  const sub = meta.dataKey(data);
   const chKey = String(state.ch);
   const chData = sub[chKey];
   if(!chData){
     document.getElementById('contentWrap').insertAdjacentHTML('beforeend',
-      `<div class="zongpi-block" style="background:#f7f1e1;padding:14px 20px;margin:30px 0;border-radius:6px;font-size:13px;color:var(--ink-muted);font-family:var(--font-serif);text-align:center;">本回暂无${key==='jinpi'?'金圣叹':'冀勤'}批注。</div>`);
+      `<div class="zongpi-block" style="background:#f7f1e1;padding:14px 20px;margin:30px 0;border-radius:6px;font-size:13px;color:#999;font-family:var(--font-serif);text-align:center;">本回暂无${meta.name}。</div>`);
     return;
   }
-  // 解析批注：preface=回前总批；数字键=夹批/注释
   let html = '<div class="zongpi-block" style="margin-top:40px;">';
-  const who = key==='jinpi' ? '金圣叹' : '冀勤';
-  const color = key==='jinpi' ? 'var(--gold)' : 'var(--jade,#5b8c5a)';
-  // 回前总批
   if(chData.preface){
-    html += `<div style="background:#f8edd0;border-left:4px solid ${color};padding:14px 20px;margin-bottom:14px;border-radius:0 6px 6px 0;font-size:14px;color:var(--ink-light);font-family:var(--font-serif);line-height:2;">
-      <div style="color:var(--vermilion-deep);font-weight:700;margin-bottom:8px;letter-spacing:3px;">【${who}·回前总批】</div>
+    html += `<div style="background:#f8edd0;border-left:4px solid ${meta.color};padding:14px 20px;margin-bottom:14px;border-radius:0 6px 6px 0;font-size:14px;color:var(--ink-light);font-family:var(--font-serif);line-height:2;">
+      <div style="color:var(--vermilion-deep);font-weight:700;margin-bottom:8px;letter-spacing:3px;">【${meta.who}·回前总批】</div>
       <div style="white-space:pre-wrap;">${escapeHTML(chData.preface).replace(/\n/g,'<br>')}</div>
     </div>`;
   }
-  // 夹批/注释列表
   const pis = Object.keys(chData).filter(k=>k!=='preface' && chData[k]);
   if(pis.length){
     html += `<div style="background:#fdf8ec;border:1px solid var(--border);padding:16px 20px;border-radius:6px;font-size:13px;color:var(--ink-light);font-family:var(--font-serif);line-height:2;">
-      <div style="color:var(--vermilion-deep);font-weight:700;margin-bottom:8px;letter-spacing:3px;">【${who}·夹批校注·共${pis.length}条】</div>`;
+      <div style="color:var(--vermilion-deep);font-weight:700;margin-bottom:8px;letter-spacing:3px;">【${meta.who}·夹批校注·共${pis.length}条】</div>`;
     pis.forEach((k,i)=>{
       const txt = chData[k];
       if(typeof txt === 'string'){
         html += `<div style="padding:4px 0;border-bottom:1px dashed var(--border);"><b style="color:var(--vermilion);margin-right:6px;">[${i+1}]</b>${escapeHTML(txt)}</div>`;
       }else if(txt && typeof txt==='object'){
-        // 嵌套注释
-        const entries = Object.entries(txt);
-        entries.forEach(([kk,vv])=>{
+        Object.entries(txt).forEach(([kk,vv])=>{
           html += `<div style="padding:4px 0;border-bottom:1px dashed var(--border);"><b style="color:var(--vermilion);margin-right:6px;">[${i+1}.${kk}]</b>${escapeHTML(String(vv))}</div>`;
         });
       }
@@ -293,6 +311,89 @@ async function applyComments(){
     html += '</div>';
   }
   html += '</div>';
+  document.getElementById('contentWrap').insertAdjacentHTML('beforeend', html);
+}
+
+function renderCriticComments(data, meta){
+  // 用回目标题或序号匹配（容与堂/袁无涯批语的 chapter 字段是中文数字，用 title 模糊匹配）
+  const chapObj = state.chapters[state.vid].chapters[state.ch];
+  const curTitle = chapObj.title || '';
+  // 尝试匹配：先按章节序号；容与堂一百回，state.ch 从0开始，第1回=张天师
+  // chapter 字段形如 "第三回"，curTitle 形如 "第一回 张天师祈禳瘟疫…"
+  // 构造当前回的中文数字
+  const cnNum = ['零','一','二','三','四','五','六','七','八','九','十'];
+  function toCn(n){
+    if(n<=10) return cnNum[n];
+    if(n<20) return '十'+(n%10?cnNum[n%10]:'');
+    if(n%10===0) return cnNum[Math.floor(n/10)]+'十';
+    return cnNum[Math.floor(n/10)]+'十'+cnNum[n%10];
+  }
+  // ch 0 是引首/楔子
+  let target = state.ch===0 ? (curTitle.includes('引首')||curTitle.includes('楔子') ? null : null) : '第'+toCn(state.ch)+'回';
+  if(state.ch===0 && (curTitle.includes('引首')||curTitle.includes('张天师'))) target = '引首+第一回';
+
+  const chaps = data.chapters || [];
+  // 序论（如李贽叙、发凡）
+  let html = '<div class="zongpi-block" style="margin-top:40px;">';
+
+  // 序文/总评（仅第0回/第一回看）
+  if(state.ch<=1){
+    const prefaces = [];
+    chaps.forEach(c=>{
+      (c.preface_comments||[]).forEach(p=>prefaces.push(p));
+    });
+    if(prefaces.length){
+      html += `<div style="background:#f5ead0;border-left:4px solid ${meta.color};padding:14px 20px;margin-bottom:14px;border-radius:0 6px 6px 0;font-size:14px;color:var(--ink-light);font-family:var(--font-serif);line-height:2;">
+        <div style="color:var(--vermilion-deep);font-weight:700;margin-bottom:8px;letter-spacing:3px;">【${meta.who}·序文述语】</div>`;
+      prefaces.forEach(p=>{
+        html += `<div style="margin:10px 0;padding-top:8px;border-top:1px dashed var(--border);">
+          <div style="font-size:12px;color:var(--ink-muted);margin-bottom:4px;">—— ${escapeHTML(p.author||meta.who)}《${escapeHTML(p.source||'评点')}》</div>
+          <div style="white-space:pre-wrap;">${escapeHTML(p.text).replace(/\n/g,'<br>')}</div>
+        </div>`;
+      });
+      html += '</div>';
+    }
+  }
+
+  // 找匹配的 chapter
+  const matched = chaps.find(c=>{
+    if(!c.chapter) return false;
+    if(target && c.chapter===target) return true;
+    if(c.chapter==='全书') return false; // 全书总评最后单独列
+    if(curTitle && c.title && curTitle.includes(c.title.slice(0,6))) return true;
+    return false;
+  }) || chaps.find(c=>c.chapter==='全书');
+
+  if(matched){
+    const comments = matched.chapter_comments || [];
+    if(comments.length){
+      html += `<div style="background:#fdf8ec;border:1px solid var(--border);padding:16px 20px;border-radius:6px;font-size:14px;color:var(--ink-light);font-family:var(--font-serif);line-height:2;">
+        <div style="color:var(--vermilion-deep);font-weight:700;margin-bottom:10px;letter-spacing:3px;">【${meta.who}·回末总评与眉批精粹】</div>`;
+      comments.forEach((c,i)=>{
+        const label = c.type==='回末总评' ? '回末总评' : (c.type==='眉批'?'眉批':(c.type==='旁批'?'旁批':(c.type==='夹批'?'夹批':c.type||'评')));
+        html += `<div style="padding:8px 0;border-bottom:1px dashed var(--border);">
+          <b style="color:${meta.color};margin-right:8px;font-size:12px;letter-spacing:1px;">[${label}${c.anchor?'·'+escapeHTML(c.anchor):''}]</b>
+          <span>${escapeHTML(c.text)}</span>
+        </div>`;
+      });
+      html += '</div>';
+    }
+  }
+
+  // 艺术论（第一回显示）
+  if(state.ch<=1 && data.art_theory && data.art_theory.length){
+    html += `<div style="background:#eef3ea;border-left:4px solid ${meta.color};padding:14px 20px;margin-top:14px;border-radius:0 6px 6px 0;font-size:13px;color:var(--ink-light);font-family:var(--font-serif);line-height:2;">
+      <div style="color:var(--vermilion-deep);font-weight:700;margin-bottom:8px;letter-spacing:3px;">【${meta.who}·小说艺术论要点】</div>`;
+    data.art_theory.forEach(a=>{
+      html += `<div style="padding:6px 0;"><b style="color:${meta.color};">「${escapeHTML(a.keyword)}」</b>（${escapeHTML(a.source)}）：${escapeHTML(a.point)}</div>`;
+    });
+    html += '</div>';
+  }
+
+  html += '</div>';
+  if(html.indexOf('回末总评')<0 && html.indexOf('序文述语')<0 && html.indexOf('艺术论')<0 && (!matched || !(matched.chapter_comments||[]).length)){
+    html = `<div class="zongpi-block" style="background:#f7f1e1;padding:14px 20px;margin:30px 0;border-radius:6px;font-size:13px;color:#999;font-family:var(--font-serif);text-align:center;">本回${meta.name}正在陆续整理中。<br><small style="color:#bbb;">已收录经典回评涉及第1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/21/23/30/38/43/71/82/90/100/119/120 等核心回目。</small></div>`;
+  }
   document.getElementById('contentWrap').insertAdjacentHTML('beforeend', html);
 }
 

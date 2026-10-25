@@ -40,5 +40,39 @@
    "name": "征四寇（简本后段）",
    "count": 38
   }
+ ],
+ "commentaries": [
+  {
+   "id": "jinpi",
+   "name": "金圣叹批（贯华堂七十回本）",
+   "file": "jinpi_comments.json",
+   "suitableVersions": ["v70", "jin70", "jin70_pi", "jinshengtan"],
+   "dynasty": "明崇祯十四年（1641）",
+   "note": "金圣叹批改本，共70回，含回前总批、夹批、眉批。"
+  },
+  {
+   "id": "lizhuo",
+   "name": "李卓吾批（容与堂百回本）",
+   "file": "lizhuo_comments.json",
+   "suitableVersions": ["v100", "jiqin"],
+   "dynasty": "明万历三十八年（1610）",
+   "note": "今学界一般认为实出叶昼托名。本文件收录回末总评及经典眉批精粹，含《忠义水浒传叙》、怀林述语等序文与小说艺术论要点。"
+  },
+  {
+   "id": "yuanwy",
+   "name": "袁无涯批（百二十回全传本）",
+   "file": "yuanwy_comments.json",
+   "suitableVersions": ["v120"],
+   "dynasty": "明万历四十二年（1614）前后",
+   "note": "杨定见整理李贽批语，含发凡、回末总评与旁批精粹，侧重忠奸斗争、招安悲剧。"
+  },
+  {
+   "id": "jiqin_note",
+   "name": "冀勤校注（百回本名物注释）",
+   "file": "jiqin_notes.json",
+   "suitableVersions": ["v100", "jiqin"],
+   "dynasty": "当代整理",
+   "note": "人民文学出版社百回本冀勤校注，约6741条名物、制度、语言注释。"
+  }
  ]
 }
