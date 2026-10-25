@@ -334,7 +334,8 @@ footer { padding:40px 24px; text-align:center; border-top:1px solid var(--border
   <div id="map-wrap">
     <svg class="map-svg" viewBox="0 0 1100 740" xmlns="http://www.w3.org/2000/svg" id="mapSvg">
       <!-- 简化的中国东部地图轮廓（艺术化）：北至塞外、南至江南、东至东海 -->
-      <rect width="900" height="660" fill="#faf6ea"/>
+      <g transform="scale(1.2222222 1.1212121)">
+        <rect width="900" height="660" fill="#faf6ea"/>
       <!-- 海 -->
       <path d="M720 0 L900 0 L900 660 L700 660 Q750 580 780 500 Q820 400 820 320 Q810 220 760 130 Q730 70 720 0 Z" fill="#dce8ee" opacity=".5"/>
       <text x="850" y="340" fill="#5c7f9a" font-family="serif" font-size="22" opacity=".6" writing-mode="tb">东 海</text>
@@ -351,7 +352,8 @@ footer { padding:40px 24px; text-align:center; border-top:1px solid var(--border
       <text x="190" y="515" fill="#406080" font-family="serif" font-size="15" opacity=".75">长 江</text>
       <!-- 梁山泊小水泊 -->
       <ellipse cx="545" cy="315" rx="34" ry="10" fill="#8aa8c4" opacity=".35"/>
-      <text x="520" y="295" fill="#406080" font-family="serif" font-size="10" opacity=".6">梁山泊</text>
+      </g>
+      
       <!-- 州府点由JS生成 -->
       <g id="placePoints"></g>
     </svg>
