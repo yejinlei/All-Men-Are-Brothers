@@ -69,16 +69,17 @@ body {
   letter-spacing: 0;
   box-shadow: 0 2px 4px rgba(139,26,26,.3);
 }
-.nav-links { display: flex; gap: 4px; }
+.nav-links { display: flex; gap: 2px; flex-wrap:wrap; justify-content:flex-end; }
 .nav-links a {
-  padding: 8px 14px;
+  padding: 6px 10px;
   text-decoration: none;
   color: var(--ink-light);
   font-size: 14px;
   border-radius: 4px;
   transition: all .2s;
   font-family: var(--font-serif);
-  letter-spacing: 2px;
+  letter-spacing: 1px;
+  white-space:nowrap;
 }
 .nav-links a:hover { background: rgba(192,57,43,.08); color: var(--vermilion-deep); }
 .nav-links a.active { background: var(--vermilion-deep); color: var(--paper); }
@@ -1022,3 +1023,125 @@ canvas#relCanvas:active { cursor: grabbing; }
   background:var(--vermilion-deep) !important; color:#fff !important;
   box-shadow:inset 0 0 0 2px #f7d68a;
 }
+
+/* ===== 总览入口矩阵 ===== */
+.entry-matrix { padding-top:32px; }
+.entry-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
+  gap:14px;
+  margin-top:8px;
+}
+.entry-card {
+  display:block; background:#fffdf6; border:1px solid var(--paper-border);
+  border-radius:6px; padding:18px 20px; text-decoration:none; color:var(--ink);
+  transition:all .25s; position:relative; overflow:hidden;
+}
+.entry-card::before {
+  content:""; position:absolute; left:0; top:0; bottom:0; width:3px;
+  background:var(--vermilion-deep); transform:scaleY(0); transition:transform .25s;
+  transform-origin:top;
+}
+.entry-card:hover { background:#fff8ea; border-color:var(--vermilion-deep); box-shadow:0 4px 16px rgba(139,30,30,0.08); transform:translateY(-2px); }
+.entry-card:hover::before { transform:scaleY(1); }
+.entry-title { font-family:var(--font-serif); font-size:20px; letter-spacing:2px; color:var(--ink-deep); font-weight:500; }
+.entry-sub { font-size:13px; color:var(--ink-muted); margin-top:6px; line-height:1.5; }
+.entry-go { font-size:13px; color:var(--vermilion-deep); margin-top:12px; letter-spacing:2px; }
+.entry-card.theme-card::before { background:var(--gold-dark); }
+.entry-card.theme-card { border-color:rgba(184,134,11,0.3); background:linear-gradient(135deg, #fffdf6 0%, #fdf5e6 100%); }
+.entry-card.theme-card .entry-title { color:var(--gold-dark); }
+
+/* ===== 通用 section 描述 ===== */
+.section-desc { font-family:var(--font-serif); font-size:15px; color:var(--ink-muted); line-height:1.9; max-width:880px; margin:0 0 24px; }
+.theme-section { background:linear-gradient(180deg, #fdf5e6 0%, #f8efe0 100%); padding-top:48px; padding-bottom:48px; border-top:1px solid rgba(139,30,30,0.1); border-bottom:1px solid rgba(139,30,30,0.1); }
+.theme-lead p { font-family:var(--font-serif); font-size:16px; line-height:2; color:var(--ink); max-width:920px; border-left:4px solid var(--vermilion-deep); padding:8px 0 8px 18px; margin:0 0 28px; background:rgba(255,255,255,0.5); }
+.bar-vermilion { background:var(--vermilion-deep) !important; }
+
+/* ===== 座次榜表格 ===== */
+.ranking-table-wrap { max-height:560px; overflow:auto; border:1px solid var(--paper-border); border-radius:4px; background:#fffdf6; }
+.ranking-table { width:100%; border-collapse:collapse; font-family:var(--font-serif); font-size:14px; }
+.ranking-table thead { position:sticky; top:0; background:var(--vermilion-deep); color:#fff; z-index:2; }
+.ranking-table th { padding:10px 12px; text-align:left; font-weight:500; letter-spacing:1px; font-size:14px; }
+.ranking-table td { padding:9px 12px; border-bottom:1px solid #f0e8d4; }
+.ranking-table tbody tr:hover { background:#fdf5e6; }
+.ranking-table td.rank-no { color:var(--vermilion-deep); font-weight:bold; width:48px; text-align:center; }
+.ranking-table td.star { color:var(--gold-dark); width:100px; font-size:13px; }
+.ranking-table td.nick { color:var(--ink); width:120px; }
+.ranking-table td.name { font-weight:bold; color:var(--ink-deep); width:80px; }
+.ranking-table .tiangang-row td { background:rgba(247,214,138,0.08); }
+
+/* ===== 兵器谱 ===== */
+.weapon-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:12px; }
+.weapon-card { background:#fffdf6; border:1px solid var(--paper-border); border-radius:6px; padding:14px 16px; border-left:3px solid #6e4b1a; }
+.weapon-card h4 { font-family:var(--font-serif); font-size:17px; color:var(--ink-deep); margin:0 0 6px; letter-spacing:1px; }
+.weapon-card .w-owner { font-size:13px; color:var(--vermilion-deep); margin-bottom:6px; }
+.weapon-card .w-desc { font-size:13px; color:var(--ink-muted); line-height:1.7; }
+
+/* ===== 酒食与黑话两列 ===== */
+.food-list, .cant-list, .official-list { max-height:420px; overflow-y:auto; font-family:var(--font-serif); font-size:14px; line-height:2; }
+.food-list .item, .cant-list .item, .official-list .item { padding:6px 0; border-bottom:1px dashed #eadfc5; display:flex; gap:10px; }
+.food-list .item .k, .cant-list .item .k { color:var(--vermilion-deep); font-weight:bold; min-width:80px; }
+.cant-list .item .k { min-width:100px; }
+.official-list .item .k { color:var(--ink-deep); font-weight:bold; min-width:120px; }
+.food-list .item .v, .cant-list .item .v, .official-list .item .v { color:var(--ink-muted); flex:1; }
+
+/* ===== 派系 ===== */
+.faction-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:14px; }
+.faction-card { background:#fffdf6; border:1px solid var(--paper-border); border-radius:6px; padding:16px 18px; position:relative; overflow:hidden; }
+.faction-card h4 { font-family:var(--font-serif); font-size:18px; color:var(--ink-deep); margin:0 0 4px; letter-spacing:1px; }
+.faction-card .f-size { font-size:12px; color:var(--gold-dark); margin-bottom:8px; }
+.faction-card .f-leader { font-size:13px; color:var(--vermilion-deep); margin-bottom:8px; }
+.faction-card .f-members { font-size:13px; color:var(--ink-muted); line-height:1.9; }
+.faction-card .f-bar { position:absolute; left:0; top:0; bottom:0; width:4px; }
+.faction-card[data-f="songjiang"] .f-bar { background:#c0392b; }
+.faction-card[data-f="erlonshan"] .f-bar { background:#6e4b1a; }
+.faction-card[data-f="jiangjiang"] .f-bar { background:#2d3a6e; }
+.faction-card[data-f="dengzhou"] .f-bar { background:#2f5d50; }
+.faction-card[data-f="lujunyi"] .f-bar { background:#8e6a35; }
+.faction-card[data-f="jishu"] .f-bar { background:#6b4e8a; }
+.faction-card[data-f="yuanlao"] .f-bar { background:#9c5a3c; }
+.faction-card[data-f="sanzshan"] .f-bar { background:#5a7247; }
+
+/* ===== 忠义辨/招安/官逼民反 ===== */
+.theme-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:14px; margin-bottom:24px; }
+.theme-point { background:rgba(255,255,255,0.7); border:1px solid rgba(139,30,30,0.15); border-radius:6px; padding:16px 18px; }
+.theme-point h4 { font-family:var(--font-serif); font-size:17px; color:var(--vermilion-deep); margin:0 0 8px; letter-spacing:1px; }
+.theme-point p { font-size:14px; line-height:1.85; color:var(--ink); margin:0; }
+.quote-wall { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:12px; margin-top:20px; }
+.quote-item { background:rgba(255,255,255,0.6); border-left:3px solid var(--vermilion-deep); padding:12px 16px; font-family:var(--font-serif); font-size:14px; line-height:1.9; color:var(--ink); }
+.quote-item .q-src { display:block; text-align:right; margin-top:6px; color:var(--ink-muted); font-size:12px; }
+.timeline-mini { padding:12px 8px; font-family:var(--font-serif); font-size:14px; line-height:2.2; }
+.timeline-mini .tl-item { padding:4px 0 4px 20px; position:relative; border-left:2px solid var(--vermilion-deep); margin-left:8px; }
+.timeline-mini .tl-item::before { content:""; position:absolute; left:-6px; top:12px; width:10px; height:10px; border-radius:50%; background:var(--vermilion-deep); }
+.timeline-mini .tl-item .tl-idx { color:var(--vermilion-deep); font-weight:bold; margin-right:6px; }
+
+.forced-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:12px; margin-bottom:20px; }
+.forced-card { background:rgba(255,255,255,0.7); border:1px solid rgba(139,30,30,0.2); border-radius:6px; padding:14px 16px; }
+.forced-card h4 { font-family:var(--font-serif); font-size:16px; color:var(--vermilion-deep); margin:0 0 6px; }
+.forced-card .f-type { font-size:12px; background:var(--vermilion-deep); color:#fff; padding:2px 8px; border-radius:3px; display:inline-block; margin-bottom:6px; }
+.forced-card p { font-size:13px; color:var(--ink); line-height:1.8; margin:0; }
+
+/* ===== 批者卡片 ===== */
+.critic-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:14px; }
+.critic-card { background:#fffdf6; border:1px solid var(--paper-border); border-radius:6px; padding:16px 18px; border-top:3px solid var(--vermilion-deep); }
+.critic-card h4 { font-family:var(--font-serif); font-size:18px; color:var(--ink-deep); margin:0 0 4px; letter-spacing:1px; }
+.critic-card .c-era { font-size:12px; color:var(--gold-dark); margin-bottom:8px; }
+.critic-card .c-core { font-size:14px; color:var(--vermilion-deep); margin-bottom:6px; font-weight:500; }
+.critic-card p { font-size:13px; color:var(--ink-muted); line-height:1.85; margin:0; }
+
+/* ===== 字镜词云 ===== */
+.wordmirror-cloud { display:flex; flex-wrap:wrap; gap:8px; align-items:flex-end; justify-content:center; padding:20px; background:#fffdf6; border:1px solid var(--paper-border); border-radius:6px; min-height:180px; }
+.wordmirror-cloud .w { font-family:var(--font-serif); color:var(--vermilion-deep); cursor:default; transition:transform .2s; }
+.wordmirror-cloud .w:hover { transform:scale(1.15); color:var(--gold-dark); }
+
+/* ===== 本体论下载 ===== */
+.ontology-download { margin:12px 0 20px; display:flex; flex-wrap:wrap; gap:12px; }
+.ont-link { display:inline-block; padding:8px 16px; background:#fffdf6; border:1px solid var(--paper-border); border-radius:4px; color:var(--vermilion-deep); text-decoration:none; font-family:var(--font-serif); font-size:14px; transition:all .2s; }
+.ont-link:hover { background:var(--vermilion-deep); color:#fff; border-color:var(--vermilion-deep); }
+.ontology-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:12px; margin-top:16px; }
+.ont-class { background:#fffdf6; border:1px solid var(--paper-border); border-radius:6px; padding:14px 16px; }
+.ont-class h4 { font-family:var(--font-serif); font-size:16px; color:var(--ink-deep); margin:0 0 6px; display:flex; align-items:center; gap:8px; }
+.ont-class h4 .badge { background:var(--vermilion-deep); color:#fff; font-size:11px; padding:2px 6px; border-radius:3px; }
+.ont-class .sub { font-size:12px; color:var(--ink-muted); margin-bottom:6px; }
+.ont-class .props { font-size:13px; color:var(--ink); line-height:1.8; }
+

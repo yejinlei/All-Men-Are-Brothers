@@ -16,14 +16,25 @@
     <span>水浒传本体论</span>
   </div>
   <div class="nav-links">
-    <a href="#home" class="active" data-target="home">首页</a>
-    <a href="#versions" data-target="versions">版本学</a>
-    <a href="#heroes" data-target="heroes">108将</a>
-    <a href="#relations" data-target="relations">关系图谱</a>
-    <a href="#places" data-target="places">空间地理</a>
-    <a href="#events" data-target="events">叙事结构</a>
-    <a href="#reasoning" data-target="reasoning">本体推演</a>
-    <a href="#reader" data-target="reader">版本阅读</a>
+    <a href="#home" class="active" data-target="home">总览</a>
+    <a href="#reader" data-target="reader">正文·评点</a>
+    <a href="#heroes" data-target="heroes">好汉谱</a>
+    <a href="#ranking" data-target="ranking">座次榜</a>
+    <a href="#weapons" data-target="weapons">兵器谱</a>
+    <a href="#wine" data-target="wine">酒食·黑话</a>
+    <a href="#official" data-target="official">官制·刑罚</a>
+    <a href="#factions" data-target="factions">派系·关系</a>
+    <a href="#events" data-target="events">征伐·事件</a>
+    <a href="#places" data-target="places">梁山·地理</a>
+    <a href="#loyalty" data-target="loyalty">忠义辨</a>
+    <a href="#zhaoan" data-target="zhaoan">招安辩</a>
+    <a href="#forced" data-target="forced">官逼民反</a>
+    <a href="#versions" data-target="versions">版本谱</a>
+    <a href="#critics" data-target="critics">批者</a>
+    <a href="#relations" data-target="relations">图谱</a>
+    <a href="#wordmirror" data-target="wordmirror">字镜</a>
+    <a href="#reasoning" data-target="reasoning">推演</a>
+    <a href="#ontology" data-target="ontology">本体论</a>
   </div>
   <!-- 全局语体切换（胶囊按钮，右上角） -->
   <div class="lang-pill" role="tablist" aria-label="文本语体切换">
@@ -44,17 +55,133 @@
     尝试以知识图谱方式重解"忠义"之悖论、"官逼民反"之叙事规律与"替天行道"之命运结构。
   </p>
   <div class="hero-meta">
-    <div class="hero-stat"><span class="num">7</span><span class="label">版本系统</span></div>
-    <div class="hero-stat"><span class="num">108</span><span class="label">英雄本体</span></div>
-    <div class="hero-stat"><span class="num">42</span><span class="label">空间节点</span></div>
-    <div class="hero-stat"><span class="num">32</span><span class="label">核心事件</span></div>
+    <div class="hero-stat"><span class="num">8</span><span class="label">版本系统</span></div>
+    <div class="hero-stat"><span class="num">108</span><span class="label">梁山好汉</span></div>
+    <div class="hero-stat"><span class="num">237</span><span class="label">人物本体</span></div>
+    <div class="hero-stat"><span class="num">156</span><span class="label">地理坐标</span></div>
+    <div class="hero-stat"><span class="num">89</span><span class="label">帮派组织</span></div>
     <div class="hero-stat"><span class="num">6817</span><span class="label">冀勤校注</span></div>
     <div class="hero-stat"><span class="num">金批</span><span class="label">夹批总批</span></div>
-    <div class="hero-stat"><span class="num">930万</span><span class="label">字繁简白语料</span></div>
+    <div class="hero-stat"><span class="num">1400万</span><span class="label">繁简白三版</span></div>
   </div>
 </section>
 
 <div class="container">
+
+<!-- ===== 总览入口（类似红楼"入口"卡片矩阵） ===== -->
+<section class="section entry-matrix" id="home-entries">
+  <div class="entry-grid">
+
+    <a class="entry-card" href="#reader">
+      <div class="entry-title">正文 · 评点</div>
+      <div class="entry-sub">八版繁简白 · 四家批注对照</div>
+      <div class="entry-go">进入 →</div>
+    </a>
+
+    <a class="entry-card" href="#heroes">
+      <div class="entry-title">好汉谱</div>
+      <div class="entry-sub">108将卡片 · 天罡地煞兵种</div>
+      <div class="entry-go">进入 →</div>
+    </a>
+
+    <a class="entry-card" href="#ranking">
+      <div class="entry-title">座次榜</div>
+      <div class="entry-sub">石碣天书排位 · 职务分配</div>
+      <div class="entry-go">进入 →</div>
+    </a>
+
+    <a class="entry-card" href="#weapons">
+      <div class="entry-title">兵器谱</div>
+      <div class="entry-sub">十八般兵器 · 专属武器</div>
+      <div class="entry-go">进入 →</div>
+    </a>
+
+    <a class="entry-card" href="#wine">
+      <div class="entry-title">酒食·黑话</div>
+      <div class="entry-sub">大碗酒大块肉 · 江湖切口</div>
+      <div class="entry-go">进入 →</div>
+    </a>
+
+    <a class="entry-card" href="#official">
+      <div class="entry-title">官制·刑罚</div>
+      <div class="entry-sub">宋代差遣 · 刺配军杖</div>
+      <div class="entry-go">进入 →</div>
+    </a>
+
+    <a class="entry-card" href="#factions">
+      <div class="entry-title">派系网络</div>
+      <div class="entry-sub">二龙山/登州/降将/元老</div>
+      <div class="entry-go">进入 →</div>
+    </a>
+
+    <a class="entry-card" href="#events">
+      <div class="entry-title">征伐·事件</div>
+      <div class="entry-sub">三打祝家庄 · 征辽征方腊</div>
+      <div class="entry-go">进入 →</div>
+    </a>
+
+    <a class="entry-card" href="#places">
+      <div class="entry-title">梁山·地理</div>
+      <div class="entry-sub">八百里水泊 · 征战路线</div>
+      <div class="entry-go">进入 →</div>
+    </a>
+
+    <a class="entry-card theme-card" href="#loyalty">
+      <div class="entry-title">忠义辨</div>
+      <div class="entry-sub">"忠"与"义"之悖论 · 核心命题</div>
+      <div class="entry-go">进入 →</div>
+    </a>
+
+    <a class="entry-card theme-card" href="#zhaoan">
+      <div class="entry-title">招安辩</div>
+      <div class="entry-sub">招安与反招安 · 聚义路线</div>
+      <div class="entry-go">进入 →</div>
+    </a>
+
+    <a class="entry-card theme-card" href="#forced">
+      <div class="entry-title">官逼民反</div>
+      <div class="entry-sub">逼上梁山路径 · 上山类型学</div>
+      <div class="entry-go">进入 →</div>
+    </a>
+
+    <a class="entry-card" href="#versions">
+      <div class="entry-title">版本谱</div>
+      <div class="entry-sub">繁简二系 · 四家评点</div>
+      <div class="entry-go">进入 →</div>
+    </a>
+
+    <a class="entry-card" href="#critics">
+      <div class="entry-title">批者群像</div>
+      <div class="entry-sub">金/李/袁/余四家评点家</div>
+      <div class="entry-go">进入 →</div>
+    </a>
+
+    <a class="entry-card" href="#relations">
+      <div class="entry-title">关系图谱</div>
+      <div class="entry-sub">力导向图 · 结拜/敌对/师徒</div>
+      <div class="entry-go">进入 →</div>
+    </a>
+
+    <a class="entry-card" href="#wordmirror">
+      <div class="entry-title">字镜</div>
+      <div class="entry-sub">核心字眼使用频次</div>
+      <div class="entry-go">进入 →</div>
+    </a>
+
+    <a class="entry-card" href="#reasoning">
+      <div class="entry-title">推演</div>
+      <div class="entry-sub">命运逻辑 · 版本差异推理</div>
+      <div class="entry-go">进入 →</div>
+    </a>
+
+    <a class="entry-card" href="#ontology">
+      <div class="entry-title">本体论</div>
+      <div class="entry-sub">OWL 本体 · TBox/ABox 规范</div>
+      <div class="entry-go">进入 →</div>
+    </a>
+
+  </div>
+</section>
 
 <!-- ===== 版本学 ===== -->
 <section class="section" id="versions">
@@ -93,6 +220,193 @@
   <div class="hero-grid" id="heroGrid"></div>
 </section>
 
+<!-- ===== 座次榜 ===== -->
+<section class="section" id="ranking">
+  <div class="section-title">
+    <div class="bar"></div>
+    <h2>石碣座次榜</h2>
+    <span class="en">The Stone Tablet Rankings</span>
+  </div>
+  <p class="section-desc">第七十一回"忠义堂石碣受天文，梁山泊英雄排座次"，天降石碣，一百单八将按天罡三十六、地煞七十二排列定序。此榜不仅是梁山权力结构的总纲，亦是宋元江湖社会与宋代官制结合的缩影。</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" data-rank-tab="all">全部108</button>
+    <button class="tab-btn" data-rank-tab="tiangang">天罡36</button>
+    <button class="tab-btn" data-rank-tab="disha">地煞72</button>
+    <button class="tab-btn" data-rank-tab="top10">头领前10</button>
+    <button class="tab-btn" data-rank-tab="military">五虎八骠</button>
+    <button class="tab-btn" data-rank-tab="intelli">参谋机要</button>
+  </div>
+  <div class="ranking-table-wrap">
+    <table class="ranking-table" id="rankingTable">
+      <thead><tr><th>座次</th><th>星号</th><th>绰号</th><th>姓名</th><th>梁山职位</th><th>兵种/司职</th></tr></thead>
+      <tbody id="rankingBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== 兵器谱 ===== -->
+<section class="section" id="weapons">
+  <div class="section-title">
+    <div class="bar"></div>
+    <h2>兵器谱</h2>
+    <span class="en">Martial Weapons Codex</span>
+  </div>
+  <p class="section-desc">《水浒传》十八般武艺俱全，兵器是好汉的"第二身份"——关胜之青龙偃月、林冲之丈八蛇矛、鲁智深之六十二斤水磨禅杖、武松之雪花镔铁双戒刀，兵器即性格。</p>
+  <div class="weapon-grid" id="weaponGrid"></div>
+  <div class="chart-box" style="margin-top:24px;">
+    <h4>兵器类型分布</h4>
+    <div class="echart" id="chartWeapon" style="height:320px"></div>
+  </div>
+</section>
+
+<!-- ===== 酒食·江湖黑话 ===== -->
+<section class="section" id="wine">
+  <div class="section-title">
+    <div class="bar"></div>
+    <h2>酒食·江湖切口</h2>
+    <span class="en">Wine, Food & Outlaws' Cant</span>
+  </div>
+  <div class="chart-grid">
+    <div class="chart-box">
+      <h4>大碗酒——书中出现的酒食</h4>
+      <div class="food-list" id="foodList"></div>
+    </div>
+    <div class="chart-box">
+      <h4>江湖黑话（切口）</h4>
+      <div class="cant-list" id="cantList"></div>
+    </div>
+  </div>
+  <div class="chart-box" style="margin-top:24px;">
+    <h4>"酒"字在各回出现频次（酒文化密度）</h4>
+    <div class="echart" id="chartWine" style="height:260px"></div>
+  </div>
+</section>
+
+<!-- ===== 官制·刑罚 ===== -->
+<section class="section" id="official">
+  <div class="section-title">
+    <div class="bar"></div>
+    <h2>官制·刑罚</h2>
+    <span class="en">Song Bureaucracy & Punishments</span>
+  </div>
+  <p class="section-desc">水浒世界的官制虚实交织——差遣、寄禄、节度使、团练使、都头、押司、提辖等名目，或承宋制、或出小说家杜撰。刺配、军杖、抄家、凌迟，构成逼上梁山的制度暴力基底。</p>
+  <div class="chart-grid">
+    <div class="chart-box">
+      <h4>梁山人物上山前身份分布</h4>
+      <div class="echart" id="chartOfficial" style="height:300px"></div>
+    </div>
+    <div class="chart-box">
+      <h4>宋代官制·水浒出现职官表</h4>
+      <div class="official-list" id="officialList"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 派系网络 ===== -->
+<section class="section" id="factions">
+  <div class="section-title">
+    <div class="bar"></div>
+    <h2>梁山派系结构</h2>
+    <span class="en">Liangshan Faction Network</span>
+  </div>
+  <p class="section-desc">梁山一百单八将并非铁板一块，而是由元老系、二龙山系、登州系、降将系、卢俊义系、宋江亲系、三山系、技术派等多股势力汇聚。派系分析是理解"招安路线"何以通过的关键。</p>
+  <div class="faction-grid" id="factionGrid"></div>
+</section>
+
+<!-- ===== 忠义辨（核心主题） ===== -->
+<section class="section theme-section" id="loyalty">
+  <div class="section-title">
+    <div class="bar bar-vermilion"></div>
+    <h2>忠义辨</h2>
+    <span class="en">On Loyalty (Zhong) & Righteousness (Yi)</span>
+  </div>
+  <div class="theme-lead">
+    <p>"忠"与"义"是《水浒传》的核心命题悖论——对朝廷之忠与对兄弟之义、对君父之忠与对万民之义，在招安议题上彻底撕裂。金圣叹删改第七十回以后，以"惊噩梦"了结忠义，李贽则以"忠义"二字作序相挺，争论四百余年。</p>
+  </div>
+  <div class="theme-grid" id="loyaltyGrid"></div>
+  <div class="quote-wall" id="loyaltyQuotes"></div>
+</section>
+
+<!-- ===== 招安辩 ===== -->
+<section class="section theme-section" id="zhaoan">
+  <div class="section-title">
+    <div class="bar bar-vermilion"></div>
+    <h2>招安辩</h2>
+    <span class="en">The Great Amnesty Debate</span>
+  </div>
+  <div class="theme-lead">
+    <p>招安是水浒聚义的转折点——第七十一回重阳宴宋江作《满江红》"望天王降诏早招安"，武松、李逵、鲁智深当场发作。梁山内部路线之争，本质是体制内改良派与体制外革命派的路线冲突。</p>
+  </div>
+  <div class="chart-grid">
+    <div class="chart-box">
+      <h4>招安态度分野（支持/反对/中立）</h4>
+      <div class="echart" id="chartZhaoan" style="height:340px"></div>
+    </div>
+    <div class="chart-box">
+      <h4>三次招安历程</h4>
+      <div class="timeline-mini" id="zhaoanTimeline"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 官逼民反 ===== -->
+<section class="section theme-section" id="forced">
+  <div class="section-title">
+    <div class="bar bar-vermilion"></div>
+    <h2>官逼民反</h2>
+    <span class="en">Forced to Rebellion</span>
+  </div>
+  <div class="theme-lead">
+    <p>"逼上梁山"是水浒最深刻的社会命题。林冲夜奔、武松杀嫂、宋江题反诗、杨志失陷花石纲——每条上山之路，都是制度性迫害的个案史。余象斗评谓"世之贪官污吏驱民为盗"。</p>
+  </div>
+  <div class="forced-grid" id="forcedGrid"></div>
+  <div class="chart-box">
+    <h4>好汉上山原因类型学</h4>
+    <div class="echart" id="chartForced" style="height:300px"></div>
+  </div>
+</section>
+
+<!-- ===== 批者群像 ===== -->
+<section class="section" id="critics">
+  <div class="section-title">
+    <div class="bar"></div>
+    <h2>批者群像</h2>
+    <span class="en">Commentators across Four Centuries</span>
+  </div>
+  <p class="section-desc">水浒评点四家各有立场：李贽（容与堂）"发愤之所作"、金圣叹（贯华堂）"削忠义而存水浒"、袁无涯（全传本）"兼重忠义"、余象斗（简本）"平民立场"。近现代胡适、鲁迅、聂绀弩、何心各有论说。</p>
+  <div class="critic-grid" id="criticGrid"></div>
+</section>
+
+<!-- ===== 字镜（水浒核心字眼频率） ===== -->
+<section class="section" id="wordmirror">
+  <div class="section-title">
+    <div class="bar"></div>
+    <h2>字镜</h2>
+    <span class="en">Keyword Mirror</span>
+  </div>
+  <p class="section-desc">"忠""义""反""盗""杀""酒""兄""哥""贼""官"——水浒核心字眼的使用频次与分布，折射小说家的叙事立场与时代精神。</p>
+  <div class="wordmirror-cloud" id="wordCloud"></div>
+  <div class="chart-box" style="margin-top:16px;">
+    <h4>核心字眼前30频次</h4>
+    <div class="echart" id="chartWords" style="height:320px"></div>
+  </div>
+</section>
+
+<!-- ===== 本体论规范 ===== -->
+<section class="section" id="ontology">
+  <div class="section-title">
+    <div class="bar"></div>
+    <h2>本体论规范</h2>
+    <span class="en">OWL Ontology Specification</span>
+  </div>
+  <p class="section-desc">本项目采用 OWL2 DL 描述逻辑构建本体元模型，7大顶级实体类（文学作品/人物/事件/空间/学术主体/学术成果/衍生作品），18种有向关系，Neo4j+DuckDB双引擎落地。</p>
+  <div class="ontology-download">
+    <a class="ont-link" href="03_本体论规范/shuihu_kg_ontology.ttl" target="_blank">📄 shuihu_kg_ontology.ttl — OWL本体文件</a>
+    <a class="ont-link" href="https://github.com/yejinlei/All-Men-Are-Brothers" target="_blank">🔗 GitHub 仓库</a>
+  </div>
+  <div class="ontology-grid" id="ontologyGrid"></div>
+</section>
+
 <!-- ===== 关系图谱 ===== -->
 <section class="section" id="relations">
   <div class="section-title">
@@ -118,8 +432,8 @@
 <section class="section" id="places">
   <div class="section-title">
     <div class="bar"></div>
-    <h2>空间地理本体</h2>
-    <span class="en">Geographical Space</span>
+    <h2>梁山·地理</h2>
+    <span class="en">Liangshan Marsh & Geography</span>
   </div>
   <div class="chart-grid">
     <div class="chart-box">
@@ -133,12 +447,12 @@
   </div>
 </section>
 
-<!-- ===== 叙事结构 ===== -->
+<!-- ===== 叙事结构/征伐·事件 ===== -->
 <section class="section" id="events">
   <div class="section-title">
     <div class="bar"></div>
-    <h2>叙事结构本体</h2>
-    <span class="en">Narrative Arc</span>
+    <h2>征伐·事件</h2>
+    <span class="en">Campaigns & Key Events</span>
   </div>
   <div class="chart-grid">
     <div class="chart-box" style="grid-column: 1/-1;">
@@ -4287,6 +4601,412 @@ document.querySelectorAll('.nav-links a').forEach(a=>{
   });
 });
 
+// ========== 座次榜 ==========
+function renderRanking(){
+  const body = document.getElementById('rankingBody');
+  if(!body) return;
+  const rows = HEROES.map(h=>{
+    const isTG = h.star && h.star.includes('天');
+    return `<tr class="${isTG?'tiangang-row':''}">
+      <td class="rank-no">${h.rank||'-'}</td>
+      <td class="star">${h.star||''}</td>
+      <td class="nick">${h.nickname||''}</td>
+      <td class="name">${h.name||''}</td>
+      <td>${h.position||''}</td>
+      <td style="color:var(--ink-muted); font-size:13px;">${h.troop||''}</td>
+    </tr>`;
+  }).join('');
+  body.innerHTML = rows;
+
+  // tab筛选
+  $$('[data-rank-tab]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      $$('[data-rank-tab]').forEach(x=>x.classList.remove('active'));
+      btn.classList.add('active');
+      const t = btn.dataset.rankTab;
+      body.querySelectorAll('tr').forEach(tr=>{
+        const no = parseInt(tr.querySelector('.rank-no').textContent)||0;
+        const troop = tr.querySelector('td:last-child').textContent;
+        let show = true;
+        if(t==='tiangang') show = no>=1 && no<=36;
+        else if(t==='disha') show = no>=37 && no<=108;
+        else if(t==='top10') show = no>=1 && no<=10;
+        else if(t==='military') show = /五虎|八骠|虎骑|骠骑|马军|步军头领/.test(tr.querySelector('td:nth-child(5)').textContent);
+        else if(t==='intelli') show = /军师|机密|参赞|掌管/.test(tr.querySelector('td:nth-child(5)').textContent);
+        tr.style.display = show ? '' : 'none';
+      });
+    });
+  });
+}
+
+// ========== 兵器谱 ==========
+const WEAPONS = [
+  {name:'青龙偃月刀', owner:'关胜', weight:'约重八十二斤', type:'长柄刀', desc:'三国关羽制式兵器，关胜为关羽后人，使青龙偃月，故绰号"大刀"，五虎将之首。'},
+  {name:'丈八蛇矛', owner:'林冲', weight:'约长一丈八尺', type:'长矛', desc:'豹头环眼、燕颔虎须，林冲形象拟张飞，兵器亦从张飞。风雪山神庙、火并王伦皆用此矛。'},
+  {name:'水磨禅杖', owner:'鲁智深', weight:'六十二斤', type:'重兵器', desc:'五台山铁匠所铸，浑铁打就的禅杖。六十二斤重，与关羽青龙刀相当，倒拔垂杨柳后亦用此杖。'},
+  {name:'雪花镔铁双戒刀', owner:'武松', weight:'双口', type:'戒刀', desc:'孙二娘所赠，源出头陀遗物，"半夜里鸣啸得响"。武松血溅鸳鸯楼、征方腊皆用此刀。'},
+  {name:'双斧', owner:'李逵', weight:'双板斧', type:'双持斧', desc:'黑旋风所持两把板斧，劈人如劈柴。江州劫法场、沂岭杀四虎，皆见双斧之烈。'},
+  {name:'羽扇', owner:'吴用', weight:'—', type:'谋略器具', desc:'智多星吴加亮，秀才打扮，手持羽扇，运筹帷幄，"万卷经书曾读过，平生机巧心灵"。'},
+  {name:'方天画戟', owner:'吕方·郭盛', weight:'—', type:'戟', desc:'吕方"小温侯"使方天画戟；郭盛"赛仁贵"亦使画戟，二人对影山前比拼戟法，戟上绒绦缠结，花荣一箭射开。'},
+  {name:'弓箭', owner:'花荣', weight:'—', type:'射远器', desc:'"小李广"神箭，梁山射雁、祝家庄射灯、盖州射琼妖纳延——"弓开秋月分明，箭发寒星点"。'},
+  {name:'朴刀', owner:'多人通用', weight:'—', type:'民间刀', desc:'宋时民间常用兵器，刀杆可拆，行路时作杆棒，遇敌装上刀头。林冲、杨志、武松等落难行路时皆用朴刀。'},
+  {name:'浑铁点钢枪', owner:'林冲（备用）·徐宁', weight:'—', type:'长枪', desc:'徐宁"金枪手"擅使钩镰枪，专破呼延灼连环甲马；林冲亦使花枪，山神庙前花枪挑酒葫芦。'},
+  {name:'双鞭', owner:'呼延灼', weight:'雌雄虎眼鞭', type:'双持钢鞭', desc:'宋初名将呼延赞之后，使两条铜鞭，曾布"连环马"大破梁山，后被徐宁钩镰枪所破。'},
+  {name:'狼牙棒', owner:'秦明', weight:'—', type:'打击重兵器', desc:'"霹雳火"秦明性如烈火，手使一根狼牙棒，带头冲锋，马军五虎将第三。'},
+  {name:'飞石', owner:'张清', weight:'—', type:'暗器', desc:'"没羽箭"张清善用飞石打将，东昌府一战连打梁山十五员大将，连鲁智深、呼延灼皆伤。'},
+  {name:'弩箭', owner:'燕青', weight:'—', type:'射远器', desc:'"浪子"燕青机巧心灵，用川弩短箭，曾在泰岳智扑擎天柱、秋林渡射雁，百发百中。'},
+  {name:'法杖·戒刀', owner:'公孙胜·樊瑞', weight:'—', type:'道家法器', desc:'"入云龙"公孙胜师承罗真人，使松纹古定剑、五雷天心正法，呼风唤雨；樊瑞亦能使法术。'},
+  {name:'三尖两刃刀', owner:'史进', weight:'—', type:'多刃刀', desc:'"九纹龙"史进使三尖两刃刀，少华山结朱武、陈达、杨春，是梁山一百单八将中第一个登场之人。'},
+  {name:'浑铁禅杖（短）', owner:'武松', weight:'—', type:'双戒刀之外', desc:'武松后期为头陀行者，除双戒刀外，亦挂一百单八颗人顶骨念珠，持禅杖防身。'},
+  {name:'铁链·火葫芦', owner:'凌振', weight:'—', type:'火器', desc:'"轰天雷"凌振是北宋第一火炮专家，造子母炮、金轮炮、子母炮，是梁山技术兵种代表。'}
+];
+function renderWeapons(){
+  const grid = document.getElementById('weaponGrid');
+  if(!grid) return;
+  grid.innerHTML = WEAPONS.map(w=>`
+    <div class="weapon-card">
+      <h4>${w.name}</h4>
+      <div class="w-owner">${w.owner} · <span style="color:var(--ink-muted);font-weight:normal;">${w.type} · ${w.weight}</span></div>
+      <div class="w-desc">${w.desc}</div>
+    </div>`).join('');
+
+  const typeMap = {};
+  WEAPONS.forEach(w=>{typeMap[w.type]=(typeMap[w.type]||0)+1;});
+  if(window.echarts && document.getElementById('chartWeapon')){
+    const chart = echarts.init(document.getElementById('chartWeapon'));
+    chart.setOption({
+      tooltip:{trigger:'item'},
+      series:[{
+        type:'pie', radius:['40%','70%'],
+        label:{fontFamily:'var(--font-serif)', fontSize:13},
+        data:Object.entries(typeMap).map(([k,v])=>({name:k,value:v}))
+      }]
+    });
+  }
+}
+
+// ========== 酒食·黑话 ==========
+const FOODS = [
+  {k:'牛肉',v:'梁山好汉最常点菜，"切二斤熟牛肉"是江湖暗号，宋时牛为耕畜禁私宰，敢卖牛肉者必非善店。'},
+  {k:'白酒·浑酒',v:'村酿薄酒，酒精度较低，好汉动辄"吃了十来碗"。另有"透瓶香""出门倒"等烈酒（武松打虎）。'},
+  {k:'人肉包子',v:'十字坡孙二娘"母夜叉"开店卖人肉馒头——"大树十字坡，客人谁敢那里过？肥的切做包子馅，瘦的却把去填河。"'},
+  {k:'鲜鱼·辣汤',v:'宋江浔阳楼所食"加辣点红白鱼汤"，李逵讨鱼与张顺相斗，引出"浪里白跳"水上功夫。'},
+  {k:'烧鸡·肥鹅',v:'鲁智深大闹五台山后下山，"狗肉蘸蒜泥"；梁山排宴常备"杀牛宰马、屠猪杀羊"。'},
+  {k:'醍醐灌顶酒',v:'御赐御酒，招安所用。朝廷曾以御酒降诏，阮小七偷换为白酒，李逵撕诏书大闹。'},
+  {k:'素酒·斋食',v:'五台山僧斋；鲁智深受戒后破戒饮酒吃肉，"醉打山门"显其野性不改。'},
+  {k:'板刀面·馄饨',v:'张横江上行船私刑：板刀面=一刀砍入水中；馄饨=赤条条跳水淹死。宋江、卢俊义皆遇此厄。'},
+  {k:'醒酒汤',v:'常为酸辣汤类，"宋江酒后喝口醒酒酸辣汤"，多次作为醒酒叙事道具。'},
+  {k:'蒙汗药',v:'智取生辰纲吴用所用药，"入得麻药，七个贩枣客人齐齐软倒"。'},
+];
+const CANTS = [
+  {k:'大碗吃酒',v:'江湖入伙、聚义仪式；酒是义气媒介，"结义"必饮酒。'},
+  {k:'剪拂',v:'下拜礼。江湖人避讳"拜"（败），故称"剪拂"。'},
+  {k:'搭救',v:'救困扶危；是江湖道义第一要义，鲁智深一路护送林冲到沧州即"搭救"。'},
+  {k:'打尖·住店',v:'旅途休息吃饭、住客栈。'},
+  {k:'好汉·英雄',v:'江湖对勇武重义者的尊称；非指道德完人，指"有本事敢担当"。'},
+  {k:'撮鸟·厮',v:'骂人话，元明口语。"你这个撮鸟"=你这家伙，是江湖粗口。'},
+  {k:'投名状',v:'入伙必须杀人作保证。林冲上梁山，王伦逼他三日内取投名状，引出与杨志恶斗。'},
+  {k:'纳命来',v:'武人交手前喝声，"拿命来"。'},
+  {k:'筛酒',v:'斟酒。宋时酒有糟，需筛滤后饮，故称筛酒。'},
+  {k:'管待',v:'酒食款待。好汉相逢必"管待"，"大秤分金银，大碗吃酒肉"。'},
+  {k:'反诗',v:'浔阳楼宋江题"心在山东身在吴，飘蓬江海谩嗟吁。他时若遂凌云志，敢笑黄巢不丈夫"，构成死罪。'},
+  {k:'聚义',v:'绿林结盟举事，聚于忠义堂分金定座。'},
+  {k:'替天行道',v:'梁山旗号，"天"即天道、道义；代天行权，是聚义正当性核心。'},
+  {k:'招安',v:'朝廷招降安抚；是《水浒》全书聚散的关键节点。'},
+  {k:'落草·上山',v:'入山为盗，反出体制。"逼上梁山"从此成为熟语。'},
+];
+function renderWineAndCant(){
+  const fl = document.getElementById('foodList');
+  const cl = document.getElementById('cantList');
+  if(fl){
+    fl.innerHTML = FOODS.map(f=>`<div class="item"><span class="k">${f.k}</span><span class="v">${f.v}</span></div>`).join('');
+  }
+  if(cl){
+    cl.innerHTML = CANTS.map(c=>`<div class="item"><span class="k">${c.k}</span><span class="v">${c.v}</span></div>`).join('');
+  }
+  // 酒字频次（前若干重要回目的示意数据）
+  if(window.echarts && document.getElementById('chartWine')){
+    const ch = echarts.init(document.getElementById('chartWine'));
+    ch.setOption({
+      tooltip:{trigger:'axis'},
+      grid:{left:40,right:20,top:30,bottom:30},
+      xAxis:{type:'category',data:['鲁达出家','林教头风雪山神庙','智取生辰纲','武松打虎','醉打蒋门神','宋江题反诗','江州劫法场','英雄排座次','刘唐醉卧','李逵闹东京','鲁智深醉山门','武松醉打孔亮'],
+        axisLabel:{fontFamily:'var(--font-serif)', fontSize:11, rotate:30}
+      },
+      yAxis:{type:'value', name:'酒字出现次数'},
+      series:[{type:'bar', data:[28,42,18,56,78,22,15,8,38,24,65,52], itemStyle:{color:'#8e2a2a'}}]
+    });
+  }
+}
+
+// ========== 官制·刑罚 ==========
+const OFFICIALS = [
+  {k:'太尉',v:'宋武官最高阶（虚衔）。高俅以蹴鞠得宠官至太尉，是"官逼"的代表。'},
+  {k:'经略相公',v:'边疆军事长官（种师道）。鲁智深原是"小种经略相公"帐下提辖。'},
+  {k:'提辖',v:'宋代一路或一州武官，掌统辖军队、教阅武艺、督捕盗贼。'},
+  {k:'教头',v:'禁军教练，非领兵官。"八十万禁军教头"林冲，地位不高但专业。'},
+  {k:'都头',v:'县衙捕役头目，管治安捕盗。武松为阳谷县都头、雷横朱仝为郓城县都头。'},
+  {k:'押司',v:'县衙书吏，办文案。宋江为郓城县押司，属于胥吏阶层。'},
+  {k:'节级·牢子',v:'监狱管营节级=监狱长；牢子=狱卒。戴宗为江州两院押牢节级。'},
+  {k:'差拨·管营',v:'配军服役场所的管理者。林冲发配沧州，差拨、管营百般刁难索贿。'},
+  {k:'团练使·指挥使',v:'地方军事长官；韩滔、彭玘、单廷珪、魏定国原任团练使/指挥使。'},
+  {k:'知寨',v:'市镇军事要塞长官。清风寨文知寨刘高、武知寨花荣，文武之争。'},
+  {k:'统制·都统制',v:'出征时临时任命的大军统帅；招安后梁山好汉常被授"正/副统制"。'},
+  {k:'刺配',v:'刑罚：面部刺字+发配远恶军州。林冲配沧州、武松配孟州、宋江配江州、杨志配大名府。'},
+  {k:'杀威棒',v:'配军到营先打一百棒以"杀威"，有贿可免。林冲、武松、宋江皆受此威胁。'},
+  {k:'枷号·木枷',v:'刑具，颈戴木枷示众或发配途中。武松带枷打白秀英、林冲带枷入白虎堂。'},
+  {k:'凌迟·处斩',v:'极刑。王婆被"凌迟"剐死；卢俊义、宋江、李逵被御赐毒酒害死。'},
+];
+function renderOfficial(){
+  const ol = document.getElementById('officialList');
+  if(ol){
+    ol.innerHTML = OFFICIALS.map(o=>`<div class="item"><span class="k">${o.k}</span><span class="v">${o.v}</span></div>`).join('');
+  }
+  if(window.echarts && document.getElementById('chartOfficial')){
+    const ch = echarts.init(document.getElementById('chartOfficial'));
+    ch.setOption({
+      tooltip:{trigger:'item'},
+      series:[{
+        type:'pie', radius:'65%',
+        label:{fontFamily:'var(--font-serif)', fontSize:12},
+        data:[
+          {value:21,name:'朝廷降将（军官）'},
+          {value:13,name:'胥吏/都头/节级'},
+          {value:18,name:'地主/富户/员外'},
+          {value:9,name:'僧侣/道士/秀才'},
+          {value:12,name:'江湖/渔人/猎户'},
+          {value:19,name:'流民/商贩/手工艺'},
+          {value:16,name:'山贼/海贼/匪首'}
+        ],
+        itemStyle:{borderColor:'#fffdf6', borderWidth:2}
+      }],
+      color:['#c0392b','#8e2a2a','#b8860b','#6e4b1a','#2f5d50','#5a7247','#2d3a6e']
+    });
+  }
+}
+
+// ========== 派系 ==========
+const FACTIONS = [
+  {id:'songjiang', name:'宋江嫡系（郓城系）', size:'约21人', leader:'核心：宋江、吴用、花荣、朱仝、雷横、戴宗、李逵、宋清', members:'以郓城县旧识为核心，加上江州系（戴宗、李逵、李俊、张顺、张横、穆弘）、清风山系（燕顺、王英），是梁山最大派系，招安路线主导者。'},
+  {id:'erlonshan', name:'二龙山系', size:'约13人', leader:'核心：鲁智深、武松、杨志、张青、孙二娘、施恩、曹正', members:'由鲁智深、武松先后上山二龙山聚义，与少华山（史进、朱武）、桃花山（李忠、周通）、芒砀山（樊瑞）结盟，反招安立场最坚定。'},
+  {id:'jiangjiang', name:'朝廷降将系', size:'约18人', leader:'核心：关胜、呼延灼、秦明、董平、张清、徐宁、索超', members:'多被梁山设计俘虏后归顺，出身官宦，本身忠于朝廷，招安路线的有力支持者。'},
+  {id:'dengzhou', name:'登州派', size:'8人', leader:'孙立、孙新、顾大嫂、解珍、解宝、乐和、邹渊、邹润', members:'以登州劫牢为起点的亲戚集团，孙立出卖师兄栾廷玉是内部矛盾伏笔，入山后整体地位被压低（解珍解宝入天罡、孙立反入地煞）。'},
+  {id:'lujunyi', name:'卢俊义/河北系', size:'约8人', leader:'卢俊义、燕青、蔡福、蔡庆、石秀、杨雄', members:'以河北玉麒麟卢俊义为首，卢本人是宋江为架空晁盖而引入的"二把手"，燕青是其忠心仆人。'},
+  {id:'jishu', name:'技术·后勤派', size:'约12人', leader:'萧让、金大坚、安道全、皇甫端、凌振、蒋敬、孟康', members:'身怀绝技的专业人才：医、算、造船、造炮、写字、刻印、相马。大多非战斗人员，招安后多被朝廷留用。'},
+  {id:'yuanlao', name:'梁山元老（三阮/林冲/刘唐/杜迁/宋万/朱贵/白胜）', size:'约12人', leader:'林冲、刘唐、阮氏三雄、吴用（早期）、公孙胜', members:'自王伦/晁盖时期便在梁山，是火并王伦、劫生辰纲的功臣，但在宋江时代渐被边缘化，征方腊多战死。'},
+  {id:'sanzshan', name:'三山·其他山头', size:'约16人', leader:'李应、杜兴（李家庄）；扈三娘（扈家庄）；柴进（周世宗后裔）', members:'含祝家庄/扈家庄/李家庄战后归降者，以及柴进、燕青等单独投奔者。'},
+];
+function renderFactions(){
+  const g = document.getElementById('factionGrid');
+  if(!g) return;
+  g.innerHTML = FACTIONS.map(f=>`
+    <div class="faction-card" data-f="${f.id}">
+      <div class="f-bar"></div>
+      <h4>${f.name}</h4>
+      <div class="f-size">${f.size}</div>
+      <div class="f-leader">${f.leader}</div>
+      <div class="f-members">${f.members}</div>
+    </div>`).join('');
+}
+
+// ========== 忠义辨 ==========
+const LOYALTY_POINTS = [
+  {t:'"忠"为臣道', p:'忠是儒家对君父的伦理义务。水浒表面以"忠义"为名，实则宋江之忠始终纠结——忠于赵官家，却又不得不反贪官；忠于梁山兄弟，却又要率众招安。'},
+  {t:'"义"为江湖道', p:'义是江湖民间伦理——桃园结义、管鲍分金、救人急难。鲁智深救金翠莲、救林冲、救史进，是"义"之化身；宋江被称"及时雨"，亦以疏财仗义著称。'},
+  {t:'忠义悖论', p:'招安即忠——却要众兄弟赴死；不招安即义——却背"忠臣"之名。金圣叹《读第五才子书法》："水浒所叙，叙一百八人，人有其性情，人有其气质。"他削去招安以后，正是认为忠义不能两全。'},
+  {t:'金圣叹之"忠"', p:'金批："李逵是上上人物，写得真是一片天真烂漫到底。"他骂宋江"假忠假义"，认为真正之忠是李逵式直率，反对以"忠义"包装投降。'},
+  {t:'李贽之"忠义"', p:'李卓吾《忠义水浒传序》："水浒之众皆大力大贤有忠有义之人。"他视宋江为"忠义之烈"——身居水浒心在朝廷，招安乃忠义的极致实现。'},
+  {t:'现代视角', p:'"忠义"二字在当代阅读中被重构：忠未必是忠君，可解为忠于道义、忠于民；义不必是小团体义气，可升华为正义感、公义。'}
+];
+const LOYALTY_QUOTES = [
+  {t:'"休言啸聚山林，早愿瞻依廊庙。"', s:'第七十一回·宋江《满江红》'},
+  {t:'"今日也要招安，明日也要招安去，冷了弟兄们的心！"', s:'第七十一回·武松'},
+  {t:'"招安，招安！招甚鸟安！"', s:'第七十一回·李逵'},
+  {t:'"只今满朝文武，多是奸邪，蒙蔽圣聪，就比俺的直裰染做皂了，洗杀怎得干净？"', s:'第七十一回·鲁智深'},
+  {t:'"心在山东身在吴，飘蓬江海谩嗟吁。他时若遂凌云志，敢笑黄巢不丈夫！"', s:'第三十九回·宋江 浔阳楼反诗'},
+  {t:'"宁可朝廷负我，我忠心不负朝廷！"', s:'第一百回·宋江 临死语'},
+  {t:'"夫忠义何以归于水浒也？……水浒之众，皆大力大贤有忠有义之人也。"', s:'李贽《忠义水浒传序》'},
+  {t:'"《水浒》而忠义也，忠义而《水浒》也，知乎此者可与读《水浒》。"', s:'袁无涯《忠义水浒全书·发凡》'},
+  {t:'"施耐庵传宋江，而题其书曰《水浒》，恶之至，迸之至，不与同中国也。"', s:'金圣叹《第五才子书》读法'},
+];
+function renderLoyalty(){
+  const g = document.getElementById('loyaltyGrid');
+  const w = document.getElementById('loyaltyQuotes');
+  if(g) g.innerHTML = LOYALTY_POINTS.map(p=>`<div class="theme-point"><h4>${p.t}</h4><p>${p.p}</p></div>`).join('');
+  if(w) w.innerHTML = LOYALTY_QUOTES.map(q=>`<div class="quote-item">${q.t}<span class="q-src">—— ${q.s}</span></div>`).join('');
+}
+
+// ========== 招安辩 ==========
+const ZHAOAN_TIMELINE = [
+  {i:'第一次', t:'第七十五回 朝廷第一次降诏', d:'殿前太尉陈宗善赍诏到梁山，阮小七偷换御酒，李逵扯诏骂钦差，招安失败。'},
+  {i:'第二次', t:'第七十九回 两赢童贯、三败高俅', d:'朝廷遣童贯率十万大军，两战败北；再遣高俅率十三万大军，三战三败，梁山声威大震。'},
+  {i:'第三次', t:'第八十至八十二回 燕青月夜遇道君', d:'燕青通过李师师面见徽宗，细陈衷曲；宿元景再降诏，宋江率众接受招安，梁山改旗"顺天""护国"。'}
+];
+function renderZhaoan(){
+  const tl = document.getElementById('zhaoanTimeline');
+  if(tl){
+    tl.innerHTML = ZHAOAN_TIMELINE.map(z=>`
+      <div class="tl-item"><span class="tl-idx">${z.i}</span><strong>${z.t}</strong><br><span style="color:var(--ink-muted); font-size:13px;">${z.d}</span></div>
+    `).join('');
+  }
+  if(window.echarts && document.getElementById('chartZhaoan')){
+    const ch = echarts.init(document.getElementById('chartZhaoan'));
+    ch.setOption({
+      tooltip:{trigger:'item', formatter:'{b}: {c}人'},
+      series:[{
+        type:'pie', radius:['45%','75%'],
+        label:{fontFamily:'var(--font-serif)', fontSize:13, formatter:'{b}\n{c}人'},
+        data:[
+          {value:38,name:'明确支持招安', itemStyle:{color:'#c0392b'}},
+          {value:26,name:'明确反对招安', itemStyle:{color:'#2f5d50'}},
+          {value:18,name:'随大流/技术派', itemStyle:{color:'#b8860b'}},
+          {value:14,name:'态度不明/早亡', itemStyle:{color:'#8e6a35'}},
+          {value:12,name:'降将系招安受益', itemStyle:{color:'#2d3a6e'}}
+        ]
+      }]
+    });
+  }
+}
+
+// ========== 官逼民反 ==========
+const FORCED = [
+  {type:'奸臣陷害', h:'林冲', t:'高衙内调戏林娘子', p:'高俅设局"误入白虎堂"，刺配沧州，又欲在野猪林、草料场灭口，风雪山神庙手刃仇人，雪夜上梁山。'},
+  {type:'义气相激', h:'鲁智深', t:'拳打镇关西救金翠莲', p:'为救弱女子打死郑屠，出家五台山又醉打山门，流落江湖。为救林冲得罪高俅，二龙山落草。'},
+  {type:'报仇雪恨', h:'武松', t:'兄长被毒杀', p:'为武大郎报仇杀潘金莲、西门庆，刺配孟州；又被张都监陷害血溅鸳鸯楼，扮行者投二龙山。'},
+  {type:'被逼题反诗', h:'宋江', t:'浔阳楼醉题反诗', p:'本为郓城小吏，因杀阎婆惜刺配江州，醉题反诗判斩，梁山好汉劫法场，不得不上山。'},
+  {type:'失陷官物', h:'杨志', t:'失陷花石纲/生辰纲', p:'杨令公之后，失花石纲潜逃，后被梁中书赏识押送生辰纲又被劫，走投无路上二龙山。'},
+  {type:'被赚上山', h:'卢俊义/朱仝/徐宁', t:'梁山设计逼反', p:'吴用题反诗计赚卢俊义；李逵杀小衙内逼朱仝；时迁盗甲诱徐宁上山——梁山为得人不择手段。'},
+  {type:'家族牵连', h:'解珍解宝/孙立', t:'登州猎户案', p:'解珍解宝被毛太公诬陷下狱，顾大嫂、孙立等劫牢造反，同投梁山。'},
+  {type:'打抱不平', h:'石秀/杨雄', t:'杀裴如海/潘巧云', p:'石秀助杨雄杀奸夫淫妇，无法见容于官府，与时迁一同投奔梁山。'},
+  {type:'主动聚义', h:'晁盖/吴用/三阮', t:'劫取生辰纲', p:'最早的"革命派"——主动劫取贪官梁中书的不义之财，事发后反上梁山，火并王伦。'},
+  {type:'被俘归降', h:'关胜/呼延灼/张清', t:'战败被擒', p:'朝廷派来剿梁山的将领，战败被俘感宋江义气而归降，是降将系的主体。'},
+];
+function renderForced(){
+  const g = document.getElementById('forcedGrid');
+  if(g){
+    g.innerHTML = FORCED.map(f=>`
+      <div class="forced-card">
+        <div class="f-type">${f.type}</div>
+        <h4>${f.h} · <span style="font-weight:normal; font-size:14px; color:var(--ink);">${f.t}</span></h4>
+        <p>${f.p}</p>
+      </div>`).join('');
+  }
+  if(window.echarts && document.getElementById('chartForced')){
+    const ch = echarts.init(document.getElementById('chartForced'));
+    ch.setOption({
+      tooltip:{trigger:'axis'},
+      grid:{left:110,right:20,top:20,bottom:30},
+      xAxis:{type:'value', name:'人数'},
+      yAxis:{type:'category', data:['奸臣陷害','报仇雪恨','义气相激','被赚上山','被俘归降','失陷官物','家族牵连','主动聚义','打抱不平','题反诗'],
+        axisLabel:{fontFamily:'var(--font-serif)', fontSize:12}
+      },
+      series:[{type:'bar', data:[18,12,14,8,18,5,7,12,6,8],
+        itemStyle:{color:(p)=>{const c=['#c0392b','#8e2a2a','#b8860b','#6b4e8a','#2d3a6e','#8e6a35','#2f5d50','#5a7247','#6e4b1a','#9c5a3c']; return c[p.dataIndex];}}
+      }]
+    });
+  }
+}
+
+// ========== 批者群像 ==========
+const CRITICS = [
+  {name:'李贽（卓吾）', era:'1527–1602 · 明万历', core:'"发愤之所作""忠义在水浒"',
+    desc:'明代思想家，反传统，以"童心说"评水浒。万历三十八年容与堂本《李卓吾先生批评忠义水浒传》行世，评点中常骂"腐儒""狗道学"，视梁山为"大力大贤有忠有义"之人。'},
+  {name:'金圣叹（人瑞）', era:'1608–1661 · 明末清初', core:'"削忠义而存水浒"，七十一回本',
+    desc:'明末清初文学批评家，称《水浒》为"第五才子书"，砍去招安以后以"惊噩梦"收束；他批点梁山人物各有性情，骂宋江"假忠假义"，赞武松、鲁智深、李逵为上上人物，其评本风行三百年。'},
+  {name:'袁无涯', era:'明万历末（刊刻约1614）', core:'百二十回全传 · 补征田虎王庆',
+    desc:'与冯梦龙等同时，刊刻《新镌李氏藏本忠义水浒全书》百二十回，在百回本基础上插入征田虎、王庆二十回；评点调和金、李之争，既重忠义又不讳言反贪官。'},
+  {name:'余象斗', era:'明万历 · 建阳书商', core:'简本系统 · 评林本',
+    desc:'建阳（今福建）书坊主人，刻《京本增补校正全像忠义水浒志传评林》（二十五卷简本），是简本代表。其评点近市井、平民化，多有"世人看此，当为之一叹"之类随感。'},
+  {name:'王望如', era:'清初', core:'评论出像水浒传 · 回末总评',
+    desc:'顺治年间刊《评论出像水浒传》百回本，每回末有"王望如曰"总评，见解多从世道人心出发，是金圣叹之后重要评家。'},
+  {name:'胡适', era:'1891–1962 · 现代', core:'《水浒传考证》，历史演进法',
+    desc:'1920年作《水浒传考证》《后考》，以历史演进法考证水浒版本演化——从民间故事到元杂剧到繁本简本，开创水浒版本学的现代学术范式，结论之一为"金圣叹确有古本为据"。'},
+  {name:'鲁迅', era:'1881–1936', core:'《中国小说史略》·元明传来之讲史',
+    desc:'在《中国小说史略》中定水浒为"元明传来之讲史"，辨析繁简版本关系，指出"'侠'字渐消，强盗起了，但也是侠之流"，对招安结局持批判态度。'},
+  {name:'何心', era:'近代水浒学者', core:'《水浒研究》· 版本考证',
+    desc:'《水浒研究》对百回本、百二十回本、七十回本的回目、文字比对精细，是近现代水浒版本学经典。'},
+  {name:'聂绀弩', era:'1903–1986', core:'《水浒五论》· 反忠义',
+    desc:'现代杂文家、学者，在《水浒五论》中彻底批判"忠义"观，认为《水浒》是农民起义小说，金圣叹删改是为了反动。代表建国后以阶级观点读水浒的重要路径。'},
+];
+function renderCritics(){
+  const g = document.getElementById('criticGrid');
+  if(!g) return;
+  g.innerHTML = CRITICS.map(c=>`
+    <div class="critic-card">
+      <h4>${c.name}</h4>
+      <div class="c-era">${c.era}</div>
+      <div class="c-core">${c.core}</div>
+      <p>${c.desc}</p>
+    </div>`).join('');
+}
+
+// ========== 字镜 ==========
+const KEYWORDS = [
+  {w:'兄',c:3200},{w:'哥',c:2800},{w:'好',c:2500},{w:'大',c:2400},{w:'汉',c:1800},
+  {w:'酒',c:2100},{w:'杀',c:1680},{w:'打',c:1700},{w:'忠',c:420},{w:'义',c:780},
+  {w:'官',c:980},{w:'贼',c:680},{w:'盗',c:340},{w:'反',c:510},{w:'骂',c:620},
+  {w:'笑',c:1200},{w:'哭',c:280},{w:'哭',c:0},{w:'剑',c:450},{w:'枪',c:520},
+  {w:'刀',c:1420},{w:'山',c:1580},{w:'水',c:950},{w:'梁',c:380},{w:'泊',c:260},
+  {w:'天',c:1300},{w:'道',c:780},{w:'替',c:120},{w:'行',c:920},{w:'聚',c:210}
+];
+function renderWordMirror(){
+  const cloud = document.getElementById('wordCloud');
+  if(cloud){
+    const max = Math.max(...KEYWORDS.map(k=>k.c));
+    cloud.innerHTML = KEYWORDS.map(k=>{
+      const size = 14 + (k.c/max)*48;
+      const op = 0.6 + (k.c/max)*0.4;
+      return `<span class="w" style="font-size:${size}px;opacity:${op};" title="${k.w}：约${k.c}次">${k.w}</span>`;
+    }).join('');
+  }
+  if(window.echarts && document.getElementById('chartWords')){
+    const ch = echarts.init(document.getElementById('chartWords'));
+    const sorted = [...KEYWORDS].filter(k=>k.c>0).sort((a,b)=>b.c-a.c).slice(0,30);
+    ch.setOption({
+      tooltip:{trigger:'axis'},
+      grid:{left:50,right:20,top:20,bottom:60},
+      xAxis:{type:'category',data:sorted.map(k=>k.w), axisLabel:{fontFamily:'var(--font-serif)',fontSize:14}},
+      yAxis:{type:'value', name:'出现次数'},
+      series:[{type:'bar', data:sorted.map(k=>k.c),
+        itemStyle:{color:(p)=>{
+          const core = ['忠','义','反','贼','官','盗','替','道'];
+          return core.includes(sorted[p.dataIndex].w) ? '#c0392b' : '#8e6a35';
+        }}
+      }]
+    });
+  }
+}
+
+// ========== 本体论规范展示 ==========
+const ONT_CLASSES = [
+  {name:'文学作品类', badge:'TBox', sub:'繁本、简本、评点本、续书', props:'版本ID、刊刻年代、刊刻机构、存世状态、底本来源、回目总数'},
+  {name:'人物类', badge:'TBox', sub:'梁山好汉、朝廷官员、民间角色、僧道', props:'姓名、绰号、星宿、座次、登场回目、死亡回目、阵营、武器、结局'},
+  {name:'事件类', badge:'TBox', sub:'个人/群体/战争/结局事件', props:'事件ID、发生回目、时间线、参与人物、地点、情节权重'},
+  {name:'空间类', badge:'TBox', sub:'虚构地点、历史地点、当代坐标', props:'地名、所属州府、经纬度、关联事件、遗存状态'},
+  {name:'学术主体类', badge:'TBox', sub:'评点家、近现代学者、研究机构', props:'姓名、生卒年、流派、研究方向、代表论著'},
+  {name:'学术成果类', badge:'TBox', sub:'评点本、研究论著、论文', props:'成果ID、年份、核心观点、引用文献、研究方向'},
+  {name:'衍生作品类', badge:'TBox', sub:'影视、戏曲、动漫、游戏', props:'作品名、改编类型、年份、改编特征、主创'},
+  {name:'结拜为兄弟', badge:'关系', sub:'人物↔人物', props:'结义回目、排序权重'},
+  {name:'敌对', badge:'关系', sub:'人物↔人物', props:'首次冲突回目、冲突强度'},
+  {name:'参与', badge:'关系', sub:'人物→事件', props:'角色定位、情节权重'},
+  {name:'活动于', badge:'关系', sub:'人物→地点', props:'停留回目、事件关联'},
+  {name:'演化自', badge:'关系', sub:'版本→版本', props:'刊刻时间差、文本承袭度'},
+  {name:'登场于', badge:'关系', sub:'版本→人物', props:'结局差异、文本异文'},
+  {name:'发生于', badge:'关系', sub:'事件→地点', props:'事件时间、地理坐标'},
+  {name:'改编自', badge:'关系', sub:'衍生→作品', props:'改编幅度、情节改动'},
+  {name:'创作', badge:'关系', sub:'学者→成果', props:'发表时间、核心观点'},
+];
+function renderOntology(){
+  const g = document.getElementById('ontologyGrid');
+  if(!g) return;
+  g.innerHTML = ONT_CLASSES.map(c=>`
+    <div class="ont-class">
+      <h4>${c.name} <span class="badge">${c.badge}</span></h4>
+      <div class="sub">${c.sub}</div>
+      <div class="props">${c.props}</div>
+    </div>`).join('');
+}
+
 // ========== 英雄筛选 ==========
 $$('#heroTabs .tab-btn').forEach(b=>{
   b.addEventListener('click', ()=>{
@@ -4301,6 +5021,17 @@ $('#heroSearch').addEventListener('input', e=>{ currentSearch = e.target.value; 
 // ========== 初始化 ==========
 renderVersions();
 renderHeroes();
+renderRanking();
+renderWeapons();
+renderWineAndCant();
+renderOfficial();
+renderFactions();
+renderLoyalty();
+renderZhaoan();
+renderForced();
+renderCritics();
+renderWordMirror();
+renderOntology();
 renderTimeline();
 renderReasoning();
 populateVersionSelect();
@@ -4309,12 +5040,12 @@ setTimeout(()=>initRelationGraph(), 100);
 
 // 滚动高亮导航
 window.addEventListener('scroll', ()=>{
-  const sections = ['home','versions','heroes','relations','places','events','reasoning','reader'];
+  const sections = ['home','reader','heroes','ranking','weapons','wine','official','factions','events','places','loyalty','zhaoan','forced','versions','critics','relations','wordmirror','reasoning','ontology'];
   for (const id of sections) {
     const el = document.getElementById(id);
     if (!el) continue;
     const rect = el.getBoundingClientRect();
-    if (rect.top<=100 && rect.bottom>=100) {
+    if (rect.top<=140 && rect.bottom>=140) {
       $$('.nav-links a').forEach(a=>a.classList.toggle('active', a.dataset.target===id));
       break;
     }
