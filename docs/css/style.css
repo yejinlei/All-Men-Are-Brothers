@@ -966,3 +966,59 @@ canvas#relCanvas:active { cursor: grabbing; }
 .chapter-body .poem { font-family:var(--font-serif); text-align:center;
   font-size:15px; line-height:2; color:var(--ink-muted);
   margin:12px 0; padding:8px 0; border-top:1px dashed var(--border); border-bottom:1px dashed var(--border);}
+
+/* ===== 阅读器工具栏增强（版本/回目/批注/语体） ===== */
+.reader-header {
+  display:flex; flex-wrap:wrap; align-items:center; gap:8px;
+  padding:14px 18px; margin-bottom:12px;
+  background:rgba(255,252,245,0.92);
+  border:1px solid var(--paper-border);
+  border-radius:6px;
+}
+.reader-lbl {
+  font-family:var(--font-serif); font-size:16px; color:var(--ink-muted);
+  letter-spacing:2px; padding-right:2px; user-select:none;
+}
+.reader-sep {
+  width:1px; height:28px; background:var(--paper-border); margin:0 6px;
+}
+.reader-header select {
+  min-width:180px; padding:8px 10px; font-size:15px;
+  font-family:var(--font-serif-reading, "Source Han Serif SC", "Noto Serif CJK SC", "SimSun", serif);
+  background:#fffdf6; border:1px solid var(--paper-border);
+  border-radius:4px; color:var(--ink);
+  appearance:none;
+  -webkit-appearance:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%238b4513' stroke-width='1.5' fill='none' stroke-linecap='round'/></svg>");
+  background-repeat:no-repeat; background-position:right 10px center;
+  padding-right:28px; cursor:pointer;
+}
+.reader-header select#versionSelect { min-width:280px; }
+.reader-header select#chapterSelect { min-width:260px; max-width:440px; }
+.reader-header select#annoSelect    { min-width:150px; }
+.reader-header select:focus { outline:none; border-color:var(--vermilion-deep); box-shadow:0 0 0 2px rgba(139,30,30,0.12); }
+
+.reader-header button {
+  padding:8px 14px; font-size:15px; font-family:var(--font-serif);
+  background:#fffdf6; color:var(--ink); border:1px solid var(--paper-border);
+  border-radius:4px; cursor:pointer; transition:all .2s;
+}
+.reader-header button:hover { background:#f5efe0; border-color:var(--vermilion-deep); }
+
+/* 语体切换分段按钮组 */
+.lang-toggle {
+  display:inline-flex; border:1px solid var(--paper-border); border-radius:999px;
+  overflow:hidden; background:#fffdf6; margin:0 4px;
+}
+.lang-btn {
+  padding:7px 16px !important; font-size:16px !important; font-family:var(--font-serif) !important;
+  background:transparent !important; color:var(--ink-muted) !important;
+  border:none !important; border-radius:0 !important; cursor:pointer; transition:all .2s;
+  letter-spacing:4px;
+}
+.lang-btn + .lang-btn { border-left:1px solid var(--paper-border) !important; }
+.lang-btn:hover { color:var(--vermilion-deep) !important; background:transparent !important; }
+.lang-btn.active {
+  background:var(--vermilion-deep) !important; color:#fff !important;
+  box-shadow:inset 0 0 0 2px #f7d68a;
+}
