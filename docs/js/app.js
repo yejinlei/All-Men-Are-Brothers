@@ -319,43 +319,133 @@ function renderPlaces() {
     '润州':       {dx:0,   dy:4,   anchor:'r'},
   };
   const coordFix = {}; // 地理错误已直接修正到 places.json 中
-  // 渲染
-  const items = DATA.places.places.map(p=>{
+  // 渲染：先算初始位置 → 标签自动避让（松弛）→ 生成 SVG（带引线）
+  const DIR = {r:[1,0,'start'], l:[-1,0,'end'], t:[0,-1,'middle'], b:[0,1,'middle'],
+               tr:[0.72,-0.72,'start'], tl:[-0.72,-0.72,'end'],
+               br:[0.72,0.72,'start'],  bl:[-0.72,0.72,'end']};
+  const nodes = DATA.places.places.map(p=>{
     const [lon,lat] = coordFix[p.name] || p.coord;
     let [x,y] = proj(lon,lat);
     const ov = override[p.name] || {};
     x += (ov.dx||0); y += (ov.dy||0);
     const st = typeStyle[p.type] || {r:6, fill:'#5C4B3A'};
-    const anchor = ov.anchor || 'r';
-    // 标签偏移与 text-anchor 计算
-    let tx=x, ty=y, ta='start', dy=4;
-    const off = st.big ? 18 : 12;
-    switch(anchor){
-      case 'r':  tx=x+off;   ty=y+4;   ta='start'; break;
-      case 'l':  tx=x-off;   ty=y+4;   ta='end';   break;
-      case 't':  tx=x;       ty=y-off; ta='middle'; dy=3; break;
-      case 'b':  tx=x;       ty=y+off+2; ta='middle'; dy=0; break;
-      case 'tr': tx=x+off-2; ty=y-off+2; ta='start'; break;
-      case 'tl': tx=x-off+2; ty=y-off+2; ta='end';   break;
-      case 'br': tx=x+off-2; ty=y+off-2; ta='start'; dy=0; break;
-      case 'bl': tx=x-off+2; ty=y+off-2; ta='end';   dy=0; break;
+    const big = !!st.big;
+    const r = st.r;
+    const off = r + (big?9:7);
+    const d = DIR[ov.anchor || 'r'];
+    return {name:p.name, desc:p.desc, x, y, r, fill:st.fill,
+            big, fontS: big?13:11, fw: big?700:500,
+            anchor: ov.anchor || 'r', base: ov.anchor || 'r',
+            ix: x + d[0]*off, iy: y + d[1]*off,
+            lx: x + d[0]*off, ly: y + d[1]*off};
+  });
+  function reposition(n, anchor){
+    n.anchor = anchor;
+    const d = DIR[anchor];
+    const off = n.r + (n.big?9:7);
+    n.ix = n.x + d[0]*off; n.iy = n.y + d[1]*off;
+    n.lx = n.ix; n.ly = n.iy;
+  }
+  function geom(n){
+    const ta = DIR[n.anchor][2];
+    const w = n.name.length*n.fontS*0.98 + 4;
+    const h = n.fontS*1.2;
+    const x0 = ta==='start' ? n.lx : (ta==='end' ? n.lx-w : n.lx-w/2);
+    const y0 = n.ly - h/2;
+    return {x0, y0, w, h, ta, cx:x0+w/2, cy:y0+h/2};
+  }
+  function rectArea(A,B){
+    const ox = Math.min(A.x0+A.w, B.x0+B.w) - Math.max(A.x0, B.x0);
+    const oy = Math.min(A.y0+A.h, B.y0+B.h) - Math.max(A.y0, B.y0);
+    return (ox>0 && oy>0) ? ox*oy : 0;
+  }
+  function dotHit(A, m){
+    const qx = Math.max(A.x0, Math.min(m.x, A.x0+A.w));
+    const qy = Math.max(A.y0, Math.min(m.y, A.y0+A.h));
+    const d = Math.hypot(qx-m.x, qy-m.y);
+    const R = m.r + 2.5;
+    return d < R ? (R-d)*(R-d) : 0;
+  }
+  // ① 贪心锚点：按「大点优先」顺序，为每个标签在 8 个方向中挑压盖最少者
+  const order = nodes.slice().sort((a,b)=>(b.r-a.r)||(b.fontS-a.fontS));
+  const placed = [];
+  order.forEach(n=>{
+    let best = null;
+    for(const key of ['r','l','t','b','tr','tl','br','bl']){
+      reposition(n, key);
+      const g = geom(n);
+      let cost = 0;
+      placed.forEach(b=>{ cost += rectArea(g,b)*1.0; });
+      for(const m of nodes){ if(m!==n) cost += dotHit(g,m)*2.4; }
+      if(!best || cost < best.cost) best = {key, cost};
     }
-    const fontS = st.big ? 13 : 11;
-    const fw = st.big ? 700 : 500;
-    return `<g class="place-dot" data-name="${p.name}">
-      <circle cx="${x}" cy="${y}" r="${st.r}" fill="${st.fill}" stroke="#fff" stroke-width="2" opacity=".95">
-        <title>${p.name}：${p.desc}</title>
+    reposition(n, best.key);
+    placed.push(geom(n));
+  });
+  // ② 松弛：标签互斥 + 标签避让圆点 + 轻微回弹（保持地理真实）
+  const px = new Array(nodes.length).fill(0), py = new Array(nodes.length).fill(0);
+  for(let it=0; it<600; it++){
+    const G = nodes.map(geom);
+    px.fill(0); py.fill(0);
+    for(let a=0; a<nodes.length; a++) for(let b=a+1; b<nodes.length; b++){
+      const A=G[a], B=G[b];
+      const ox = Math.min(A.x0+A.w, B.x0+B.w) - Math.max(A.x0, B.x0);
+      const oy = Math.min(A.y0+A.h, B.y0+B.h) - Math.max(A.y0, B.y0);
+      if(ox>0 && oy>0){
+        if(ox < oy){ const s=(ox/2+0.35)*(A.x0<B.x0?1:-1); px[a]-=s; px[b]+=s; }
+        else       { const s=(oy/2+0.35)*(A.y0<B.y0?1:-1); py[a]-=s; py[b]+=s; }
+      }
+    }
+    for(let a=0; a<nodes.length; a++){
+      const A=G[a];
+      for(let b=0; b<nodes.length; b++){
+        if(a===b) continue;
+        const m=nodes[b];
+        const qx=Math.max(A.x0, Math.min(m.x, A.x0+A.w));
+        const qy=Math.max(A.y0, Math.min(m.y, A.y0+A.h));
+        let vx=qx-m.x, vy=qy-m.y;
+        let dist=Math.hypot(vx,vy);
+        const R=m.r+3;
+        if(dist<R){
+          if(dist<0.01){
+            const left=m.x-A.x0, right=A.x0+A.w-m.x, up=m.y-A.y0, down=A.y0+A.h-m.y;
+            const mn=Math.min(left,right,up,down);
+            if(mn===left){vx=-1;vy=0;} else if(mn===right){vx=1;vy=0;}
+            else if(mn===up){vx=0;vy=-1;} else {vx=0;vy=1;}
+            dist=0.5;
+          }
+          const pen=R-dist;
+          px[a]+=vx/dist*pen*0.9; py[a]+=vy/dist*pen*0.9;
+        }
+      }
+    }
+    for(let a=0; a<nodes.length; a++){
+      const n=nodes[a];
+      px[a] += (n.ix-n.lx)*0.03; py[a] += (n.iy-n.ly)*0.03;
+      n.lx += px[a]*0.42; n.ly += py[a]*0.42;
+      const ddx=n.lx-n.x, ddy=n.ly-n.y, d=Math.hypot(ddx,ddy);
+      if(d>58){ n.lx=n.x+ddx/d*58; n.ly=n.y+ddy/d*58; }
+    }
+  }
+  const items = nodes.map(n=>{
+    const g = geom(n);
+    const dist = Math.hypot(n.lx-n.ix, n.ly-n.iy);
+    const leader = dist>7
+      ? `<line x1="${n.x}" y1="${n.y}" x2="${n.lx}" y2="${n.ly}" stroke="${n.fill}" stroke-width=".8" opacity=".42"/>`
+      : '';
+    return `<g class="place-dot" data-name="${n.name}">
+      <circle cx="${n.x}" cy="${n.y}" r="${n.r}" fill="${n.fill}" stroke="#fff" stroke-width="2" opacity=".95">
+        <title>${n.name}：${n.desc}</title>
       </circle>
-      <text x="${tx}" y="${ty}" text-anchor="${ta}" font-size="${fontS}" fill="${st.fill}" font-family="serif" font-weight="${fw}" dy="${dy}"
-            stroke="#fff" stroke-width="3" paint-order="stroke" class="place-label">${p.name}</text>
+      ${leader}
+      <text x="${n.lx}" y="${n.ly}" text-anchor="${g.ta}" font-size="${n.fontS}" fill="${n.fill}" font-family="serif" font-weight="${n.fw}" dominant-baseline="middle"
+            stroke="#fff" stroke-width="3" paint-order="stroke" class="place-label">${n.name}</text>
     </g>`;
   }).join('');
 
   // 梁山聚义核心连线：以梁山泊为中心连到主要州府（淡线装饰）
-  const [bcx,bcy] = (()=>{
-    const li = DATA.places.places.find(p=>p.name==='梁山泊');
-    return proj(li.coord[0], li.coord[1]);
-  })();
+  const _li = DATA.places.places.find(p=>p.name==='梁山泊');
+  const [bcx,bcy] = proj(_li.coord[0], _li.coord[1]);
   const corePlaces = ['东京开封府','沧州','江州','大名府','蓟州','登州','杭州','华州','渭州','孟州','沂水县'];
   const lines = corePlaces.map(n=>{
     const p = DATA.places.places.find(x=>x.name===n); if(!p) return '';
@@ -370,7 +460,7 @@ function renderPlaces() {
   list.innerHTML = DATA.places.places.map(p=>`
     <div class="place-item" data-name="${p.name}">
       <div class="pn">${p.name}</div>
-      <div class="pt">${p.type} · ${p.today} · 关联：${p.assoc.join('、')}</div>
+      <div class="pt">${p.type} · ${p.today||'—'} · 关联：${(p.assoc||[]).join('、')}</div>
     </div>
   `).join('');
 
@@ -728,6 +818,7 @@ async function loadChapter() {
     if(!r.ok) throw new Error('HTTP '+r.status);
     const txt = await r.text();
     renderChapter(txt, chap);
+    applyExtraComments(chap);
   } catch(e) {
     console.warn('load chapter fail:', filePath, e);
     document.getElementById('readerContent').innerHTML = '<p style="text-align:center; color:var(--ink-muted); padding:60px;">本回文本加载失败。部分版本可能仅部分回目支持白话/繁体。<br><small style="color:#c00;">路径：'+filePath+'</small></p>';
@@ -773,13 +864,67 @@ function renderChapter(txt, chap) {
   content.innerHTML = html;
 
   // 注释区
-  if(RD.comment!=='none' && RD.comment!=='jin' && RD.comment!=='li' && RD.comment!=='yuan' && RD.notes.length) {
+  if(RD.comment!=='none' && RD.comment!=='jin' && RD.comment!=='li' && RD.comment!=='yuan' && !EXTRA[RD.comment] && RD.notes.length) {
     const chapNotes = RD.notes.filter(n=>n.chap===chap.id || n.chapter===chap.title);
     if(chapNotes.length) {
       notesBox.style.display='block';
       notesBox.innerHTML = `<h4>注 释（${chapNotes.length}条）</h4>` + chapNotes.map(n=>`<div class="note"><b>(${n.no||n.id})</b>${n.text}</div>`).join('');
     } else { notesBox.style.display='none'; }
   } else { notesBox.style.display='none'; }
+}
+
+/* ---------- 批注层：钟批 / 王评 / 程注 / 余评 ---------- */
+const EXTRA={
+  zhong:{tag:'钟批',who:'钟伯敬',color:'#7a5195',file:'zhongbo_comments.json',ok:['v100','jiqin'],kind:'zhong'},
+  wang:{tag:'王评',who:'王望如',color:'#5a7d3a',file:'wangping_comments.json',ok:['v70','jin70','jin70_pi','jinshengtan'],kind:'wang'},
+  cheng:{tag:'程注',who:'程穆衡',color:'#2f6f6f',file:'chengzhu_notes.json',ok:['v100','jiqin'],kind:'cheng'},
+  yu:{tag:'余评',who:'余象斗',color:'#a9622d',file:'yuxiangdou_comments.json',ok:['v120','v100','v70','jin70','jin70_pi','jinshengtan','jiqin','zsk'],kind:'yu'}
+};
+const EXTRA_CACHE={};
+function extraItems(kind,data,chap){
+  const num = (chap && chap.num!=null) ? chap.num : RD.chap;
+  const out=[];
+  if(kind==='zhong'){
+    if(num<=1)(data.pin_ren||[]).forEach(p=>out.push({k:'人品评·'+p.name,v:p.text}));
+  }else if(kind==='wang'){
+    const tgt='第'+num+'回';
+    (data.chapters||[]).filter(c=>c.chapter===tgt).forEach(c=>out.push({k:(c.vol||'')+' '+(c.type||'总评'),v:c.text}));
+  }else if(kind==='cheng'){
+    const no=num<1?1:num;const vols=data.volumes||[];
+    const vol=vols.find(v=>v.no===no)||vols.find(v=>v.no===no+1)||vols.find(v=>v.no===no-1);
+    if(vol)(vol.items||[]).forEach(it=>out.push({k:it.k,v:it.v}));
+  }else if(kind==='yu'){
+    if(num<=1&&data.preface)out.push({k:'卷首叙',v:data.preface.text});
+    if(num<=1&&data.bian)out.push({k:'水浒辨',v:data.bian.text});
+    const no=num<1?1:num;
+    const vol=(data.volumes||[]).find(v=>no>=v.hui[0]&&no<=v.hui[1]);
+    if(vol&&(vol.items||[]).length){
+      (vol.items||[]).forEach((t,i)=>out.push({k:vol.name+'·'+(i+1),v:t}));
+    }else if(num>1){
+      const cov=(data.coverage&&data.coverage.vols_with_comments)||[];
+      const names=(data.volumes||[]).filter(v=>cov.indexOf(v.no)>=0).map(v=>v.name).join('、');
+      if(names)out.push({k:'录文说明',v:'评林本上栏评语系孤本影印＋机器录文，现仅 '+names+' 切分完整、可校读；其余各卷评语与下栏正文混排、残缺过甚，暂缺。'});
+    }
+  }
+  return out;
+}
+async function applyExtraComments(chap){
+  const box=document.getElementById('readerNotes');
+  const cfg=EXTRA[RD.comment];
+  if(!cfg){ box.style.display='none'; return; }
+  if(!cfg.ok.includes(RD.ver)){
+    box.style.display='block';
+    box.innerHTML='<h4>'+cfg.tag+'·'+cfg.who+'</h4><div class="note">此批注（'+cfg.tag+'）仅适用于对应版本，请切换到：'+cfg.ok.join(' / ')+'</div>';
+    return;
+  }
+  if(!(cfg.file in EXTRA_CACHE)) EXTRA_CACHE[cfg.file]= await loadJSON('texts/versions/'+cfg.file);
+  const data=EXTRA_CACHE[cfg.file];
+  if(!data){ box.style.display='none'; return; }
+  const items=extraItems(cfg.kind,data,chap);
+  box.style.display='block';
+  if(!items.length){ box.innerHTML='<h4>'+cfg.tag+'·'+cfg.who+'</h4><div class="note">本回暂无'+cfg.who+'批注。</div>'; return; }
+  box.innerHTML='<h4 style="color:'+cfg.color+';">'+cfg.tag+'·'+cfg.who+'（'+items.length+'条）</h4>'+
+    items.map(it=>'<div class="note"><b style="color:'+cfg.color+';">〔'+it.k+'〕</b>'+it.v+'</div>').join('');
 }
 
 /* ---------- 启动 ---------- */

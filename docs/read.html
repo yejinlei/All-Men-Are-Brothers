@@ -103,6 +103,11 @@ background-repeat:no-repeat;background-position:right 12px center;}
 .cmt-chengzhu::before{background:#2f6f6f;}
 .cmt-chengzhu .cmt-tag{background:#2f6f6f;}
 
+/* 余象斗评林（赭褐） */
+.cmt-yuxiangdou{background:#faf1e4;}
+.cmt-yuxiangdou::before{background:#a9622d;}
+.cmt-yuxiangdou .cmt-tag{background:#a9622d;}
+
 /* 冀勤校注（竹青） */
 .cmt-jiqin{background:#eef5ec;}
 .cmt-jiqin::before{background:#2f5d50;}
@@ -173,6 +178,7 @@ body.cmt-only .cmt-block{margin:18px 0;}
           <button class="ui-btn cmt-btn cm-yuanwy" data-cmt="yuanwy">袁本</button>
           <button class="ui-btn cmt-btn cm-zhongbo" data-cmt="zhongbo">钟批</button>
           <button class="ui-btn cmt-btn cm-wangping" data-cmt="wangping">王评</button>
+          <button class="ui-btn cmt-btn cm-yuxiangdou" data-cmt="yuxiangdou">余评</button>
           <button class="ui-btn cmt-btn cm-chengzhu" data-cmt="chengzhu">程注</button>
           <button class="ui-btn cmt-btn cm-jiqin" data-cmt="jiqin">冀注</button>
         </span>
@@ -201,16 +207,25 @@ const sp = new URLSearchParams(location.search);
 const state = {
   vid: sp.get('vid') || 'v70',
   ch:  parseInt(sp.get('ch') || '1', 10),
-  lang: localStorage.getItem('sh_lang') || 'fan',
-  cmt:  localStorage.getItem('sh_cmt')  || 'jinpi',
-  onlyCmt: localStorage.getItem('sh_only')==='1',
-  withBai: localStorage.getItem('sh_bai')==='1',
+  lang: sp.get('lang') || localStorage.getItem('sh_lang') || 'fan',
+  cmt:  sp.get('cmt')  || localStorage.getItem('sh_cmt')  || 'jinpi',
+  onlyCmt: sp.get('only')==='1' || localStorage.getItem('sh_only')==='1',
+  withBai: sp.get('bai')==='1'  || localStorage.getItem('sh_bai')==='1',
   versions: [], chapters: {},
-  comments: { jinpi:null, jiqin:null, lizhuo:null, yuanwy:null, zhongbo:null, wangping:null, chengzhu:null },
+  comments: { jinpi:null, jiqin:null, lizhuo:null, yuanwy:null, zhongbo:null, wangping:null, chengzhu:null, yuxiangdou:null },
   baiCache: {}
 };
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function cnNum(n){const c=['零','一','二','三','四','五','六','七','八','九','十'];if(n<=10)return c[n];if(n<20)return'十'+(n%10?c[n%10]:'');if(n%10===0)return c[Math.floor(n/10)]+'十';return c[Math.floor(n/10)]+'十'+c[n%10];}
+function cnNum(n){
+  const c='零一二三四五六七八九';
+  function u(m){
+    if(m<10)return c[m];
+    if(m<20)return '十'+(m%10?c[m%10]:'');
+    if(m<100){const t=Math.floor(m/10),r=m%10;return c[t]+'十'+(r?c[r]:'');}
+    const h=Math.floor(m/100),r=m%100;return c[h]+'百'+(r===0?'':(r<10?'零'+c[r]:u(r)));
+  }
+  return u(n);
+}
 
 /* 版本简称（按钮上显示） */
 const VER_SHORT={v120:'袁百二',v100:'容百回',v70:'金七十',jin70:'金批繁',jin70_pi:'金批全',jinshengtan:'金批简',jiqin:'冀勤注',zsk:'征四寇'};
@@ -224,7 +239,8 @@ const CMT={
   jiqin:{tag:'冀注',who:'冀勤校注',cls:'cmt-jiqin',color:'#2f5d50',file:'jiqin_notes.json',okVer:['v100','jiqin'],extract:d=>d},
   zhongbo:{tag:'钟批',who:'钟伯敬',cls:'cmt-zhongbo',color:'#7a5195',file:'zhongbo_comments.json',okVer:['v100','jiqin'],extract:d=>d},
   wangping:{tag:'王评',who:'王望如',cls:'cmt-wangping',color:'#5a7d3a',file:'wangping_comments.json',okVer:['v70','jin70','jin70_pi','jinshengtan'],extract:d=>d},
-  chengzhu:{tag:'程注',who:'程穆衡',cls:'cmt-chengzhu',color:'#2f6f6f',file:'chengzhu_notes.json',okVer:['v100','jiqin'],extract:d=>d}
+  chengzhu:{tag:'程注',who:'程穆衡',cls:'cmt-chengzhu',color:'#2f6f6f',file:'chengzhu_notes.json',okVer:['v100','jiqin'],extract:d=>d},
+  yuxiangdou:{tag:'余评',who:'余象斗',cls:'cmt-yuxiangdou',color:'#a9622d',file:'yuxiangdou_comments.json',okVer:['v120','v100','v70','jin70','jin70_pi','jinshengtan','jiqin','zsk'],extract:d=>d}
 };
 
 async function loadJSON(p){const r=await fetch(p);if(!r.ok)throw new Error('fail '+p);return r.json();}
@@ -371,6 +387,7 @@ async function applyCmt(){
   else if(state.cmt==='wangping') collectWangping(data,m,blocks);
   else if(state.cmt==='zhongbo') collectZhongbo(data,m,blocks);
   else if(state.cmt==='chengzhu') collectChengzhu(data,m,blocks);
+  else if(state.cmt==='yuxiangdou') collectYuxiangdou(data,m,blocks);
   else collectDict(data,m,blocks);
 
   if(blocks.length===0){notice('本回暂无'+m.who+'批注。');return;}
@@ -446,7 +463,9 @@ function collectWangping(data,m,blocks){
 
 /* —— 钟伯敬：卷首《水浒传人品评》 —— */
 function collectZhongbo(data,m,blocks){
-  if(state.ch<=1){
+  const cur=state.chapters[state.vid].chapters[state.ch];
+  const num=(cur&&cur.num!=null)?cur.num:(state.ch<1?1:state.ch);
+  if(num<=1){
     const items=(data.pin_ren||[]).map(p=>'<div class="cmt-sub"><b style="color:'+m.color+';">『'+esc(p.name)+'』</b>'+esc(p.text)+'</div>').join('');
     blocks.push({where:'top',tag:m.tag+'·卷首人品评',preface:true,
       html:'<div style="font-size:13px;color:#8a7a62;margin-bottom:6px;">—— 明·钟惺（字伯敬）《水浒传人品评》　四知馆刊本卷首</div>'+items+
@@ -456,12 +475,41 @@ function collectZhongbo(data,m,blocks){
 
 /* —— 程穆衡《水浒传注略》：卷次对应回次 —— */
 function collectChengzhu(data,m,blocks){
-  const no=state.ch<1?1:state.ch;
+  const cur=state.chapters[state.vid].chapters[state.ch];
+  const num=(cur&&cur.num!=null)?cur.num:(state.ch<1?1:state.ch);
+  const no=num<1?1:num;
   const vols=data.volumes||[];
   const vol=vols.find(v=>v.no===no)||vols.find(v=>v.no===no+1)||vols.find(v=>v.no===no-1);
   if(!vol||!vol.items||!vol.items.length)return;
   blocks.push({where:'bottom',tag:m.tag+'·名物注',html:vol.items.map(it=>
     '<div class="cmt-sub"><b style="color:'+m.color+';">〔'+esc(it.k)+'〕</b>'+esc(it.v)+'</div>').join('')});
+}
+
+/* —— 余象斗《水浒志传评林》：卷首叙 + 上栏评语（按卷对应回次） —— */
+function collectYuxiangdou(data,m,blocks){
+  const cur=state.chapters[state.vid].chapters[state.ch];
+  const num=(cur&&cur.num!=null)?cur.num:(state.ch<1?1:state.ch);
+  if(num<=1&&data.preface){
+    blocks.push({where:'top',tag:m.tag+'·卷首叙',preface:true,
+      html:'<div style="font-size:13px;color:#8a7a62;margin-bottom:6px;">—— 明·余象斗《'+esc(data.preface.title)+'》　双峰堂刊本卷首</div>'+esc(data.preface.text)});
+  }
+  if(num<=1&&data.bian){
+    blocks.push({where:'bottom',tag:m.tag+'·水浒辨',html:'<div style="font-size:13px;color:#8a7a62;margin-bottom:6px;">—— '+esc(data.bian.title)+'</div>'+esc(data.bian.text)});
+  }
+  const no=num<1?1:num;
+  const vols=data.volumes||[];
+  const vol=vols.find(v=>no>=v.hui[0]&&no<=v.hui[1]);
+  if(vol&&vol.items&&vol.items.length){
+    blocks.push({where:'bottom',tag:m.tag+'·上栏评语（'+vol.name+'）',html:vol.items.map((it,i)=>
+      '<div class="cmt-sub"><b style="color:'+m.color+';">〔'+(i+1)+'〕</b>'+esc(it)+'</div>').join('')+
+      '<div class="cmt-sub" style="font-size:12px;color:#8a7a62;">（评林本上栏评语原为孤本影印，此处系机器录文，残损字存原样）</div>'});
+  }else{
+    const cov=(data.coverage&&data.coverage.vols_with_comments)||[];
+    const names=(data.volumes||[]).filter(v=>cov.indexOf(v.no)>=0).map(v=>v.name).join('、');
+    if(names){
+      blocks.push({where:'bottom',tag:m.tag+'·录文说明',html:'<div class="cmt-sub" style="font-size:12.5px;color:#8a7a62;">评林本上栏评语系孤本影印＋机器录文，现仅 <b>'+esc(names)+'</b> 切分完整、可校读；其余各卷评语在录文中与下栏正文混排、残缺过甚，暂缺。</div>'});
+    }
+  }
 }
 
 boot().catch(e=>{document.getElementById('contentWrap').innerHTML='<div class="loading">加载失败：'+esc(e.message)+'</div>';console.error(e);});
