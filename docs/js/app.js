@@ -111,14 +111,17 @@ function renderHeroes() {
     if (!curHeroSearch) return true;
     const s = curHeroSearch.toLowerCase();
     return (h.name+h.nickname+h.star+h.origin+h.faction+h.position+h.desc).toLowerCase().includes(s);
-  }).map(h=>`
+  }).map(h=>{
+    const img = h.portrait || h.image;
+    return `
     <div class="hero-card ${h.rank<=36?'tiangang':'disha'}" onclick="showHero(${h.id})">
       <div class="rank">${h.rank}</div>
+      ${img?`<div class="avatar"><img src="${img}" alt="${h.name}" loading="lazy"></div>`:''}
       <div class="nick">${h.star} · ${h.nickname}</div>
       <div class="nm">${h.name}</div>
       <div class="pos">${h.position}</div>
     </div>
-  `).join('');
+  `;}).join('');
 }
 document.querySelectorAll('#heroFilters .filter-btn').forEach(b=>{
   b.addEventListener('click',()=>{
@@ -140,7 +143,7 @@ function showHero(id) {
       <span>${h.star}</span><span>第${h.rank}位</span><span>${h.rank<=36?'天罡':'地煞'}</span>
       ${h.group?`<span style="background:${h.color||'#8B4513'}">${h.group}</span>`:''}
     </div>
-    ${h.image?`<img class="m-avatar" src="${h.image}" alt="${h.name}">`:''}
+    ${(h.image||h.portrait)?`<img class="m-avatar" src="${h.image||h.portrait}" alt="${h.name}">`:''}
     <h2>${h.name}</h2>
     <div class="m-nick">「${h.nickname}」</div>
   `;
