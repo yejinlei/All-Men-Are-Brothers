@@ -173,6 +173,7 @@
   </div>
   <div class="reader-header">
     <select id="versionSelect" aria-label="选择版本"></select>
+    <select id="chapterSelect" aria-label="选择回目" title="快速跳转到回目"></select>
     <div class="lang-switch" role="tablist" aria-label="文本语体切换">
       <button class="lang-btn active" data-lang="fan" title="繁体原文">繁</button>
       <button class="lang-btn" data-lang="jian" title="简体横排">简</button>
@@ -4076,7 +4077,13 @@ function populateVersionSelect() {
       `<option value="${v.id}">${v.short} · ${v.name}（${v.chapter_count}回）</option>`
     ).join('');
     sel.value = currentVid;
-    sel.addEventListener('change', ()=>{ currentVid=sel.value; currentChIdx=0; loadVersion(); });
+    sel.addEventListener('change', ()=>{ currentVid=sel.value; currentChIdx=0; renderReader(); });
+    const csel = $('#chapterSelect');
+    csel.addEventListener('change', ()=>{
+      const v = VERSIONS_INDEX.versions.find(x=>x.id===currentVid);
+      const i = parseInt(csel.value, 10);
+      if (!isNaN(i) && i>=0 && i<v.chapters.length){ currentChIdx=i; showChapter(); }
+    });
     $('#prevCh').addEventListener('click', ()=>{
       const v = VERSIONS_INDEX.versions.find(x=>x.id===currentVid);
       if(currentChIdx>0){currentChIdx--; showChapter();}
@@ -4093,7 +4100,7 @@ function populateVersionSelect() {
         updateLangTip(); showChapter();
       });
     });
-    loadVersion();
+    renderReader();
   }).catch(err=>{
     $('#readerContent').innerHTML = `<p style="color:#c0392b">版本索引加载失败：${err.message}<br>请通过 http 服务器访问。</p>`;
   });
@@ -4108,7 +4115,7 @@ function updateLangTip() {
   tip.innerHTML = `当前语体：<strong>${LANG_LABEL[currentLang]}</strong>${extra}`;
 }
 
-function loadVersion() {
+function renderReader() {
   $('#versionSelect').value = currentVid;
   currentChIdx = 0;
   renderChapterList();
@@ -4124,10 +4131,17 @@ function renderChapterList() {
     const label = (c.chap_type||('第'+c.chap_num+'回')) + (c.title?' · '+c.title:'');
     return `<button onclick="gotoCh(${i})" class="ch-btn ${i===currentChIdx?'active':''}" title="${label}">${c.chap_type||('第'+c.chap_num+'回')}</button>`;
   }).join('');
+  // 同步回目下拉
+  const csel = $('#chapterSelect');
+  csel.innerHTML = v.chapters.map((c,i)=>{
+    const label = (c.chap_type||('第'+c.chap_num+'回')) + (c.title?' · '+c.title:'');
+    return `<option value="${i}" ${i===currentChIdx?'selected':''}>${label}</option>`;
+  }).join('');
+  csel.value = String(currentChIdx);
 }
 function gotoCh(i) { currentChIdx = i; showChapter(); }
 window.gotoCh = gotoCh;
-window.loadVersion = (vid)=>{ currentVid=vid; currentChIdx=0; loadVersion(); };
+window.loadVersion = (vid)=>{ currentVid=vid; currentChIdx=0; renderReader(); };
 
 function formatContent(text, hasPi, hasNotes, chapNum) {
   text = text.replace(/\r/g,'');

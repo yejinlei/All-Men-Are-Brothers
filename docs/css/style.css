@@ -627,6 +627,11 @@ canvas#relCanvas:active { cursor: grabbing; }
 }
 .reader-header button:hover { background: var(--vermilion); color: #fff; border-color: var(--vermilion); }
 .reader-header select:focus { outline: none; border-color: var(--vermilion); }
+#versionSelect { min-width: 260px; }
+#chapterSelect { min-width: 320px; max-width: 420px; }
+@media (max-width: 768px) {
+  #versionSelect, #chapterSelect { min-width: 0; max-width: 100%; width: 100%; }
+}
 .reader-chapter-list {
   display: flex; flex-wrap: wrap; gap: 6px;
   max-height: 200px; overflow-y: auto;
