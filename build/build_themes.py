@@ -251,7 +251,7 @@ themes = [
     },
     {
         "id": "pingdian_four",
-        "name": "四家评点",
+        "name": "八家评点",
         "icon": "🖋️",
         "color": "#8B0000",
         "subtitle": "水浒评点史四百年",
