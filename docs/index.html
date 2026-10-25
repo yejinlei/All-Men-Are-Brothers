@@ -182,7 +182,7 @@
     <button id="nextCh">下回 ▶</button>
     <span id="readerPos" style="font-family:var(--font-serif); font-size:14px; color:var(--ink-muted);"></span>
   </div>
-  <div class="reader-lang-tip" id="readerLangTip">当前语体：<strong>繁体原文</strong> · 所有版本（含金圣叹繁体底本/袁无涯全传/容与堂百回本/征四寇）均提供繁/简/白三版对照</div>
+  <div class="reader-lang-tip" id="readerLangTip">当前语体：<strong>繁体原文</strong> · 全部八个版本（袁无涯全传/容与堂百回本/金圣叹评本×3/冀勤校注本/征四寇）均提供繁/简/白三版对照，金批本与校注本带专属批注显示</div>
   <div class="reader-chapter-list" id="chapterList"></div>
   <div class="reader-content" id="readerContent">
     <p style="text-align:center; color:var(--ink-muted);">请选择版本与回目开始阅读</p>
@@ -4053,107 +4053,108 @@ function renderReasoning() {
   df.innerHTML = tableHtml;
 }
 
-// ========== 版本阅读器（繁/简/白三版） ==========
+// ========== 版本阅读器（繁/简/白三版 · 8版本+注释+金批） ==========
 let currentVid = 'v120';
 let currentChIdx = 0;
-let currentLang = 'fan';  // fan | jian | baihua
-let currentVersionMeta = null;  // index.json
-const chapterCache = {};  // {'v120__001': chapterObj}
-
-const LANG_LABEL = {fan:'繁体原文', jian:'简体横排', baihua:'现代白话'};
-const CONTENT_KEY = {fan:'content_fan', jian:'content_jian', baihua:'content_baihua'};
-const TITLE_KEY   = {fan:'title_fan', jian:'title_jian', baihua:'title_baihua'};
+let currentLang = 'fan';
+let VERSIONS_INDEX = null;
+let JIQIN_NOTES = null;
+let JINPI_COMMENTS = null;
+const chapterCache = {};
+const LANG_LABEL = {fan:'繁体原文', jian:'简体横排', bai:'现代白话'};
+const LANG_DIR   = {fan:'fan', jian:'jian', bai:'bai'};
 
 function populateVersionSelect() {
-  // 先加载 versions_index.json 得到版本列表
-  fetch('texts/versions/versions_index.json')
-    .then(r=>r.json())
-    .then(idx=>{
-      window.VERSIONS_INDEX = idx;
-      const sel = $('#versionSelect');
-      sel.innerHTML = Object.values(idx.versions).map(v=>
-        `<option value="${v.version_id}">${v.name}</option>`
-      ).join('');
-      sel.value = currentVid;
-      sel.addEventListener('change', ()=>{ currentVid=sel.value; loadVersion(currentVid); });
-      $('#prevCh').addEventListener('click', ()=>{
-        if (!currentVersionMeta) return;
-        if(currentChIdx>0){currentChIdx--; showChapter();}
-      });
-      $('#nextCh').addEventListener('click', ()=>{
-        if (!currentVersionMeta) return;
-        if(currentChIdx<currentVersionMeta.chapters.length-1){currentChIdx++; showChapter();}
-      });
-      // 语体切换
-      document.querySelectorAll('.lang-btn').forEach(btn=>{
-        btn.addEventListener('click', ()=>{
-          document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
-          btn.classList.add('active');
-          currentLang = btn.dataset.lang;
-          const tip = $('#readerLangTip');
-          tip.innerHTML = `当前语体：<strong>${LANG_LABEL[currentLang]}</strong> · 已对全部回目完成语体转换（繁/简双向 OpenCC，白话为古白话→现代白话逐句译写）`;
-          showChapter();
-        });
-      });
-      loadVersion(currentVid);
-    }).catch(err=>{
-      $('#readerContent').innerHTML = `<p style="color:#c0392b">版本索引加载失败：${err.message}<br>请通过 http 服务器访问。</p>`;
+  Promise.all([
+    fetch('texts/versions/versions_index.json').then(r=>r.json()),
+    fetch('texts/versions/jiqin_notes.json').then(r=>r.json()).catch(()=>({})),
+    fetch('texts/versions/jinpi_comments.json').then(r=>r.json()).catch(()=>({}))
+  ]).then(([idx, notes, comments]) => {
+    VERSIONS_INDEX = idx; JIQIN_NOTES = notes; JINPI_COMMENTS = comments;
+    const sel = $('#versionSelect');
+    sel.innerHTML = idx.versions.map(v=>
+      `<option value="${v.id}">${v.short} · ${v.name}（${v.chapter_count}回）</option>`
+    ).join('');
+    sel.value = currentVid;
+    sel.addEventListener('change', ()=>{ currentVid=sel.value; currentChIdx=0; loadVersion(); });
+    $('#prevCh').addEventListener('click', ()=>{
+      const v = VERSIONS_INDEX.versions.find(x=>x.id===currentVid);
+      if(currentChIdx>0){currentChIdx--; showChapter();}
     });
+    $('#nextCh').addEventListener('click', ()=>{
+      const v = VERSIONS_INDEX.versions.find(x=>x.id===currentVid);
+      if(currentChIdx<v.chapters.length-1){currentChIdx++; showChapter();}
+    });
+    document.querySelectorAll('.lang-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        currentLang = btn.dataset.lang;
+        updateLangTip(); showChapter();
+      });
+    });
+    loadVersion();
+  }).catch(err=>{
+    $('#readerContent').innerHTML = `<p style="color:#c0392b">版本索引加载失败：${err.message}<br>请通过 http 服务器访问。</p>`;
+  });
 }
 
-function loadVersion(vid) {
-  currentVid = vid;
-  $('#versionSelect').value = vid;
-  fetch(`texts/versions/${vid}/index.json`)
-    .then(r=>r.json())
-    .then(meta=>{
-      currentVersionMeta = meta;
-      currentChIdx = 0;
-      renderChapterList();
-      showChapter();
-    }).catch(err=>{
-      $('#readerContent').innerHTML = `<p style="color:#c0392b">版本加载失败：${err.message}</p>`;
-    });
+function updateLangTip() {
+  const v = VERSIONS_INDEX.versions.find(x=>x.id===currentVid);
+  const tip = $('#readerLangTip');
+  let extra = '';
+  if (v.has_comments) extra += ' · <span class="cm-badge cm-pi">含金圣叹批语</span>';
+  if (v.has_notes) extra += ' · <span class="cm-badge cm-note">含冀勤校注</span>';
+  tip.innerHTML = `当前语体：<strong>${LANG_LABEL[currentLang]}</strong>${extra}`;
 }
+
+function loadVersion() {
+  $('#versionSelect').value = currentVid;
+  currentChIdx = 0;
+  renderChapterList();
+  showChapter();
+  updateLangTip();
+}
+function getCurrentVersionMeta() { return VERSIONS_INDEX.versions.find(x=>x.id===currentVid); }
 
 function renderChapterList() {
+  const v = getCurrentVersionMeta();
   const list = $('#chapterList');
-  const chapters = currentVersionMeta.chapters;
-  list.innerHTML = chapters.map((c,i)=>{
-    const title = c[TITLE_KEY[currentLang]] || c.title_jian || '';
-    const label = c.num + (title ? ' · '+title : '');
-    return `<button onclick="gotoCh(${i})" class="${i===currentChIdx?'active':''}" title="${label}">${c.num}</button>`;
+  list.innerHTML = v.chapters.map((c,i)=>{
+    const label = (c.chap_type||('第'+c.chap_num+'回')) + (c.title?' · '+c.title:'');
+    return `<button onclick="gotoCh(${i})" class="ch-btn ${i===currentChIdx?'active':''}" title="${label}">${c.chap_type||('第'+c.chap_num+'回')}</button>`;
   }).join('');
 }
-
 function gotoCh(i) { currentChIdx = i; showChapter(); }
 window.gotoCh = gotoCh;
-window.loadVersion = loadVersion;
+window.loadVersion = (vid)=>{ currentVid=vid; currentChIdx=0; loadVersion(); };
 
-function formatContent(text) {
+function formatContent(text, hasPi, hasNotes, chapNum) {
   text = text.replace(/\r/g,'');
-  // 处理夹批：「批语内容」 → <span class="pipi">批语</span>
-  text = text.replace(/「([^」]{1,400})」/g, '<span class="pipi" title="金圣叹夹批">「$1」</span>');
+  if (hasNotes && JIQIN_NOTES) {
+    const chapNotes = JIQIN_NOTES[String(chapNum)] || {};
+    text = text.replace(/\((\d{1,3})\)/g, (m,n)=>{
+      if (chapNotes[n]) return `<sup class="note-marker" data-nid="${n}" title="${chapNotes[n].substring(0,80).replace(/"/g,'&quot;')}">(${n})</sup>`;
+      return m;
+    });
+  }
+  if (hasPi) {
+    text = text.replace(/「([^」]{1,120})」/g, (m,t)=>`<span class="pipi" title="金圣叹夹批">${m}</span>`);
+  }
   let lines = text.split('\n').filter(l=>l.trim());
   let html = '';
+  if (lines[0] && (lines[0].match(/^第[一二三四五六七八九十百零\d]+[回章节]/)||lines[0]==='【正文】')) lines.shift();
   lines.forEach(line=>{
     line = line.trim();
-    // 总批：以"总批："开头的段落
-    if (line.startsWith('总批：') || line.startsWith('「总批：')) {
-      html += `<div class="zongpi"><strong>【总批】</strong>${line.replace(/^[「「]?总批：/,'').replace(/[」」]?$/,'')}</div>`;
-      return;
-    }
-    // 诗/词/韵文
-    const isPoem = (
-      line.startsWith('诗曰')||line.startsWith('词曰')||line.startsWith('有诗为证')||
-      line.startsWith('古风')||line.startsWith('《')||line.startsWith('赞曰')||
-      line.startsWith('偈曰')||line.startsWith('诗曰：')||line.startsWith('词云')||
-      line.startsWith('七絕')||line.startsWith('七绝')||line.startsWith('七律')||
-      (line.length < 45 && /[，。？！、]$/.test(line) &&
-       !/^(话说|再说|且说|只见|但见|原来|当时|当有|且说|次日|不是|且说)/.test(line) &&
-       /[\u4e00-\u9fa5]$/.test(line))
-    );
-    if (isPoem) {
+    if (!line) return;
+    if (line.startsWith('「總批：')||line.startsWith('「总批：')||line.startsWith('總批：')||line.startsWith('总批：')) return;
+    if (line==='【回前總批】'||line==='【回前总批】') return;
+    const poemRE = /^(詩曰|詞曰|诗曰|词曰|有詩為證|有诗为证|古風|古风一首|《|贊曰|偈曰|贊|七絕|七绝|七律|古风一|詞云|詞曰|詩云|古风曰|山門|偈子|口號|口占|臨江仙|滿江紅|念奴嬌|西江月)/;
+    const looksPoem = poemRE.test(line) ||
+      (line.length < 42 && /[，。！？、]$/.test(line) && !/^(話說|卻說|且說|只見|但見|原來|當時|當有|再說|次日|不是|且聽|我且|你看|誰想|話休|畢竟|這人|那漢|這廝|那官|為頭|當下)/.test(line) && !line.includes('。') && line.length>=5);
+    if (line.startsWith('但見：')||line.startsWith('但见：')||line.startsWith('但見')||line.startsWith('但见')) {
+      html += `<div class="scene-desc">${line}</div>`;
+    } else if (looksPoem) {
       html += `<p class="poem">${line}</p>`;
     } else {
       html += `<p>${line}</p>`;
@@ -4162,52 +4163,77 @@ function formatContent(text) {
   return html;
 }
 
-function renderNotes(notesText) {
-  if (!notesText || !notesText.trim()) return '';
-  const items = notesText.split(/\n+/).filter(l=>l.trim());
-  return `<details class="notes-block"><summary>📖 注释（共 ${items.length} 条）</summary><div class="notes-list">${items.map(l=>`<p>${l}</p>`).join('')}</div></details>`;
+function renderNotesBlock(chapNum) {
+  if (!JIQIN_NOTES) return '';
+  const notes = JIQIN_NOTES[String(chapNum)];
+  if (!notes || Object.keys(notes).length===0) return '';
+  const items = Object.entries(notes).map(([n,t])=>
+    `<div class="note-item" id="note-${n}"><sup>(${n})</sup> ${t}</div>`
+  ).join('');
+  return `<details class="notes-block" open><summary>📖 冀勤校注（共 ${Object.keys(notes).length} 条）—— 点击折叠</summary><div class="notes-list">${items}</div></details>`;
+}
+
+function renderZongPi(chapIdx) {
+  const vc = JINPI_COMMENTS && JINPI_COMMENTS[currentVid] && JINPI_COMMENTS[currentVid][String(chapIdx)];
+  if (!vc || !vc.preface) return '';
+  return `<div class="zongpi-block"><div class="zongpi-title">【金圣叹回前总批】</div><div class="zongpi-body">${vc.preface.replace(/\n/g,'<br>')}</div></div>`;
+}
+
+async function loadChapterText(vid, chapIdx) {
+  const v = VERSIONS_INDEX.versions.find(x=>x.id===vid);
+  const chap = v.chapters[chapIdx];
+  const langDir = LANG_DIR[currentLang];
+  const url = `texts/versions/${vid}/${langDir}/${chap.file}`;
+  const r = await fetch(url);
+  const text = await r.text();
+  const lines = text.split('\n');
+  const num = lines[0]?lines[0].trim():'';
+  const title = lines[1]?lines[1].trim():'';
+  let content = lines.slice(2).join('\n').replace(/^\s*\n/,'');
+  if (v.has_comments) {
+    const m = content.match(/【正文】\s*\n/);
+    if (m) content = content.substring(m.index + m[0].length);
+  }
+  return {num, title, content};
 }
 
 function showChapter() {
-  if (!currentVersionMeta) return;
-  const chapters = currentVersionMeta.chapters;
-  const meta = chapters[currentChIdx];
-  if (!meta) return;
-  const file = meta.file;
-  const cacheKey = `${currentVid}__${file}`;
-  const render = (ch)=>{
-    const v = window.VERSIONS_INDEX.versions[currentVid];
-    const title = ch[TITLE_KEY[currentLang]] || ch[TITLE_KEY.jian] || '';
-    const content = ch[CONTENT_KEY[currentLang]] || '';
-    const notes = ch.notes || '';
-    const wordcount = ch['len_'+(currentLang==='fan'?'fan':currentLang==='jian'?'jian':'baihua')] || content.length;
+  const v = getCurrentVersionMeta();
+  if (!v) return;
+  const chap = v.chapters[currentChIdx];
+  if (!chap) return;
+  $('#readerContent').innerHTML = `<p style="text-align:center; color:var(--ink-muted); padding:40px 0;">正在加载 ${chap.chap_type} ${chap.title}...</p>`;
+  loadChapterText(currentVid, currentChIdx).then(({num,title,content})=>{
     const badges = [];
     badges.push(`<span class="cm-badge" data-lang="${currentLang}">${LANG_LABEL[currentLang]}</span>`);
     if (v.has_comments) badges.push(`<span class="cm-badge cm-pi">金批</span>`);
     if (v.has_notes) badges.push(`<span class="cm-badge cm-note">校注</span>`);
+    badges.push(`<span class="cm-badge cm-sys">${v.system}</span>`);
+    const wordcount = content.length;
+    let chapNumForNotes = chap.chap_num;
     $('#readerContent').innerHTML = `
-      <h3>${ch.num} ${title}</h3>
+      <h3 class="reader-chap-title">${num} · ${title||chap.title}</h3>
       <div class="chapter-meta">
         ${badges.join(' ')}
-        ${v.name} · 第 ${currentChIdx+1}/${chapters.length} 回 · ${wordcount.toLocaleString()} 字
+        <span class="cm-version">${v.short}</span> · 第 ${currentChIdx+1}/${v.chapters.length} 回 · ${wordcount.toLocaleString()} 字
       </div>
-      <div class="chapter-body lang-${currentLang}">${formatContent(content)}</div>
-      ${renderNotes(notes)}
+      ${renderZongPi(currentChIdx)}
+      <div class="chapter-body lang-${currentLang}">${formatContent(content, !!v.has_comments, !!v.has_notes, chapNumForNotes)}</div>
+      ${renderNotesBlock(chapNumForNotes)}
     `;
-    $('#readerPos').textContent = `${currentChIdx+1} / ${chapters.length}`;
+    $('#readerPos').textContent = `${currentChIdx+1} / ${v.chapters.length}`;
     renderChapterList();
-    $('#readerContent').scrollIntoView({behavior:'smooth', block:'start'});
-  };
-  if (chapterCache[cacheKey]) { render(chapterCache[cacheKey]); return; }
-  $('#readerContent').innerHTML = `<p style="text-align:center; color:var(--ink-muted); padding:40px 0;">正在加载 ${meta.num} ...</p>`;
-  fetch(`texts/versions/${currentVid}/${file}`)
-    .then(r=>r.json())
-    .then(ch=>{
-      chapterCache[cacheKey] = ch;
-      render(ch);
-    }).catch(err=>{
-      $('#readerContent').innerHTML = `<p style="color:#c0392b">章节加载失败：${err.message}</p>`;
+    document.querySelectorAll('.note-marker').forEach(mk=>{
+      mk.addEventListener('click', ()=>{
+        const el = document.getElementById('note-'+mk.dataset.nid);
+        if (el) el.scrollIntoView({behavior:'smooth', block:'center'});
+      });
+      mk.style.cursor = 'pointer';
     });
+    $('#readerContent').scrollIntoView({behavior:'smooth', block:'start'});
+  }).catch(err=>{
+    $('#readerContent').innerHTML = `<p style="color:#c0392b">章节加载失败：${err.message}</p>`;
+  });
 }
 
 // ========== 导航切换 ==========

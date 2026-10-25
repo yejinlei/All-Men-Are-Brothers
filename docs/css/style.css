@@ -898,3 +898,66 @@ canvas#relCanvas:active { cursor: grabbing; }
   text-indent: -1.5em;
   padding-left: 1.5em;
 }
+
+
+/* === 阅读器：批语/注释/章节按钮样式 === */
+.ch-btn { padding:4px 10px; margin:2px; font-family:var(--font-serif); font-size:13px;
+  background:transparent; border:1px solid var(--border); border-radius:4px;
+  color:var(--ink-main); cursor:pointer; transition:all .15s; }
+.ch-btn:hover { background:var(--zhu); color:#fff; border-color:var(--zhu); }
+.ch-btn.active { background:var(--zhu); color:#fff; border-color:var(--zhu); }
+
+.cm-badge { display:inline-block; padding:2px 8px; border-radius:10px; font-size:12px;
+  font-family:var(--font-sans); margin-right:4px; border:1px solid var(--zhu); color:var(--zhu); }
+.cm-badge[data-lang="fan"] { background:#f3e8d0; border-color:#c4603d; color:#8b3a1f; }
+.cm-badge[data-lang="jian"]{ background:#e0ecd8; border-color:#5d9a6b; color:#3a6f47; }
+.cm-badge[data-lang="bai"] { background:#d8e4ef; border-color:#3e75a8; color:#2a5073; }
+.cm-badge.cm-pi { background:#f9e6c4; border-color:#c8863a; color:#8b5a14; }
+.cm-badge.cm-note{ background:#e6decc; border-color:#8b7355; color:#5c4a32; }
+.cm-badge.cm-sys { background:#f0ece0; border-color:#999; color:#555; }
+.cm-version { font-family:var(--font-serif); color:var(--ink-muted); font-size:13px; margin-right:6px;}
+
+.reader-chap-title { font-family:var(--font-serif); font-size:22px; color:var(--ink-main);
+  margin:0 0 6px; padding-bottom:10px; border-bottom:2px solid var(--zhu);
+  text-align:center; font-weight:700; letter-spacing:2px; }
+.chapter-meta { text-align:center; margin:8px 0 20px; font-size:13px; color:var(--ink-muted);}
+
+.pipi { color:#b92d20; font-size:0.88em; background:linear-gradient(transparent 60%, rgba(185,45,32,0.15) 60%);
+  padding:0 2px; border-left:2px solid #b92d20; padding-left:4px; margin:0 1px; font-family:var(--font-sans);
+  font-style: italic; white-space: nowrap; }
+.pipi::before { content:'批'; background:#b92d20; color:#fff; font-size:10px; padding:0 3px;
+  border-radius:2px; margin-right:3px; font-style:normal; font-family:var(--font-sans);}
+
+.zongpi-block { background:linear-gradient(135deg, #fdf6e3 0%, #f7ebc8 100%);
+  border-left:4px double #c8863a; padding:16px 20px; margin:20px 0 28px; border-radius:0 6px 6px 0;
+  font-family:var(--font-sans); font-size:14.5px; line-height:1.85; color:#5a3a14; }
+.zongpi-title { font-family:var(--font-serif); font-weight:700; font-size:16px;
+  color:#8b5a14; margin-bottom:10px; letter-spacing:2px;
+  border-bottom:1px dashed #c8863a; padding-bottom:6px; }
+.zongpi-body p { margin:6px 0; text-indent:2em;}
+
+.note-marker { color:#2a5073; font-weight:700; font-size:0.8em;
+  background:#e8f0f7; padding:0 2px; border-radius:2px; margin:0 1px; }
+.note-marker:hover { background:#3e75a8; color:#fff; }
+.notes-block { margin-top:32px; padding:16px 20px; background:#f8f4ea;
+  border-top:2px solid var(--border); border-radius:4px; }
+.notes-block summary { font-family:var(--font-serif); font-size:15px; color:var(--ink-main);
+  cursor:pointer; padding:4px 0; font-weight:600; }
+.notes-list { margin-top:12px; max-height:400px; overflow-y:auto;
+  font-size:13.5px; line-height:1.8; }
+.note-item { padding:4px 0; border-bottom:1px dotted var(--border); color:var(--ink-muted);
+  font-family:var(--font-sans); }
+.note-item sup { color:#3e75a8; font-weight:700; margin-right:4px; }
+.note-item:target { background:#fff5d0; }
+
+.scene-desc { background:#f5f0e0; padding:12px 18px; margin:12px 0;
+  border-left:3px solid #8b7355; font-family:var(--font-serif); font-size:15px;
+  line-height:1.9; color:#4a3a25; white-space:pre-wrap; }
+
+.chapter-body.lang-fan p, .chapter-body.lang-jian p { text-indent:2em; }
+.chapter-body.lang-bai p { text-indent:2em; font-size:16.5px; line-height:1.95; }
+.chapter-body p { font-family:var(--font-serif); font-size:16px; line-height:1.9;
+  margin:6px 0; color:var(--ink-main); }
+.chapter-body .poem { font-family:var(--font-serif); text-align:center;
+  font-size:15px; line-height:2; color:var(--ink-muted);
+  margin:12px 0; padding:8px 0; border-top:1px dashed var(--border); border-bottom:1px dashed var(--border);}
