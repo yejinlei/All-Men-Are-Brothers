@@ -140,6 +140,7 @@ function showHero(id) {
       <span>${h.star}</span><span>第${h.rank}位</span><span>${h.rank<=36?'天罡':'地煞'}</span>
       ${h.group?`<span style="background:${h.color||'#8B4513'}">${h.group}</span>`:''}
     </div>
+    ${h.image?`<img class="m-avatar" src="${h.image}" alt="${h.name}">`:''}
     <h2>${h.name}</h2>
     <div class="m-nick">「${h.nickname}」</div>
   `;
