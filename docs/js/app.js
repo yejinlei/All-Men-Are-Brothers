@@ -112,11 +112,12 @@ function renderHeroes() {
     const s = curHeroSearch.toLowerCase();
     return (h.name+h.nickname+h.star+h.origin+h.faction+h.position+h.desc).toLowerCase().includes(s);
   }).map(h=>{
-    const img = h.portrait || h.image;
+    // portrait 字段带 ../ 前缀会指向 data/heroes/../ 错误路径；image 字段 img/heroes/xxx.jpg 正确
+    const img = h.image || h.img;
     return `
     <div class="hero-card ${h.rank<=36?'tiangang':'disha'}" onclick="showHero(${h.id})">
       <div class="rank">${h.rank}</div>
-      ${img?`<div class="avatar"><img src="${img}" alt="${h.name}" loading="lazy"></div>`:''}
+      ${img?`<div class="avatar"><img src="${img}" alt="${h.name}" loading="lazy" onerror="this.style.display='none'"></div>`:''}
       <div class="nick">${h.star} · ${h.nickname}</div>
       <div class="nm">${h.name}</div>
       <div class="pos">${h.position}</div>
@@ -143,7 +144,7 @@ function showHero(id) {
       <span>${h.star}</span><span>第${h.rank}位</span><span>${h.rank<=36?'天罡':'地煞'}</span>
       ${h.group?`<span style="background:${h.color||'#8B4513'}">${h.group}</span>`:''}
     </div>
-    ${(h.image||h.portrait)?`<img class="m-avatar" src="${h.image||h.portrait}" alt="${h.name}">`:''}
+    ${(h.image||h.img)?`<img class="m-avatar" src="${h.image||h.img}" alt="${h.name}" onerror="this.style.display='none'">`:''}
     <h2>${h.name}</h2>
     <div class="m-nick">「${h.nickname}」</div>
   `;
@@ -207,26 +208,211 @@ function renderEvents() {
 function renderPlaces() {
   const pts = document.getElementById('placePoints');
   const list = document.getElementById('placeList');
-  // 将坐标映射到SVG viewBox (900x660)
-  // 经度106-122，纬度28-40 → x: (lon-106)/(122-106)*860+20, y: (40-lat)/(12)*620+20
+  const W=1100, H=740;
+  // 投影：扩大画布与范围（lon 103-125, lat 26-43），让中原核心区点位拉开
   function proj(lon,lat){
-    const x = ((lon-105)/18)*840+30;
-    const y = ((41-lat)/13)*600+30;
+    const x = ((lon-103)/22)*1040+30;
+    const y = ((43-lat)/17)*680+30;
     return [x,y];
   }
-  pts.innerHTML = DATA.places.places.map(p=>{
-    const [x,y] = proj(p.coord[0],p.coord[1]);
-    return `<circle cx="${x}" cy="${y}" r="6" fill="${p.color}" stroke="#fff" stroke-width="2" opacity=".9">
-      <title>${p.name}：${p.desc}</title>
-    </circle>
-    <text x="${x+10}" y="${y+4}" font-size="11" fill="${p.color}" font-family="serif">${p.name}</text>`;
+  // 按类型决定圆点大小与颜色
+  const typeStyle = {
+    '聚义地':       {r:12, fill:'#8B1A1A', big:true},
+    '都城':         {r:10, fill:'#B8860B', big:true},
+    '陪都':         {r:9,  fill:'#DAA520'},
+    '州府':         {r:7,  fill:'#8A9A3C'},
+    '县治':         {r:6,  fill:'#7B5E3B'},
+    '战场':         {r:7,  fill:'#8B1A1A'},
+    '敌国':         {r:9,  fill:'#5C4B6B'},
+    '叛王地盘':     {r:9,  fill:'#4F6B3A'},
+    '山寨':         {r:8,  fill:'#3A5B7A'},
+    '庄园':         {r:6,  fill:'#7A3A4F'},
+    '村落':         {r:6,  fill:'#5B4B6B'},
+    '事件地':       {r:6,  fill:'#C48640'},
+    '英雄地':       {r:7,  fill:'#B22222'},
+    '黑店地':       {r:6,  fill:'#4B3B3B'},
+    '配军地':       {r:6,  fill:'#5C7F4F'},
+    '流放地':       {r:7,  fill:'#2E5C7F'},
+    '酒楼':         {r:5,  fill:'#8B1A1A'},
+    '市集':         {r:5,  fill:'#C48640'},
+    '建筑':         {r:5,  fill:'#3A4A5C'},
+    '险地':         {r:6,  fill:'#2E4A3F'},
+    '佛刹':         {r:7,  fill:'#B8860B'},
+    '终局地':       {r:8,  fill:'#1A3A5C'},
+    '终局寺':       {r:7,  fill:'#1A3A5C'},
+    '任所':         {r:6,  fill:'#3A4A5C'},
+    '江湖势力':     {r:6,  fill:'#7B4A2E'},
+  };
+  // 对重叠点做像素级微调（dx,dy 像素）+ 标签锚点方向
+  // anchor: 'r'=标签在右,'l'=左,'t'=上,'b'=下,'tr'=右上,'tl'=左上,'br'=右下,'bl'=左下
+  // 原则：①保留真实地理关系 ②同城/同山寨"子景点"偏移 8-18px 即可
+  //       ③梁山核心团簇（半径 40km 内 10 个点）向四周扇形散开，位移不超过 28px
+  const override = {
+    // 梁山泊（中心锚定）
+    '梁山泊':     {dx:0,   dy:0,   anchor:'b'},
+    '忠义堂':     {dx:14,  dy:-12, anchor:'tr'},
+    // 郓城方向（梁山西南）
+    '郓城县':     {dx:-24, dy:10,  anchor:'bl'},
+    // 黄泥冈（郓城东南，梁山西南偏东）
+    '黄泥冈':     {dx:4,   dy:-20, anchor:'t'},
+    // 祝家庄（梁山南独龙岗）
+    '祝家庄':     {dx:6,   dy:20,  anchor:'b'},
+    // 扈家庄（祝家庄西侧）
+    '扈家庄':     {dx:-20, dy:8,   anchor:'l'},
+    // 阳谷县+景阳冈（梁山西北）
+    '阳谷县':     {dx:-30, dy:-8,  anchor:'tl'},
+    '景阳冈':     {dx:-8,  dy:20,  anchor:'bl'},
+    // 曾头市（梁山北偏东凌州）
+    '曾头市':     {dx:12,  dy:-20, anchor:'t'},
+    // 高唐州（梁山北偏东）
+    '高唐州':     {dx:24,  dy:-16, anchor:'tr'},
+    // 桃花山/二龙山/清风寨/白虎山（青州片区，错落排开）
+    '桃花山':     {dx:-22, dy:4,   anchor:'l'},
+    '二龙山':     {dx:0,   dy:-16, anchor:'t'},
+    '清风寨':     {dx:18,  dy:-12, anchor:'tr'},
+    '白虎山':     {dx:14,  dy:10,  anchor:'br'},
+    // 柴家庄（沧州南）+ 沧州
+    '沧州':       {dx:0,   dy:-10, anchor:'t'},
+    '柴家庄':     {dx:-20, dy:20,  anchor:'bl'},
+    // 孟州一城四景（十字坡/快活林/鸳鸯楼围绕孟州散开）
+    '孟州':       {dx:0,   dy:0,   anchor:'b'},
+    '十字坡':     {dx:-24, dy:-20, anchor:'tl'},
+    '快活林':     {dx:16,  dy:-14, anchor:'tr'},
+    '鸳鸯楼':     {dx:22,  dy:18,  anchor:'br'},
+    // 江州（浔阳楼江边/揭阳镇对岸）
+    '江州':       {dx:-10, dy:0,   anchor:'l'},
+    '浔阳楼':     {dx:14,  dy:-10, anchor:'tr'},
+    '揭阳岭/镇':  {dx:0,   dy:22,  anchor:'b'},
+    // 大相国寺（开封城内东南）
+    '东京开封府': {dx:0,   dy:0,   anchor:'b'},
+    '大相国寺':   {dx:-18, dy:14,  anchor:'bl'},
+    // 野猪林（开封往沧州道上）
+    '野猪林':     {dx:-16, dy:-14, anchor:'tl'},
+    // 楚州-蓼儿洼
+    '楚州':       {dx:-12, dy:0,   anchor:'l'},
+    '蓼儿洼':     {dx:14,  dy:-10, anchor:'tr'},
+    // 杭州-六和寺
+    '杭州':       {dx:-10, dy:-8,  anchor:'tl'},
+    '六和寺':     {dx:18,  dy:-8,  anchor:'tr'},
+    // 睦州/乌龙岭/方腊
+    '睦州 / 清溪':{dx:-12, dy:12,  anchor:'bl'},
+    '乌龙岭':     {dx:0,   dy:-14, anchor:'t'},
+    '江南方腊':   {dx:18,  dy:10,  anchor:'br'},
+    // 少华山/华州/史家村
+    '少华山':     {dx:12,  dy:-10, anchor:'tr'},
+    '华州':       {dx:-12, dy:0,   anchor:'l'},
+    '史家村':     {dx:-24, dy:20,  anchor:'bl'},
+    // 其他
+    '渭州':       {dx:8,   dy:0,   anchor:'r'},
+    '五台山':     {dx:0,   dy:0,   anchor:'b'},
+    '大名府':     {dx:-14, dy:0,   anchor:'l'},
+    '蓟州':       {dx:0,   dy:-10, anchor:'t'},
+    '登州':       {dx:12,  dy:-8,  anchor:'tr'},
+    '沂水县':     {dx:0,   dy:14,  anchor:'b'},
+    '辽国':       {dx:-8,  dy:-4,  anchor:'r'},
+    '芒砀山':     {dx:0,   dy:14,  anchor:'b'},
+    '河北田虎':   {dx:0,   dy:-14, anchor:'t'},
+    '淮西王庆':   {dx:0,   dy:14,  anchor:'b'},
+    '润州':       {dx:0,   dy:4,   anchor:'r'},
+  };
+  const coordFix = {}; // 地理错误已直接修正到 places.json 中
+  // 渲染
+  const items = DATA.places.places.map(p=>{
+    const [lon,lat] = coordFix[p.name] || p.coord;
+    let [x,y] = proj(lon,lat);
+    const ov = override[p.name] || {};
+    x += (ov.dx||0); y += (ov.dy||0);
+    const st = typeStyle[p.type] || {r:6, fill:'#5C4B3A'};
+    const anchor = ov.anchor || 'r';
+    // 标签偏移与 text-anchor 计算
+    let tx=x, ty=y, ta='start', dy=4;
+    const off = st.big ? 18 : 12;
+    switch(anchor){
+      case 'r':  tx=x+off;   ty=y+4;   ta='start'; break;
+      case 'l':  tx=x-off;   ty=y+4;   ta='end';   break;
+      case 't':  tx=x;       ty=y-off; ta='middle'; dy=3; break;
+      case 'b':  tx=x;       ty=y+off+2; ta='middle'; dy=0; break;
+      case 'tr': tx=x+off-2; ty=y-off+2; ta='start'; break;
+      case 'tl': tx=x-off+2; ty=y-off+2; ta='end';   break;
+      case 'br': tx=x+off-2; ty=y+off-2; ta='start'; dy=0; break;
+      case 'bl': tx=x-off+2; ty=y+off-2; ta='end';   dy=0; break;
+    }
+    const fontS = st.big ? 13 : 11;
+    const fw = st.big ? 700 : 500;
+    return `<g class="place-dot" data-name="${p.name}">
+      <circle cx="${x}" cy="${y}" r="${st.r}" fill="${st.fill}" stroke="#fff" stroke-width="2" opacity=".95">
+        <title>${p.name}：${p.desc}</title>
+      </circle>
+      <text x="${tx}" y="${ty}" text-anchor="${ta}" font-size="${fontS}" fill="${st.fill}" font-family="serif" font-weight="${fw}" dy="${dy}"
+            stroke="#fff" stroke-width="3" paint-order="stroke" class="place-label">${p.name}</text>
+    </g>`;
   }).join('');
+
+  // 梁山聚义核心连线：以梁山泊为中心连到主要州府（淡线装饰）
+  const [bcx,bcy] = (()=>{
+    const li = DATA.places.places.find(p=>p.name==='梁山泊');
+    return proj(li.coord[0], li.coord[1]);
+  })();
+  const corePlaces = ['东京开封府','沧州','江州','大名府','蓟州','登州','杭州','华州','渭州','孟州','沂水县'];
+  const lines = corePlaces.map(n=>{
+    const p = DATA.places.places.find(x=>x.name===n); if(!p) return '';
+    const [lon,lat]=coordFix[n]||p.coord;
+    let [x,y]=proj(lon,lat);
+    const ov=override[n]||{}; x+=ov.dx||0; y+=ov.dy||0;
+    return `<path d="M${bcx},${bcy} Q${(bcx+x)/2},${(bcy+y)/2-20} ${x},${y}" fill="none" stroke="#8B1A1A" stroke-width="0.6" opacity=".18"/>`;
+  }).join('');
+
+  pts.innerHTML = lines + items;
+
   list.innerHTML = DATA.places.places.map(p=>`
-    <div class="place-item">
+    <div class="place-item" data-name="${p.name}">
       <div class="pn">${p.name}</div>
       <div class="pt">${p.type} · ${p.today} · 关联：${p.assoc.join('、')}</div>
     </div>
   `).join('');
+
+  // 悬停联动：列表/圆点互高亮
+  const dots = pts.querySelectorAll('.place-dot');
+  const items2 = list.querySelectorAll('.place-item');
+  function highlight(name){
+    dots.forEach(g=>{
+      const c = g.querySelector('circle');
+      const t = g.querySelector('text');
+      if(g.dataset.name===name){
+        c.setAttribute('r', parseFloat(c.getAttribute('r'))+3);
+        c.setAttribute('stroke','var(--vermilion)');
+        c.setAttribute('stroke-width','3');
+        t.setAttribute('font-weight','700');
+      } else {
+        c.style.opacity='.3'; t.style.opacity='.35';
+      }
+    });
+    items2.forEach(it=>{
+      it.style.background = it.dataset.name===name ? 'var(--paper-warm)' : '#fff';
+      it.style.borderColor = it.dataset.name===name ? 'var(--vermilion)' : 'var(--border)';
+    });
+  }
+  function reset(){
+    dots.forEach(g=>{
+      const c = g.querySelector('circle');
+      const t = g.querySelector('text');
+      const st = typeStyle[DATA.places.places.find(p=>p.name===g.dataset.name)?.type] || {};
+      c.setAttribute('r', st.r||6);
+      c.setAttribute('stroke','#fff');
+      c.setAttribute('stroke-width','2');
+      c.style.opacity=''; t.style.opacity='';
+      t.setAttribute('font-weight', st.big?700:500);
+    });
+    items2.forEach(it=>{ it.style.background='#fff'; it.style.borderColor='var(--border)'; });
+  }
+  dots.forEach(g=>{
+    g.addEventListener('mouseenter',()=>highlight(g.dataset.name));
+    g.addEventListener('mouseleave',reset);
+  });
+  items2.forEach(it=>{
+    it.addEventListener('mouseenter',()=>highlight(it.dataset.name));
+    it.addEventListener('mouseleave',reset);
+  });
 }
 
 /* ---------- 兵器 ---------- */
@@ -479,7 +665,10 @@ function initGraph() {
 let RD = { ver:'v120', chap:0, lang:'fan', comment:'all', data:null, chapters:[], comments:[], notes:[] };
 function initReader() {
   const verSelect = document.getElementById('verSelect');
-  if(!DATA.idx || !DATA.idx.versions) { document.getElementById('readerStatus').textContent='版本索引加载失败'; return; }
+  const statusEl = document.getElementById('readerStatus');
+  if(!DATA.idx || !DATA.idx.versions) { statusEl.textContent='版本索引加载失败，请刷新页面重试'; return; }
+  // 默认选第一个可用版本
+  if(!DATA.idx.versions.find(v=>v.id===RD.ver)) RD.ver = DATA.idx.versions[0].id;
   verSelect.innerHTML = DATA.idx.versions.map(v=>`<option value="${v.id}">${v.name}（${v.count||'?'}回）</option>`).join('');
   verSelect.value = RD.ver;
   verSelect.addEventListener('change', ()=>{ RD.ver=verSelect.value; RD.chap=0; loadChapter(); });
@@ -498,8 +687,11 @@ function initReader() {
 }
 
 async function loadChapter() {
+  const status = document.getElementById('readerStatus');
+  const content = document.getElementById('readerContent');
   const ver = DATA.idx.versions.find(v=>v.id===RD.ver);
-  if(!ver) return;
+  if(!ver) { status.textContent='未找到对应版本'; return; }
+  status.innerHTML = '<span style="color:var(--gold);">●</span> 正在加载章节数据……';
   // 加载章节列表JSON
   if(!RD.data || RD.data._id !== RD.ver) {
     const listPath = `texts/versions/${RD.ver}/chapters.json`;
@@ -516,19 +708,24 @@ async function loadChapter() {
   if(RD.chap >= RD.chapters.length) RD.chap = RD.chapters.length-1;
   document.getElementById('chapSelect').value = RD.chap;
   const chap = RD.chapters[RD.chap];
-  if(!chap) return;
+  if(!chap) { status.innerHTML = '章节列表为空，请切换版本'; content.innerHTML='<p style="text-align:center;color:var(--ink-muted);padding:60px;">本版本暂无章节数据。</p>'; return; }
 
-  const status = document.getElementById('readerStatus');
   const langName = {fan:'繁体原文',jian:'简体原文',bai:'白话译文'}[RD.lang];
   status.innerHTML = `当前语体：<b style="color:var(--vermilion-deep);">${langName}</b> · 版本：<b>${ver.name}</b> · ${chap.title} · 约${chap.size||'?'}字`;
 
-  // 加载文本文件
-  const filePath = `texts/versions/${RD.ver}/${RD.lang}/${chap.file}`;
+  // 加载文本文件（chap.file 已带 fan/jian/bai 前缀，按语体选对应字段）
+  const fileKey = RD.lang==='fan'?'file':(RD.lang==='jian'?'file_simp':'file_bai');
+  const subPath = chap[fileKey] || chap.file;
+  const filePath = `texts/versions/${RD.ver}/${subPath}`;
   try {
-    const txt = await fetch(filePath).then(r=>r.text());
+    const r = await fetch(filePath);
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const txt = await r.text();
     renderChapter(txt, chap);
   } catch(e) {
-    document.getElementById('readerContent').innerHTML = '<p style="text-align:center; color:var(--ink-muted); padding:60px;">本回文本加载失败。部分版本可能仅部分回目支持白话/繁体。</p>';
+    console.warn('load chapter fail:', filePath, e);
+    document.getElementById('readerContent').innerHTML = '<p style="text-align:center; color:var(--ink-muted); padding:60px;">本回文本加载失败。部分版本可能仅部分回目支持白话/繁体。<br><small style="color:#c00;">路径：'+filePath+'</small></p>';
+    status.innerHTML = '加载失败：'+filePath;
   }
 }
 

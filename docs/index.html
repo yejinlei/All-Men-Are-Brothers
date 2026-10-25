@@ -332,18 +332,26 @@ footer { padding:40px 24px; text-align:center; border-top:1px solid var(--border
     <div class="sub">从梁山泊到蓼儿洼，从东京开封到江南睦州——水浒故事的地理版图与空间叙事</div>
   </div>
   <div id="map-wrap">
-    <svg class="map-svg" viewBox="0 0 900 660" xmlns="http://www.w3.org/2000/svg" id="mapSvg">
-      <!-- 简化的中国东部地图轮廓（艺术化） -->
+    <svg class="map-svg" viewBox="0 0 1100 740" xmlns="http://www.w3.org/2000/svg" id="mapSvg">
+      <!-- 简化的中国东部地图轮廓（艺术化）：北至塞外、南至江南、东至东海 -->
       <rect width="900" height="660" fill="#faf6ea"/>
       <!-- 海 -->
-      <path d="M700 0 L900 0 L900 660 L680 660 Q720 600 760 520 Q800 430 800 340 Q790 240 740 160 Q710 100 690 50 Z" fill="#dce8ee" opacity=".5"/>
-      <text x="820" y="400" fill="#5c7f9a" font-family="serif" font-size="18" opacity=".6" writing-mode="tb">东海</text>
-      <!-- 黄河 -->
-      <path d="M100 200 Q200 180 300 220 Q400 260 450 240 Q550 210 640 260 Q700 290 730 270" fill="none" stroke="#c48640" stroke-width="4" opacity=".6"/>
-      <text x="250" y="195" fill="#c48640" font-family="serif" font-size="13">黄河</text>
-      <!-- 长江 -->
-      <path d="M80 360 Q180 380 280 370 Q380 360 480 380 Q560 395 640 370 Q700 350 780 380" fill="none" stroke="#406080" stroke-width="4" opacity=".6"/>
-      <text x="200" y="400" fill="#406080" font-family="serif" font-size="13">长江</text>
+      <path d="M720 0 L900 0 L900 660 L700 660 Q750 580 780 500 Q820 400 820 320 Q810 220 760 130 Q730 70 720 0 Z" fill="#dce8ee" opacity=".5"/>
+      <text x="850" y="340" fill="#5c7f9a" font-family="serif" font-size="22" opacity=".6" writing-mode="tb">东 海</text>
+      <!-- 北方塞外示意 -->
+      <path d="M0 0 L900 0 L900 50 Q820 70 720 75 Q540 90 380 75 Q200 65 60 90 L0 95 Z" fill="#ece3cb" opacity=".4"/>
+      <text x="180" y="50" fill="#8a7a5a" font-family="serif" font-size="12" opacity=".6">塞 北 · 辽 境</text>
+      <!-- 黄河（艺术化走向：兰州→河套→潼关→开封→山东入海，lat≈35） -->
+      <path d="M60 320 Q180 280 280 300 Q360 315 420 290 Q500 260 560 290 Q620 320 680 300 Q720 290 760 310"
+            fill="none" stroke="#c48640" stroke-width="5" opacity=".55" stroke-linecap="round"/>
+      <text x="230" y="278" fill="#c48640" font-family="serif" font-size="15" opacity=".75">黄 河</text>
+      <!-- 长江（艺术化走向：四川→荆襄→九江→南京→入海，lat≈30-31） -->
+      <path d="M60 490 Q160 480 260 495 Q360 505 440 490 Q520 475 600 490 Q680 505 780 475"
+            fill="none" stroke="#406080" stroke-width="5" opacity=".55" stroke-linecap="round"/>
+      <text x="190" y="515" fill="#406080" font-family="serif" font-size="15" opacity=".75">长 江</text>
+      <!-- 梁山泊小水泊 -->
+      <ellipse cx="545" cy="315" rx="34" ry="10" fill="#8aa8c4" opacity=".35"/>
+      <text x="520" y="295" fill="#406080" font-family="serif" font-size="10" opacity=".6">梁山泊</text>
       <!-- 州府点由JS生成 -->
       <g id="placePoints"></g>
     </svg>
