@@ -1,191 +1,276 @@
 {
   "id": "zsk",
-  "label": "征四寇（82-118回·招安至征方腊中段）",
+  "label": "征四寇（简本后段·招安后征四寇38回）",
+  "source": "zhengsikou.txt",
   "chapters": [
     {
+      "id": "hui_82",
       "num": 82,
-      "title": "第八十二回 梁山泊分金大买市 宋公明全伙受招安",
-      "file": "fan/ch082.txt"
+      "title": "第82回（征四寇） ",
+      "chars": 9634,
+      "file": "ch082.txt"
     },
     {
+      "id": "hui_83",
       "num": 83,
-      "title": "第八十三回 宋公明奉诏破大辽 陈桥驿滴泪斩小卒",
-      "file": "fan/ch083.txt"
+      "title": "第83回（征四寇） ",
+      "chars": 8277,
+      "file": "ch083.txt"
     },
     {
+      "id": "hui_84",
       "num": 84,
-      "title": "第八十四回 宋公明兵打蓟州城 卢俊义大战玉田县",
-      "file": "fan/ch084.txt"
+      "title": "第84回（征四寇） ",
+      "chars": 7733,
+      "file": "ch084.txt"
     },
     {
+      "id": "hui_85",
       "num": 85,
-      "title": "第八十五回 宋公明夜度益津关 吴学究智取文安县",
-      "file": "fan/ch085.txt"
+      "title": "第85回（征四寇） ",
+      "chars": 8382,
+      "file": "ch085.txt"
     },
     {
+      "id": "hui_86",
       "num": 86,
-      "title": "第八十六回 宋公明大战独鹿山 卢俊义兵陷青石峪",
-      "file": "fan/ch086.txt"
+      "title": "第86回（征四寇） ",
+      "chars": 6529,
+      "file": "ch086.txt"
     },
     {
+      "id": "hui_87",
       "num": 87,
-      "title": "第八十七回 宋公明大战幽州 呼延灼力擒番将",
-      "file": "fan/ch087.txt"
+      "title": "第87回（征四寇） ",
+      "chars": 5570,
+      "file": "ch087.txt"
     },
     {
+      "id": "hui_88",
       "num": 88,
-      "title": "第八十八回 颜统军阵列混天象 宋公明梦授玄女法",
-      "file": "fan/ch088.txt"
+      "title": "第88回（征四寇） ",
+      "chars": 8548,
+      "file": "ch088.txt"
     },
     {
+      "id": "hui_89",
       "num": 89,
-      "title": "第八十九回 宋公明破阵成功 宿太尉颁恩降诏",
-      "file": "fan/ch089.txt"
+      "title": "第89回（征四寇） ",
+      "chars": 7119,
+      "file": "ch089.txt"
     },
     {
+      "id": "hui_90",
       "num": 90,
-      "title": "第九十回 五台山宋江参禅 双林渡燕青射雁",
-      "file": "fan/ch090.txt"
+      "title": "第90回（征四寇） ",
+      "chars": 5766,
+      "file": "ch090.txt"
     },
     {
+      "id": "hui_91",
       "num": 91,
-      "title": "第九十一回 宋公明兵渡黄河 卢俊义赚城黑夜",
-      "file": "fan/ch091.txt"
+      "title": "第91回（征四寇） ",
+      "chars": 6243,
+      "file": "ch091.txt"
     },
     {
+      "id": "hui_92",
       "num": 92,
-      "title": "第九十二回 振军威小李广神箭 打盖郡智多星密筹",
-      "file": "fan/ch092.txt"
+      "title": "第92回（征四寇） ",
+      "chars": 5617,
+      "file": "ch092.txt"
     },
     {
+      "id": "hui_93",
       "num": 93,
-      "title": "第九十三回 李逵梦闹天池 宋江兵分两路",
-      "file": "fan/ch093.txt"
+      "title": "第93回（征四寇） ",
+      "chars": 4864,
+      "file": "ch093.txt"
     },
     {
+      "id": "hui_94",
       "num": 94,
-      "title": "第九十四回 关胜义降三将 李逵莽陷众人",
-      "file": "fan/ch094.txt"
+      "title": "第94回（征四寇） ",
+      "chars": 6992,
+      "file": "ch094.txt"
     },
     {
+      "id": "hui_95",
       "num": 95,
-      "title": "第九十五回 宋公明忠感后土 乔道清术败宋兵",
-      "file": "fan/ch095.txt"
+      "title": "第95回（征四寇） ",
+      "chars": 4610,
+      "file": "ch095.txt"
     },
     {
+      "id": "hui_96",
       "num": 96,
-      "title": "第九十六回 幻魔君术窘五龙山 入云龙兵围百谷岭",
-      "file": "fan/ch096.txt"
+      "title": "第96回（征四寇） ",
+      "chars": 4085,
+      "file": "ch096.txt"
     },
     {
+      "id": "hui_97",
       "num": 97,
-      "title": "第九十七回 陈瓘谏官升安抚 琼英处女做先锋",
-      "file": "fan/ch097.txt"
+      "title": "第97回（征四寇） ",
+      "chars": 5204,
+      "file": "ch097.txt"
     },
     {
+      "id": "hui_98",
       "num": 98,
-      "title": "第九十八回 张清缘配琼英 吴用计鸩邬梨",
-      "file": "fan/ch098.txt"
+      "title": "第98回（征四寇） ",
+      "chars": 8845,
+      "file": "ch098.txt"
     },
     {
-      "num": 99,
-      "title": "第九十九回 花和尚解脱缘缠井 混江龙水灌太原城",
-      "file": "fan/ch099.txt"
-    },
-    {
+      "id": "hui_100",
       "num": 100,
-      "title": "第一百回 张清琼英双建功 陈瓘宋江同奏捷",
-      "file": "fan/ch100.txt"
+      "title": "第100回（征四寇） ",
+      "chars": 5340,
+      "file": "ch100.txt"
     },
     {
+      "id": "hui_101",
       "num": 101,
-      "title": "第一百零一回 谋坟地阴险产逆 蹈春阳妖艳生奸",
-      "file": "fan/ch101.txt"
+      "title": "第101回（征四寇） ",
+      "chars": 4564,
+      "file": "ch101.txt"
     },
     {
+      "id": "hui_102",
       "num": 102,
-      "title": "第一百零二回 王庆因奸吃官司 龚端被打师军犯",
-      "file": "fan/ch102.txt"
+      "title": "第102回（征四寇） ",
+      "chars": 5540,
+      "file": "ch102.txt"
     },
     {
+      "id": "hui_103",
       "num": 103,
-      "title": "第一百零三回 张管营因妾弟丧身 范节级为表兄医脸",
-      "file": "fan/ch103.txt"
+      "title": "第103回（征四寇） ",
+      "chars": 5915,
+      "file": "ch103.txt"
     },
     {
+      "id": "hui_104",
       "num": 104,
-      "title": "第一百零四回 段家庄重招新女婿 房山寨双并旧强人",
-      "file": "fan/ch104.txt"
+      "title": "第104回（征四寇） ",
+      "chars": 5991,
+      "file": "ch104.txt"
     },
     {
+      "id": "hui_105",
       "num": 105,
-      "title": "第一百零五回 宋公明避暑疗军兵 乔道清回风烧贼寇",
-      "file": "fan/ch105.txt"
+      "title": "第105回（征四寇） ",
+      "chars": 4588,
+      "file": "ch105.txt"
     },
     {
+      "id": "hui_106",
       "num": 106,
-      "title": "第一百零六回 书生谈笑却强敌 水军汨没破坚城",
-      "file": "fan/ch106.txt"
+      "title": "第106回（征四寇） ",
+      "chars": 5057,
+      "file": "ch106.txt"
     },
     {
+      "id": "hui_107",
       "num": 107,
-      "title": "第一百零七回 宋江大胜纪山军 朱武打破六花阵",
-      "file": "fan/ch107.txt"
+      "title": "第107回（征四寇） ",
+      "chars": 4337,
+      "file": "ch107.txt"
     },
     {
+      "id": "hui_108",
       "num": 108,
-      "title": "第一百零八回 乔道清兴雾取城 小旋风藏炮击贼",
-      "file": "fan/ch108.txt"
+      "title": "第108回（征四寇） ",
+      "chars": 8148,
+      "file": "ch108.txt"
     },
     {
+      "id": "hui_109",
       "num": 109,
-      "title": "第一百零九回 王庆渡江被捉 宋江剿寇成功",
-      "file": "fan/ch109.txt"
+      "title": "第109回（征四寇） ",
+      "chars": 7727,
+      "file": "ch109.txt"
     },
     {
+      "id": "hui_110",
       "num": 110,
-      "title": "第一百一十回 燕青秋林渡射雁 宋江东京城献俘",
-      "file": "fan/ch110.txt"
+      "title": "第110回（征四寇） ",
+      "chars": 9767,
+      "file": "ch110.txt"
     },
     {
-      "num": 111,
-      "title": "第一百一一回 张顺夜伏金山寺 宋江智取润州城",
-      "file": "fan/ch111.txt"
+      "id": "hui_110",
+      "num": 110,
+      "title": "第110回（征四寇） ",
+      "chars": 7798,
+      "file": "ch110.txt"
     },
     {
-      "num": 112,
-      "title": "第一百一二回 卢俊义分兵宣州道 宋公明大战毗陵郡",
-      "file": "fan/ch112.txt"
+      "id": "hui_110",
+      "num": 110,
+      "title": "第110回（征四寇） ",
+      "chars": 6906,
+      "file": "ch110.txt"
     },
     {
-      "num": 113,
-      "title": "第一百一三回 混江龙太湖小结义 宋公明苏州大会垓",
-      "file": "fan/ch113.txt"
+      "id": "hui_110",
+      "num": 110,
+      "title": "第110回（征四寇） ",
+      "chars": 7908,
+      "file": "ch110.txt"
     },
     {
-      "num": 114,
-      "title": "第一百一四回 宁海军宋江吊孝 涌金门张顺归神",
-      "file": "fan/ch114.txt"
+      "id": "hui_110",
+      "num": 110,
+      "title": "第110回（征四寇） ",
+      "chars": 8527,
+      "file": "ch110.txt"
     },
     {
-      "num": 115,
-      "title": "第一百一五回 张顺魂捉方天定 宋江智取宁海军",
-      "file": "fan/ch115.txt"
+      "id": "hui_110",
+      "num": 110,
+      "title": "第110回（征四寇） ",
+      "chars": 8422,
+      "file": "ch110.txt"
     },
     {
-      "num": 116,
-      "title": "第一百一六回 卢俊义分兵歙州道 宋公明大战乌龙岭",
-      "file": "fan/ch116.txt"
+      "id": "hui_110",
+      "num": 110,
+      "title": "第110回（征四寇） ",
+      "chars": 6828,
+      "file": "ch110.txt"
     },
     {
-      "num": 117,
-      "title": "第一百一七回 睦州城箭射邓元觉 乌龙岭神助宋公明",
-      "file": "fan/ch117.txt"
+      "id": "hui_110",
+      "num": 110,
+      "title": "第110回（征四寇） ",
+      "chars": 8055,
+      "file": "ch110.txt"
     },
     {
-      "num": 118,
-      "title": "第一百一八回 卢俊义大战昱岭关 宋公明智取清溪洞",
-      "file": "fan/ch118.txt"
+      "id": "hui_110",
+      "num": 110,
+      "title": "第110回（征四寇） ",
+      "chars": 10204,
+      "file": "ch110.txt"
+    },
+    {
+      "id": "hui_110",
+      "num": 110,
+      "title": "第110回（征四寇） ",
+      "chars": 11774,
+      "file": "ch110.txt"
+    },
+    {
+      "id": "hui_120",
+      "num": 120,
+      "title": "第120回（征四寇） ",
+      "chars": 9722,
+      "file": "ch120.txt"
     }
-  ]
+  ],
+  "total_hui": 38,
+  "has_xiezi": false,
+  "total_chars": 267136
 }

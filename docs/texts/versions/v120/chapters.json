@@ -704,13 +704,6 @@
       "file": "ch099.txt"
     },
     {
-      "id": "hui_100",
-      "num": 100,
-      "title": "第100回 张清琼英双建功 陈瓘宋江同奏捷",
-      "chars": 0,
-      "file": "ch100.txt"
-    },
-    {
       "id": "hui_101",
       "num": 101,
       "title": "第101回 谋坟地阴险产逆 蹈春阳妖艳生奸",
@@ -851,7 +844,7 @@
       "file": "ch120.txt"
     }
   ],
-  "total_hui": 120,
+  "total_hui": 119,
   "has_xiezi": true,
   "total_chars": 920466
 }
