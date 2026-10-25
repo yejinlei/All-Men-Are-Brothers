@@ -695,9 +695,12 @@ async function loadChapter() {
   // 加载章节列表JSON
   if(!RD.data || RD.data._id !== RD.ver) {
     const listPath = `texts/versions/${RD.ver}/chapters.json`;
-    RD.data = await loadJSON(listPath) || {_id:RD.ver, chapters:[]};
-    RD.data._id = RD.ver;
-    RD.chapters = RD.data.chapters || [];
+    let raw = await loadJSON(listPath);
+    if(!raw) raw = [];
+    // chapters.json 可能是 {chapters:[...]} 对象，也可能直接是数组
+    if(Array.isArray(raw)){ RD.chapters = raw; }
+    else { RD.chapters = raw.chapters || []; }
+    RD.data = {_id:RD.ver, chapters:RD.chapters};
     // 填充回目下拉
     const sel = document.getElementById('chapSelect');
     sel.innerHTML = RD.chapters.map((c,i)=>`<option value="${i}">${c.title}</option>`).join('');
