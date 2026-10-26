@@ -327,7 +327,7 @@ function buildRelFilter(links){
   const types = new Set();
   links.forEach(l=>{ if(l.value) types.add(l.value); });
   const sorted = [...types].sort();
-  const existing = new Set([...box.querySelectorAll('.rchip[data-rel!="all"]')].map(c=>c.dataset.rel));
+  const existing = new Set([...box.querySelectorAll('.rchip')].filter(c=>c.dataset.rel&&c.dataset.rel!=='all').map(c=>c.dataset.rel));
   if(sorted.length===existing.size && sorted.every(t=>existing.has(t))) return;
   box.innerHTML = `<span class="rlabel">关系类型</span><span class="rchip on" data-rel="all">全部</span>` +
     sorted.map(t=>`<span class="rchip" data-rel="${escAttr(t)}">${escHtml(t)}</span>`).join('');
