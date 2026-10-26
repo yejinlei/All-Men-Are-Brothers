@@ -66,10 +66,32 @@
 .modal .m-avatar { width:132px; height:176px; object-fit:cover; border-radius:4px; margin:0 auto 12px; display:block; border:1px solid var(--border); background:#f5f0e6; }
 
 /* ====== 关系图谱 ====== */
-#graph-wrap { background:#fff; border:1px solid var(--border); border-radius:8px; height:640px; position:relative; overflow:hidden; }
-#graph-wrap canvas { width:100%; height:100%; }
-.graph-legend { position:absolute; bottom:12px; left:12px; background:rgba(245,240,230,.9); padding:10px 14px; border-radius:6px; font-size:12px; z-index:5; line-height:1.8; }
-.graph-legend .lg-dot { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:6px; vertical-align:middle; }
+.rel-bar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:0 0 14px; }
+.rel-bar input { flex:0 0 236px; padding:8px 12px; border:1px solid var(--border); border-radius:6px; font-family:var(--font-serif); font-size:14px; background:#fffdf6; color:var(--ink); }
+.rel-bar input:focus { outline:none; border-color:var(--vermilion); }
+.rel-btn { padding:8px 16px; border:1px solid var(--border); background:#fffdf6; border-radius:6px; font-family:var(--font-serif); font-size:14px; color:var(--ink); cursor:pointer; transition:all .2s; letter-spacing:1px; }
+.rel-btn:hover { background:#f6eddb; border-color:var(--vermilion); color:var(--vermilion-deep); }
+.rel-chips { display:inline-flex; gap:6px; flex-wrap:wrap; margin-left:auto; align-items:center; }
+.rel-chips .rlabel { font-size:12px; color:var(--ink-muted); font-family:var(--font-serif); letter-spacing:1px; margin-right:2px; }
+.rel-chip { padding:5px 12px; border:1px solid var(--border); border-radius:20px; font-size:13px; font-family:var(--font-serif); color:var(--ink-light); cursor:pointer; transition:all .2s; background:#fffdf6; white-space:nowrap; }
+.rel-chip:hover { border-color:var(--vermilion); }
+.rel-chip.on { background:var(--vermilion-deep); color:#fdf8ee; border-color:var(--vermilion-deep); }
+.rel-chip .n { opacity:.7; font-size:11px; margin-left:4px; }
+.rel-stage { position:relative; }
+.rel-graph { height:660px; background:#fff; border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+.rel-info { position:absolute; top:12px; right:12px; width:272px; max-height:540px; overflow-y:auto; background:rgba(255,253,246,.97); border:1px solid var(--paper-border); border-radius:8px; padding:14px 16px; font-family:var(--font-serif); font-size:13px; line-height:1.8; box-shadow:0 4px 18px rgba(60,40,20,.12); display:none; z-index:6; }
+.rel-info.open { display:block; }
+.rel-info h4 { font-size:16px; color:var(--vermilion-deep); margin:0 0 4px; letter-spacing:2px; }
+.rel-info .meta { font-size:12px; color:var(--ink-muted); margin-bottom:4px; }
+.rel-info .rlist { margin-top:8px; border-top:1px solid var(--border); padding-top:8px; }
+.rel-info .ritem { padding:2px 0; }
+.rel-info .ritem i { color:var(--vermilion); font-style:normal; }
+.rel-info .ritem .ch { color:var(--ink-muted); font-size:11px; }
+.rel-info .close { float:right; cursor:pointer; color:var(--ink-muted); font-size:16px; line-height:1; }
+.rel-legend { position:absolute; left:12px; bottom:12px; background:rgba(245,240,230,.92); padding:10px 14px; border-radius:6px; font-size:12px; line-height:1.9; z-index:5; }
+.rel-legend .lg-dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; vertical-align:middle; }
+.rel-foot { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-top:12px; font-size:12.5px; color:var(--ink-muted); font-family:var(--font-serif); }
+.rel-foot a { color:var(--vermilion); }
 
 /* ====== 地理地图 ====== */
 #map-wrap { background:#fff; border:1px solid var(--border); border-radius:8px; padding:20px; position:relative; }
@@ -317,20 +339,23 @@ footer { padding:40px 24px; text-align:center; border-top:1px solid var(--border
 <!-- ============ 关系图谱 ============ -->
 <section id="graph" class="section hidden">
   <div class="section-head">
-    <div class="kicker">RELATION GRAPH</div>
+    <div class="kicker">PERSONAL NETWORK</div>
     <h2>关 系 图 谱</h2>
-    <div class="sub">结义、师徒、敌对、主仆、夫妇、同案——108将之间三十六条关键人物关系，Canvas力导向图，可拖拽交互</div>
+    <div class="sub">108将及关联人物之间的 <b id="relTotal">—</b> 条社会关系，分结拜、亲属、师徒、敌对、上下级五类。力导向网络，可搜索人物、按关系类型筛选、点选节点查看其全部关系。</div>
   </div>
-  <div id="graph-wrap">
-    <canvas id="graphCanvas"></canvas>
-    <div class="graph-legend">
-      <div><span class="lg-dot" style="background:#9a1f1f"></span>宋江系（郓城+嫡系）</div>
-      <div><span class="lg-dot" style="background:#303060"></span>二龙山系（鲁武杨）</div>
-      <div><span class="lg-dot" style="background:#4682B4"></span>降将系</div>
-      <div><span class="lg-dot" style="background:#205070"></span>江州系</div>
-      <div><span class="lg-dot" style="background:#8B5A3C"></span>元老/登州/援山系</div>
-      <div style="margin-top:6px; font-size:11px; color:var(--ink-muted);">拖动节点可移位，双击重置</div>
-    </div>
+  <div class="rel-bar">
+    <input id="relSearch" type="text" placeholder="搜索人物，如 宋江 / 武松 / 林冲" autocomplete="off">
+    <button id="relSearchBtn" class="rel-btn" type="button">定位</button>
+    <button id="relReset" class="rel-btn" type="button">重置</button>
+    <span id="relChips" class="rel-chips"></span>
+  </div>
+  <div class="rel-stage">
+    <div class="rel-graph" id="relGraph"></div>
+    <div id="relInfo" class="rel-info"></div>
+  </div>
+  <div class="rel-foot">
+    <span id="relStatus">正在加载人物关系数据…</span>
+    <span>含地点、版本、学者、衍生作品的全域本体图谱，请见 <a href="kg.html">知识图谱 →</a></span>
   </div>
 </section>
 

@@ -45,7 +45,23 @@ async function boot() {
   renderOntology();
   renderRelTable();
   initReader();
-  initGraph();
+  // 初始深链定位：直接打开 index.html#graph 等时切到对应区块
+  initHashSection();
+}
+
+/* 初始 hash 定位：#versions / #graph / #places … 直接打开时显示对应区块 */
+function initHashSection(){
+  const sec = (location.hash || '').replace('#', '');
+  if(!sec) return;
+  const target = document.getElementById(sec);
+  if(!target || !target.classList.contains('section')) return;
+  document.querySelectorAll('.section').forEach(s=>s.classList.add('hidden'));
+  target.classList.remove('hidden');
+  document.querySelectorAll('.nav-links a').forEach(x=>{
+    if(x.getAttribute('href') === '#' + sec) x.classList.add('active');
+    else x.classList.remove('active');
+  });
+  if(sec === 'graph') initGraph();
 }
 
 /* ---------- 导航切换 ---------- */
@@ -60,6 +76,7 @@ document.querySelectorAll('.nav-links a').forEach(a=>{
     if(target) target.classList.remove('hidden');
     document.querySelectorAll('.nav-links a').forEach(x=>x.classList.remove('active'));
     a.classList.add('active');
+    if(sec === 'graph') initGraph();
     window.scrollTo({top:0, behavior:'smooth'});
   });
 });
@@ -671,113 +688,236 @@ function renderRelTable() {
 }
 
 /* ---------- 关系图谱（Canvas力导向） ---------- */
-function initGraph() {
-  const canvas = document.getElementById('graphCanvas');
-  const wrap = document.getElementById('graph-wrap');
-  function resize(){
-    canvas.width = wrap.clientWidth;
-    canvas.height = wrap.clientHeight;
+/* ---------- 人物关系图谱（懒加载图表库） ---------- */
+let RELC = null, relChart = null, relType = 'core', relSel = null, relLoading = false;
+
+function ensureEcharts(){
+  return new Promise(res=>{
+    if(typeof echarts !== 'undefined'){ res(true); return; }
+    const exist = document.getElementById('echarts-lib');
+    if(exist){ exist.addEventListener('load',()=>res(true)); exist.addEventListener('error',()=>res(false)); return; }
+    const s = document.createElement('script');
+    s.id = 'echarts-lib';
+    s.src = 'vendor/echarts.min.js';
+    s.onload = ()=>res(true);
+    s.onerror = ()=>res(false);
+    document.head.appendChild(s);
+  });
+}
+
+async function initGraph(){
+  if(RELC){ if(relChart) relChart.resize(); return; }
+  if(relLoading) return;
+  relLoading = true;
+  const box = document.getElementById('relGraph');
+  const st = document.getElementById('relStatus');
+  if(!box){ relLoading = false; return; }
+  const data = await loadJSON('data/person_relations.json');
+  if(!data || !data.edges){
+    box.innerHTML = '<div style="padding:80px 20px;text-align:center;color:var(--ink-muted);font-family:var(--font-serif);line-height:2">人物关系数据加载失败，请刷新页面重试。</div>';
+    if(st) st.textContent = '数据加载失败';
+    relLoading = false; return;
   }
-  resize(); window.addEventListener('resize', resize);
-
-  const ctx = canvas.getContext('2d');
-  const heroMap = {};
-  DATA.heroes.heroes.forEach(h=>heroMap[h.id]=h);
-  // 派系颜色
-  const factionColor = id=>{
-    for(const f of DATA.factions.factions){
-      if(f.core.some(c=>c.id===id)) return f.color;
-    }
-    return '#888';
-  };
-  // 取关键节点：前36天罡+若干代表人物
-  const keyIds = new Set([1,2,3,4,5,6,7,8,9,10,12,13,14,15,16,17,18,19,20,22,23,24,25,26,27,28,30,31,32,33,36,39,58,59,107,101]);
-  const nodes = DATA.heroes.heroes.filter(h=>keyIds.has(h.id)).map(h=>({
-    id:h.id, name:h.name, nick:h.nickname, r: h.rank<=10?18 : (h.rank<=24?14:11),
-    x: canvas.width/2 + (Math.random()-0.5)*300,
-    y: canvas.height/2 + (Math.random()-0.5)*200,
-    vx:0, vy:0, color:factionColor(h.id)
-  }));
-  const idMap={}; nodes.forEach(n=>idMap[n.id]=n);
-  const edges = DATA.relations.filter(r=>idMap[r.from] && idMap[r.to]).map(r=>({
-    a:idMap[r.from], b:idMap[r.to], type:r.type, w:r.weight||5
-  }));
-
-  let dragNode=null;
-  canvas.addEventListener('mousedown', e=>{
-    const rect=canvas.getBoundingClientRect();
-    const mx=e.clientX-rect.left, my=e.clientY-rect.top;
-    for(const n of nodes){
-      if((mx-n.x)**2+(my-n.y)**2 < n.r*n.r){ dragNode=n; break; }
-    }
+  RELC = data;
+  const ok = await ensureEcharts();
+  if(!ok){
+    box.innerHTML = '<div style="padding:80px 20px;text-align:center;color:var(--ink-muted);font-family:var(--font-serif);line-height:2">图表组件未能加载，请刷新页面重试。<br/>若持续失败，请检查网络后重新打开本页。</div>';
+    if(st) st.textContent = '图表组件加载失败';
+    relLoading = false; return;
+  }
+  const tot = document.getElementById('relTotal');
+  if(tot) tot.textContent = RELC.edges.length;
+  buildRelChips();
+  relChart = echarts.init(box);
+  relChart.on('click', p=>{
+    if(p.dataType === 'node') selectRelNode(p.data.id);
+    else if(p.dataType === undefined) clearRelSel();
   });
-  canvas.addEventListener('mousemove', e=>{
-    if(!dragNode) return;
-    const rect=canvas.getBoundingClientRect();
-    dragNode.x = e.clientX-rect.left;
-    dragNode.y = e.clientY-rect.top;
-    dragNode.vx=0; dragNode.vy=0;
-  });
-  canvas.addEventListener('mouseup', ()=>dragNode=null);
-  canvas.addEventListener('dblclick', ()=>{ nodes.forEach(n=>{n.x=canvas.width/2+(Math.random()-0.5)*300; n.y=canvas.height/2+(Math.random()-0.5)*200; n.vx=n.vy=0;}); });
+  relChart.getZr().on('click', e=>{ if(!e.target) clearRelSel(); });
+  window.addEventListener('resize', ()=>{ if(relChart) relChart.resize(); });
+  bindRelSearch();
+  renderRelGraph();
+  // 若初始化时容器尚未可见（宽高为 0），下一帧补一次 resize
+  if(box.clientWidth === 0){ setTimeout(()=>{ if(relChart) relChart.resize(); }, 80); }
+  relLoading = false;
+}
 
-  function step(){
-    // 斥力
-    for(let i=0;i<nodes.length;i++){
-      for(let j=i+1;j<nodes.length;j++){
-        const a=nodes[i], b=nodes[j];
-        let dx=a.x-b.x, dy=a.y-b.y;
-        let d=Math.sqrt(dx*dx+dy*dy)||1;
-        const f=800/(d*d);
-        const fx=dx/d*f, fy=dy/d*f;
-        a.vx+=fx; a.vy+=fy; b.vx-=fx; b.vy-=fy;
+function relCatOf(p){
+  if(p.rank && p.rank <= 12) return 0;
+  if(p.rank && p.rank <= 36) return 1;
+  if(p.rank && p.rank <= 108) return 2;
+  return 3;
+}
+
+function buildRelChips(){
+  const box = document.getElementById('relChips');
+  if(!box || !RELC) return;
+  const coreN = RELC.edges.filter(e=>e.type !== '上下级').length;
+  const total = RELC.edges.length;
+  box.innerHTML = '<span class="rlabel">关系类型</span>'
+    + '<span class="rel-chip on" data-t="core">核心关系<span class="n">' + coreN + '</span></span>'
+    + '<span class="rel-chip" data-t="all">全部<span class="n">' + total + '</span></span>'
+    + RELC.types.map(t=>'<span class="rel-chip" data-t="' + t.name + '">' + t.name + '<span class="n">' + t.count + '</span></span>').join('');
+  box.querySelectorAll('.rel-chip').forEach(ch=>{
+    ch.addEventListener('click', ()=>{
+      box.querySelectorAll('.rel-chip').forEach(c=>c.classList.remove('on'));
+      ch.classList.add('on');
+      relType = ch.dataset.t;
+      relSel = null;
+      const info = document.getElementById('relInfo');
+      if(info) info.classList.remove('open');
+      renderRelGraph();
+    });
+  });
+}
+
+function renderRelGraph(){
+  if(!relChart || !RELC) return;
+  const CATS = [
+    {name:'核心天罡（前12）', itemStyle:{color:'#8B0000'}},
+    {name:'天罡星（13-36）', itemStyle:{color:'#C4403A'}},
+    {name:'地煞星（37-108）', itemStyle:{color:'#C98A4B'}},
+    {name:'关联人物', itemStyle:{color:'#8A8A8A'}}
+  ];
+  const tcolor = {};
+  RELC.types.forEach(t=>{ tcolor[t.name] = t.color; });
+
+  const allNodes = RELC.persons.map(p=>{
+    const base = (p.rank && p.rank <= 12) ? 32 : ((p.rank && p.rank <= 36) ? 22 : ((p.rank && p.rank <= 108) ? 14 : 12));
+    return {
+      id: p.name, name: p.name, category: relCatOf(p),
+      symbolSize: base + Math.min(12, (p.degree || 0) * 0.35),
+      value: p.degree || 0,
+      label: {show: !!(p.rank && p.rank <= 36), fontSize:11, fontFamily:'serif', position:'right'},
+      _p: p
+    };
+  });
+  const nmap = {};
+  allNodes.forEach(n=>{ nmap[n.id] = n; });
+
+  let links = RELC.edges.filter(e=>nmap[e.source] && nmap[e.target]).map(e=>({
+    source: e.source, target: e.target, value: e.type,
+    lineStyle: {color: tcolor[e.type] || '#999', width: e.type === '结拜为兄弟' ? 1.8 : 0.9, opacity:0.32, curveness:0.08},
+    _e: e
+  }));
+
+  if(relType === 'core') links = links.filter(l=>l.value !== '上下级');
+  else if(relType !== 'all') links = links.filter(l=>l.value === relType);
+
+  const connected = new Set();
+  links.forEach(l=>{ connected.add(l.source); connected.add(l.target); });
+  let shown = allNodes.filter(n=>connected.has(n.id));
+
+  if(relSel){
+    const neigh = new Set([relSel]);
+    links.forEach(l=>{ if(l.source === relSel) neigh.add(l.target); if(l.target === relSel) neigh.add(l.source); });
+    shown = shown.filter(n=>neigh.has(n.id)).map(n=>{
+      if(n.id === relSel){
+        return Object.assign({}, n, {
+          symbolSize: Math.max(n.symbolSize + 6, 30),
+          label: Object.assign({}, n.label, {fontSize:14, color:'#8b1a1a', fontWeight:'bold'}),
+          itemStyle: {borderColor:'#8b1a1a', borderWidth:4, shadowBlur:20, shadowColor:'rgba(139,26,26,.55)'}
+        });
       }
-    }
-    // 弹力
-    for(const e of edges){
-      let dx=e.a.x-e.b.x, dy=e.a.y-e.b.y;
-      let d=Math.sqrt(dx*dx+dy*dy)||1;
-      const rest = 80 + (10-e.w)*8;
-      const f=(d-rest)*0.02;
-      const fx=dx/d*f, fy=dy/d*f;
-      e.a.vx-=fx; e.a.vy-=fy; e.b.vx+=fx; e.b.vy+=fy;
-    }
-    // 向心
-    nodes.forEach(n=>{
-      n.vx += (canvas.width/2 - n.x)*0.002;
-      n.vy += (canvas.height/2 - n.y)*0.002;
-      n.vx*=0.88; n.vy*=0.88;
-      n.x += n.vx; n.y += n.vy;
-      n.x=Math.max(n.r, Math.min(canvas.width-n.r, n.x));
-      n.y=Math.max(n.r, Math.min(canvas.height-n.r, n.y));
+      return n;
     });
-    // 绘制
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.strokeStyle='rgba(139,26,26,.12)';
-    ctx.lineWidth=1;
-    edges.forEach(e=>{
-      ctx.beginPath();
-      ctx.moveTo(e.a.x,e.a.y);
-      ctx.lineTo(e.b.x,e.b.y);
-      ctx.stroke();
+    links = links.filter(l=>neigh.has(l.source) && neigh.has(l.target)).map(l=>{
+      const hot = (l.source === relSel || l.target === relSel);
+      const ls = Object.assign({}, l.lineStyle);
+      ls.width = hot ? 2.4 : (ls.width || 0.9);
+      ls.opacity = hot ? 0.95 : 0.12;
+      return Object.assign({}, l, {lineStyle: ls, label:{show: hot, formatter: l.value, fontSize:10, fontFamily:'serif', color:'#8b1a1a'}});
     });
-    nodes.forEach(n=>{
-      ctx.beginPath();
-      ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
-      ctx.fillStyle = n.color || 'var(--vermilion)';
-      ctx.fill();
-      ctx.strokeStyle='#fff';
-      ctx.lineWidth=2;
-      ctx.stroke();
-      ctx.fillStyle='#fff';
-      ctx.font = 'bold '+ (n.r>14?12:10) +'px serif';
-      ctx.textAlign='center';
-      ctx.textBaseline='middle';
-      ctx.fillText(n.name, n.x, n.y);
-    });
-    requestAnimationFrame(step);
   }
-  step();
+
+  relChart.setOption({
+    tooltip: {
+      backgroundColor:'rgba(255,253,246,.97)', borderColor:'#e0d4b8', borderWidth:1, textStyle:{color:'#3a2a1a'},
+      formatter: p=>{
+        if(p.dataType === 'node'){
+          const q = p.data._p || {};
+          return '<b style="font-family:serif;font-size:14px;color:#8b1a1a">' + (q.nickname || '') + '·' + (q.name || p.data.id) + '</b>'
+            + '<br/><span style="font-size:12px;color:#8a7a62">' + (q.star || '') + ' · 排行' + (q.rank || '—') + ' · ' + (q.faction || '') + '</span>'
+            + '<br/><span style="font-size:12px">关联关系 ' + (q.degree || 0) + ' 条</span>';
+        }
+        if(p.dataType === 'edge'){
+          const e = p.data._e || {};
+          return '<span style="color:#8b1a1a;font-family:serif">' + (e.type || '') + '</span>'
+            + (e.chapter ? '<br/><span style="font-size:12px">' + e.chapter + '</span>' : '')
+            + (e.desc ? '<br/><span style="font-size:12px;color:#8a7a62">' + e.desc + '</span>' : '');
+        }
+        return '';
+      }
+    },
+    legend: [{data: CATS.map(c=>c.name), top:8, left:'center', textStyle:{fontFamily:'serif', fontSize:12}, itemGap:14, itemWidth:10, itemHeight:10}],
+    series: [{
+      type:'graph', layout:'force', roam:true, draggable:true,
+      label: {show:true, position:'right', formatter: p=>p.data.name, fontFamily:'serif'},
+      force: {repulsion: shown.length > 140 ? 140 : 260, edgeLength:[40,140], gravity:0.12, friction:0.3},
+      categories: CATS,
+      data: shown, links: links,
+      lineStyle: {curveness:0.08},
+      emphasis: {focus:'adjacency', lineStyle:{width:3}},
+      scaleLimit: {min:0.15, max:4},
+      animationDurationUpdate: 400, animationEasingUpdate:'cubicOut'
+    }]
+  }, true);
+
+  const st = document.getElementById('relStatus');
+  if(st){
+    const label = relType === 'core' ? '核心关系' : (relType === 'all' ? '全部关系' : relType);
+    st.textContent = '当前显示 ' + shown.length + ' 人物 / ' + links.length + ' 条关系（' + label + '）'
+      + (relType === 'core' ? '　·　「上下级」188 条属梁山统属（宋江统辖），点上方标签可单独查看' : '');
+  }
+}
+
+function selectRelNode(id){
+  relSel = id;
+  renderRelGraph();
+  const p = RELC.persons.find(x=>x.name === id);
+  if(!p) return;
+  const info = document.getElementById('relInfo');
+  if(!info) return;
+  const rels = RELC.edges.filter(e=>e.source === id || e.target === id);
+  info.innerHTML = '<span class="close" id="relInfoClose">×</span>'
+    + '<h4>' + (p.nickname ? p.nickname + '·' : '') + p.name + '</h4>'
+    + '<div class="meta">' + (p.star || '') + ' · 排行 ' + (p.rank || '—') + ' · ' + (p.faction || '') + '</div>'
+    + '<div class="meta">' + (p.appear || '') + '</div>'
+    + '<div class="rlist">' + rels.slice(0, 20).map(e=>{
+        const out = e.source === id;
+        const other = out ? e.target : e.source;
+        return '<div class="ritem">' + (out ? '→' : '←') + ' <b>' + other + '</b> <i>' + e.type + '</i>'
+          + (e.chapter ? ' <span class="ch">' + e.chapter + '</span>' : '') + '</div>';
+      }).join('') + (rels.length > 20 ? '<div class="ritem" style="color:var(--ink-muted)">…… 共 ' + rels.length + ' 条</div>' : '') + '</div>';
+  info.classList.add('open');
+  const cl = document.getElementById('relInfoClose');
+  if(cl) cl.addEventListener('click', clearRelSel);
+}
+
+function clearRelSel(){
+  relSel = null;
+  const info = document.getElementById('relInfo');
+  if(info) info.classList.remove('open');
+  renderRelGraph();
+}
+
+function bindRelSearch(){
+  const input = document.getElementById('relSearch');
+  const btn = document.getElementById('relSearchBtn');
+  const rst = document.getElementById('relReset');
+  if(!input) return;
+  function go(){
+    const kw = input.value.trim();
+    if(!kw){ clearRelSel(); return; }
+    let hit = (RELC.persons || []).find(p=>p.name === kw);
+    if(!hit) hit = (RELC.persons || []).find(p=>p.name.indexOf(kw) >= 0);
+    if(!hit) hit = (RELC.persons || []).find(p=>p.nickname === kw || p.nickname.indexOf(kw) >= 0);
+    if(!hit){ alert('未找到「' + kw + '」相关人物'); return; }
+    selectRelNode(hit.name);
+  }
+  if(btn) btn.addEventListener('click', go);
+  if(input) input.addEventListener('keydown', e=>{ if(e.key === 'Enter') go(); });
+  if(rst) rst.addEventListener('click', ()=>{ input.value = ''; clearRelSel(); });
 }
 
 /* ---------- 阅读器 ---------- */
