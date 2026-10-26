@@ -895,12 +895,13 @@ function renderChapter(txt, chap) {
   } else { notesBox.style.display='none'; }
 }
 
-/* ---------- 批注层：钟批 / 王评 / 程注 / 余评 ---------- */
+/* ---------- 批注层：钟批 / 王评 / 程注 / 余评 / 燕评 ---------- */
 const EXTRA={
   zhong:{tag:'钟批',who:'钟伯敬',color:'#7a5195',file:'zhongbo_comments.json',ok:['v100','jiqin'],kind:'zhong'},
   wang:{tag:'王评',who:'王望如',color:'#5a7d3a',file:'wangping_comments.json',ok:['v70','jin70','jin70_pi','jinshengtan'],kind:'wang'},
   cheng:{tag:'程注',who:'程穆衡',color:'#2f6f6f',file:'chengzhu_notes.json',ok:['v100','jiqin'],kind:'cheng'},
-  yu:{tag:'余评',who:'余象斗',color:'#a9622d',file:'yuxiangdou_comments.json',ok:['v120','v100','v70','jin70','jin70_pi','jinshengtan','jiqin','zsk'],kind:'yu'}
+  yu:{tag:'余评',who:'余象斗',color:'#a9622d',file:'yuxiangdou_comments.json',ok:['v120','v100','v70','jin70','jin70_pi','jinshengtan','jiqin','zsk'],kind:'yu'},
+  yan:{tag:'燕评',who:'燕南尚生',color:'#8a6d3b',file:'yannanshang_comments.json',ok:['v120','v100','v70','jin70','jin70_pi','jinshengtan','jiqin','zsk'],kind:'yan'},
 };
 const EXTRA_CACHE={};
 function extraItems(kind,data,chap){
@@ -908,6 +909,8 @@ function extraItems(kind,data,chap){
   const out=[];
   if(kind==='zhong'){
     if(num<=1)(data.pin_ren||[]).forEach(p=>out.push({k:'人品评·'+p.name,v:p.text}));
+    const zch=(data.chapters||[]).find(c=>c.num===num);
+    if(zch)(zch.items||[]).forEach(it=>out.push({k:it.k||'批语',v:it.v}));
   }else if(kind==='wang'){
     const tgt='第'+num+'回';
     (data.chapters||[]).filter(c=>c.chapter===tgt).forEach(c=>out.push({k:(c.vol||'')+' '+(c.type||'总评'),v:c.text}));
@@ -915,6 +918,11 @@ function extraItems(kind,data,chap){
     const no=num<1?1:num;const vols=data.volumes||[];
     const vol=vols.find(v=>v.no===no)||vols.find(v=>v.no===no+1)||vols.find(v=>v.no===no-1);
     if(vol)(vol.items||[]).forEach(it=>out.push({k:it.k,v:it.v}));
+  }else if(kind==='yan'){
+    if(num<=1){
+      if(data.xu)out.push({k:'叙·'+data.xu.title,v:data.xu.text});
+      (data.shiming||[]).forEach(x=>out.push({k:'命名释义·'+x.name,v:x.text}));
+    }
   }else if(kind==='yu'){
     if(num<=1&&data.preface)out.push({k:'卷首叙',v:data.preface.text});
     if(num<=1&&data.bian)out.push({k:'水浒辨',v:data.bian.text});
