@@ -530,15 +530,7 @@ footer { padding:40px 24px; text-align:center; border-top:1px solid var(--border
     <label>批注</label>
     <select id="commentSelect">
       <option value="all">全部显示</option>
-      <option value="jin">金圣叹批</option>
-      <option value="li">容与堂·李卓吾批</option>
-      <option value="yuan">袁无涯批</option>
-      <option value="zhong">钟伯敬批</option>
-      <option value="wang">王望如评</option>
-      <option value="cheng">程穆衡注略</option>
-      <option value="yu">余象斗评林</option>
-      <option value="yan">燕南尚生新评</option>
-      <option value="jiqin">冀勤校注</option>
+      <!-- 各批注家选项由 js/registry.js（注册表）动态生成，新增批注家无需改本文件 -->
       <option value="none">隐藏批注</option>
     </select>
     <div class="divider"></div>
@@ -568,6 +560,7 @@ footer { padding:40px 24px; text-align:center; border-top:1px solid var(--border
   </div>
 </div>
 
+<script src="js/registry.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

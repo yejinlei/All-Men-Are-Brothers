@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>水浒传 · 版本阅读器</title>
 <link rel="stylesheet" href="css/style.css">
+<script src="js/registry.js"></script>
 <style>
 /* ========== 阅读器专属 ========== */
 .read-wrap{max-width:860px;margin:0 auto;padding:30px 24px 80px;font-family:var(--font-serif,"KaiTi","STKaiti",serif);}
@@ -51,6 +52,9 @@ background-repeat:no-repeat;background-position:right 12px center;}
 .cmt-btn.active.cm-jiqin{color:#4a7a49;background:#eef5ec;border-color:#6b9a6a;}
 .cmt-btn.active.cm-yuxiangdou{color:#a9622d;background:#faf1e4;border-color:#c98b58;}
 .cmt-btn.active.cm-yannanshang{color:#8a6d3b;background:#f7f2e8;border-color:#b09a6e;}
+/* 通用配色：任何新增批注家只要在注册表里给了 color，激活态自动取色（无需改本文件） */
+.cmt-btn.active{color:var(--cmtc,#8a7a62);background:color-mix(in srgb,var(--cmtc,#8a7a62) 10%,#fff);border-color:color-mix(in srgb,var(--cmtc,#8a7a62) 45%,#fff);}
+.cmt-btn.disabled{opacity:.4;cursor:not-allowed;}
 
 /* 勾选开关（仿红楼梦参考图） */
 .chk{display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-size:15px;color:var(--ink-muted,#8a7a62);user-select:none;}
@@ -181,15 +185,7 @@ body.cmt-only .cmt-block{margin:6px 0;padding:4px 0 4px 9px;}
         <span class="tool-label">批注：</span>
         <span class="btn-group" id="cmtGroup">
           <button class="ui-btn cmt-btn cm-none" data-cmt="none">关闭</button>
-          <button class="ui-btn cmt-btn cm-jinpi" data-cmt="jinpi">金批</button>
-          <button class="ui-btn cmt-btn cm-lizhuo" data-cmt="lizhuo">容本</button>
-          <button class="ui-btn cmt-btn cm-yuanwy" data-cmt="yuanwy">袁本</button>
-          <button class="ui-btn cmt-btn cm-zhongbo" data-cmt="zhongbo">钟批</button>
-          <button class="ui-btn cmt-btn cm-wangping" data-cmt="wangping">王评</button>
-          <button class="ui-btn cmt-btn cm-yuxiangdou" data-cmt="yuxiangdou">余评</button>
-          <button class="ui-btn cmt-btn cm-yannanshang" data-cmt="yannanshang">燕评</button>
-          <button class="ui-btn cmt-btn cm-chengzhu" data-cmt="chengzhu">程注</button>
-          <button class="ui-btn cmt-btn cm-jiqin" data-cmt="jiqin">冀注</button>
+          <!-- 其余批注家按钮由 js/registry.js（注册表）动态生成，新增批注家无需改本文件 -->
         </span>
       </span>
 
@@ -240,37 +236,59 @@ function cnNum(n){
   return u(n);
 }
 
-/* 版本简称（按钮上显示） */
-const VER_SHORT={v120:'袁百二',v100:'容百回',v70:'金七十',jin70:'金批繁',jin70_pi:'金批全',jinshengtan:'金批简',jiqin:'冀勤注',zsk:'征四寇'};
-const VER_NAME ={v120:'袁无涯百二十回全传',v100:'容与堂百回本',v70:'贯华堂七十回本',jin70:'金圣叹评本（繁）',jin70_pi:'金圣叹批评本（全批繁）',jinshengtan:'金圣叹批评本（简）',jiqin:'冀勤校注百回本',zsk:'征四寇（简本）'};
-
-/* 批注元 */
-const CMT={
-  jinpi:{tag:'金批',who:'金圣叹',cls:'cmt-jinpi',color:'#8b1a1a',file:'jinpi_comments.json',okVer:['v70','jin70','jin70_pi','jinshengtan'],extract:d=>d.jin70_pi||d.jinpi||d},
-  lizhuo:{tag:'容本',who:'李卓吾',cls:'cmt-lizhuo',color:'#8b4513',file:'lizhuo_comments.json',okVer:['v100','jiqin'],extract:d=>d},
-  yuanwy:{tag:'袁本',who:'袁无涯',cls:'cmt-yuanwy',color:'#2e5a88',file:'yuanwy_comments.json',okVer:['v120'],extract:d=>d},
-  jiqin:{tag:'冀注',who:'冀勤校注',cls:'cmt-jiqin',color:'#2f5d50',file:'jiqin_notes.json',okVer:['v100','jiqin'],extract:d=>d},
-  zhongbo:{tag:'钟批',who:'钟伯敬',cls:'cmt-zhongbo',color:'#7a5195',file:'zhongbo_comments.json',okVer:['v100','jiqin'],extract:d=>d},
-  wangping:{tag:'王评',who:'王望如',cls:'cmt-wangping',color:'#5a7d3a',file:'wangping_comments.json',okVer:['v70','jin70','jin70_pi','jinshengtan'],extract:d=>d},
-  chengzhu:{tag:'程注',who:'程穆衡',cls:'cmt-chengzhu',color:'#2f6f6f',file:'chengzhu_notes.json',okVer:['v100','jiqin'],extract:d=>d},
-  yuxiangdou:{tag:'余评',who:'余象斗',cls:'cmt-yuxiangdou',color:'#a9622d',file:'yuxiangdou_comments.json',okVer:['v120','v100','v70','jin70','jin70_pi','jinshengtan','jiqin','zsk'],extract:d=>d},
-  yannanshang:{tag:'燕评',who:'燕南尚生',cls:'cmt-yannanshang',color:'#8a6d3b',file:'yannanshang_comments.json',okVer:['v120','v100','v70','jin70','jin70_pi','jinshengtan','jiqin','zsk'],extract:d=>d}
-};
+/* 版本简称 / 全名 / 批注元：全部由「注册表」（js/registry.js → data/registry.json）在 boot() 时灌入。
+   新增一个版本或批注家，只需改 data/registry.json（+ 补语料目录），本文件无需改动。 */
+let VER_SHORT={}, VER_NAME={}, CMT={};
+/* 少数批注家的数据抽取逻辑与注册表无关，按 id 绑定保留在代码里 */
+const EXTRACT={ jinpi:d=>d.jin70_pi||d.jinpi||d };
+function buildMeta(){
+  VER_SHORT=Registry.VER_SHORT;
+  VER_NAME =Registry.VER_NAME;
+  CMT={};
+  state.comments={};
+  Registry.comments().forEach(c=>{
+    CMT[c.id]=Object.assign({},c,{extract:EXTRACT[c.id]||(d=>d)});
+    state.comments[c.id]=null;
+  });
+}
 
 async function loadJSON(p){const r=await fetch(p);if(!r.ok)throw new Error('fail '+p);return r.json();}
 async function loadText(p){const r=await fetch(p);if(!r.ok)return null;return r.text();}
 
 async function boot(){
+  await Registry.load();                       /* 加载版本/批注注册表（单一可信源） */
+  buildMeta();
+  /* 批注家回退：localStorage 里若残留已移除的批注家，归位到可用值 */
+  if(!CMT[state.cmt]) state.cmt='jinpi';
+  if(!CMT[state.cmt]) state.cmt='none';
+  /* 版本回退：默认版本若不在注册表内，取第一个 */
+  if(!Registry.version(state.vid)){const f=Registry.versions()[0];if(f)state.vid=f.id;}
+
   const idx = await loadJSON('texts/versions/versions_index.json');
   state.versions = idx.versions;
+  const hasData = new Set((idx.versions||[]).map(v=>v.id));
 
-  // 版本按钮
+  /* 批注按钮：由注册表生成 */
+  const cg = document.getElementById('cmtGroup');
+  Registry.comments().forEach(c=>{
+    const b=document.createElement('button');
+    b.className='ui-btn cmt-btn cm-'+c.id;
+    b.dataset.cmt=c.id;
+    b.textContent=c.tag||c.id;
+    b.title=(c.who||'')+(c.note?(' · '+c.note):'');
+    b.style.setProperty('--cmtc', c.color||'#8a7a62');
+    cg.appendChild(b);
+  });
+
+  /* 版本按钮：由注册表生成（顺序/简称/配色均取自注册表） */
   const vg = document.getElementById('verGroup');
-  idx.versions.forEach(v=>{
+  Registry.versions().forEach(v=>{
     const b=document.createElement('button');
     b.className='ui-btn ver-btn'+(v.id===state.vid?' active':'');
-    b.textContent=VER_SHORT[v.id]||v.name.slice(0,4);
-    b.title=VER_NAME[v.id]||v.name;
+    b.dataset.vid=v.id;
+    b.textContent=v.short||(v.name||v.id).slice(0,4);
+    b.title=(v.name||v.id)+(v.desc?(' · '+v.desc):'');
+    if(!hasData.has(v.id)){b.disabled=true;b.classList.add('disabled');b.title+='（语料待补）';}
     b.onclick=()=>{state.vid=v.id;state.ch=1;syncURL();markVer();loadVer().catch(e=>console.error(e));};
     vg.appendChild(b);
   });
@@ -305,7 +323,7 @@ async function boot(){
 
   await loadVer(true);
 }
-function markVer(){document.querySelectorAll('.ver-btn').forEach(b=>b.classList.toggle('active',b.textContent===VER_SHORT[state.vid]));}
+function markVer(){document.querySelectorAll('.ver-btn').forEach(b=>b.classList.toggle('active',b.dataset.vid===state.vid));}
 
 async function loadVer(first){
   const vid=state.vid;

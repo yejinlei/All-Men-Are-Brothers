@@ -5,6 +5,7 @@
 <title>异文对照 · 水浒传本体论</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="css/style.css">
+<script src="js/registry.js"></script>
 <style>
 .wrap { max-width: 1400px; margin: 0 auto; padding: 24px 20px 64px; }
 .page-title { text-align:center; margin: 16px 0 8px; }
@@ -135,16 +136,20 @@
 </div>
 
 <script>
-const VERSIONS = [
-  { id:'v120',     name:'袁百二回', short:'袁', cls:'',      color:'#c0392b', range:[0,120], desc:'明万历四十二年袁无涯刊，征四寇全本' },
-  { id:'v100',     name:'容百回本', short:'容', cls:'jade',  color:'#5a7d3a', range:[0,100], desc:'明万历三十八年容与堂刊百回本' },
-  { id:'v70',      name:'古本七十', short:'古', cls:'gold',  color:'#8a6d3b', range:[0,70],  desc:'金圣叹评定七十回（未删润古本）' },
-  { id:'jin70',    name:'金批繁本', short:'金·繁', cls:'',   color:'#8b1a1a', range:[0,70],  desc:'金圣叹批改本（繁体）' },
-  { id:'jin70_pi', name:'金批全文', short:'金·全', cls:'',   color:'#7a1414', range:[0,70],  desc:'金圣叹批改本（简体含读第五才子书法）' },
-  { id:'jinshengtan',name:'金批简本',short:'金·简',cls:'',  color:'#6b1414', range:[0,70],  desc:'金圣叹批改本（简体精简）' },
-  { id:'jiqin',    name:'冀勤校注', short:'冀', cls:'jade',  color:'#2f5d50', range:[0,100], desc:'冀勤校注百回本（含注号）' },
-  { id:'zsk',      name:'征四寇',   short:'寇', cls:'gold',  color:'#8a6d3b', range:[82,120],desc:'征四寇续书（82–120回）' }
-];
+/* 版本清单由注册表（js/registry.js → data/registry.json）构建 —— 新增版本无需改本文件 */
+let VERSIONS = [];
+function buildVersions(){
+  VERSIONS = Registry.versions().map(v=>({
+    id:    v.id,
+    name:  v.label || v.name || v.id,        /* 对照列标题 */
+    short: v.shortDiff || v.short || v.id,   /* 版本 chip 简称 */
+    cls:   v.cls || '',
+    color: v.color || '#8a6d3b',
+    range: Array.isArray(v.range) ? v.range : [0, 999],
+    desc:  v.desc || '',
+    full:  v.name || v.id
+  }));
+}
 
 const state = {
   activeVers: ['v120','v100','jin70'], // 默认三列：袁/容/金
@@ -431,6 +436,11 @@ function ensureHui(){
 }
 
 (async () => {
+  await Registry.load();                 /* 加载版本注册表 */
+  buildVersions();
+  /* 默认对照列回退：只保留注册表内确实存在的版本 */
+  state.activeVers = state.activeVers.filter(v=>VERSIONS.find(x=>x.id===v));
+  if(!state.activeVers.length) state.activeVers = VERSIONS.slice(0,3).map(v=>v.id);
   bindToolbar();
   await loadAllChapters();
   buildChapList();

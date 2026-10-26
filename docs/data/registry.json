@@ -1,0 +1,338 @@
+{
+  "_note": "水浒传数字人文站点 · 版本与批注注册表（单一可信源 / single source of truth）。新增一个版本：在 versions 里加一条并补齐 texts/versions/<id>/ 语料目录即可，各页面运行时自动读取，无需改动任何 HTML/JS。新增一家批注同理。完整性校验：python3 build/register_version.py --check",
+  "schema_version": 1,
+  "updated": "2026-10-27",
+  "site": {
+    "title": "水浒传 · 多版本数字人文",
+    "short": "水浒传本体论",
+    "home": "index.html"
+  },
+  "versions": [
+    {
+      "id": "v120",
+      "order": 1,
+      "short": "袁百二",
+      "shortDiff": "袁",
+      "label": "袁百二回",
+      "name": "袁无涯百二十回全传",
+      "full": "水浒全传（百二十回·袁无涯本）",
+      "cls": "",
+      "color": "#c0392b",
+      "range": [
+        0,
+        120
+      ],
+      "system": "繁本·全传",
+      "date": "明万历四十二年（1614）",
+      "status": "ready",
+      "desc": "明万历四十二年（1614）袁无涯原刊本，杨定见整理。含征辽、征田虎、征王庆、征方腊全本。"
+    },
+    {
+      "id": "v100",
+      "order": 2,
+      "short": "容百回",
+      "shortDiff": "容",
+      "label": "容百回本",
+      "name": "容与堂百回本",
+      "full": "忠义水浒传（百回本·容与堂本）",
+      "cls": "jade",
+      "color": "#5a7d3a",
+      "range": [
+        0,
+        100
+      ],
+      "system": "繁本·百回",
+      "date": "明万历三十八年（1610）",
+      "status": "ready",
+      "desc": "明万历三十八年（1610）容与堂刻本（题李卓吾评），繁本祖本，含征辽、征方腊，无田虎王庆。"
+    },
+    {
+      "id": "v70",
+      "order": 3,
+      "short": "金七十",
+      "shortDiff": "古",
+      "label": "古本七十",
+      "name": "贯华堂七十回本",
+      "full": "第五才子书（七十回本·金圣叹本）",
+      "cls": "gold",
+      "color": "#8a6d3b",
+      "range": [
+        0,
+        70
+      ],
+      "system": "七十回本",
+      "date": "明崇祯十四年（1641）",
+      "status": "ready",
+      "desc": "明崇祯十四年（1641）金圣叹贯华堂批改本，止七十回，以卢俊义惊恶梦作结。"
+    },
+    {
+      "id": "jin70",
+      "order": 4,
+      "short": "金批繁",
+      "shortDiff": "金·繁",
+      "label": "金批繁本",
+      "name": "金圣叹评本（繁）",
+      "full": "金圣叹评本（繁体公版底本）",
+      "cls": "",
+      "color": "#8b1a1a",
+      "range": [
+        0,
+        70
+      ],
+      "system": "七十回本",
+      "date": "1641 / 底本 2000",
+      "status": "ready",
+      "desc": "Project Gutenberg #23863 繁体公领域七十回本，繁体直排。"
+    },
+    {
+      "id": "jin70_pi",
+      "order": 5,
+      "short": "金批全",
+      "shortDiff": "金·全",
+      "label": "金批全文",
+      "name": "金圣叹批评本（全批繁）",
+      "full": "金圣叹批评本（全批语本）",
+      "cls": "",
+      "color": "#7a1414",
+      "range": [
+        0,
+        70
+      ],
+      "system": "七十回本·评点改造本",
+      "date": "明崇祯十四年（1641）贯华堂本系统",
+      "status": "ready",
+      "features": [
+        "金圣叹腰斩水浒，去招安及以后内容",
+        "含《读第五才子书法》、62篇回前总批、1937条夹批",
+        "伪造卢俊义惊恶梦作结，清代三百年最通行本",
+        "金氏评点思想最完整呈现，独恶宋江"
+      ],
+      "desc": "金圣叹批评本（简体含读第五才子书法），批语最完整的七十回系统。"
+    },
+    {
+      "id": "jinshengtan",
+      "order": 6,
+      "short": "金批简",
+      "shortDiff": "金·简",
+      "label": "金批简本",
+      "name": "金圣叹批评本（简）",
+      "full": "金圣叹批评本（简体精简）",
+      "cls": "",
+      "color": "#6b1414",
+      "range": [
+        0,
+        70
+      ],
+      "system": "七十回本",
+      "date": "",
+      "status": "ready",
+      "desc": "金圣叹批改本（简体精简）。"
+    },
+    {
+      "id": "jiqin",
+      "order": 7,
+      "short": "冀勤注",
+      "shortDiff": "冀",
+      "label": "冀勤校注",
+      "name": "冀勤校注百回本",
+      "full": "水浒传（冀勤校注百回本）",
+      "cls": "jade",
+      "color": "#2f5d50",
+      "range": [
+        0,
+        100
+      ],
+      "system": "现代校注本",
+      "date": "2014（中央编译出版社）",
+      "status": "ready",
+      "features": [
+        "以容与堂百回本为底本，参校天都外臣、杨定见、芥子园、贯华堂诸本",
+        "页下注释6817条，覆盖生僻词、职官、典故、方言",
+        "附录三种：容与堂四篇评论文、李贽叙、108将终局表",
+        "适合现代读者阅读的白文校注本，无夹批但注释详尽"
+      ],
+      "desc": "人民文学出版社冀勤校注百回本，容与堂本底本，含校注前言、回目目录、名物注释。"
+    },
+    {
+      "id": "zsk",
+      "order": 8,
+      "short": "征四寇",
+      "shortDiff": "寇",
+      "label": "征四寇",
+      "name": "征四寇（简本）",
+      "full": "征四寇传（简本·八十二回起）",
+      "cls": "gold",
+      "color": "#8a6d3b",
+      "range": [
+        82,
+        120
+      ],
+      "system": "简本·续书",
+      "date": "约 1650",
+      "status": "ready",
+      "desc": "征四寇续书（82–120回），简本系统，承接招安以后情节。"
+    }
+  ],
+  "commentaries": [
+    {
+      "id": "jinpi",
+      "order": 1,
+      "tag": "金批",
+      "who": "金圣叹",
+      "cls": "cmt-jinpi",
+      "chipCls": "red",
+      "color": "#8b1a1a",
+      "file": "jinpi_comments.json",
+      "kind": "jin",
+      "okVer": [
+        "v70",
+        "jin70",
+        "jin70_pi",
+        "jinshengtan"
+      ],
+      "note": "贯华堂七十回本系统"
+    },
+    {
+      "id": "lizhuo",
+      "order": 2,
+      "tag": "容本",
+      "who": "李卓吾",
+      "cls": "cmt-lizhuo",
+      "chipCls": "gold",
+      "color": "#8b4513",
+      "file": "lizhuo_comments.json",
+      "kind": "li",
+      "okVer": [
+        "v100",
+        "jiqin"
+      ],
+      "note": "容与堂百回本眉批夹批"
+    },
+    {
+      "id": "yuanwy",
+      "order": 3,
+      "tag": "袁本",
+      "who": "袁无涯",
+      "cls": "cmt-yuanwy",
+      "chipCls": "indigo",
+      "color": "#2e5a88",
+      "file": "yuanwy_comments.json",
+      "kind": "yuan",
+      "okVer": [
+        "v120"
+      ],
+      "note": "袁刊百二十回本批语"
+    },
+    {
+      "id": "zhongbo",
+      "order": 4,
+      "tag": "钟批",
+      "who": "钟伯敬",
+      "cls": "cmt-zhongbo",
+      "chipCls": "",
+      "color": "#7a5195",
+      "file": "zhongbo_comments.json",
+      "kind": "zhong",
+      "okVer": [
+        "v100",
+        "jiqin"
+      ],
+      "note": "钟批本属百回系统；《人品评》9则＋回后总评"
+    },
+    {
+      "id": "wangping",
+      "order": 5,
+      "tag": "王评",
+      "who": "王望如",
+      "cls": "cmt-wangping",
+      "chipCls": "jade",
+      "color": "#5a7d3a",
+      "file": "wangping_comments.json",
+      "kind": "wang",
+      "okVer": [
+        "v70",
+        "jin70",
+        "jin70_pi",
+        "jinshengtan"
+      ],
+      "note": "王望如评本，贯华堂系统"
+    },
+    {
+      "id": "yuxiangdou",
+      "order": 6,
+      "tag": "余评",
+      "who": "余象斗",
+      "cls": "cmt-yuxiangdou",
+      "chipCls": "",
+      "color": "#a9622d",
+      "file": "yuxiangdou_comments.json",
+      "kind": "yu",
+      "okVer": [
+        "v120",
+        "v100",
+        "v70",
+        "jin70",
+        "jin70_pi",
+        "jinshengtan",
+        "jiqin",
+        "zsk"
+      ],
+      "note": "评林本属简本系统；卷首三篇全版本挂载，卷评限简本"
+    },
+    {
+      "id": "chengzhu",
+      "order": 7,
+      "tag": "程注",
+      "who": "程穆衡",
+      "cls": "cmt-chengzhu",
+      "chipCls": "jade",
+      "color": "#2f6f6f",
+      "file": "chengzhu_notes.json",
+      "kind": "cheng",
+      "okVer": [
+        "v120",
+        "v100",
+        "jiqin"
+      ],
+      "note": "《水浒传注略》名物训注"
+    },
+    {
+      "id": "jiqin",
+      "order": 8,
+      "tag": "冀注",
+      "who": "冀勤校注",
+      "cls": "cmt-jiqin",
+      "chipCls": "jade",
+      "color": "#2f5d50",
+      "file": "jiqin_notes.json",
+      "kind": "jiqin",
+      "okVer": [
+        "v100",
+        "jiqin"
+      ],
+      "note": "冀勤校注本页下注"
+    },
+    {
+      "id": "yannanshang",
+      "order": 9,
+      "tag": "燕评",
+      "who": "燕南尚生",
+      "cls": "cmt-yannanshang",
+      "chipCls": "gold",
+      "color": "#8a6d3b",
+      "file": "yannanshang_comments.json",
+      "kind": "yan",
+      "okVer": [
+        "v120",
+        "v100",
+        "v70",
+        "jin70",
+        "jin70_pi",
+        "jinshengtan",
+        "jiqin",
+        "zsk"
+      ],
+      "note": "《新评水浒传》卷首三篇，全版本挂载"
+    }
+  ]
+}

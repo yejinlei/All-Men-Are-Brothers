@@ -5,6 +5,7 @@
 <title>批注检索 · 水浒传本体论</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="css/style.css">
+<script src="js/registry.js"></script>
 <style>
 .wrap { max-width: 1180px; margin: 0 auto; padding: 32px 24px 64px; }
 .page-title { text-align:center; margin: 24px 0 8px; }
@@ -93,15 +94,7 @@
     <div class="filter-row" id="filterRow">
       <span class="filter-label">评点家</span>
       <span class="chip on" data-f="critic" data-v="all">全部</span>
-      <span class="chip" data-f="critic" data-v="jinpi" style="--c:#8b1a1a" data-color="#8b1a1a">金圣叹</span>
-      <span class="chip" data-f="critic" data-v="lizhuo" data-color="#8b4513">李卓吾</span>
-      <span class="chip" data-f="critic" data-v="yuanwy" data-color="#2e5a88">袁无涯</span>
-      <span class="chip" data-f="critic" data-v="zhongbo" data-color="#7a5195">钟伯敬</span>
-      <span class="chip" data-f="critic" data-v="wangping" data-color="#5a7d3a">王望如</span>
-      <span class="chip" data-f="critic" data-v="yuxiangdou" data-color="#a9622d">余象斗</span>
-      <span class="chip" data-f="critic" data-v="chengzhu" data-color="#2f6f6f">程穆衡</span>
-      <span class="chip" data-f="critic" data-v="jiqin" data-color="#2f5d50">冀勤注</span>
-      <span class="chip" data-f="critic" data-v="yannanshang" data-color="#8a6d3b">燕南尚生</span>
+      <!-- 其余批注家按钮由 js/registry.js（注册表）动态生成，新增批注家无需改本文件 -->
     </div>
     <div class="filter-row" style="margin-top:8px;" id="typeRow">
       <span class="filter-label">批语类型</span>
@@ -130,17 +123,36 @@
 </div>
 
 <script>
-const CRITICS = {
-  jinpi:       { name:'金圣叹',   color:'#8b1a1a', cls:'red',    file:'jinpi_comments.json',      okVer:['jin70_pi','jinshengtan','jin70'] },
-  lizhuo:      { name:'李卓吾',   color:'#8b4513', cls:'gold',   file:'lizhuo_comments.json',     okVer:['v100'] },
-  yuanwy:      { name:'袁无涯',   color:'#2e5a88', cls:'indigo', file:'yuanwy_comments.json',     okVer:['v120'] },
-  zhongbo:     { name:'钟伯敬',   color:'#7a5195', cls:'',       file:'zhongbo_comments.json',    okVer:['v100'] },
-  wangping:    { name:'王望如',   color:'#5a7d3a', cls:'jade',   file:'wangping_comments.json',   okVer:['v70','jin70','jin70_pi','jinshengtan'] },
-  yuxiangdou:  { name:'余象斗',   color:'#a9622d', cls:'',       file:'yuxiangdou_comments.json', okVer:['v120','zsk'] },
-  chengzhu:    { name:'程穆衡',   color:'#2f6f6f', cls:'jade',   file:'chengzhu_notes.json',      okVer:['v120','v100'] },
-  jiqin:       { name:'冀勤',     color:'#2f5d50', cls:'jade',   file:'jiqin_notes.json',         okVer:['jiqin'] },
-  yannanshang: { name:'燕南尚生', color:'#8a6d3b', cls:'gold',   file:'yannanshang_comments.json',okVer:['v120','v100','v70','jin70','jin70_pi','jinshengtan','jiqin','zsk'] }
-};
+let CRITICS = {};
+
+/* 批注家清单由「注册表」构建（单一可信源：data/registry.json）
+   —— 新增批注家只需改 registry.json（+ 补批语文件），本文件无需改动。 */
+function buildCritics(){
+  CRITICS = {};
+  Registry.comments().forEach(c=>{
+    CRITICS[c.id] = {
+      name : c.who,
+      tag  : c.tag,
+      color: c.color,
+      cls  : c.chipCls || '',
+      file : c.file,
+      okVer: (c.okVer || []).slice()
+    };
+  });
+}
+
+/* 批注家筛选按钮动态生成，同样无需改本文件 */
+function buildCriticChips(){
+  const row = document.getElementById('filterRow');
+  if(!row) return;
+  row.innerHTML = '<span class="chip on" data-f="critic" data-v="all">全部</span>' +
+    Registry.comments().map(c =>
+      '<span class="chip' + (c.chipCls ? ' ' + c.chipCls : '') +
+      '" data-f="critic" data-v="' + c.id +
+      '" data-color="' + c.color +
+      '" title="' + escapeHtml(c.who) + '">' + escapeHtml(c.tag) + '</span>'
+    ).join('');
+}
 
 // 繁简通用：建立简->繁映射（只对常见字），检索时同时尝试两种形态
 const S2T = {};
@@ -715,6 +727,9 @@ function colorChips(){
 }
 
 (async () => {
+  await Registry.load();      /* 加载版本/批注注册表 */
+  buildCritics();
+  buildCriticChips();
   bindFilters();
   colorChips();
   await loadVerChapters();

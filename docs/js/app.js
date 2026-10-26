@@ -10,6 +10,12 @@ async function loadJSON(path) {
 }
 
 async function boot() {
+  /* 先加载「注册表」（单一可信源：data/registry.json）：版本清单、名称、批注家均取自它。
+     新增版本/批注家只需改 registry.json，本文件无需改动。
+     读取失败时 registry.js 内部会自动退回内置兜底，保证首页不白屏。 */
+  if(typeof Registry !== 'undefined' && !Registry.loaded){
+    try{ await Registry.load(); }catch(e){ console.warn('registry load fail:', e); }
+  }
   const [baseline, heroes, factions, weapons, events, places, critics, derivatives, relations, idx] = await Promise.all([
     loadJSON('data/_baseline.json'),
     loadJSON('data/heroes/heroes.json'),
@@ -84,11 +90,18 @@ document.querySelectorAll('.nav-links a').forEach(a=>{
 /* ---------- 版本学时间线 ---------- */
 function renderVersions() {
   const v = DATA.baseline.versions;
-  // 补充冀勤校注本和金批批评本
-  const extra = [
-    {id:'jiqin', name:'冀勤校注本（容与堂底本）', date:'2014（中央编译出版社）', chapters:100, system:'现代校注本', features:['以容与堂百回本为底本，参校天都外臣、杨定见、芥子园、贯华堂诸本','页下注释6817条，覆盖生僻词、职官、典故、方言','附录三种：容与堂四篇评论文、李贽叙、108将终局表','适合现代读者阅读的白文校注本，无夹批但注释详尽'], color:'#305060'},
-    {id:'jinpi', name:'金圣叹批评本（全批语本）', date:'明崇祯十四年（1641）贯华堂本系统', chapters:70, system:'繁本·评点改造本', features:['金圣叹腰斩水浒，去招安及以后内容','含《读第五才子书法》、62篇回前总批、1937条「」夹批','伪造卢俊义惊恶梦作结，清代三百年最通行本','金氏评点思想最完整呈现，独恶宋江、骂宋江为"下下人物"'], color:'#800020'}
-  ];
+  /* 本站收录版本的补充卡：由注册表提供（含 date/features），新增版本会自动出现在时间线 */
+  const extra = (typeof Registry!=='undefined' ? Registry.versions() : [])
+    .filter(x => Array.isArray(x.features) && x.features.length)
+    .map(x => ({
+      id: x.id,
+      name: x.name,
+      date: x.date || '',
+      chapters: Array.isArray(x.range) ? x.range[1] : 0,
+      system: x.system || '',
+      features: x.features,
+      color: x.color || '#8B4513'
+    }));
   const all = [...v, ...extra];
   // 排序
   const order = {'嘉靖郭勋本':1520,'天都外臣序本/容与堂本':1589,'袁无涯本':1614,'金圣叹评本':1641,'征四寇（简本）':1650,'七十回本（金圣叹评本·简体）':1950,'七十回本（金圣叹评本·繁体底本）':2000,'冀勤校注本（容与堂底本）':2014,'金圣叹批评本（全批语本）':1641};
@@ -925,10 +938,34 @@ let RD = { ver:'v120', chap:0, lang:'fan', comment:'all', data:null, chapters:[]
 function initReader() {
   const verSelect = document.getElementById('verSelect');
   const statusEl = document.getElementById('readerStatus');
-  if(!DATA.idx || !DATA.idx.versions) { statusEl.textContent='版本索引加载失败，请刷新页面重试'; return; }
+  /* 版本下拉：清单与名称来自「注册表」（单一可信源：data/registry.json），
+     构建索引（versions_index.json）只用来判断哪些版本确有语料、以及回数。
+     —— 新增版本只需改 registry.json（+ 补语料目录），本文件无需改动。 */
+  const idxVs = (DATA.idx && DATA.idx.versions) || [];
+  const idxMap = {}; idxVs.forEach(v => idxMap[v.id] = v);
+  const regVs = (typeof Registry !== 'undefined' ? Registry.versions() : []);
+  let pickList = regVs.filter(v => idxMap[v.id]);   // 以注册表顺序列出确有语料的版本
+  if(!pickList.length) pickList = idxVs;            // 注册表不可用时回退旧索引，保证不白屏
+  if(!pickList.length) { statusEl.textContent='版本索引加载失败，请刷新页面重试'; return; }
   // 默认选第一个可用版本
-  if(!DATA.idx.versions.find(v=>v.id===RD.ver)) RD.ver = DATA.idx.versions[0].id;
-  verSelect.innerHTML = DATA.idx.versions.map(v=>`<option value="${v.id}">${v.name}（${v.count||'?'}回）</option>`).join('');
+  if(!pickList.find(v=>v.id===RD.ver)) RD.ver = pickList[0].id;
+  // 批注下拉：由注册表生成（新增批注家无需改 index.html）
+  const cs=document.getElementById('commentSelect');
+  if(cs){
+    const optAll=new Option('全部显示','all'), optNone=new Option('隐藏批注','none');
+    cs.innerHTML=''; cs.appendChild(optAll);
+    (typeof Registry!=='undefined'?Registry.comments():[]).forEach(c=>{
+      cs.appendChild(new Option((c.tag?c.tag+' · ':'')+(c.who||c.id), c.id));
+    });
+    cs.appendChild(optNone);
+    RD.comment=normCmt(RD.comment);
+    cs.value=RD.comment;
+  }
+  verSelect.innerHTML = pickList.map(v=>{
+    const cnt = (idxMap[v.id] && idxMap[v.id].count) ||
+                (Array.isArray(v.range) ? v.range[1] - v.range[0] + 1 : '?');
+    return `<option value="${v.id}">${v.full || v.name || v.id}（${cnt}回）</option>`;
+  }).join('');
   verSelect.value = RD.ver;
   verSelect.addEventListener('change', ()=>{ RD.ver=verSelect.value; RD.chap=0; loadChapter(); });
   document.getElementById('chapSelect').addEventListener('change', e=>{ RD.chap=+e.target.value; loadChapter(); });
@@ -948,7 +985,8 @@ function initReader() {
 async function loadChapter() {
   const status = document.getElementById('readerStatus');
   const content = document.getElementById('readerContent');
-  const ver = DATA.idx.versions.find(v=>v.id===RD.ver);
+  const ver = (typeof Registry !== 'undefined' && Registry.version(RD.ver)) ||
+              ((DATA.idx && DATA.idx.versions) || []).find(v=>v.id===RD.ver) || { id:RD.ver, name:RD.ver };
   if(!ver) { status.textContent='未找到对应版本'; return; }
   status.innerHTML = '<span style="color:var(--gold);">●</span> 正在加载章节数据……';
   // 加载章节列表JSON
@@ -973,7 +1011,7 @@ async function loadChapter() {
   if(!chap) { status.innerHTML = '章节列表为空，请切换版本'; content.innerHTML='<p style="text-align:center;color:var(--ink-muted);padding:60px;">本版本暂无章节数据。</p>'; return; }
 
   const langName = {fan:'繁体原文',jian:'简体原文',bai:'白话译文'}[RD.lang];
-  status.innerHTML = `当前语体：<b style="color:var(--vermilion-deep);">${langName}</b> · 版本：<b>${ver.name}</b> · ${chap.title} · 约${chap.size||'?'}字`;
+  status.innerHTML = `当前语体：<b style="color:var(--vermilion-deep);">${langName}</b> · 版本：<b>${ver.full || ver.name}</b> · ${chap.title} · 约${chap.size||'?'}字`;
 
   // 加载文本文件（chap.file 已带 fan/jian/bai 前缀，按语体选对应字段）
   const fileKey = RD.lang==='fan'?'file':(RD.lang==='jian'?'file_simp':'file_bai');
@@ -997,7 +1035,7 @@ function renderChapter(txt, chap) {
   const notesBox = document.getElementById('readerNotes');
   let html = `<h2 class="ch-title">${chap.title}</h2>`;
   // 回前总批（金圣叹）
-  if(RD.comment!=='none' && (RD.comment==='all'||RD.comment==='jin') && chap.zongpi) {
+  if(RD.comment!=='none' && (RD.comment==='all'||RD.comment==='jinpi') && chap.zongpi) {
     html += `<div class="zongpi"><b style="color:var(--gold);">【金圣叹回前总批】</b><br/>${chap.zongpi}</div>`;
   }
   // 正文分段
@@ -1016,12 +1054,12 @@ function renderChapter(txt, chap) {
     // 夹批处理（「」）
     let p = line;
     p = p.replace(/「([^」]+)」/g, (m,c)=>{
-      if(RD.comment==='none' || RD.comment==='jiqin' || RD.comment==='li' || RD.comment==='yuan') return '';
+      if(RD.comment==='none' || RD.comment==='jiqin' || RD.comment==='lizhuo' || RD.comment==='yuanwy') return '';
       return `<span class="comment-inline" title="${c}">${c}</span>`;
     });
     // 注释 (N)
     p = p.replace(/\((\d+)\)/g, (m,n)=>{
-      if(RD.comment==='none' || RD.comment==='jin' || RD.comment==='li' || RD.comment==='yuan') return '';
+      if(RD.comment==='none' || RD.comment==='jinpi' || RD.comment==='lizhuo' || RD.comment==='yuanwy') return '';
       return `<sup class="pi" data-note="${n}">${n}</sup>`;
     });
     html += `<p>${p}</p>`;
@@ -1030,7 +1068,7 @@ function renderChapter(txt, chap) {
   content.innerHTML = html;
 
   // 注释区
-  if(RD.comment!=='none' && RD.comment!=='jin' && RD.comment!=='li' && RD.comment!=='yuan' && !EXTRA[RD.comment] && RD.notes.length) {
+  if(RD.comment!=='none' && RD.comment!=='jinpi' && RD.comment!=='lizhuo' && RD.comment!=='yuanwy' && !EXTRA[RD.comment] && RD.notes.length) {
     const chapNotes = RD.notes.filter(n=>n.chap===chap.id || n.chapter===chap.title);
     if(chapNotes.length) {
       notesBox.style.display='block';
@@ -1039,14 +1077,25 @@ function renderChapter(txt, chap) {
   } else { notesBox.style.display='none'; }
 }
 
-/* ---------- 批注层：钟批 / 王评 / 程注 / 余评 / 燕评 ---------- */
-const EXTRA={
-  zhong:{tag:'钟批',who:'钟伯敬',color:'#7a5195',file:'zhongbo_comments.json',ok:['v100','jiqin'],kind:'zhong'},
-  wang:{tag:'王评',who:'王望如',color:'#5a7d3a',file:'wangping_comments.json',ok:['v70','jin70','jin70_pi','jinshengtan'],kind:'wang'},
-  cheng:{tag:'程注',who:'程穆衡',color:'#2f6f6f',file:'chengzhu_notes.json',ok:['v100','jiqin'],kind:'cheng'},
-  yu:{tag:'余评',who:'余象斗',color:'#a9622d',file:'yuxiangdou_comments.json',ok:['v120','v100','v70','jin70','jin70_pi','jinshengtan','jiqin','zsk'],kind:'yu'},
-  yan:{tag:'燕评',who:'燕南尚生',color:'#8a6d3b',file:'yannanshang_comments.json',ok:['v120','v100','v70','jin70','jin70_pi','jinshengtan','jiqin','zsk'],kind:'yan'},
-};
+/* ---------- 批注层（钟批/王评/程注/余评/燕评 等）：由注册表构建 ---------- */
+let EXTRA={};
+/* 兼容历史 key（旧下拉值 / 旧 localStorage）→ 注册表 id */
+const CMT_ALIAS={ jin:'jinpi', li:'lizhuo', yuan:'yuanwy', zhong:'zhongbo', wang:'wangping', cheng:'chengzhu', yu:'yuxiangdou', yan:'yannanshang' };
+function buildExtra(){
+  EXTRA={};
+  (typeof Registry!=='undefined' ? Registry.comments() : []).forEach(c=>{
+    EXTRA[c.id]={tag:c.tag,who:c.who,color:c.color,file:c.file,ok:c.okVer||[],kind:c.kind||c.id};
+  });
+}
+/* 归一化批注键：注册表 id 原样返回；旧 key 经别名映射；未知值回退 none */
+function normCmt(k){
+  k=String(k||'none');
+  if(k==='none'||k==='all') return k;
+  if(typeof Registry!=='undefined' && Registry.comment(k)) return k;
+  const a=CMT_ALIAS[k];
+  if(a && typeof Registry!=='undefined' && Registry.comment(a)) return a;
+  return 'none';
+}
 const EXTRA_CACHE={};
 function extraItems(kind,data,chap){
   const num = (chap && chap.num!=null) ? chap.num : RD.chap;
