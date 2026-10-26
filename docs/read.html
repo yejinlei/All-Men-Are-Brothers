@@ -7,13 +7,17 @@
 <link rel="stylesheet" href="css/style.css">
 <style>
 /* ========== 阅读器专属 ========== */
-.read-wrap{max-width:860px;margin:0 auto;padding:140px 24px 80px;font-family:var(--font-serif,"KaiTi","STKaiti",serif);}
+.read-wrap{max-width:860px;margin:0 auto;padding:30px 24px 80px;font-family:var(--font-serif,"KaiTi","STKaiti",serif);}
 
-/* ======== 顶部工具栏（仿红楼梦参考图） ======== */
-.read-top{position:fixed;top:0;left:0;right:0;background:rgba(253,248,238,0.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--border,#e6dcc4);z-index:50;}
-.read-top-inner{max-width:860px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:12px 22px;font-size:15px;color:var(--ink,#3a2a1a);}
-.read-top .brand{font-weight:700;font-size:18px;color:var(--vermilion,#9c2a2a);cursor:pointer;letter-spacing:4px;margin-right:8px;}
-.read-top .brand:hover{color:#c0392b;}
+/* ======== 顶部：全站导航 + 阅读器工具栏（整体吸顶，仿红楼梦参考图） ======== */
+.read-header-all{position:sticky;top:0;z-index:100;background:rgba(253,248,238,0.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border,#e6dcc4);}
+.read-header-all .topbar{position:static;background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom:1px solid var(--border,#e6dcc4);}
+.read-header-all .topbar .nav-links a.active{background:var(--vermilion-deep);color:var(--paper);}
+.read-top{position:static;background:transparent;border-bottom:none;}
+.read-top-inner{max-width:860px;margin:0 auto;padding:12px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:12px 22px;font-size:15px;color:var(--ink,#3a2a1a);}
+@media(max-width:760px){.read-header-all .topbar{padding:6px 12px;}}
+.read-header-all .topbar .logo{font-size:18px;}
+.read-header-all .topbar .logo .seal{width:30px;height:30px;font-size:15px;}
 
 .tool-group{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 .tool-label{color:var(--ink-muted,#8a7a62);letter-spacing:2px;font-size:15px;}
@@ -123,7 +127,7 @@ body.cmt-only .cmt-block{margin:6px 0;padding:4px 0 4px 9px;}
 .loading{text-align:center;padding:60px 0;color:var(--ink-muted,#8a7a62);font-family:var(--font-serif);font-size:16px;letter-spacing:4px;}
 
 @media(max-width:760px){
-  .read-wrap{padding:180px 16px 60px;}
+  .read-wrap{padding:14px 16px 60px;}
   .chap-select{min-width:0;max-width:100%;width:100%;}
   .chap-title{font-size:24px;letter-spacing:3px;}
   .content-wrap{font-size:16px;}
@@ -131,11 +135,29 @@ body.cmt-only .cmt-block{margin:6px 0;padding:4px 0 4px 9px;}
 </style>
 </head>
 <body>
-<div class="read-wrap">
+<header class="read-header-all">
+  <div class="topbar">
+    <div class="logo"><span class="seal">水</span><span>水浒传本体论</span></div>
+    <nav class="nav-links">
+      <a href="index.html">首页</a>
+      <a href="index.html#versions">版本学</a>
+      <a href="index.html#heroes">108将</a>
+      <a href="themes.html">主题研究</a>
+      <a href="kg.html">知识图谱</a>
+      <a href="index.html#graph">关系图谱</a>
+      <a href="index.html#places">空间地理</a>
+      <a href="index.html#events">叙事结构</a>
+      <a href="index.html#weapons">兵器职官</a>
+      <a href="index.html#critics">评点学术</a>
+      <a href="index.html#derivatives">续书衍生</a>
+      <a href="index.html#ontology">本体推演</a>
+      <a href="read.html" class="active">版本阅读</a>
+      <a href="diff.html">异文对照</a>
+      <a href="search.html">批注检索</a>
+    </nav>
+  </div>
   <div class="read-top">
     <div class="read-top-inner">
-      <span class="brand" onclick="location.href='index.html'">水浒传</span>
-
       <span class="tool-group">
         <span class="tool-label">版本：</span>
         <span class="btn-group" id="verGroup"></span>
@@ -177,7 +199,9 @@ body.cmt-only .cmt-block{margin:6px 0;padding:4px 0 4px 9px;}
       </span>
     </div>
   </div>
+</header>
 
+<div class="read-wrap">
   <h1 class="chap-title" id="chapTitle">加载中…</h1>
   <div class="chap-ver" id="chapVer"></div>
 
