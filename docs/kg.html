@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>知识图谱 · 水浒传本体论</title>
 <link rel="stylesheet" href="css/style.css">
-<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<script src="vendor/echarts.min.js"></script>
 <style>
 .kg-page{ padding:20px 40px; max-width:1700px; margin:0 auto; }
 .kg-header{ text-align:center; padding:20px 0 10px; }
@@ -127,14 +127,21 @@ function renderStats(){
 }
 
 function initChart(){
-  chart = echarts.init(document.getElementById('kgCanvas'));
+  const dom = document.getElementById('kgCanvas');
+  if(typeof echarts === 'undefined'){
+    if(dom) dom.innerHTML = '<div style="padding:60px 20px;text-align:center;color:var(--ink-muted);font-family:var(--font-serif);line-height:2">图表组件未能加载，请刷新页面重试。<br/>若持续失败，请检查网络后重新打开本页。</div>';
+    return;
+  }
+  if(!dom) return;
+  chart = echarts.init(dom);
   chart.on('click', p=>{
     if(p.dataType==='node') showNode(p.data.id, p.data.cat);
   });
-  window.addEventListener('resize',()=>chart.resize());
+  window.addEventListener('resize',()=>{ if(chart) chart.resize(); });
 }
 
 function buildGraph(filter){
+  if(!chart) return;
   currentFilter = filter;
   const nodes=[], links=[], nodeMap={};
   function add(id, cat, size, extra){

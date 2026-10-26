@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>主题研究 · 水浒传本体论</title>
 <link rel="stylesheet" href="css/style.css">
-<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<script src="vendor/echarts.min.js"></script>
 <style>
 .theme-page{ padding:20px 40px; max-width:1600px; margin:0 auto; }
 .theme-layout{ display:grid; grid-template-columns:300px 1fr; gap:24px; margin-top:20px; }
@@ -424,6 +424,10 @@ function renderTheme(t){
 function renderGraph(t){
   const dom = document.getElementById('kGraph');
   if(!dom) return;
+  if(typeof echarts === 'undefined'){
+    dom.innerHTML = '<div style="padding:40px 20px;text-align:center;color:var(--ink-muted);font-family:var(--font-serif);line-height:2">图表组件未能加载，请刷新页面重试。</div>';
+    return;
+  }
   const chart = echarts.init(dom);
   const nodes = [], links = [];
   const catIdx = {theme:0, hero:1, event:2, place:3, critic:4};
