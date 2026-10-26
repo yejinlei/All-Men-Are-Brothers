@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>异文对照 · 水浒传本体论</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+<style>
+.wrap { max-width: 1400px; margin: 0 auto; padding: 24px 20px 64px; }
+.page-title { text-align:center; margin: 16px 0 8px; }
+.page-title .kicker { font-family:var(--font-serif); font-size:13px; color:var(--gold); letter-spacing:6px; margin-bottom:8px; }
+.page-title h1 { font-family:var(--font-serif); font-size:36px; color:var(--vermilion-deep); letter-spacing:8px; font-weight:900; margin-bottom:8px; }
+.page-title .sub { color:var(--ink-muted); font-size:14px; line-height:1.8; }
+
+/* 工具栏 */
+.toolbar { background:#fff; border:1px solid var(--border); border-radius:8px; padding:16px 20px; margin:20px 0; box-shadow:var(--shadow); display:flex; flex-wrap:wrap; gap:14px; align-items:center; }
+.tb-group { display:flex; align-items:center; gap:6px; }
+.tb-label { font-family:var(--font-serif); font-size:13px; color:var(--ink-muted); letter-spacing:2px; margin-right:4px; white-space:nowrap; }
+.tb-select { padding:7px 10px; font-size:13px; border:1px solid var(--border); border-radius:4px; background:var(--paper); color:var(--ink); font-family:var(--font-serif); outline:none; min-width:110px; }
+.tb-select:focus { border-color:var(--vermilion); }
+.tb-btn { padding:6px 14px; font-size:13px; border:1px solid var(--border); background:#fff; color:var(--ink-light); border-radius:4px; cursor:pointer; font-family:var(--font-serif); letter-spacing:1px; }
+.tb-btn.on { background:var(--vermilion-deep); color:#fff; border-color:var(--vermilion-deep); }
+.tb-btn:hover:not(.on) { border-color:var(--vermilion); color:var(--vermilion-deep); }
+.tb-btn.jade.on { background:var(--jade); border-color:var(--jade); }
+.tb-nav { margin-left:auto; display:flex; gap:6px; }
+
+.ver-picker { display:flex; flex-wrap:wrap; gap:6px; padding-top:4px; border-top:1px dashed var(--border); width:100%; }
+.ver-chip { padding:4px 12px; font-size:12px; border:1px solid var(--border); background:#fff; color:var(--ink-light); border-radius:14px; cursor:pointer; font-family:var(--font-serif); letter-spacing:.5px; transition:.2s; }
+.ver-chip:hover { border-color:var(--vermilion); }
+.ver-chip.on { background:var(--vermilion-deep); color:#fff; border-color:var(--vermilion-deep); }
+.ver-chip.on.jade { background:var(--jade); border-color:var(--jade); }
+.ver-chip.on.gold { background:var(--gold); border-color:var(--gold); }
+.ver-chip.disabled { opacity:.35; cursor:not-allowed; }
+
+/* 回目快速跳转 */
+.chap-quick { display:flex; gap:0; align-items:center; }
+.chap-quick input { padding:6px 10px; font-size:13px; border:1px solid var(--border); border-right:none; border-radius:4px 0 0 4px; width:60px; background:var(--paper); font-family:var(--font-serif); text-align:center; }
+.chap-quick button { padding:6px 12px; font-size:13px; border:1px solid var(--vermilion-deep); background:var(--vermilion-deep); color:#fff; border-radius:0 4px 4px 0; cursor:pointer; font-family:var(--font-serif); }
+
+/* 对照列 */
+.diff-grid { display:grid; gap:14px; margin-top:18px; }
+.diff-col { background:#fff; border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+.diff-col-head { padding:12px 18px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; background:linear-gradient(180deg,#fff 0%,var(--paper-warm) 100%); }
+.diff-col-title { font-family:var(--font-serif); font-size:16px; color:var(--vermilion-deep); font-weight:700; letter-spacing:2px; display:flex; align-items:center; gap:10px; }
+.diff-col-title .dot { width:10px; height:10px; border-radius:50%; background:var(--vermilion); }
+.diff-col-meta { font-size:12px; color:var(--ink-muted); }
+.diff-col-meta span { margin-left:8px; }
+.diff-body { padding:20px 24px; font-family:var(--font-serif); font-size:15px; line-height:1.95; letter-spacing:.5px; color:var(--ink); max-height:calc(100vh - 280px); overflow-y:auto; }
+.diff-body p { margin:0 0 6px; text-indent:2em; white-space:pre-wrap; }
+.diff-body .baihua { margin:10px -8px; padding:10px 16px; background:#fdf6e3; border:1px solid #e9d9b1; border-radius:4px; font-family:var(--font-sans); font-size:14px; text-indent:0; color:#5a4a2a; border-left:3px solid var(--gold); line-height:1.9; }
+.diff-body .notavail { padding:48px 20px; text-align:center; color:var(--ink-muted); font-family:var(--font-serif); letter-spacing:2px; }
+.diff-body .notavail .big { font-size:48px; color:var(--paper-dark); margin-bottom:8px; }
+.diff-body .title-line { text-align:center; font-size:20px; color:var(--vermilion-deep); font-weight:700; text-indent:0; letter-spacing:4px; margin-bottom:16px; }
+.diff-body .shi-line { text-align:center; color:var(--jade); text-indent:0; font-size:14px; line-height:1.9; margin:8px 0; }
+.diff-body.loading { text-align:center; padding:60px; color:var(--ink-muted); letter-spacing:4px; }
+
+/* 差异高亮 */
+.diff-diff { background:#fdecea; padding:0 3px; border-radius:2px; color:var(--vermilion-deep); font-weight:600; }
+.diff-same { color:var(--ink); }
+
+.hint { margin:10px 0 0; padding:12px 16px; background:var(--paper-warm); border-left:3px solid var(--gold); border-radius:4px; font-size:12px; color:var(--ink-muted); line-height:1.8; }
+
+@media (min-width: 980px){
+  .c2 { grid-template-columns: 1fr 1fr; }
+  .c3 { grid-template-columns: 1fr 1fr 1fr; }
+  .c4 { grid-template-columns: repeat(4,1fr); }
+}
+@media (max-width: 979px){
+  .diff-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="logo"><span class="seal">水</span><span>水浒传本体论</span></div>
+  <nav class="nav-links">
+    <a href="index.html">首页</a>
+    <a href="themes.html">主题研究</a>
+    <a href="kg.html">知识图谱</a>
+    <a href="read.html">版本阅读</a>
+    <a href="diff.html" class="active" style="background:var(--vermilion-deep); color:#fff; border-radius:4px;">异文对照</a>
+    <a href="search.html">批注检索</a>
+  </nav>
+</header>
+
+<div class="wrap">
+  <div class="page-title">
+    <div class="kicker">VARIORUM COLLATION</div>
+    <h1>跨 版 本 异 文 对 照</h1>
+    <div class="sub">八版本并列校勘 · 繁/简/白三语体切换 · 段落级差异自动标红 · 逐回对读</div>
+  </div>
+
+  <div class="toolbar">
+    <div class="tb-group">
+      <span class="tb-label">回目</span>
+      <select class="tb-select" id="chapSelect"></select>
+      <div class="chap-quick">
+        <input id="chapJump" type="number" min="0" max="120" placeholder="回" title="输入回次直接跳转">
+        <button id="chapJumpBtn">跳</button>
+      </div>
+    </div>
+    <div class="tb-group">
+      <span class="tb-label">语体</span>
+      <button class="tb-btn" data-lang="fan">繁</button>
+      <button class="tb-btn on" data-lang="jian">简</button>
+      <button class="tb-btn jade" data-lang="bai">白</button>
+    </div>
+    <div class="tb-group">
+      <span class="tb-label">模式</span>
+      <button class="tb-btn on" data-mode="parallel">并列</button>
+      <button class="tb-btn" data-mode="diff">标异</button>
+    </div>
+    <div class="tb-nav">
+      <button class="tb-btn" id="prevBtn">◀ 上回</button>
+      <button class="tb-btn" id="nextBtn">下回 ▶</button>
+      <button class="tb-btn" id="readBtn" title="打开阅读器单页阅读">阅 →</button>
+    </div>
+    <div class="ver-picker" id="verPicker"></div>
+  </div>
+
+  <div class="hint" id="hintBar">
+    提示：① 点击上方版本名可显示/隐藏；②「标异」模式以第一列为底本，其他列与之逐字对比，差异处<span style="color:var(--vermilion-deep);font-weight:600;background:#fdecea;padding:0 3px;border-radius:2px;">标红</span>；③ 金圣叹删改本（金七十/金批繁/金批简）第七十回「惊恶梦」为独有结尾，征四寇（82–120 回）仅在百二十回本与续书中存在。
+  </div>
+
+  <div class="diff-grid c3" id="diffGrid"></div>
+</div>
+
+<script>
+const VERSIONS = [
+  { id:'v120',     name:'袁百二回', short:'袁', cls:'',      color:'#c0392b', range:[0,120], desc:'明万历四十二年袁无涯刊，征四寇全本' },
+  { id:'v100',     name:'容百回本', short:'容', cls:'jade',  color:'#5a7d3a', range:[0,100], desc:'明万历三十八年容与堂刊百回本' },
+  { id:'v70',      name:'古本七十', short:'古', cls:'gold',  color:'#8a6d3b', range:[0,70],  desc:'金圣叹评定七十回（未删润古本）' },
+  { id:'jin70',    name:'金批繁本', short:'金·繁', cls:'',   color:'#8b1a1a', range:[0,70],  desc:'金圣叹批改本（繁体）' },
+  { id:'jin70_pi', name:'金批全文', short:'金·全', cls:'',   color:'#7a1414', range:[0,70],  desc:'金圣叹批改本（简体含读第五才子书法）' },
+  { id:'jinshengtan',name:'金批简本',short:'金·简',cls:'',  color:'#6b1414', range:[0,70],  desc:'金圣叹批改本（简体精简）' },
+  { id:'jiqin',    name:'冀勤校注', short:'冀', cls:'jade',  color:'#2f5d50', range:[0,100], desc:'冀勤校注百回本（含注号）' },
+  { id:'zsk',      name:'征四寇',   short:'寇', cls:'gold',  color:'#8a6d3b', range:[82,120],desc:'征四寇续书（82–120回）' }
+];
+
+const state = {
+  activeVers: ['v120','v100','jin70'], // 默认三列：袁/容/金
+  lang: 'jian',
+  mode: 'parallel',
+  hui: 1
+};
+
+const cache = {}; // ver_hui_lang -> text lines
+const verChapters = {}; // vid -> chapters list
+
+async function loadAllChapters(){
+  const r = await fetch('texts/versions/versions_index.json');
+  const idx = await r.json();
+  await Promise.all(idx.versions.map(async v => {
+    const rr = await fetch('texts/versions/'+v.id+'/chapters.json');
+    const d = await rr.json();
+    verChapters[v.id] = Array.isArray(d)?d:(d.chapters||[]);
+  }));
+}
+
+function getChapMeta(vid, hui){
+  const chs = verChapters[vid]||[];
+  return chs.find(c=>c.num===hui) || null;
+}
+
+function availableChapters(){
+  // 取当前激活版本的回次交集
+  const sets = state.activeVers.map(vid => new Set((verChapters[vid]||[]).map(c=>c.num)));
+  if(!sets.length) return [];
+  const base = new Set(sets[0]);
+  for(let i=1;i<sets.length;i++){
+    for(const h of [...base]){ if(!sets[i].has(h)) base.delete(h); }
+  }
+  return [...base].sort((a,b)=>a-b);
+}
+
+function fileKey(chap, lang){
+  if(lang==='fan') return chap.file;
+  if(lang==='bai') return chap.file_bai;
+  return chap.file_simp;
+}
+
+async function loadText(vid, hui, lang){
+  const key = `${vid}_${hui}_${lang}`;
+  if(cache[key]) return cache[key];
+  const chap = getChapMeta(vid, hui);
+  if(!chap){ cache[key] = null; return null; }
+  const f = fileKey(chap, lang);
+  try{
+    const r = await fetch(`texts/versions/${vid}/${f}`);
+    if(!r.ok){ cache[key]=null; return null; }
+    const t = await r.text();
+    const lines = t.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+    cache[key] = lines;
+    return lines;
+  }catch(e){ cache[key]=null; return null; }
+}
+
+// 简单 LCS 差异：以列为单位比较
+function lcsDiff(a, b){
+  // a, b: array of strings(paragraphs)
+  const n=a.length, m=b.length;
+  const dp = Array.from({length:n+1},()=>new Int16Array(m+1));
+  for(let i=n-1;i>=0;i--){
+    for(let j=m-1;j>=0;j--){
+      if(a[i]===b[j]) dp[i][j]=dp[i+1][j+1]+1;
+      else dp[i][j]=Math.max(dp[i+1][j],dp[i][j+1]);
+    }
+  }
+  const marksA = new Array(n).fill(0), marksB = new Array(m).fill(0);
+  let i=0,j=0;
+  while(i<n && j<m){
+    if(a[i]===b[j]){ i++; j++; }
+    else if(dp[i+1][j] >= dp[i][j+1]){ marksA[i]=1; i++; }
+    else { marksB[j]=1; j++; }
+  }
+  while(i<n){ marksA[i]=1; i++; }
+  while(j<m){ marksB[j]=1; j++; }
+  return {marksA, marksB};
+}
+
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function isTitleLine(s){
+  return /^(第[一二三四五六七八九十百零〇○0-9]+回|楔子|引首)/.test(s) && s.length<50;
+}
+function isPoemLine(s){
+  return /(诗曰|词曰|古风|西江月|临江仙|沁园春|念奴娇|鹧鸪天|浣溪沙|满江红|偈曰|歌曰|有诗为证|古风一首|诗曰：|词曰：)/.test(s) || /[，,]?\s*[^\u4e00-\u9fa5]{0}$/.test(s) && s.length<24 && /[，。、；]$/.test(s)===false;
+}
+
+function renderParagraphs(lines){
+  return lines.map(line => {
+    const cls = isTitleLine(line) ? 'title-line' : (/^(\s|　)*(诗曰|词曰|偈曰|古风|有诗为证|临江仙|西江月|沁园春|念奴娇)/.test(line) ? 'shi-line' : '');
+    return `<p class="${cls}">${escapeHtml(line)}</p>`;
+  }).join('');
+}
+
+function renderBaihua(lines){
+  // 白话模式：把每段按段显示，诗词保留原样
+  return lines.map(line => `<p>${escapeHtml(line)}</p>`).join('');
+}
+
+function renderDiffMode(bases, cols){
+  // bases 是第一列 lines 数组，cols 是其他列 lines 数组；逐列对比并在差异处标红
+  // 简单实现：按段落级 LCS，差异段落整体标红
+  return cols.map(lines => {
+    if(!lines) return null;
+    const {marksA, marksB} = lcsDiff(bases, lines);
+    return lines.map((line,i)=>{
+      return `<p class="${isTitleLine(line)?'title-line':''}" style="${marksB[i]?'background:#fdecea;color:var(--vermilion-deep);':''}">${escapeHtml(line)}</p>`;
+    }).join('');
+  });
+}
+
+function buildChapList(){
+  // 用范围最大的版本(v120)初始化回目下拉
+  const sel = document.getElementById('chapSelect');
+  const chs = verChapters['v120']||[];
+  sel.innerHTML = chs.map(c => `<option value="${c.num}">${escapeHtml(c.title)}</option>`).join('');
+  sel.value = state.hui;
+}
+
+function renderVerPicker(){
+  const box = document.getElementById('verPicker');
+  box.innerHTML = VERSIONS.map(v => {
+    const available = v.range[0]<=state.hui && state.hui<=v.range[1];
+    const on = state.activeVers.includes(v.id);
+    return `<span class="ver-chip ${on?'on':''} ${v.cls||''} ${!available?'disabled':''}" data-v="${v.id}" style="${on?`background:${v.color};border-color:${v.color};`:''}" title="${v.desc}">${v.name}${available?'':' (本回缺)'}</span>`;
+  }).join('');
+  box.querySelectorAll('.ver-chip').forEach(ch => {
+    ch.addEventListener('click', () => {
+      const vid = ch.dataset.v;
+      const vmeta = VERSIONS.find(v=>v.id===vid);
+      if(!vmeta || !(vmeta.range[0]<=state.hui && state.hui<=vmeta.range[1])) return;
+      if(state.activeVers.includes(vid)){
+        if(state.activeVers.length<=1) return;
+        state.activeVers = state.activeVers.filter(x=>x!==vid);
+      } else {
+        if(state.activeVers.length>=4) state.activeVers.shift();
+        state.activeVers.push(vid);
+      }
+      renderVerPicker();
+      renderGrid();
+    });
+  });
+}
+
+function setGridCols(n){
+  const g = document.getElementById('diffGrid');
+  g.className = 'diff-grid c'+Math.min(Math.max(n,1),4);
+}
+
+async function renderGrid(){
+  // 过滤：只保留有本回的版本
+  const vers = state.activeVers.filter(vid => {
+    const v = VERSIONS.find(x=>x.id===vid);
+    return v && v.range[0]<=state.hui && state.hui<=v.range[1];
+  });
+  setGridCols(vers.length);
+  const grid = document.getElementById('diffGrid');
+  grid.innerHTML = vers.map(vid=>`<div class="diff-col" data-v="${vid}"><div class="diff-col-head"><div class="diff-col-title"><span class="dot" style="background:${VERSIONS.find(v=>v.id===vid).color}"></span><span data-name>${VERSIONS.find(v=>v.id===vid).name}</span></div><div class="diff-col-meta"><span data-meta>载入中…</span></div></div><div class="diff-body loading">载入中…</div></div>`).join('');
+
+  const allText = {};
+  await Promise.all(vers.map(async vid => {
+    const lines = await loadText(vid, state.hui, state.lang);
+    allText[vid] = lines;
+  }));
+
+  // 标异模式：以第一列为底本
+  let diffs = {};
+  if(state.mode==='diff' && vers.length>=2){
+    const base = allText[vers[0]]||[];
+    for(let i=1;i<vers.length;i++){
+      const lines = allText[vers[i]];
+      if(lines){
+        const {marksB} = lcsDiff(base, lines);
+        diffs[vers[i]] = marksB;
+      }
+    }
+  }
+
+  vers.forEach(vid => {
+    const v = VERSIONS.find(x=>x.id===vid);
+    const col = grid.querySelector(`.diff-col[data-v="${vid}"]`);
+    const lines = allText[vid];
+    const nameEl = col.querySelector('[data-name]');
+    const metaEl = col.querySelector('[data-meta]');
+    const body = col.querySelector('.diff-body');
+    nameEl.textContent = v.name;
+    col.querySelector('.dot').style.background = v.color;
+    const chap = getChapMeta(vid, state.hui);
+    if(!lines){
+      metaEl.innerHTML = `<span style="color:var(--vermilion)">本回无文本</span>`;
+      body.className='diff-body';
+      body.innerHTML = `<div class="notavail"><div class="big">闕</div>${v.name} 不含本回内容</div>`;
+      return;
+    }
+    const titleTxt = chap ? chap.title : `第${state.hui}回`;
+    const langLbl = {fan:'繁',jian:'简',bai:'白'}[state.lang];
+    metaEl.innerHTML = `<span>${escapeHtml(titleTxt)}</span><span>${langLbl}·${lines.length}段</span>`;
+    body.className='diff-body';
+    if(state.lang==='bai'){
+      body.innerHTML = renderBaihua(lines);
+    } else if(state.mode==='diff' && diffs[vid]){
+      const marks = diffs[vid];
+      body.innerHTML = lines.map((line,i)=>{
+        const diff = marks[i];
+        return `<p class="${isTitleLine(line)?'title-line':''}" ${diff?'style="background:#fdecea;color:var(--vermilion-deep);font-weight:600"':''}>${escapeHtml(line)}</p>`;
+      }).join('');
+    } else {
+      body.innerHTML = renderParagraphs(lines);
+    }
+  });
+}
+
+function bindToolbar(){
+  document.querySelectorAll('.tb-btn[data-lang]').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.tb-btn[data-lang]').forEach(x=>x.classList.remove('on'));
+      b.classList.add('on');
+      state.lang = b.dataset.lang;
+      renderGrid();
+    });
+  });
+  document.querySelectorAll('.tb-btn[data-mode]').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.tb-btn[data-mode]').forEach(x=>x.classList.remove('on'));
+      b.classList.add('on');
+      state.mode = b.dataset.mode;
+      renderGrid();
+    });
+  });
+  document.getElementById('chapSelect').addEventListener('change', e => {
+    state.hui = parseInt(e.target.value);
+    // 若当前激活版本里没有这个回次，补一个有的
+    ensureHui();
+    renderVerPicker();
+    renderGrid();
+  });
+  document.getElementById('chapJumpBtn').addEventListener('click', () => {
+    const v = parseInt(document.getElementById('chapJump').value);
+    if(!isNaN(v) && v>=0 && v<=120){
+      state.hui = v;
+      document.getElementById('chapSelect').value = v;
+      ensureHui();
+      renderVerPicker();
+      renderGrid();
+    }
+  });
+  document.getElementById('chapJump').addEventListener('keydown',e=>{
+    if(e.key==='Enter') document.getElementById('chapJumpBtn').click();
+  });
+  document.getElementById('prevBtn').addEventListener('click', ()=>{
+    const avail = availableChapters();
+    const idx = avail.indexOf(state.hui);
+    if(idx>0){ state.hui = avail[idx-1]; syncSel(); renderVerPicker(); renderGrid(); }
+  });
+  document.getElementById('nextBtn').addEventListener('click', ()=>{
+    const avail = availableChapters();
+    const idx = avail.indexOf(state.hui);
+    if(idx<avail.length-1){ state.hui = avail[idx+1]; syncSel(); renderVerPicker(); renderGrid(); }
+  });
+  document.getElementById('readBtn').addEventListener('click', ()=>{
+    const v = state.activeVers.find(vid=>{
+      const m = VERSIONS.find(x=>x.id===vid);
+      return m && m.range[0]<=state.hui && state.hui<=m.range[1];
+    });
+    if(v) location.href = `read.html?vid=${v}&ch=${state.hui}&lang=${state.lang==='bai'?'bai':'jian'}`;
+  });
+}
+function syncSel(){ document.getElementById('chapSelect').value = state.hui; document.getElementById('chapJump').value = state.hui; }
+function ensureHui(){
+  // 若选中的回次在激活版本里没有交集，就替换第一个激活版本为支持该回的版本
+  const avail = state.activeVers.filter(vid=>{
+    const m=VERSIONS.find(x=>x.id===vid); return m && m.range[0]<=state.hui && state.hui<=m.range[1];
+  });
+  if(!avail.length){
+    // 找一个支持该回的版本替换
+    const support = VERSIONS.find(m=>m.range[0]<=state.hui && state.hui<=m.range[1]);
+    if(support) state.activeVers = [support.id];
+  }
+  syncSel();
+}
+
+(async () => {
+  bindToolbar();
+  await loadAllChapters();
+  buildChapList();
+  // URL 参数支持
+  const sp = new URLSearchParams(location.search);
+  if(sp.get('ch')) state.hui = parseInt(sp.get('ch')) || 1;
+  if(sp.get('lang') && ['fan','jian','bai'].includes(sp.get('lang'))) {
+    state.lang = sp.get('lang');
+    document.querySelectorAll('.tb-btn[data-lang]').forEach(b=>b.classList.toggle('on', b.dataset.lang===state.lang));
+  }
+  if(sp.get('vers')){
+    const vs = sp.get('vers').split(',').filter(v=>VERSIONS.find(x=>x.id===v));
+    if(vs.length) state.activeVers = vs.slice(0,4);
+  }
+  ensureHui();
+  renderVerPicker();
+  renderGrid();
+})();
+</script>
+</body>
+</html>

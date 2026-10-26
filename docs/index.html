@@ -211,6 +211,8 @@ footer { padding:40px 24px; text-align:center; border-top:1px solid var(--border
     <a href="#derivatives" data-sec="derivatives">续书衍生</a>
     <a href="#ontology" data-sec="ontology">本体推演</a>
     <a href="read.html">版本阅读</a>
+    <a href="diff.html">异文对照</a>
+    <a href="search.html">批注检索</a>
   </nav>
 </header>
 
@@ -243,18 +245,26 @@ footer { padding:40px 24px; text-align:center; border-top:1px solid var(--border
     <div class="stat-card"><div class="num">2004</div><div class="lbl">文件三版全文语料</div></div>
   </div>
 
-  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; margin:28px 0 0;">
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin:28px 0 0;">
     <a href="themes.html" style="display:block; padding:22px 24px; background:linear-gradient(135deg,#8B1A1A,#C4403A); color:#fff; border-radius:10px; text-decoration:none; box-shadow:var(--shadow);">
       <div style="font-family:var(--font-serif); font-size:20px; letter-spacing:3px; margin-bottom:6px;">📚 主题研究</div>
       <div style="font-size:13px; opacity:.9; line-height:1.7;">忠义命题·官逼民反·佛道解脱·江湖道义·兵器谱·好汉座次·派系网络·招安争议·征伐战役·九家评点·繁简二系·女性悲剧·官制差遣·海外传播·上山路径</div>
     </a>
     <a href="kg.html" style="display:block; padding:22px 24px; background:linear-gradient(135deg,#2d3a6e,#4A6B8A); color:#fff; border-radius:10px; text-decoration:none; box-shadow:var(--shadow);">
       <div style="font-family:var(--font-serif); font-size:20px; letter-spacing:3px; margin-bottom:6px;">🕸️ 知识图谱</div>
-      <div style="font-size:13px; opacity:.9; line-height:1.7;">183 人物·36版本·35学者·74地点·85组织·42衍生·1691 条关系——力导向图可视化·按类型筛选·节点点击查看详情</div>
+      <div style="font-size:13px; opacity:.9; line-height:1.7;">529 节点·714 关系·七大实体类——力导向图可视化·节点搜索定位·关系类型筛选·点选高亮邻域·详情面板</div>
     </a>
     <a href="read.html" style="display:block; padding:22px 24px; background:linear-gradient(135deg,#6B4423,#8B4513); color:#fff; border-radius:10px; text-decoration:none; box-shadow:var(--shadow);">
       <div style="font-family:var(--font-serif); font-size:20px; letter-spacing:3px; margin-bottom:6px;">📖 版本阅读</div>
-      <div style="font-size:13px; opacity:.9; line-height:1.7;">袁百二/容百回/金七十/金批繁/金批全/金批简/冀勤注/征四寇——八版本切换·繁简白三语体·九家批注层对照·附白话译文</div>
+      <div style="font-size:13px; opacity:.9; line-height:1.7;">八版本切换·繁简白三语体·九家批注段间嵌入（仿脂批）·只看批语/附白话文复选·URL深链</div>
+    </a>
+    <a href="diff.html" style="display:block; padding:22px 24px; background:linear-gradient(135deg,#2f5d50,#4a8a75); color:#fff; border-radius:10px; text-decoration:none; box-shadow:var(--shadow);">
+      <div style="font-family:var(--font-serif); font-size:20px; letter-spacing:3px; margin-bottom:6px;">🔍 异文对照</div>
+      <div style="font-size:13px; opacity:.9; line-height:1.7;">八版本并列校勘·繁简白切换·段落级 LCS 差异标红·最多四栏同开·一键跳转阅读器</div>
+    </a>
+    <a href="search.html" style="display:block; padding:22px 24px; background:linear-gradient(135deg,#8a6d3b,#b8860b); color:#fff; border-radius:10px; text-decoration:none; box-shadow:var(--shadow);">
+      <div style="font-family:var(--font-serif); font-size:20px; letter-spacing:3px; margin-bottom:6px;">🔎 批注检索</div>
+      <div style="font-size:13px; opacity:.9; line-height:1.7;">九家评点全文检索·繁简通用·按评点家/批语类型筛选·命中高亮·点击跳转到阅读器对应回目</div>
     </a>
   </div>
 
@@ -327,12 +337,31 @@ footer { padding:40px 24px; text-align:center; border-top:1px solid var(--border
 <!-- ============ 空间地理 ============ -->
 <section id="places" class="section hidden">
   <div class="section-head">
-    <div class="kicker">GEOGRAPHY</div>
-    <h2>空 间 地 理</h2>
-    <div class="sub">从梁山泊到蓼儿洼，从东京开封到江南睦州——水浒故事的地理版图与空间叙事</div>
+    <div class="kicker">GEOGRAPHY · JOURNEY</div>
+    <h2>空 间 地 理 · 行 程 时 间 轴</h2>
+    <div class="sub">拖动下方时间轴，按回目动态点亮好汉足迹——逼反·聚义·招安·征辽·征田虎王庆·征方腊→魂散蓼儿洼</div>
   </div>
+
+  <div class="journey-bar">
+    <div class="jb-row">
+      <button class="tb-btn" id="journeyPlay">▶ 播放</button>
+      <button class="tb-btn" id="journeyReset">⟲ 重置</button>
+      <div class="jb-phase" id="phaseLabel">全 · 部</div>
+      <div class="jb-hui" id="huiLabel">引首—第120回</div>
+    </div>
+    <input type="range" id="journeySlider" min="0" max="120" value="120" step="1">
+    <div class="jb-ticks" id="phaseTicks"></div>
+    <div class="jb-legend">
+      <span><i style="background:#9e8a62"></i>未达</span>
+      <span><i style="background:#d6a642"></i>已历</span>
+      <span><i style="background:#c0392b"></i>当前</span>
+      <span><i style="background:#8b1a1a;border-radius:0;width:14px;height:2px"></i>好汉足迹</span>
+    </div>
+  </div>
+
   <div id="map-wrap">
     <svg class="map-svg" viewBox="0 0 1100 740" xmlns="http://www.w3.org/2000/svg" id="mapSvg">
+      <g id="journeyLayer"></g>
       <!-- 简化的中国东部地图轮廓（艺术化）：北至塞外、南至江南、东至东海 -->
       <g transform="scale(1.2222222 1.1212121)">
         <rect width="900" height="660" fill="#faf6ea"/>
@@ -342,18 +371,18 @@ footer { padding:40px 24px; text-align:center; border-top:1px solid var(--border
       <!-- 北方塞外示意 -->
       <path d="M0 0 L900 0 L900 50 Q820 70 720 75 Q540 90 380 75 Q200 65 60 90 L0 95 Z" fill="#ece3cb" opacity=".4"/>
       <text x="180" y="50" fill="#8a7a5a" font-family="serif" font-size="12" opacity=".6">塞 北 · 辽 境</text>
-      <!-- 黄河（艺术化走向：兰州→河套→潼关→开封→山东入海，lat≈35） -->
+      <!-- 黄河 -->
       <path d="M60 320 Q180 280 280 300 Q360 315 420 290 Q500 260 560 290 Q620 320 680 300 Q720 290 760 310"
             fill="none" stroke="#c48640" stroke-width="5" opacity=".55" stroke-linecap="round"/>
       <text x="230" y="278" fill="#c48640" font-family="serif" font-size="15" opacity=".75">黄 河</text>
-      <!-- 长江（艺术化走向：四川→荆襄→九江→南京→入海，lat≈30-31） -->
+      <!-- 长江 -->
       <path d="M60 490 Q160 480 260 495 Q360 505 440 490 Q520 475 600 490 Q680 505 780 475"
             fill="none" stroke="#406080" stroke-width="5" opacity=".55" stroke-linecap="round"/>
       <text x="190" y="515" fill="#406080" font-family="serif" font-size="15" opacity=".75">长 江</text>
       <!-- 梁山泊小水泊 -->
       <ellipse cx="545" cy="315" rx="34" ry="10" fill="#8aa8c4" opacity=".35"/>
       </g>
-      
+
       <!-- 州府点由JS生成 -->
       <g id="placePoints"></g>
     </svg>

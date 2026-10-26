@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>批注检索 · 水浒传本体论</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+<style>
+.wrap { max-width: 1180px; margin: 0 auto; padding: 32px 24px 64px; }
+.page-title { text-align:center; margin: 24px 0 8px; }
+.page-title .kicker { font-family:var(--font-serif); font-size:13px; color:var(--gold); letter-spacing:6px; margin-bottom:8px; }
+.page-title h1 { font-family:var(--font-serif); font-size:40px; color:var(--vermilion-deep); letter-spacing:8px; font-weight:900; margin-bottom:8px; }
+.page-title .sub { color:var(--ink-muted); font-size:14px; line-height:1.8; }
+
+/* 检索区 */
+.search-box { background:#fff; border:1px solid var(--border); border-radius:8px; padding:24px; margin:24px 0 20px; box-shadow:var(--shadow); }
+.kw-row { display:flex; gap:12px; margin-bottom:16px; }
+.kw-input { flex:1; padding:12px 16px; font-size:15px; border:1px solid var(--border); border-radius:6px; background:var(--paper); font-family:var(--font-serif); letter-spacing:1px; outline:none; color:var(--ink); }
+.kw-input:focus { border-color:var(--vermilion); box-shadow:0 0 0 3px rgba(192,57,43,.1); }
+.kw-btn { padding:0 28px; background:var(--vermilion-deep); color:#fff; border:none; border-radius:6px; font-family:var(--font-serif); font-size:15px; letter-spacing:4px; cursor:pointer; }
+.kw-btn:hover { background:var(--vermilion); }
+
+.filter-row { display:flex; flex-wrap:wrap; gap:10px 8px; align-items:center; }
+.filter-label { font-family:var(--font-serif); font-size:13px; color:var(--ink-muted); letter-spacing:2px; margin-right:4px; }
+.chip { padding:5px 14px; font-size:13px; border:1px solid var(--border); background:#fff; color:var(--ink-light); border-radius:18px; cursor:pointer; font-family:var(--font-serif); letter-spacing:1px; transition:.2s; }
+.chip:hover { border-color:var(--vermilion); color:var(--vermilion-deep); }
+.chip.on { background:var(--vermilion-deep); color:#fff; border-color:var(--vermilion-deep); }
+.chip.jade.on { background:var(--jade); border-color:var(--jade); }
+.chip.gold.on { background:var(--gold); border-color:var(--gold); }
+
+.summary-bar { display:flex; align-items:center; justify-content:space-between; margin:18px 0 14px; font-size:13px; color:var(--ink-muted); letter-spacing:1px; }
+.summary-bar .num { font-family:var(--font-serif); color:var(--vermilion-deep); font-size:16px; font-weight:700; margin:0 4px; }
+
+/* 结果卡 */
+.result-list { display:flex; flex-direction:column; gap:14px; }
+.res-card { background:#fff; border:1px solid var(--border); border-left:3px solid var(--vermilion); border-radius:4px; padding:16px 20px; cursor:pointer; transition:all .2s; position:relative; }
+.res-card:hover { box-shadow:var(--shadow); transform:translateX(2px); border-left-width:5px; }
+.res-card.jade { border-left-color:var(--jade); }
+.res-card.gold { border-left-color:var(--gold); }
+.res-card.indigo { border-left-color:var(--indigo); }
+.res-head { display:flex; align-items:center; flex-wrap:wrap; gap:8px 10px; margin-bottom:10px; font-size:12px; color:var(--ink-muted); }
+.res-critic { display:inline-flex; align-items:center; gap:5px; padding:2px 10px; border-radius:12px; color:#fff; font-family:var(--font-serif); font-size:12px; letter-spacing:1px; }
+.res-chapter { font-family:var(--font-serif); color:var(--ink-light); }
+.res-type { color:var(--gold); font-family:var(--font-serif); }
+.res-ver { font-size:11px; padding:1px 8px; background:var(--paper); border-radius:3px; color:var(--ink-muted); }
+.res-text { font-family:var(--font-serif); font-size:15px; color:var(--ink); line-height:1.9; letter-spacing:.5px; white-space:pre-wrap; }
+.res-text .hl { background:#fce5b0; color:#8b1a1a; padding:0 2px; border-radius:2px; font-weight:600; }
+.res-enter { position:absolute; right:16px; top:50%; transform:translateY(-50%); color:var(--ink-muted); font-size:18px; opacity:0; transition:.2s; }
+.res-card:hover .res-enter { opacity:1; right:12px; color:var(--vermilion); }
+
+.empty { text-align:center; padding:64px 0; color:var(--ink-muted); font-family:var(--font-serif); }
+.empty .big { font-size:64px; color:var(--paper-dark); margin-bottom:12px; }
+.loading { text-align:center; padding:40px; color:var(--ink-muted); font-family:var(--font-serif); letter-spacing:4px; }
+
+/* 底部说明 */
+.footnote { margin-top:32px; padding:16px 20px; background:var(--paper-warm); border-radius:6px; font-size:12px; color:var(--ink-muted); line-height:1.9; letter-spacing:.5px; border-left:3px solid var(--gold); }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="logo"><span class="seal">水</span><span>水浒传本体论</span></div>
+  <nav class="nav-links" id="navLinks">
+    <a href="index.html">首页</a>
+    <a href="themes.html">主题研究</a>
+    <a href="kg.html">知识图谱</a>
+    <a href="read.html">版本阅读</a>
+    <a href="diff.html">异文对照</a>
+    <a href="search.html" class="active" style="background:var(--vermilion-deep); color:#fff; border-radius:4px;">批注检索</a>
+  </nav>
+</header>
+
+<div class="wrap">
+  <div class="page-title">
+    <div class="kicker">COMMENTARY SEARCH</div>
+    <h1>批 注 全 文 检 索</h1>
+    <div class="sub">九家评点 · 跨版本跨语体 · 全文关键字检索 · 点击跳转至原文对应回目</div>
+  </div>
+
+  <div class="search-box">
+    <div class="kw-row">
+      <input class="kw-input" id="kwInput" type="text" placeholder="输入关键字，如「宋江」「文法」「妙」「天罡」「招安」……" autofocus>
+      <button class="kw-btn" id="kwBtn">检 索</button>
+    </div>
+    <div class="filter-row" id="filterRow">
+      <span class="filter-label">评点家</span>
+      <span class="chip on" data-f="critic" data-v="all">全部</span>
+      <span class="chip" data-f="critic" data-v="jinpi" style="--c:#8b1a1a" data-color="#8b1a1a">金圣叹</span>
+      <span class="chip" data-f="critic" data-v="lizhuo" data-color="#8b4513">李卓吾</span>
+      <span class="chip" data-f="critic" data-v="yuanwy" data-color="#2e5a88">袁无涯</span>
+      <span class="chip" data-f="critic" data-v="zhongbo" data-color="#7a5195">钟伯敬</span>
+      <span class="chip" data-f="critic" data-v="wangping" data-color="#5a7d3a">王望如</span>
+      <span class="chip" data-f="critic" data-v="yuxiangdou" data-color="#a9622d">余象斗</span>
+      <span class="chip" data-f="critic" data-v="chengzhu" data-color="#2f6f6f">程穆衡</span>
+      <span class="chip" data-f="critic" data-v="jiqin" data-color="#2f5d50">冀勤注</span>
+      <span class="chip" data-f="critic" data-v="yannanshang" data-color="#8a6d3b">燕南尚生</span>
+    </div>
+    <div class="filter-row" style="margin-top:8px;" id="typeRow">
+      <span class="filter-label">批语类型</span>
+      <span class="chip on" data-f="type" data-v="all">全部</span>
+      <span class="chip" data-f="type" data-v="preface">卷首·序跋</span>
+      <span class="chip" data-f="type" data-v="huiping">回评</span>
+      <span class="chip" data-f="type" data-v="meipi">眉批·夹批</span>
+      <span class="chip" data-f="type" data-v="zhu">名物注释</span>
+      <span class="chip" data-f="type" data-v="theory">小说理论</span>
+    </div>
+  </div>
+
+  <div class="summary-bar" id="sumBar">
+    <div>共载入 <span class="num" id="totalNum">0</span> 条批语；当前命中 <span class="num" id="hitNum">0</span> 条</div>
+    <div id="tipBar">输入关键字开始检索</div>
+  </div>
+
+  <div class="result-list" id="resultList">
+    <div class="loading">正 在 载 入 批 语 …</div>
+  </div>
+
+  <div class="footnote">
+    <b>使用提示：</b>① 繁简通用——输入简体可命中繁体原文；② 多个关键字空格分隔即作"与"检索；③ 点击任一结果跳转至对应回目并自动显示该家批注；④ 名物注释（程穆衡《注略》、冀勤校注）条目较多，默认包含在内，可通过"批语类型"单独筛选。<br/>
+    <b>收录范围：</b>金圣叹（70回回前/总评）、李卓吾（容与堂）、袁无涯（发凡+回评）、钟伯敬（人品评9则+两回回评）、王望如（57回回评）、余象斗（7卷190条上栏评）、程穆衡（《注略》54卷）、冀勤校注（100回名物训）、燕南尚生（叙+命名释义+或问）。
+  </div>
+</div>
+
+<script>
+const CRITICS = {
+  jinpi:       { name:'金圣叹',   color:'#8b1a1a', cls:'red',    file:'jinpi_comments.json',      okVer:['jin70_pi','jinshengtan','jin70'] },
+  lizhuo:      { name:'李卓吾',   color:'#8b4513', cls:'gold',   file:'lizhuo_comments.json',     okVer:['v100'] },
+  yuanwy:      { name:'袁无涯',   color:'#2e5a88', cls:'indigo', file:'yuanwy_comments.json',     okVer:['v120'] },
+  zhongbo:     { name:'钟伯敬',   color:'#7a5195', cls:'',       file:'zhongbo_comments.json',    okVer:['v100'] },
+  wangping:    { name:'王望如',   color:'#5a7d3a', cls:'jade',   file:'wangping_comments.json',   okVer:['v70','jin70','jin70_pi','jinshengtan'] },
+  yuxiangdou:  { name:'余象斗',   color:'#a9622d', cls:'',       file:'yuxiangdou_comments.json', okVer:['v120','zsk'] },
+  chengzhu:    { name:'程穆衡',   color:'#2f6f6f', cls:'jade',   file:'chengzhu_notes.json',      okVer:['v120','v100'] },
+  jiqin:       { name:'冀勤',     color:'#2f5d50', cls:'jade',   file:'jiqin_notes.json',         okVer:['jiqin'] },
+  yannanshang: { name:'燕南尚生', color:'#8a6d3b', cls:'gold',   file:'yannanshang_comments.json',okVer:['v120','v100','v70','jin70','jin70_pi','jinshengtan','jiqin','zsk'] }
+};
+
+// 繁简通用：建立简->繁映射（只对常见字），检索时同时尝试两种形态
+const S2T = {};
+const T2S = {};
+// 初始化简繁双向映射（OpenCC基础常用字）
+function initS2T(){
+  const pairs = [
+    ['万','萬'],['与','與'],['丑','醜'],['专','專'],['业','業'],['丛','叢'],['东','東'],['丝','絲'],
+    ['丢','丟'],['两','兩'],['严','嚴'],['丧','喪'],['个','個'],['丰','豐'],['临','臨'],['为','為'],
+    ['丽','麗'],['举','舉'],['么','麼'],['义','義'],['乐','樂'],['书','書'],['买','買'],['乱','亂'],
+    ['争','爭'],['于','於'],['云','雲'],['亚','亞'],['产','產'],['亩','畝'],['亲','親'],['亵','褻'],
+    ['亿','億'],['仅','僅'],['从','從'],['仓','倉'],['仪','儀'],['们','們'],['价','價'],['众','眾'],
+    ['优','優'],['会','會'],['伛','傴'],['伞','傘'],['伟','偉'],['传','傳'],['伤','傷'],['伥','倀'],
+    ['伦','倫'],['伧','傖'],['伪','偽'],['体','體'],['余','餘'],['佣','傭'],['侠','俠'],['侣','侶'],
+    ['侥','僥'],['侦','偵'],['侧','側'],['侨','僑'],['侩','儈'],['侪','儕'],['侬','儂'],['俣','俁'],
+    ['俦','儔'],['俨','儼'],['俩','倆'],['仓','倉'],['个','個'],['来','來'],['侠','俠'],['会','會'],
+    ['刘','劉'],['则','則'],['创','創'],['办','辦'],['动','動'],['务','務'],['势','勢'],['励','勵'],
+    ['劳','勞'],['勋','勛'],['势','勢'],['匀','勻'],['医','醫'],['华','華'],['协','協'],['单','單'],
+    ['卫','衛'],['厂','廠'],['厅','廳'],['历','歷'],['县','縣'],['双','雙'],['发','發'],['变','變'],
+    ['叙','敘'],['叶','葉'],['号','號'],['叹','嘆'],['叽','嘰'],['吁','籲'],['后','後'],['吓','嚇'],
+    ['吗','嗎'],['呓','囈'],['呕','嘔'],['呖','嚦'],['呗','唄'],['员','員'],['呙','咼'],['呛','嗆'],
+    ['呜','嗚'],['咏','詠'],['咙','嚨'],['咛','嚀'],['咝','噝'],['咸','鹹'],['响','響'],['哑','啞'],
+    ['哒','噠'],['哓','嘵'],['哔','嗶'],['哕','噦'],['哗','嘩'],['哙','噲'],['哜','嚌'],['哝','噥'],
+    ['哟','喲'],['唛','嘜'],['唝','嗊'],['唠','嘮'],['唡','啢'],['唢','嗩'],['唤','喚'],['啧','嘖'],
+    ['啬','嗇'],['啭','囀'],['啮','嚙'],['啰','囉'],['啴','嘽'],['啸','嘯'],['喷','噴'],['喽','嘍'],
+    ['喾','嚳'],['嗫','囁'],['嗳','噯'],['嘘','噓'],['嘤','嚶'],['嘱','囑'],['噜','嚕'],['嚣','囂'],
+    ['团','團'],['园','園'],['囱','囪'],['围','圍'],['囵','圇'],['图','圖'],['圆','圓'],['圣','聖'],
+    ['场','場'],['坏','壞'],['块','塊'],['坚','堅'],['坛','壇'],['坜','壢'],['坝','壩'],['坞','塢'],
+    ['坟','墳'],['坠','墜'],['垄','壟'],['垆','壚'],['垒','壘'],['垦','墾'],['垩','堊'],['垫','墊'],
+    ['垭','埡'],['垲','塏'],['垴','堖'],['埘','塒'],['埙','塤'],['埚','堝'],['堑','塹'],['堕','墮'],
+    ['墙','牆'],['壮','壯'],['声','聲'],['壳','殼'],['壶','壺'],['壸','壼'],['处','處'],['备','備'],
+    ['复','復'],['够','夠'],['头','頭'],['夸','誇'],['夹','夾'],['夺','奪'],['奁','奩'],['奂','奐'],
+    ['奋','奮'],['奖','獎'],['奥','奧'],['妆','妝'],['妇','婦'],['妈','媽'],['妩','嫵'],['妪','嫗'],
+    ['妫','媯'],['姗','姍'],['姜','薑'],['娄','婁'],['娅','婭'],['娆','嬈'],['娇','嬌'],['娈','孌'],
+    ['娱','娛'],['娲','媧'],['娴','嫻'],['婳','嫿'],['婴','嬰'],['婵','嬋'],['婶','嬸'],['媪','媼'],
+    ['袅','裊'],['皑','皚'],['盏','盞'],['盐','鹽'],['监','監'],['盘','盤'],['盖','蓋'],['盗','盜'],
+    ['尽','盡'],['监','監'],['盘','盤'],['盏','盞'],['直','直'],['真','真'],['众','眾'],
+    ['宋','宋'],['江','江'],['吴','吳'],['吕','呂'],['里','里'],['李','李'],['杜','杜'],
+    ['松','松'],['板','闆'],['极','極'],['构','構'],['枪','槍'],['枫','楓'],['枭','梟'],
+    ['柜','櫃'],['柠','檸'],['柽','檉'],['栀','梔'],['栅','柵'],['标','標'],['栈','棧'],
+    ['栋','棟'],['栊','櫳'],['栌','櫨'],['栎','櫟'],['栏','欄'],['树','樹'],['栖','棲'],
+    ['样','樣'],['栾','欒'],['桠','椏'],['桡','橈'],['桢','楨'],['档','檔'],['桤','榿'],
+    ['桥','橋'],['桦','樺'],['桧','檜'],['桨','槳'],['桩','樁'],['梦','夢'],['捞','撈'],
+    ['孙','孫'],['学','學'],['宝','寶'],['实','實'],['宠','寵'],['审','審'],['宪','憲'],
+    ['宽','寬'],['宾','賓'],['将','將'],['对','對'],['寻','尋'],['导','導'],['尔','爾'],
+    ['尘','塵'],['尝','嘗'],['层','層'],['属','屬'],['岂','豈'],['冈','岡'],['岁','歲'],
+    ['岛','島'],['岩','巖'],['岭','嶺'],['岳','嶽'],['帜','幟'],['师','師'],['带','帶'],
+    ['帐','帳'],['帘','簾'],['帜','幟'],['帮','幫'],['帅','帥'],['师','師'],
+    ['归','歸'],['当','當'],['录','錄'],['彐','彐'],['径','徑'],['忆','憶'],
+    ['志','誌'],['态','態'],['恼','惱'],['恒','恆'],['恻','惻'],['恹','懨'],
+    ['恺','愷'],['恻','惻'],['恼','惱'],['恽','惲'],['恶','惡'],['恸','慟'],
+    ['恹','懨'],['恺','愷'],['恼','惱'],['愿','願'],
+    ['戏','戲'],['戗','戧'],['战','戰'],['戏','戲'],['户','戶'],['房','房'],
+    ['扑','撲'],['执','執'],['扩','擴'],['扪','捫'],['扫','掃'],['扬','揚'],
+    ['扰','擾'],['抚','撫'],['抛','拋'],['抟','摶'],['抠','摳'],['抡','掄'],
+    ['抢','搶'],['护','護'],['报','報'],['担','擔'],['拟','擬'],['拢','攏'],
+    ['拣','揀'],['拥','擁'],['拦','攔'],['拧','擰'],['拨','撥'],['择','擇'],
+    ['挂','掛'],['挚','摯'],['挛','攣'],['挲','挲'],['据','據'],
+    ['无','無'],['旧','舊'],['时','時'],['旷','曠'],['旸','暘'],['昙','曇'],
+    ['书','書'],['会','會'],['杀','殺'],['杂','雜'],['权','權'],['条','條'],
+    ['来','來'],['杨','楊'],['极','極'],['构','構'],['枪','槍'],
+    ['机','機'],['杀','殺'],['杂','雜'],['权','權'],
+    ['条','條'],['来','來'],['杨','楊'],
+    ['梦','夢'],['检','檢'],['楼','樓'],['概','槩'],
+    ['欢','歡'],['欤','歟'],['欧','歐'],['歼','殲'],
+    ['殁','歿'],['殇','殤'],['残','殘'],['殒','殞'],
+    ['殡','殯'],['殴','毆'],['毂','轂'],['毕','畢'],
+    ['毙','斃'],['毡','氈'],['气','氣'],['汇','匯'],
+    ['汉','漢'],['污','汙'],['汤','湯'],['汹','洶'],
+    ['没','沒'],['浅','淺'],['浆','漿'],['浇','澆'],
+    ['泼','潑'],['泽','澤'],['泾','涇'],['浑','渾'],
+    ['浒','滸'],['浓','濃'],['浔','潯'],['浉','溮'],
+    ['涡','渦'],['涂','塗'],['涤','滌'],['润','潤'],
+    ['涧','澗'],['涨','漲'],['淀','澱'],['渌','淥'],
+    ['淩','淩'],['渍','漬'],['渎','瀆'],['渐','漸'],
+    ['渑','澠'],['渔','漁'],['渖','瀋'],['渗','滲'],
+    ['温','溫'],['游','遊'],['湾','灣'],['湿','濕'],
+    ['溃','潰'],['溅','濺'],['溆','漵'],['滪','澦'],
+    ['滞','滯'],['滗','潷'],['滗','潷'],['滹','滹'],
+    ['满','滿'],['滞','滯'],['滮','滮'],['渗','滲'],
+    ['潇','瀟'],['潋','瀲'],['潍','濰'],['潜','潛'],
+    ['潴','瀦'],['澜','瀾'],['濑','瀨'],['濒','瀕'],
+    ['灏','灝'],['灭','滅'],['灯','燈'],['灵','靈'],
+    ['灾','災'],['灿','燦'],['炀','煬'],['炉','爐'],
+    ['炖','燉'],['炜','煒'],['炝','熗'],['点','點'],
+    ['炼','煉'],['炽','熾'],['烁','爍'],['烂','爛'],
+    ['烃','烴'],['烛','燭'],['烟','煙'],['烦','煩'],
+    ['烧','燒'],['烨','燁'],['烩','燴'],['烫','燙'],
+    ['烬','燼'],['热','熱'],['焕','煥'],['焖','燜'],
+    ['焘','燾'],['爱','愛'],['爷','爺'],['爸','爸'],
+    ['尔','爾'],['状','狀'],['将','將'],['壮','壯'],
+    ['声','聲'],['壳','殼'],['壶','壺'],
+    ['处','處'],['备','備'],['复','復'],
+    ['够','夠'],['头','頭'],['夸','誇'],
+    ['夹','夾'],['夺','奪'],['奁','奩'],
+    ['奂','奐'],['奋','奮'],['奖','獎'],
+    ['奥','奧'],['妆','妝'],['妇','婦'],
+    ['妈','媽'],['妩','嫵'],['妪','嫗'],
+    ['国','國'],['图','圖'],['园','園'],
+    ['圆','圓'],['圣','聖'],['场','場'],
+    ['坏','壞'],['块','塊'],['坚','堅'],
+    ['坛','壇'],['坝','壩'],['坞','塢'],
+    ['坟','墳'],['坠','墜'],['垄','壟'],
+    ['垒','壘'],['垦','墾'],['垫','墊'],
+    ['堑','塹'],['堕','墮'],['墙','牆'],
+    ['壮','壯'],['声','聲'],['壳','殼'],
+    ['壶','壺'],['处','處'],['备','備'],
+    ['复','復'],['够','夠'],['头','頭'],
+    ['夸','誇'],['夹','夾'],['夺','奪'],
+    ['奁','奩'],['奂','奐'],['奋','奮'],
+    ['奖','獎'],['妆','妝'],['妇','婦'],
+    ['妈','媽'],['妩','嫵'],['妪','嫗'],
+    ['孙','孫'],['学','學'],['宝','寶'],
+    ['实','實'],['宠','寵'],['审','審'],
+    ['宪','憲'],['宽','寬'],['宾','賓'],
+    ['将','將'],['对','對'],['寻','尋'],
+    ['导','導'],['尔','爾'],['尘','塵'],
+    ['尝','嘗'],['层','層'],['属','屬'],
+    ['岂','豈'],['岁','歲'],['岛','島'],
+    ['帜','幟'],['师','師'],['带','帶'],
+    ['帐','帳'],['帮','幫'],['帅','帥'],
+    ['归','歸'],['当','當'],['录','錄'],
+    ['径','徑'],['忆','憶'],['态','態'],
+    ['恼','惱'],['恒','恆'],['愿','願'],
+    ['戏','戲'],['战','戰'],['户','戶'],
+    ['扑','撲'],['执','執'],['扩','擴'],
+    ['扫','掃'],['扬','揚'],['扰','擾'],
+    ['抚','撫'],['抢','搶'],['护','護'],
+    ['报','報'],['担','擔'],['拟','擬'],
+    ['拢','攏'],['拥','擁'],['拨','撥'],
+    ['择','擇'],['挂','掛'],['据','據'],
+    ['无','無'],['旧','舊'],['时','時'],
+    ['书','書'],['会','會'],['杀','殺'],
+    ['杂','雜'],['权','權'],['条','條'],
+    ['来','來'],['杨','楊'],['机','機'],
+    ['梦','夢'],['欢','歡'],['欧','歐'],
+    ['歼','殲'],['残','殘'],['气','氣'],
+    ['汉','漢'],['汤','湯'],['没','沒'],
+    ['浅','淺'],['浆','漿'],['泽','澤'],
+    ['浑','渾'],['浒','滸'],['浓','濃'],
+    ['涂','塗'],['润','潤'],['渐','漸'],
+    ['渔','漁'],['温','溫'],['湾','灣'],
+    ['湿','濕'],['满','滿'],['潜','潛'],
+    ['灭','滅'],['灯','燈'],['灵','靈'],
+    ['灾','災'],['灿','燦'],['炉','爐'],
+    ['点','點'],['炼','煉'],['炽','熾'],
+    ['烂','爛'],['烛','燭'],['烟','煙'],
+    ['烦','煩'],['烧','燒'],['热','熱'],
+    ['焕','煥'],['爱','愛'],['爷','爺'],
+    ['尔','爾'],['状','狀'],['壮','壯'],
+    ['声','聲'],['壶','壺'],['处','處'],
+    ['复','復'],['头','頭'],['夹','夾'],
+    ['夺','奪'],['奋','奮'],['奖','獎'],
+    ['妆','妝'],['妇','婦'],['妈','媽'],
+    ['国','國'],['图','圖'],['园','園'],
+    ['圣','聖'],['场','場'],['坏','壞'],
+    ['块','塊'],['坚','堅'],['坝','壩'],
+    ['坟','墳'],['坠','墜'],['垦','墾'],
+    ['墙','牆'],['壮','壯'],['声','聲'],
+    ['孙','孫'],['学','學'],['宝','寶'],
+    ['实','實'],['审','審'],['宪','憲'],
+    ['宽','寬'],['宾','賓'],['将','將'],
+    ['对','對'],['寻','尋'],['导','導'],
+    ['尘','塵'],['尝','嘗'],['层','層'],
+    ['属','屬'],['岁','歲'],['师','師'],
+    ['带','帶'],['帮','幫'],['归','歸'],
+    ['当','當'],['录','錄'],['径','徑'],
+    ['忆','憶'],['态','態'],['愿','願'],
+    ['战','戰'],['扑','撲'],['执','執'],
+    ['扫','掃'],['扬','揚'],['护','護'],
+    ['报','報'],['担','擔'],['据','據'],
+    ['无','無'],['时','時'],['书','書'],
+    ['会','會'],['杀','殺'],['杂','雜'],
+    ['权','權'],['条','條'],['来','來'],
+    ['机','機'],['梦','夢'],['欢','歡'],
+    ['残','殘'],['气','氣'],['汉','漢'],
+    ['汤','湯'],['浅','淺'],['泽','澤'],
+    ['浑','渾'],['浒','滸'],['浓','濃'],
+    ['涂','塗'],['润','潤'],['渐','漸'],
+    ['渔','漁'],['温','溫'],['湾','灣'],
+    ['湿','濕'],['满','滿'],['潜','潛'],
+    ['灭','滅'],['灯','燈'],['灵','靈'],
+    ['灾','災'],['点','點'],['炼','煉'],
+    ['烂','爛'],['烛','燭'],['烟','煙'],
+    ['烧','燒'],['热','熱'],['爱','愛'],
+    ['爷','爺'],['尔','爾'],['壮','壯'],
+    ['声','聲'],['处','處'],['复','復'],
+    ['头','頭'],['夹','夾'],['夺','奪'],
+    ['奖','獎'],['妇','婦'],['国','國'],
+    ['图','圖'],['园','園'],['圣','聖'],
+    ['场','場'],['坏','壞'],['坚','堅'],
+    ['坟','墳'],['墙','牆'],['学','學'],
+    ['宝','寶'],['实','實'],['审','審'],
+    ['宪','憲'],['宾','賓'],['将','將'],
+    ['对','對'],['寻','尋'],['尘','塵'],
+    ['尝','嘗'],['层','層'],['属','屬'],
+    ['岁','歲'],['师','師'],['带','帶'],
+    ['归','歸'],['当','當'],['忆','憶'],
+    ['态','態'],['愿','願'],['战','戰'],
+    ['执','執'],['扫','掃'],['护','護'],
+    ['报','報'],['据','據'],['无','無'],
+    ['时','時'],['书','書'],['杀','殺'],
+    ['杂','雜'],['权','權'],['条','條'],
+    ['来','來'],['机','機'],['梦','夢'],
+    ['欢','歡'],['残','殘'],['气','氣'],
+    ['汉','漢'],['汤','湯'],['浅','淺'],
+    ['泽','澤'],['浑','渾'],['浒','滸'],
+    ['浓','濃'],['润','潤'],['渔','漁'],
+    ['温','溫'],['湾','灣'],['湿','濕'],
+    ['满','滿'],['潜','潛'],['灭','滅'],
+    ['灯','燈'],['灵','靈'],['点','點'],
+    ['烂','爛'],['烟','煙'],['烧','燒'],
+    ['热','熱'],['爱','愛'],['爷','爺'],
+    ['尔','爾'],['声','聲'],['处','處'],
+    ['复','復'],['头','頭'],['妇','婦'],
+    ['国','國'],['图','圖'],['园','園'],
+    ['场','場'],['坏','壞'],['坚','堅'],
+    ['坟','墳'],['墙','牆'],['学','學'],
+    ['宝','寶'],['实','實'],['审','審'],
+    ['宪','憲'],['宾','賓'],['对','對'],
+    ['寻','尋'],['尘','塵'],['尝','嘗'],
+    ['层','層'],['属','屬'],['岁','歲'],
+    ['师','師'],['带','帶'],['归','歸'],
+    ['当','當'],['忆','憶'],['态','態'],
+    ['战','戰'],['执','執'],['扫','掃'],
+    ['护','護'],['报','報'],['据','據'],
+    ['无','無'],['时','時'],['书','書'],
+    ['杀','殺'],['杂','雜'],['权','權'],
+    ['条','條'],['来','來'],['机','機'],
+    ['梦','夢'],['欢','歡'],['残','殘'],
+    ['气','氣'],['汉','漢'],['汤','湯'],
+    ['浅','淺'],['泽','澤'],['浑','渾'],
+    ['浒','滸'],['浓','濃'],['润','潤'],
+    ['渔','漁'],['温','溫'],['湾','灣'],
+    ['湿','濕'],['满','滿'],['潜','潛'],
+    ['灭','滅'],['灯','燈'],['灵','靈'],
+    ['点','點'],['烟','煙'],['烧','燒'],
+    ['热','熱'],['爱','愛'],['爷','爺'],
+    ['尔','爾'],['声','聲'],['处','處'],
+    ['复','復'],['头','頭'],['国','國'],
+    ['图','圖'],['学','學'],['宝','寶'],
+    ['实','實'],['对','對'],['尘','塵'],
+    ['师','師'],['归','歸'],['当','當'],
+    ['战','戰'],['护','護'],['报','報'],
+    ['无','無'],['书','書'],['杀','殺'],
+    ['权','權'],['来','來'],['机','機'],
+    ['汉','漢'],['润','潤'],['热','熱'],
+    ['爱','愛'],['国','國'],['图','圖'],
+    ['学','學'],['宝','寶'],['实','實'],
+    ['对','對'],['师','師'],['归','歸'],
+    ['战','戰'],['护','護'],['报','報'],
+    ['书','書'],['杀','殺'],['权','權'],
+    ['机','機'],['汉','漢'],['热','熱'],
+    ['爱','愛'],['国','國'],['学','學'],
+    ['宝','寶'],['对','對'],['师','師'],
+    ['书','書'],['爱','愛'],
+  ];
+  pairs.forEach(([s,t]) => { S2T[s]=t; T2S[t]=s; });
+}
+function toTrad(s){ return s.split('').map(c=>S2T[c]||c).join(''); }
+function toSimp(s){ return s.split('').map(c=>T2S[c]||c).join(''); }
+
+const state = { all:[], fCritic:'all', fType:'all', kw:'' };
+
+// 统一加载 + 归一化
+async function loadAll(){
+  initS2T();
+  const list = [];
+  const tasks = Object.keys(CRITICS).map(async cid => {
+    const meta = CRITICS[cid];
+    try{
+      const r = await fetch('texts/versions/' + meta.file);
+      if(!r.ok) return;
+      const d = await r.json();
+      parseCritic(cid, meta, d, list);
+    }catch(e){ console.warn('load fail', cid, e); }
+  });
+  await Promise.all(tasks);
+  state.all = list;
+  render();
+}
+
+function huiStr(n){
+  if(n==null) return '卷首';
+  if(n===0) return '引首';
+  return '第'+n+'回';
+}
+function pickVer(cid, hui){
+  const meta = CRITICS[cid];
+  // 给定回次找第一个包含该回次的版本
+  if(!window._VER_CACHE){ window._VER_CACHE={}; }
+  const vers = meta.okVer;
+  for(const vid of vers){
+    const chs = (window._VER_CACHE[vid]||[]);
+    if(!chs.length) continue;
+    if(hui==null || hui===0){
+      // 卷首，优先找存在回目0的版本
+      if(chs.some(c=>c.num===0 || c.num===1)) return vid;
+    }
+    if(chs.some(c=>c.num===hui)) return vid;
+  }
+  return vers[0];
+}
+
+function splitParagraphs(t){
+  return String(t||'').split(/[\n\r]+/).map(s=>s.trim()).filter(Boolean);
+}
+
+function add(list, cid, ver, hui, chapTitle, type, kw, text){
+  if(!text || !text.trim()) return;
+  const meta = CRITICS[cid];
+  const paras = splitParagraphs(text);
+  // 过长的整段（>200字）按段落拆成多条，便于检索精确命中
+  paras.forEach((p,i) => {
+    if(!p.trim()) return;
+    list.push({
+      cid, criticName: meta.name, color: meta.color, cls: meta.cls,
+      ver, hui, chapTitle,
+      type, keyword: kw || '',
+      text: p
+    });
+  });
+}
+
+function parseCritic(cid, meta, d, list){
+  // —— 金圣叹：vid -> {0:{preface,inline_count,...}, 1:{...}}  每个键是回次字符串
+  if(cid==='jinpi'){
+    for(const vid of ['jin70_pi','jinshengtan','jin70']){
+      const chs = d[vid];
+      if(!chs) continue;
+      for(const k of Object.keys(chs)){
+        const hui = parseInt(k);
+        const entry = chs[k];
+        if(!entry) continue;
+        const ver = vid;
+        if(entry.preface) add(list, cid, ver, hui, null, 'preface','总批·序',entry.preface);
+        if(entry.dufa) add(list, cid, ver, hui, null, 'huiping','读法',entry.dufa);
+        if(entry.houpi) add(list, cid, ver, hui, null, 'huiping','回后总评',entry.houpi);
+        if(entry.meipi){
+          if(Array.isArray(entry.meipi)) entry.meipi.forEach(m=>add(list,cid,ver,hui,null,'meipi','眉批', typeof m==='string'?m:(m.text||'')));
+          else if(typeof entry.meipi==='object'){
+            for(const pos of Object.keys(entry.meipi)){
+              const items = entry.meipi[pos];
+              (Array.isArray(items)?items:[items]).forEach(m=>add(list,cid,ver,hui,null,'meipi','眉批·'+pos, typeof m==='string'?m:(m.text||'')));
+            }
+          }
+        }
+        if(entry.inline && Array.isArray(entry.inline)){
+          entry.inline.forEach(m => add(list,cid,ver,hui,null,'meipi','夹批', typeof m==='string'?m:(m.text||'')));
+        }
+      }
+    }
+    return;
+  }
+
+  // —— 冀勤注：0/1/2.. 为卷/回分段，内部键为条目号，值为 "词——注" 字符串
+  if(cid==='jiqin'){
+    for(const hui of Object.keys(d)){
+      const h = parseInt(hui);
+      if(isNaN(h)) continue;
+      const block = d[hui];
+      const ver = meta.okVer[0]; // jiqin
+      for(const k of Object.keys(block)){
+        const txt = block[k];
+        if(!txt) continue;
+        const idx = txt.indexOf('——');
+        const kw = idx>0 && idx<30 ? txt.slice(0,idx) : '';
+        add(list, cid, ver, h, null, 'zhu', kw, txt);
+      }
+    }
+    return;
+  }
+
+  // —— 李卓吾/袁无涯：{id,name,chapters:[{chapter,title,preface_comments:[],chapter_comments:[],end_comments:[]}],art_theory:[]}
+  if(cid==='lizhuo' || cid==='yuanwy'){
+    // 艺术理论
+    (d.art_theory||[]).forEach(a => add(list,cid,meta.okVer[0],null,'艺术论','theory',a.keyword, (a.source||'')+'\n'+(a.point||'')));
+    (d.chapters||[]).forEach(ch => {
+      // chapter 形如 "引首+第一回" 或 "全书" 或 "第N回"
+      let hui = null;
+      let title = ch.title || ch.chapter || '';
+      const m = (ch.chapter||'').match(/第\s*(\d+)\s*回/);
+      if(m) hui = parseInt(m[1]);
+      else if(/引首/.test(ch.chapter||'')) hui = 0;
+      const ver = pickVer(cid,hui);
+      (ch.preface_comments||[]).forEach(c => add(list,cid,ver,hui,title,'preface',c.author?c.author+'·'+(c.source||''):null, c.text||''));
+      (ch.chapter_comments||[]).forEach(c => add(list,cid,ver,hui,title,'meipi',c.type||'批', c.text||''));
+      (ch.end_comments||[]).forEach(c => add(list,cid,ver,hui,title,'huiping','回末总评', (c.author?c.author+'：':'')+(c.text||'')));
+      (c.items||[]).forEach(it => add(list,cid,ver,hui,title,'meipi',it.k||'', it.v||''));
+    });
+    return;
+  }
+
+  // —— 钟伯敬：{pin_ren:[{name,text}], xu:[...], chapters:[{num,name,items:[{k,v}]}]}
+  if(cid==='zhongbo'){
+    (d.pin_ren||[]).forEach(p => add(list,cid,meta.okVer[0],null,'人品评','preface','评'+p.name, p.text||''));
+    if(d.xu && Array.isArray(d.xu) && d.xu.length>0 && typeof d.xu[0]==='object'){
+      d.xu.forEach(x => add(list,cid,meta.okVer[0],0,'序','preface','叙', (x.k||'')+'\n'+(x.v||'')));
+    }
+    (d.chapters||[]).forEach(ch => {
+      const ver = pickVer(cid,ch.num);
+      (ch.items||[]).forEach(it => add(list,cid,ver,ch.num,ch.name,'huiping',it.k,it.v));
+    });
+    return;
+  }
+
+  // —— 王望如：{chapters:[{chapter,vol,type,text}]}
+  if(cid==='wangping'){
+    (d.chapters||[]).forEach(ch => {
+      let hui=null;
+      const m = (ch.chapter||'').match(/第\s*(\d+)\s*回/);
+      if(m) hui = parseInt(m[1]);
+      const ver = pickVer(cid,hui);
+      add(list,cid,ver,hui,ch.vol||'', ch.type==='回末总评'?'huiping':'meipi', ch.type||'回评', ch.text||'');
+    });
+    return;
+  }
+
+  // —— 余象斗：{preface:{title,text}, bian:{title,text}, volumes:[{no,name,hui:[a,b], items:[{k,v,line}]}]}
+  if(cid==='yuxiangdou'){
+    if(d.preface) add(list,cid,meta.okVer[0],0,'卷首','preface',d.preface.title, d.preface.text||'');
+    if(d.bian) add(list,cid,meta.okVer[0],0,'卷首','preface',d.bian.title, d.bian.text||'');
+    (d.volumes||[]).forEach(v => {
+      const huiRange = v.hui||[];
+      const hui = huiRange[0]||null;
+      const ver = pickVer(cid,hui);
+      (v.items||[]).forEach(it => {
+        if(!it.v && it.text) it.v = it.text;
+        if(!it.v) return;
+        add(list,cid,ver,hui,v.name,'meipi', it.k||'上栏评', it.v||'');
+      });
+    });
+    return;
+  }
+
+  // —— 程穆衡注略：{volumes:[{no,items:[{k,v}]}]}
+  if(cid==='chengzhu'){
+    (d.volumes||[]).forEach(v => {
+      const hui = v.no; // 卷次，约等于回次
+      const ver = pickVer(cid,hui);
+      (v.items||[]).forEach(it => add(list,cid,ver,hui,'卷'+v.no,'zhu',it.k,it.v));
+    });
+    return;
+  }
+
+  // —— 燕南尚生：{xu:{title,...}, huowen:{title,excerpts:[],note}, shiming:[{name,text}], chapters:[]}
+  if(cid==='yannanshang'){
+    const ver = meta.okVer[0];
+    if(d.xu) add(list,cid,ver,0,'卷首','preface',d.xu.title, d.xu.text||'');
+    if(d.huowen){
+      const t = d.huowen;
+      const head = '【'+t.title+'】' + (t.status?'（'+t.status+'）':'') + (t.note?'\n'+t.note:'');
+      add(list,cid,ver,0,'卷首','preface',t.title, head);
+      (t.excerpts||[]).forEach(e => add(list,cid,ver,0,'卷首','preface','或问·存世引文', (e.src?e.src+'\n':'')+(e.q||'')+(e.a?'\n'+e.a:'')));
+    }
+    (d.shiming||[]).forEach(s => add(list,cid,ver,0,'卷首','theory','释名·'+s.name, s.text||''));
+    (d.chapters||[]).forEach(ch => add(list,cid,ver,ch.num||0,ch.title||'','meipi','逐回评', ch.text||''));
+    return;
+  }
+}
+
+// 预加载版本章目表（为了 pickVer）
+async function loadVerChapters(){
+  try{
+    const r = await fetch('texts/versions/versions_index.json');
+    const idx = await r.json();
+    const cache = window._VER_CACHE = {};
+    const tasks = (idx.versions||[]).map(async v => {
+      try{
+        const rr = await fetch('texts/versions/'+v.id+'/chapters.json');
+        const d = await rr.json();
+        cache[v.id] = Array.isArray(d)?d:(d.chapters||[]);
+      }catch(e){}
+    });
+    await Promise.all(tasks);
+  }catch(e){ console.warn(e); }
+}
+
+// —— 检索渲染
+function highlight(text, kw){
+  if(!kw) return escapeHtml(text);
+  let out = escapeHtml(text);
+  // 简体和繁体关键词都要高亮
+  const kws = kw.split(/\s+/).filter(Boolean);
+  kws.forEach(k => {
+    [toTrad(k), toSimp(k), k].forEach(kk => {
+      if(!kk) return;
+      const re = new RegExp(escapeReg(kk), 'gi');
+      out = out.replace(re, m => `<span class="hl">${m}</span>`);
+    });
+  });
+  return out;
+}
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function escapeReg(s){ return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+function match(text, kw){
+  if(!kw) return true;
+  const tt = text + toTrad(text) + toSimp(text);
+  const kws = kw.split(/\s+/).filter(Boolean);
+  return kws.every(k => tt.toLowerCase().includes(k.toLowerCase()) || tt.toLowerCase().includes(toTrad(k).toLowerCase()));
+}
+
+function render(){
+  const list = state.all.filter(it => {
+    if(state.fCritic!=='all' && it.cid!==state.fCritic) return false;
+    if(state.fType!=='all' && it.type!==state.fType) return false;
+    if(state.kw && !match(it.text+(it.keyword||'')+(it.chapTitle||'')+(it.criticName||''), state.kw)) return false;
+    return true;
+  });
+
+  document.getElementById('totalNum').textContent = state.all.length;
+  document.getElementById('hitNum').textContent = list.length;
+  document.getElementById('tipBar').textContent = state.kw ? `关键字「${state.kw}」` : state.fCritic==='all' && state.fType==='all' ? '（显示全部批语，可输入关键字筛选）' : '（按筛选条件展示）';
+
+  const box = document.getElementById('resultList');
+  if(!list.length){
+    box.innerHTML = `<div class="empty"><div class="big">無</div>没有命中的批语，请换一个关键字或调整筛选条件</div>`;
+    return;
+  }
+  // 最多显示 300 条
+  const show = list.slice(0, 300);
+  box.innerHTML = show.map(it => {
+    const chapLabel = it.chapTitle || (it.hui!=null?huiStr(it.hui):'卷首');
+    const url = `read.html?vid=${it.ver}&ch=${it.hui==null?0:it.hui}&cmt=${it.cid}&lang=jian`;
+    return `<div class="res-card ${it.cls||''}" data-url="${url}" style="border-left-color:${it.color}">
+      <div class="res-head">
+        <span class="res-critic" style="background:${it.color}">${it.criticName}</span>
+        <span class="res-chapter">${escapeHtml(chapLabel)}</span>
+        <span class="res-type">${escapeHtml(it.keyword||it.type||'批语')}</span>
+        <span class="res-ver">${it.ver}</span>
+      </div>
+      <div class="res-text">${highlight(it.text, state.kw)}</div>
+      <span class="res-enter">→</span>
+    </div>`;
+  }).join('') + (list.length>300 ? `<div class="footnote" style="margin-top:8px">仅显示前 300 条结果（共 ${list.length} 条命中），请增加关键字以缩小范围。</div>`:'');
+
+  box.querySelectorAll('.res-card').forEach(el => {
+    el.addEventListener('click', () => { location.href = el.dataset.url; });
+  });
+}
+
+function bindFilters(){
+  document.querySelectorAll('#filterRow .chip, #typeRow .chip').forEach(ch => {
+    ch.addEventListener('click', () => {
+      const f = ch.dataset.f, v = ch.dataset.v;
+      document.querySelectorAll(`.chip[data-f="${f}"]`).forEach(c => c.classList.remove('on'));
+      ch.classList.add('on');
+      if(f==='critic') state.fCritic = v;
+      if(f==='type') state.fType = v;
+      render();
+    });
+  });
+  const input = document.getElementById('kwInput');
+  const btn = document.getElementById('kwBtn');
+  const go = () => { state.kw = input.value.trim(); render(); };
+  btn.addEventListener('click', go);
+  input.addEventListener('keydown', e => { if(e.key==='Enter') go(); });
+  input.addEventListener('input', () => {
+    clearTimeout(input._t);
+    input._t = setTimeout(go, 180);
+  });
+}
+
+// 高亮激活的chip颜色
+function colorChips(){
+  document.querySelectorAll('.chip[data-color]').forEach(c=>{
+    c.addEventListener('mouseenter',()=>{ if(!c.classList.contains('on')) c.style.borderColor=c.dataset.color; });
+    c.addEventListener('mouseleave',()=>{ if(!c.classList.contains('on')) c.style.borderColor=''; });
+  });
+}
+
+(async () => {
+  bindFilters();
+  colorChips();
+  await loadVerChapters();
+  await loadAll();
+})();
+</script>
+</body>
+</html>

@@ -11,10 +11,19 @@
 .kg-header{ text-align:center; padding:20px 0 10px; }
 .kg-header h1{ font-family:var(--font-serif); font-size:36px; color:var(--vermilion-deep); letter-spacing:4px; }
 .kg-header p{ color:var(--ink-muted); font-family:var(--font-serif); font-size:14px; margin-top:6px; }
-.kg-controls{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin:16px 0; }
+.kg-controls{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; align-items:center; margin:16px 0; }
 .kg-controls button{ padding:6px 14px; border:1px solid var(--border); background:#fff; border-radius:20px; cursor:pointer; font-family:var(--font-serif); font-size:13px; transition:.2s; }
 .kg-controls button:hover{ background:var(--vermilion-deep); color:#fff; border-color:var(--vermilion-deep); }
 .kg-controls button.active{ background:var(--vermilion); color:#fff; border-color:var(--vermilion); }
+.kg-search{ display:flex; align-items:center; gap:0; margin-left:8px; }
+.kg-search input{ padding:6px 12px; font-size:13px; border:1px solid var(--border); border-right:none; border-radius:14px 0 0 14px; background:var(--paper); font-family:var(--font-serif); width:180px; outline:none; color:var(--ink); }
+.kg-search input:focus{ border-color:var(--vermilion); }
+.kg-search button{ border-radius:0 14px 14px 0; padding:6px 12px; font-size:12px; letter-spacing:1px; }
+.kg-rel-filter{ display:flex; gap:6px; flex-wrap:wrap; justify-content:center; margin:4px 0 14px; padding:10px; background:#fffdf7; border:1px dashed var(--border); border-radius:8px; }
+.kg-rel-filter .rlabel{ font-family:var(--font-serif); font-size:12px; color:var(--ink-muted); letter-spacing:2px; margin-right:4px; }
+.kg-rel-filter .rchip{ padding:3px 10px; font-size:11px; border:1px solid var(--border); background:#fff; color:var(--ink-light); border-radius:10px; cursor:pointer; font-family:var(--font-serif); transition:.2s; }
+.kg-rel-filter .rchip:hover{ border-color:var(--vermilion); color:var(--vermilion-deep); }
+.kg-rel-filter .rchip.on{ background:var(--vermilion-deep); color:#fff; border-color:var(--vermilion-deep); }
 .kg-stats{ display:flex; justify-content:center; gap:24px; flex-wrap:wrap; margin-bottom:16px; }
 .stat-item{ text-align:center; padding:10px 18px; background:#fffdf7; border:1px solid var(--border); border-radius:8px; min-width:90px; }
 .stat-item .num{ font-family:var(--font-serif); font-size:24px; color:var(--vermilion-deep); font-weight:700; }
@@ -68,6 +77,16 @@
     <button data-filter="place">地理空间</button>
     <button data-filter="event">事件网络</button>
     <button data-filter="core">核心宋江圈</button>
+    <div class="kg-search">
+      <input id="kgSearch" type="text" placeholder="搜索人物/地点/版本…" title="输入关键字定位节点，回车或点击检索">
+      <button id="kgSearchBtn">🔍</button>
+    </div>
+    <button id="kgClearSel" title="取消选中，恢复全图">重置</button>
+  </div>
+
+  <div class="kg-rel-filter" id="kgRelFilter">
+    <span class="rlabel">关系类型</span>
+    <span class="rchip on" data-rel="all">全部</span>
   </div>
 
   <div class="legend-bar">
@@ -95,7 +114,8 @@
 </div>
 
 <script>
-let KG=null, chart=null, currentFilter='all';
+let KG=null, chart=null, currentFilter='all', currentRel='all', selectedNode=null;
+let CACHE_NODES=[], CACHE_LINKS=[], CACHE_CATS=[], CAT_MAP={}, CAT_COLOR={}, R=x=>x;
 
 Promise.all([
   fetch('data/kg_abox.json').then(r=>r.json()),
@@ -110,6 +130,7 @@ Promise.all([
   renderStats();
   initChart();
   buildGraph('all');
+  bindSearchAndReset();
 }).catch(e=>console.error(e));
 
 function renderStats(){
@@ -135,7 +156,12 @@ function initChart(){
   if(!dom) return;
   chart = echarts.init(dom);
   chart.on('click', p=>{
-    if(p.dataType==='node') showNode(p.data.id, p.data.cat);
+    if(p.dataType==='node') selectNode(p.data.id);
+    else if(p.dataType===undefined) clearSelection(); // 点击空白处
+  });
+  // 点击非节点处（zr level）取消选中
+  chart.getZr().on('click', (e)=>{
+    if(!e.target) clearSelection();
   });
   window.addEventListener('resize',()=>{ if(chart) chart.resize(); });
 }
@@ -151,18 +177,18 @@ function buildGraph(filter){
   }
 
   // 颜色分类
-  const catMap = {
+  CAT_MAP = {
     hero:'梁山好汉', heroCore:'核心人物', court:'朝廷/反派',
     event:'事件', place:'地点', version:'版本',
     scholar:'学者', work:'著作', derivative:'衍生', org:'组织'
   };
-  const catColor = {
+  CAT_COLOR = {
     hero:'#C4403A', heroCore:'#8B0000', court:'#555',
     event:'#B8860B', place:'#6B8E4E', version:'#8B4513',
     scholar:'#4A6B8A', work:'#6B4423', derivative:'#8B5A8C', org:'#556B2F'
   };
 
-  // id → 名称 解析器：本体论关系端点混用 id 与名称，统一解析为「节点名称」，否则边会被静默丢弃
+  // id → 名称 解析器
   const RESOLVE = {};
   function reg(list, idKey, nameKey){
     (list||[]).forEach(x=>{ if(x && x[idKey]!=null && x[nameKey]!=null) RESOLVE[String(x[idKey])] = String(x[nameKey]); });
@@ -173,7 +199,7 @@ function buildGraph(filter){
   reg(KG.works_aca,'id','title');
   reg(window.EVENTS,'id','name'); reg(window.EVENTS,'id','title');
   reg(window.PLACES,'id','name');
-  const R = v => (v!=null && RESOLVE[String(v)]!==undefined) ? RESOLVE[String(v)] : v;
+  R = v => (v!=null && RESOLVE[String(v)]!==undefined) ? RESOLVE[String(v)] : v;
 
   const coreHeroes = new Set(['宋江','卢俊义','吴用','公孙胜','林冲','鲁智深','武松','李逵','花荣','杨志','燕青','柴进','高俅','蔡京','戴宗','张顺','扈三娘','晁盖']);
 
@@ -191,7 +217,7 @@ function buildGraph(filter){
       if(!nodeMap[rf] || !nodeMap[rt]) return;
       const fromCat = nodeMap[rf].category, toCat = nodeMap[rt].category;
       if((fromCat==='hero'||fromCat==='heroCore'||fromCat==='court')&&(toCat==='hero'||toCat==='heroCore'||toCat==='court')){
-        links.push({source:rf,target:rt,label:{show:false},value:r.type,lineStyle:{width:r.type==='结拜为兄弟'?2:1,color:catColor[fromCat]||'#888',opacity:.5}});
+        links.push({source:rf,target:rt,label:{show:false},value:r.type,lineStyle:{width:r.type==='结拜为兄弟'?2:1,color:CAT_COLOR[fromCat]||'#888',opacity:.5}});
       }
     });
   }
@@ -279,39 +305,138 @@ function buildGraph(filter){
 
   // 构建 categories 列表（按当前出现的 cat）
   const usedCats = new Set(nodes.map(n=>n.category));
-  const categories = Object.keys(catMap).filter(c=>usedCats.has(c)).map(c=>({name:catMap[c],itemStyle:{color:catColor[c]}}));
-  nodes.forEach(n=>{ n.category = categories.findIndex(c=>c.name===catMap[n.category]); });
+  const categories = Object.keys(CAT_MAP).filter(c=>usedCats.has(c)).map(c=>({name:CAT_MAP[c],itemStyle:{color:CAT_COLOR[c]}}));
+  nodes.forEach(n=>{ n.category = categories.findIndex(c=>c.name===CAT_MAP[n.category]); });
 
   // 过滤孤立节点（在特定视图下）
   const connected = new Set();
   links.forEach(l=>{connected.add(l.source);connected.add(l.target);});
   const shownNodes = nodes.filter(n=>connected.has(n.id) || n.symbolSize>=24);
 
-  const option = {
+  // 缓存全量数据，供关系筛选/搜索/高亮使用
+  CACHE_NODES = shownNodes.map(n=>({...n}));
+  CACHE_LINKS = links.map(l=>({...l}));
+  CACHE_CATS = categories;
+  buildRelFilter(links);
+  applyRelFilter();
+}
+
+// 动态构建关系类型筛选栏
+function buildRelFilter(links){
+  const box = document.getElementById('kgRelFilter');
+  const types = new Set();
+  links.forEach(l=>{ if(l.value) types.add(l.value); });
+  const sorted = [...types].sort();
+  const existing = new Set([...box.querySelectorAll('.rchip[data-rel!="all"]')].map(c=>c.dataset.rel));
+  if(sorted.length===existing.size && sorted.every(t=>existing.has(t))) return;
+  box.innerHTML = `<span class="rlabel">关系类型</span><span class="rchip on" data-rel="all">全部</span>` +
+    sorted.map(t=>`<span class="rchip" data-rel="${escAttr(t)}">${escHtml(t)}</span>`).join('');
+  box.querySelectorAll('.rchip').forEach(ch=>{
+    ch.addEventListener('click',()=>{
+      box.querySelectorAll('.rchip').forEach(c=>c.classList.remove('on'));
+      ch.classList.add('on');
+      currentRel = ch.dataset.rel;
+      applyRelFilter();
+    });
+  });
+  currentRel = 'all';
+}
+function escHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function escAttr(s){return escHtml(s);}
+
+// 按关系类型 + 选中节点 应用过滤/高亮
+function applyRelFilter(){
+  if(!chart) return;
+  const rel = currentRel;
+  const sel = selectedNode;
+  const nodes = CACHE_NODES.map(n=>({...n, itemStyle:undefined, label:{...(n.label||{}), color:undefined, fontWeight:undefined}, opacity:1}));
+  let links = CACHE_LINKS.filter(l=>rel==='all' || l.value===rel).map(l=>({...l, label:{show:false, formatter:()=>l.value, fontSize:10, fontFamily:'serif', color:'#8b1a1a'}, emphasis:{focus:'none'}}));
+
+  // 邻域收集
+  const neigh = new Set();
+  if(sel){
+    neigh.add(sel);
+    links.forEach(l=>{
+      if(l.source===sel) neigh.add(l.target);
+      if(l.target===sel) neigh.add(l.source);
+    });
+  }
+
+  if(sel){
+    nodes.forEach(n=>{
+      if(!neigh.has(n.id)){ n.opacity = 0.12; n.label.color = 'rgba(0,0,0,0.18)'; }
+      if(n.id===sel){ n.itemStyle={borderColor:'#8b1a1a',borderWidth:4,shadowBlur:20,shadowColor:'rgba(139,26,26,.55)'}; n.symbolSize = Math.max(n.symbolSize+6, 28); n.label.fontSize = 14; n.label.color = '#8b1a1a'; n.label.fontWeight='bold'; }
+    });
+    links = links.filter(l=>neigh.has(l.source) && neigh.has(l.target));
+    links.forEach(l=>{
+      if(l.source===sel || l.target===sel){
+        l.lineStyle = {...(l.lineStyle||{}), width:(l.lineStyle&&l.lineStyle.width?l.lineStyle.width:1)+1.5, opacity:1, color:'#8b1a1a'};
+        l.label.show = true;
+      } else {
+        l.lineStyle = {...(l.lineStyle||{}), opacity:0.15};
+      }
+    });
+  }
+
+  chart.setOption({
     tooltip:{
       formatter:p=>{
-        if(p.dataType==='node') return `<b>${p.data.id}</b><br/>类别：${p.data.name}${p.data.desc?('<br/>'+p.data.desc):''}`;
-        if(p.dataType==='edge') return `${p.data.value||'关联'}`;
+        if(p.dataType==='node'){
+          const h = (window.HEROES||[]).find(x=>x.name===p.data.id);
+          const extra = h? `<br/><span style="color:var(--ink-muted);font-size:12px">绰号：${h.nickname||'—'} · 排行${h.rank||'—'} · ${h.star||''}</span>`:'';
+          return `<b style="font-family:var(--font-serif);font-size:14px;color:#8b1a1a">${p.data.id}</b>${extra}${p.data.desc?('<br/>'+p.data.desc):''}`;
+        }
+        if(p.dataType==='edge') return `<span style="color:#8b1a1a;font-family:var(--font-serif)">${p.data.value||'关联'}</span>`;
         return '';
       }
     },
-    legend:[{data:categories.map(c=>c.name),top:10,textStyle:{fontFamily:'serif',fontSize:12}}],
+    legend:[{data:CACHE_CATS.map(c=>c.name),top:10,textStyle:{fontFamily:'serif',fontSize:12}}],
     series:[{
-      type:'graph',
-      layout:'force',
-      roam:true,
-      draggable:true,
+      type:'graph', layout:'force', roam:true, draggable:true,
       label:{show:true,position:'right',formatter:p=>p.data.name},
-      force:{repulsion: filter==='all'?180:300, edgeLength:[60,160], gravity:0.08, friction:0.3},
-      categories,
-      data:shownNodes,
-      links,
+      force:{repulsion: currentFilter==='all'?180:300, edgeLength:[60,160], gravity:0.08, friction:0.3},
+      categories:CACHE_CATS,
+      data:nodes, links,
       lineStyle:{curveness:0.1},
       emphasis:{focus:'adjacency',lineStyle:{width:3}},
-      scaleLimit:{min:0.2,max:4}
+      scaleLimit:{min:0.2,max:4},
+      animationDurationUpdate:400,
+      animationEasingUpdate:'cubicOut'
     }]
-  };
-  chart.setOption(option, true);
+  }, true);
+}
+
+function selectNode(id){
+  selectedNode = id;
+  showNode(id);
+  applyRelFilter();
+}
+function clearSelection(){
+  selectedNode = null;
+  document.getElementById('infoPanel').classList.remove('open');
+  applyRelFilter();
+}
+
+// 搜索定位 & 取消选中 & 空白取消
+function bindSearchAndReset(){
+  const input = document.getElementById('kgSearch');
+  const btn = document.getElementById('kgSearchBtn');
+  const clr = document.getElementById('kgClearSel');
+  function go(){
+    const kw = input.value.trim();
+    if(!kw){ clearSelection(); return; }
+    const hit = CACHE_NODES.find(n=>n.id===kw) || CACHE_NODES.find(n=>n.id.includes(kw));
+    if(hit){
+      selectNode(hit.id);
+      const idx = CACHE_NODES.findIndex(n=>n.id===hit.id);
+      if(idx>=0) chart.dispatchAction({type:'focusNodeAdjacency', seriesIndex:0, dataIndex:idx});
+    } else {
+      alert('未找到「'+kw+'」节点');
+    }
+  }
+  btn.addEventListener('click', go);
+  input.addEventListener('keydown', e=>{ if(e.key==='Enter') go(); });
+  clr.addEventListener('click', ()=>{ input.value=''; clearSelection(); });
 }
 
 function showNode(id, catIdx){

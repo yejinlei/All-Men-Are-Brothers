@@ -479,6 +479,9 @@ function renderPlaces() {
 
   pts.innerHTML = lines + items;
 
+  /* ========== 时间轴交互（行程点亮） ========== */
+  bindJourney(nodes);
+
   list.innerHTML = DATA.places.places.map(p=>`
     <div class="place-item" data-name="${p.name}">
       <div class="pn">${p.name}</div>
@@ -490,6 +493,7 @@ function renderPlaces() {
   const dots = pts.querySelectorAll('.place-dot');
   const items2 = list.querySelectorAll('.place-item');
   function highlight(name){
+    const curHui = window.__journeyHui ?? 120;
     dots.forEach(g=>{
       const c = g.querySelector('circle');
       const t = g.querySelector('text');
@@ -959,3 +963,127 @@ async function applyExtraComments(chap){
 
 /* ---------- 启动 ---------- */
 document.addEventListener('DOMContentLoaded', boot);
+
+/* ========== 空间地理·行程时间轴 ========== */
+function parseHui(huiStr){
+  if(!huiStr) return [1,120];
+  const m = String(huiStr).match(/(\d+)\s*[—\-~到至]\s*(\d+)/);
+  if(m) return [parseInt(m[1]), parseInt(m[2])];
+  const n = parseInt(huiStr);
+  if(!isNaN(n)) return [n,n];
+  return [1,120];
+}
+const PHASES = [
+  {name:'逼反豪侠', from:1,  to:43,  color:'#c0392b'},
+  {name:'聚义排座', from:44, to:71,  color:'#b8860b'},
+  {name:'招安',    from:72, to:82,  color:'#4a6b8a'},
+  {name:'征辽',    from:83, to:90,  color:'#5c4b6b'},
+  {name:'征田虎',  from:91, to:100, color:'#4f6b3a'},
+  {name:'征王庆',  from:101,to:110, color:'#7b4a2e'},
+  {name:'征方腊',  from:111,to:119, color:'#8b1a1a'},
+  {name:'魂散',    from:120,to:120, color:'#1a3a5c'}
+];
+function getPhase(hui){
+  if(hui<=0) return {name:'引首', from:0, to:0, color:'#6b6b6b'};
+  return PHASES.find(p=>hui>=p.from&&hui<=p.to) || PHASES[PHASES.length-1];
+}
+function bindJourney(nodes){
+  const slider = document.getElementById('journeySlider');
+  const play = document.getElementById('journeyPlay');
+  const reset = document.getElementById('journeyReset');
+  const phaseLabel = document.getElementById('phaseLabel');
+  const huiLabel = document.getElementById('huiLabel');
+  const ticks = document.getElementById('phaseTicks');
+  const layer = document.getElementById('journeyLayer');
+  if(!slider) return;
+  // 刻度
+  ticks.innerHTML = ['引首'].concat(PHASES.map(p=>p.name)).map((n,i)=>`<span data-hui="${i===0?0:PHASES[i-1].from}">${n}</span>`).join('');
+  ticks.querySelectorAll('span').forEach(s=>{
+    s.addEventListener('click',()=>{ slider.value = s.dataset.hui; update(parseInt(s.dataset.hui)); });
+  });
+  // 给节点打上起止回次
+  const name2hui = {};
+  DATA.places.places.forEach(p=>{
+    name2hui[p.name] = parseHui(p.hui);
+  });
+  // 核心主路线（按叙事顺序，用于画足迹线）
+  const JOURNEY_ORDER = [
+    '东京开封府','渭州','五台山','桃花村','大相国寺','野猪林','沧州','柴家庄',
+    '梁山泊','郓城县','黄泥冈','景阳冈','阳谷县','孟州','十字坡','快活林','鸳鸯楼',
+    '清风寨','对影山','江州','浔阳楼','揭阳岭/镇','祝家庄','扈家庄','高唐州',
+    '曾头市','大名府','芒砀山','华州','少华山','蓟州','登州','东平府','东昌府',
+    '李师师府','陈桥驿','辽国','蓟州','檀州',
+    '河北田虎','昭德城','汾阳','盖州','襄垣','南丰','纪山','山南州','清江','龙门关','润州',
+    '淮西王庆','楚州','江南方腊','润州','常州','苏州','杭州','六和寺','睦州 / 清溪','乌龙岭','蓼儿洼'
+  ];
+  function huiLabelTxt(h){
+    if(h===0) return '引首';
+    if(h>=120) return '引首—第一百二十回';
+    return '引首—第'+h+'回';
+  }
+  function update(hui){
+    window.__journeyHui = hui;
+    const ph = getPhase(hui);
+    phaseLabel.textContent = ph.name;
+    phaseLabel.style.background = ph.color+'22';
+    phaseLabel.style.color = ph.color;
+    huiLabel.textContent = huiLabelTxt(hui);
+    slider.value = hui;
+    const layerSvg = document.getElementById('placePoints');
+    if(!layerSvg) return;
+    // 节点状态
+    let currentName=null;
+    nodes.forEach(n=>{
+      const [s,e] = name2hui[n.name]||[1,120];
+      const g = layerSvg.querySelector(`.place-dot[data-name="${cssEscape(n.name)}"]`);
+      if(!g) return;
+      g.classList.remove('dim','visited','current');
+      if(hui<s){
+        g.classList.add('dim');
+      } else if(hui>=s && hui<=e){
+        g.classList.add('current');
+        currentName = n.name;
+      } else {
+        g.classList.add('visited');
+      }
+    });
+    // 足迹线：按 JOURNEY_ORDER 中 s<=hui 的点顺序连线
+    const activeStops = JOURNEY_ORDER.map(nm=>{
+      const n = nodes.find(x=>x.name===nm);
+      if(!n) return null;
+      const [s] = name2hui[nm]||[1,120];
+      if(s>hui) return null;
+      return n;
+    }).filter(Boolean);
+    // 去重相邻
+    const stops = [];
+    activeStops.forEach(n=>{ if(!stops.length || stops[stops.length-1].name!==n.name) stops.push(n); });
+    let path='';
+    for(let i=1;i<stops.length;i++){
+      const a=stops[i-1], b=stops[i];
+      const mx=(a.x+b.x)/2, my=(a.y+b.y)/2-8;
+      path += `<path class="journey-path" d="M${a.x},${a.y} Q${mx},${my} ${b.x},${b.y}"/>`;
+    }
+    if(layer) layer.innerHTML = path;
+  }
+  function cssEscape(s){return CSS&&CSS.escape?CSS.escape(s):s.replace(/[^\w\u4e00-\u9fa5-]/g,'\\$&');}
+  let playing=false, timer=null;
+  play.addEventListener('click',()=>{
+    if(playing){
+      playing=false; clearInterval(timer); play.textContent='▶ 播放'; return;
+    }
+    if(parseInt(slider.value)>=120){ slider.value=0; }
+    playing=true; play.textContent='❚❚ 暂停';
+    timer = setInterval(()=>{
+      let v = parseInt(slider.value)+1;
+      if(v>120){ clearInterval(timer); playing=false; play.textContent='▶ 播放'; return; }
+      update(v);
+    }, 180);
+  });
+  reset.addEventListener('click',()=>{
+    playing=false; clearInterval(timer); play.textContent='▶ 播放';
+    update(120);
+  });
+  slider.addEventListener('input',()=>update(parseInt(slider.value)));
+  update(120);
+}
