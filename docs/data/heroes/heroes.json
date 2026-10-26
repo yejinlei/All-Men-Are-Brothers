@@ -23,7 +23,7 @@
       "color": "#9a1f1f",
       "desc": "表字公明，面黑身矮，仗义疏财，号及时雨，梁山起义的精神领袖与政治核心。主招安路线，征方腊后封武德大夫、楚州安抚使，终被朝廷毒杀。",
       "image": "img/heroes/songjiang.jpg",
-      "portrait": "../img/heroes/songjiang.jpg",
+      "portrait": "img/heroes/songjiang.jpg",
       "img": "img/heroes/songjiang.jpg"
     },
     {
@@ -43,7 +43,7 @@
       "color": "#c4a35a",
       "desc": "目炯双瞳，眉分八字，身躯九尺如银。河北三绝，棍棒天下无对。被吴用题反诗计赚上山，为梁山第二把交椅。",
       "image": "img/heroes/lujunyi.jpg",
-      "portrait": "../img/heroes/lujunyi.jpg",
+      "portrait": "img/heroes/lujunyi.jpg",
       "img": "img/heroes/lujunyi.jpg"
     },
     {
@@ -63,7 +63,7 @@
       "color": "#5c7f9a",
       "desc": "表字学究，道号加亮先生。智赛诸葛，机深谋远。平生机巧心灵，六韬三略究来精。为梁山核心军师，一生追随宋江。",
       "image": "img/heroes/wuyong.jpg",
-      "portrait": "../img/heroes/wuyong.jpg",
+      "portrait": "img/heroes/wuyong.jpg",
       "img": "img/heroes/wuyong.jpg"
     },
     {
@@ -102,7 +102,7 @@
       "color": "#b03030",
       "desc": "生得规模与祖上云长相似，使一口青龙偃月刀，人称大刀关胜。原是浦东巡检，征剿梁山时被擒归降，为五虎将之首。",
       "image": "img/heroes/guansheng.jpg",
-      "portrait": "../img/heroes/guansheng.jpg",
+      "portrait": "img/heroes/guansheng.jpg",
       "img": "img/heroes/guansheng.jpg"
     },
     {
@@ -122,7 +122,7 @@
       "color": "#305060",
       "desc": "生得豹头环眼、燕颔虎须，人称小张飞。被高俅父子陷害，误入白虎堂、刺配沧州、风雪山神庙，雪夜上梁山，梁山元老功勋。",
       "image": "img/heroes/linchong.jpg",
-      "portrait": "../img/heroes/linchong.jpg",
+      "portrait": "img/heroes/linchong.jpg",
       "img": "img/heroes/linchong.jpg"
     },
     {
@@ -180,7 +180,7 @@
       "color": "#c82030",
       "desc": "生得齿白唇红，眉清目秀，善骑硬弓，箭无虚发，人称小李广。原清风寨副知寨，与宋江有救命之恩，神箭天下第一。",
       "image": "img/heroes/huarong.jpg",
-      "portrait": "../img/heroes/huarong.jpg",
+      "portrait": "img/heroes/huarong.jpg",
       "img": "img/heroes/huarong.jpg"
     },
     {
@@ -257,7 +257,7 @@
       "color": "#303060",
       "desc": "原名鲁达，出家法名智深，因身上刺有花绣，人唤花和尚。拳打镇关西、大闹五台山、倒拔垂杨柳、大闹野猪林，梁山第一豪杰。",
       "image": "img/heroes/luzhishen.jpg",
-      "portrait": "../img/heroes/luzhishen.jpg",
+      "portrait": "img/heroes/luzhishen.jpg",
       "img": "img/heroes/luzhishen.jpg"
     },
     {
@@ -277,7 +277,7 @@
       "color": "#404060",
       "desc": "身躯凛凛，相貌堂堂，一双眼光射寒星，两弯眉浑如刷漆。景阳冈打虎、斗杀西门庆、醉打蒋门神、大闹飞云浦、血溅鸳鸯楼，水浒第一英雄。",
       "image": "img/heroes/wusong.jpg",
-      "portrait": "../img/heroes/wusong.jpg",
+      "portrait": "img/heroes/wusong.jpg",
       "img": "img/heroes/wusong.jpg"
     },
     {
@@ -335,7 +335,7 @@
       "color": "#405050",
       "desc": "面皮上老大一搭青记，腮边微露些少赤须。三代将门之后，五侯杨令公之孙。失陷花石纲、卖刀杀牛二、押送生辰纲，一生失意。",
       "image": "img/heroes/yangzhi.jpg",
-      "portrait": "../img/heroes/yangzhi.jpg",
+      "portrait": "img/heroes/yangzhi.jpg",
       "img": "img/heroes/yangzhi.jpg"
     },
     {
@@ -431,7 +431,7 @@
       "color": "#202020",
       "desc": "黑熊般一身粗肉，铁牛似遍体顽皮。不搽煤墨浑身黑，似着朱砂两眼红。性烈如火，杀人如麻，是《水浒》第一莽汉，宋江最忠实战友。",
       "image": "img/heroes/likui.jpg",
-      "portrait": "../img/heroes/likui.jpg",
+      "portrait": "img/heroes/likui.jpg",
       "img": "img/heroes/likui.jpg"
     },
     {
@@ -698,7 +698,7 @@
       "color": "#c06060",
       "desc": "六尺以上身材，二十四五年纪，三牙掩口细髯，十分腰细膀阔。百伶百俐，吹弹歌舞、拆白道字、顶真续麻，无有不能；亦且一身本事无对，弩箭百发百中，相扑天下第一。水浒中最完美的人物形象，功成身退第一人。",
       "image": "img/heroes/yanqing.jpg",
-      "portrait": "../img/heroes/yanqing.jpg",
+      "portrait": "img/heroes/yanqing.jpg",
       "img": "img/heroes/yanqing.jpg"
     },
     {

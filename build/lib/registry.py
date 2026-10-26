@@ -162,6 +162,27 @@ class Registry:
                 if name.endswith(("_comments.json", "_notes.json")) and name not in known:
                     warns.append(f"批注数据文件 {name} 存在但未在注册表中登记")
 
+        # --- 数据文件路径体检 ---
+        # json 里若出现 "../xxx" 这类越界相对路径，浏览器会把它解析到站点根之外，
+        # 表现为图片/资源静默 404（曾发生：头像 portrait 字段写成 ../img/heroes/x.jpg）。
+        import re as _re
+        data_root = os.path.join(self.docs, "data")
+        for dirpath, _dirs, files in os.walk(data_root):
+            for fn in files:
+                if not fn.endswith(".json"):
+                    continue
+                fp = os.path.join(dirpath, fn)
+                try:
+                    with open(fp, encoding="utf-8") as f:
+                        txt = f.read()
+                except Exception:  # noqa: BLE001
+                    continue
+                hits = _re.findall(r'"((?:\.\./)+[^"]*)"', txt)
+                if hits:
+                    rel = os.path.relpath(fp, self.docs)
+                    warns.append(f"数据文件 {rel} 含越界相对路径 {len(hits)} 处"
+                                 f"（如 {hits[0]}）→ 会请求到站点根之外而 404，请改为站内相对路径")
+
         stats = {
             "versions": len(vids),
             "commentaries": len(cids),
