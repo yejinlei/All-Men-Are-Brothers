@@ -212,7 +212,7 @@ body.cmt-only .cmt-block{margin:18px 0;}
 const sp = new URLSearchParams(location.search);
 const state = {
   vid: sp.get('vid') || 'v70',
-  ch:  parseInt(sp.get('ch') || '1', 10),
+  ch:  parseInt(sp.get('ch') || '0', 10),
   lang: sp.get('lang') || localStorage.getItem('sh_lang') || 'fan',
   cmt:  sp.get('cmt')  || localStorage.getItem('sh_cmt')  || 'jinpi',
   onlyCmt: sp.get('only')==='1' || localStorage.getItem('sh_only')==='1',
