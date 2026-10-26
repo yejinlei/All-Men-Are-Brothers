@@ -17,6 +17,7 @@
 | 人物网络 | **326 条人-人关系 / 183 人**（结拜/亲属/师徒/敌对/上下级） |
 | 结构化数据 | 好汉 108、地点 47、评点家 13、主题 15、派系/职官/兵器/事件/衍生作品 |
 | 在线页面 | index / read / kg / themes / search / diff（**6 页**） |
+| 可扩充底座 | 版本/批注元数据集中到 `docs/data/registry.json`（**单一可信源**），阅读器 / 异文对照 / 批注检索 / 首页四页运行时读取；`build/register_version.py --check / --sync-index` 负责体检与语料索引同步 —— 新增一个版本只改注册表一处 + 放语料（见 `docs/EXTENDING.md`） |
 | 计算环境 | numpy、scipy、sklearn、networkx、matplotlib **已可用**；jieba、opencc **按需安装** |
 
 ---
