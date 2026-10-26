@@ -221,6 +221,8 @@ const state = {
   comments: { jinpi:null, jiqin:null, lizhuo:null, yuanwy:null, zhongbo:null, wangping:null, chengzhu:null, yuxiangdou:null, yannanshang:null },
   baiCache: {}
 };
+/* 加载序号：切换版本/回目时递增，用于丢弃「过期」的异步响应，避免旧请求覆盖新页面 */
+let reqSeq=0;
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function cnNum(n){
   const c='零一二三四五六七八九';
@@ -264,7 +266,7 @@ async function boot(){
     b.className='ui-btn ver-btn'+(v.id===state.vid?' active':'');
     b.textContent=VER_SHORT[v.id]||v.name.slice(0,4);
     b.title=VER_NAME[v.id]||v.name;
-    b.onclick=()=>{state.vid=v.id;state.ch=1;syncURL();markVer();loadVer();};
+    b.onclick=()=>{state.vid=v.id;state.ch=1;syncURL();markVer();loadVer().catch(e=>console.error(e));};
     vg.appendChild(b);
   });
 
@@ -274,7 +276,7 @@ async function boot(){
     b.onclick=()=>{
       document.querySelectorAll('.lang-btn').forEach(x=>x.classList.remove('active'));
       b.classList.add('active');
-      state.lang=b.dataset.lang;localStorage.setItem('sh_lang',state.lang);loadChap();
+      state.lang=b.dataset.lang;localStorage.setItem('sh_lang',state.lang);loadChap().catch(e=>console.error(e));
     };
   });
 
@@ -285,7 +287,7 @@ async function boot(){
       state.cmt=b.dataset.cmt;localStorage.setItem('sh_cmt',state.cmt);
       document.querySelectorAll('.cmt-btn').forEach(x=>x.classList.remove('active'));
       b.classList.add('active');
-      applyCmt();
+      applyCmt().catch(e=>console.error(e));
     };
   });
 
@@ -294,31 +296,42 @@ async function boot(){
   cc.checked=state.onlyCmt; cb.checked=state.withBai;
   document.body.classList.toggle('cmt-only',state.onlyCmt);
   cc.onchange=()=>{state.onlyCmt=cc.checked;localStorage.setItem('sh_only',state.onlyCmt?'1':'0');document.body.classList.toggle('cmt-only',state.onlyCmt);};
-  cb.onchange=()=>{state.withBai=cb.checked;localStorage.setItem('sh_bai',state.withBai?'1':'0');loadChap();};
+  cb.onchange=()=>{state.withBai=cb.checked;localStorage.setItem('sh_bai',state.withBai?'1':'0');loadChap().catch(e=>console.error(e));};
 
   await loadVer(true);
 }
 function markVer(){document.querySelectorAll('.ver-btn').forEach(b=>b.classList.toggle('active',b.textContent===VER_SHORT[state.vid]));}
 
 async function loadVer(first){
-  if(!state.chapters[state.vid]){
+  const vid=state.vid;
+  if(!state.chapters[vid]){
     try{
-      const raw=await loadJSON('texts/versions/'+state.vid+'/chapters.json');
-      state.chapters[state.vid]=Array.isArray(raw)
-        ? {count:raw.length,chapters:raw,version_name:((state.versions.find(v=>v.id===state.vid)||{}).name||state.vid)}
+      const raw=await loadJSON('texts/versions/'+vid+'/chapters.json');
+      if(state.vid!==vid)return;             /* 载入期间又切了版本，本次作废 */
+      state.chapters[vid]=Array.isArray(raw)
+        ? {count:raw.length,chapters:raw,version_name:((state.versions.find(v=>v.id===vid)||{}).name||vid)}
         : raw;
     }
-    catch(e){document.getElementById('contentWrap').innerHTML='<div class="loading">该版本尚未整理完成</div>';return;}
+    catch(e){
+      if(state.vid===vid)document.getElementById('contentWrap').innerHTML='<div class="loading">该版本尚未整理完成</div>';
+      return;
+    }
   }
-  const cnt=state.chapters[state.vid].count;
+  if(state.vid!==vid)return;
+  const vc=state.chapters[vid];
+  const list=(vc&&Array.isArray(vc.chapters))?vc.chapters:[];
+  if(!list.length){document.getElementById('contentWrap').innerHTML='<div class="loading">该版本尚未整理完成</div>';return;}
+  const cnt=(vc.count>0)?vc.count:list.length;
+  vc.count=cnt;
+  if(!(state.ch>=0))state.ch=0;              /* 兼容 URL 上传入非法回次(如 ?ch=abc) */
   if(state.ch>=cnt)state.ch=cnt-1;if(state.ch<0)state.ch=0;
 
   const sel=document.getElementById('selChap');sel.innerHTML='';
-  state.chapters[state.vid].chapters.forEach((c,i)=>{
+  list.forEach((c,i)=>{
     const o=document.createElement('option');o.value=i;o.textContent=(c.title||'第'+(i+1)+'回');o.title=o.textContent;sel.appendChild(o);
   });
   sel.value=state.ch;
-  sel.onchange=()=>{state.ch=parseInt(sel.value,10);syncURL();loadChap();};
+  sel.onchange=()=>{state.ch=parseInt(sel.value,10);syncURL();loadChap().catch(e=>console.error(e));};
   if(!first)syncURL();
   await loadChap();
 }
@@ -338,43 +351,63 @@ function renderTxt(txt){
 }
 
 async function loadChap(){
-  const chap=state.chapters[state.vid].chapters[state.ch];
-  document.getElementById('chapTitle').textContent=chap.title;
-  document.getElementById('chapVer').textContent=state.chapters[state.vid].version_name;
+  const vid=state.vid,ch=state.ch;
+  const vc=state.chapters[vid];
+  const list=(vc&&Array.isArray(vc.chapters))?vc.chapters:[];
+  const chap=list[ch];
   const wrap=document.getElementById('contentWrap');
+  if(!chap){
+    document.getElementById('chapTitle').textContent='—';
+    document.getElementById('chapVer').textContent=(vc&&vc.version_name)||'';
+    wrap.innerHTML='<div class="loading">章节列表为空，请切换版本</div>';
+    updPgr();return;
+  }
+  const my=++reqSeq;                         /* 本次加载的序号 */
+  document.getElementById('chapTitle').textContent=chap.title;
+  document.getElementById('chapVer').textContent=vc.version_name;
   wrap.innerHTML='<div class="loading">正在载入正文…</div>';
   const swap=(f,lang)=>!f?null:(f.indexOf('/')>=0?f.replace(/^fan\//,lang+'/'):lang+'/'+f);
   const fn = state.lang==='jian' ? (chap.file_simp||swap(chap.file,'jian'))
            : state.lang==='bai'  ? (chap.file_bai ||swap(chap.file,'bai'))
            : chap.file;
   if(!fn){wrap.innerHTML='<div class="loading">无此回正文</div>';updPgr();return;}
-  const fp='texts/versions/'+state.vid+'/'+fn;
+  const fp='texts/versions/'+vid+'/'+fn;
   const txt=await loadText(fp);
+  if(my!==reqSeq||state.vid!==vid||state.ch!==ch)return;   /* 期间已切换版本/回目，丢弃过期正文 */
   if(!txt){wrap.innerHTML='<div class="loading">该版本此语体暂未整理<br><small>'+esc(fp)+'</small></div>';updPgr();return;}
 
   let baiH='';
   if(state.withBai&&state.lang!=='bai'){
-    const bf='texts/versions/'+state.vid+'/'+(chap.file_bai||swap(chap.file,'bai'));
+    const bf='texts/versions/'+vid+'/'+(chap.file_bai||swap(chap.file,'bai'));
     let bt=state.baiCache[bf];
     if(bt===undefined){bt=await loadText(bf);state.baiCache[bf]=bt;}
+    if(my!==reqSeq||state.vid!==vid||state.ch!==ch)return;
     if(bt)baiH='<div class="baihua-block"><span class="baihua-label">白话译文</span>'+esc(bt).replace(/\n\s*\n/g,'<br><br>').replace(/\n/g,'')+'</div>';
   }
 
   wrap.innerHTML=renderTxt(txt)+baiH;
-  updPgr();applyCmt();
+  updPgr();applyCmt(my);
 }
 
 function updPgr(){
-  const cnt=state.chapters[state.vid].count,pr=state.ch-1,nx=state.ch+1;
+  const vc=state.chapters[state.vid];
+  const cnt=(vc&&((vc.count>0&&vc.count)||(Array.isArray(vc.chapters)&&vc.chapters.length)))||0;
+  const pr=state.ch-1,nx=state.ch+1;
   let h='';
   h+=pr>=0?`<a href="#" onclick="go(${pr});return false;">← 上一回</a>`:`<a class="disabled">← 上一回</a>`;
-  h+=nx<cnt?`<a href="#" onclick="go(${nx});return false;">下一回 →</a>`:`<a class="disabled">下一回 →</a>`;
-  document.getElementById('pager').innerHTML=h;
+  h+=(cnt&&nx<cnt)?`<a href="#" onclick="go(${nx});return false;">下一回 →</a>`:`<a class="disabled">下一回 →</a>`;
+  const pg=document.getElementById('pager');if(pg)pg.innerHTML=h;
 }
-function go(n){state.ch=n;syncURL();document.getElementById('selChap').value=n;loadChap();window.scrollTo(0,0);}
+function go(n){
+  const vc=state.chapters[state.vid];
+  const cnt=(vc&&((vc.count>0&&vc.count)||(Array.isArray(vc.chapters)&&vc.chapters.length)))||0;
+  state.ch=Math.max(0,cnt?Math.min(n,cnt-1):n);syncURL();
+  const sel=document.getElementById('selChap');if(sel)sel.value=state.ch;
+  loadChap().catch(e=>console.error(e));window.scrollTo(0,0);
+}
 
 /* ========== 批注 ========== */
-async function applyCmt(){
+async function applyCmt(my){
   document.querySelectorAll('.cmt-block,.notice').forEach(e=>e.remove());
   if(state.cmt==='none')return;
   const m=CMT[state.cmt];if(!m)return;
@@ -382,6 +415,7 @@ async function applyCmt(){
   if(!state.comments[state.cmt]){
     try{state.comments[state.cmt]=await loadJSON('texts/versions/'+m.file);}catch(e){state.comments[state.cmt]=null;}
   }
+  if(my!==undefined&&my!==reqSeq)return;      /* 正文已换，放弃过期批注 */
   const data=state.comments[state.cmt];
   if(!data){notice('加载'+m.who+'批失败。');return;}
   if(!m.okVer.includes(state.vid)){notice('此批注（<b>'+m.tag+'</b>）仅适用于 '+m.okVer.map(v=>VER_NAME[v]||v).join(' / ')+'，请切换到相应版本查看。');return;}
