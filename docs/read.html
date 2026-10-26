@@ -519,16 +519,30 @@ function collectZhongbo(data,m,blocks){
       '<div class="cmt-sub"><b style="color:'+m.color+';">〔'+esc(it.k||'批语')+'〕</b>'+esc(it.v)+'</div>').join('')});
   }
 }
-/* —— 燕南尚生《新评水浒传》：卷首叙、命名释义 —— */
+/* —— 燕南尚生《新评水浒传》：卷首三篇（叙 / 新或问 / 命名释义） —— */
 function collectYannanshang(data,m,blocks){
   const cur=state.chapters[state.vid].chapters[state.ch];
   const num=(cur&&cur.num!=null)?cur.num:(state.ch<1?1:state.ch);
-  if(num>1)return;
-  let html='';
-  if(data.xu)html+='<div class="cmt-sub"><b style="color:'+m.color+';">『'+esc(data.xu.title)+'』</b>'+esc(data.xu.text)+'</div>';
-  (data.shiming||[]).forEach(x=>{html+='<div class="cmt-sub"><b style="color:'+m.color+';">〔命名释义·'+esc(x.name)+'〕</b>'+esc(x.text)+'</div>';});
-  if(html)blocks.push({where:'top',tag:m.tag+'·卷首',preface:true,
-    html:'<div style="font-size:13px;color:#8a7a62;margin-bottom:6px;">—— 清光绪三十四年（1908）直隶官书局排印本《新评水浒传》卷首</div>'+html});
+  if(state.ch>0&&num>1)return;   /* 卷首三篇：挂该版本首条｜回次≤1 */
+  let html='<div style="font-size:13px;color:#8a7a62;margin-bottom:6px;">—— 清光绪三十四年（1908）直隶官书局、保定大有山房排印本《新评水浒传》卷首　凡三篇</div>';
+  /* 〈一〉新评水浒传叙 */
+  if(data.xu){
+    html+='<div class="cmt-sub"><b style="color:'+m.color+';">〈一〉'+esc(data.xu.title)+'　'+esc(data.xu.genre||'全书总论')+'　'+esc(data.xu.status||'全篇')+'</b>'+esc(data.xu.text)+'</div>';
+  }
+  /* 〈二〉水浒传新或问 */
+  if(data.huowen){
+    const h=data.huowen;
+    html+='<div class="cmt-sub"><b style="color:'+m.color+';">〈二〉'+esc(h.title)+'　'+esc(h.genre||'问答体')+'　'+esc(h.status||'')+'</b>'+esc(h.note||'')+'</div>';
+    (h.excerpts||[]).forEach(e=>{
+      html+='<div class="cmt-sub"><b style="color:'+m.color+';">〔存世引文〕</b>'+esc(e.text)+(e.cite?'<span style="font-size:12px;color:#8a7a62;">（'+esc(e.cite)+'）</span>':'')+'</div>';
+    });
+  }
+  /* 〈三〉水浒传命名释义 */
+  if(data.shiming&&data.shiming.length){
+    html+='<div class="cmt-sub"><b style="color:'+m.color+';">〈三〉水浒传命名释义　名号索解　凡'+data.shiming.length+'则</b></div>';
+    data.shiming.forEach(x=>{html+='<div class="cmt-sub"><b style="color:'+m.color+';">〔命名释义·'+esc(x.name)+'〕</b>'+esc(x.text)+'</div>';});
+  }
+  blocks.push({where:'top',tag:m.tag+'·卷首',preface:true,html:html});
 }
 
 /* —— 程穆衡《水浒传注略》：卷次对应回次 —— */
