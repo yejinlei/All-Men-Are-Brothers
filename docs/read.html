@@ -65,70 +65,51 @@ background-repeat:no-repeat;background-position:right 12px center;}
 .content-wrap .poem{margin:20px auto;padding:18px 28px;background:#f9f0d9;border-left:3px solid #c5a868;border-radius:0 4px 4px 0;text-align:center;font-size:16px;line-height:2;color:var(--ink-light,#5a4632);max-width:480px;}
 .content-wrap .poem p{text-indent:0;margin:2px 0;}
 
-/* 白话文附段 */
-.baihua-block{margin:20px 0 28px;padding:16px 22px;background:#f0efe6;border-left:3px solid #94a38a;border-radius:0 4px 4px 0;font-size:16px;line-height:2;color:#4a5240;}
-.baihua-block .baihua-label{display:inline-block;background:#94a38a;color:#fff;font-size:12px;padding:2px 8px;border-radius:3px;margin-right:10px;letter-spacing:2px;font-family:var(--font-serif);vertical-align:middle;}
+/* 白话文附段（仿红楼 baihua 卡片：标题小绿胶囊 + 浅绿底） */
+.baihua-block{margin:20px 0 28px;padding:12px 18px;background:rgba(245,242,232,0.9);border:1px solid rgb(227,217,196);border-radius:3px;font-size:16px;line-height:2;color:#4a4538;}
+.baihua-block .baihua-label{display:inline-block;background:#9f946f;color:#fff;font-size:12px;padding:1px 10px;border-radius:10px;margin-right:10px;letter-spacing:2px;font-family:var(--font-serif);vertical-align:1px;font-weight:500;}
 
-/* ======== 批注块（仿红楼梦参考图：标签 + 左侧彩色竖线） ======== */
-.cmt-block{margin:12px 0;padding:10px 16px 10px 18px;border-radius:0 6px 6px 0;font-size:15px;line-height:1.95;color:var(--ink-light,#5a4632);font-family:var(--font-serif);position:relative;}
-.cmt-block::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:2px;}
-.cmt-block .cmt-tag{display:inline-block;padding:1px 10px;border-radius:12px;font-size:12px;font-weight:700;margin-right:10px;letter-spacing:1px;vertical-align:1px;color:#fff;font-family:var(--font-serif);}
-.cmt-block .cmt-text{white-space:pre-wrap;}
+/* ======== 批注块（仿《红楼未完》段间嵌入版：左竖线 + 渐隐底 + 米色胶囊标签） ======== */
+.cmt-block{margin:3px 0;padding:2px 0 2px 9px;border-radius:0 2px 2px 0;font-size:14.5px;line-height:28.275px;color:var(--anno-ink,#5a4c3e);font-family:var(--font-serif);background:linear-gradient(90deg,rgba(120,90,50,0.06),rgba(120,90,50,0) 70%);border-left:2px solid rgba(120,90,50,0.4);}
+.cmt-block .cmt-tag{display:inline-block;padding:0 6px;border-radius:8px;font-size:11.5px;font-weight:500;margin-right:7px;letter-spacing:0.5px;vertical-align:1px;color:#6b6155;background:rgba(240,230,209,0.9);font-family:var(--font-serif);line-height:22px;}
+.cmt-block .cmt-text{white-space:normal;}
+.cmt-block .cmt-text p{text-indent:0;margin:0;}
 
-/* 金圣叹（金色/朱红，仿"庚辰"批） */
-.cmt-jinpi{background:#fdf5e3;}
-.cmt-jinpi::before{background:#8b1a1a;}
-.cmt-jinpi .cmt-tag{background:#8b1a1a;}
+/* 朱批系（金圣叹——原批多为朱色，配 #9e2b25） */
+.cmt-jinpi{color:rgb(158,43,37);background:linear-gradient(90deg,rgba(158,43,37,0.055),rgba(158,43,37,0) 70%);border-left-color:rgba(158,43,37,0.4);}
+.cmt-jinpi .cmt-tag{color:#6b6155;background:rgba(240,230,209,0.9);}
 
-/* 李卓吾/容与堂（赭石） */
-.cmt-lizhuo{background:#faf1e7;}
-.cmt-lizhuo::before{background:#8b4513;}
-.cmt-lizhuo .cmt-tag{background:#8b4513;}
+/* 墨批系（其余八家统一青绿基调 #3f6b5e，不单独调色；标签均为米色） */
+.cmt-lizhuo,
+.cmt-yuanwy,
+.cmt-zhongbo,
+.cmt-wangping,
+.cmt-chengzhu,
+.cmt-yuxiangdou,
+.cmt-yannanshang,
+.cmt-jiqin{color:rgb(63,107,94);background:linear-gradient(90deg,rgba(63,107,94,0.055),rgba(63,107,94,0) 70%);border-left-color:rgba(63,107,94,0.35);}
+.cmt-lizhuo .cmt-tag,
+.cmt-yuanwy .cmt-tag,
+.cmt-zhongbo .cmt-tag,
+.cmt-wangping .cmt-tag,
+.cmt-chengzhu .cmt-tag,
+.cmt-yuxiangdou .cmt-tag,
+.cmt-yannanshang .cmt-tag,
+.cmt-jiqin .cmt-tag{color:#6b6155;background:rgba(240,230,209,0.9);}
 
-/* 袁无涯（青蓝） */
-.cmt-yuanwy{background:#eef3f8;}
-.cmt-yuanwy::before{background:#2e5a88;}
-.cmt-yuanwy .cmt-tag{background:#2e5a88;}
+/* 回前批/序/卷首：底色与墨批一致，保留视觉位置标识，不加浓色块 */
+.cmt-block.cmt-preface{}
 
-/* 钟伯敬（青莲） */
-.cmt-zhongbo{background:#f4eefa;}
-.cmt-zhongbo::before{background:#7a5195;}
-.cmt-zhongbo .cmt-tag{background:#7a5195;}
-
-/* 王望如（苔绿） */
-.cmt-wangping{background:#f0f4e7;}
-.cmt-wangping::before{background:#5a7d3a;}
-.cmt-wangping .cmt-tag{background:#5a7d3a;}
-
-/* 程穆衡注略（黛青） */
-.cmt-chengzhu{background:#eaf3f3;}
-.cmt-chengzhu::before{background:#2f6f6f;}
-.cmt-chengzhu .cmt-tag{background:#2f6f6f;}
-
-/* 余象斗评林（赭褐） */
-.cmt-yuxiangdou{background:#faf1e4;}
-.cmt-yuxiangdou::before{background:#a9622d;}
-.cmt-yuxiangdou .cmt-tag{background:#a9622d;}
-.cmt-yannanshang{background:#f7f2e8;}
-.cmt-yannanshang::before{background:#8a6d3b;}
-.cmt-yannanshang .cmt-tag{background:#8a6d3b;}
-
-/* 冀勤校注（竹青） */
-.cmt-jiqin{background:#eef5ec;}
-.cmt-jiqin::before{background:#2f5d50;}
-.cmt-jiqin .cmt-tag{background:#2f5d50;}
-
-/* 回前批/序 深色底强调 */
-.cmt-block.cmt-preface{background:#f5ead0;}
-.cmt-sub{margin:6px 0;padding:6px 0;border-top:1px dashed rgba(0,0,0,0.1);}
-.cmt-sub b{margin-right:6px;}
+/* 单条批注内的子分段：不用虚线分隔，换段间距 */
+.cmt-sub{margin:2px 0;}
+.cmt-sub b{margin-right:4px;font-weight:600;}
 
 /* 只看批语模式 */
 body.cmt-only .content-wrap>p,
 body.cmt-only .content-wrap .poem,
 body.cmt-only .content-wrap h3,
 body.cmt-only .content-wrap .baihua-block{display:none;}
-body.cmt-only .cmt-block{margin:18px 0;}
+body.cmt-only .cmt-block{margin:6px 0;padding:4px 0 4px 9px;}
 
 .notice{margin:30px 0;padding:14px 20px;background:#f7f1e1;border-radius:6px;text-align:center;font-size:14px;color:#8a7a62;letter-spacing:1px;font-family:var(--font-serif);line-height:1.8;}
 .notice b{color:var(--vermilion,#9c2a2a);}
@@ -434,13 +415,111 @@ async function applyCmt(my){
 
   if(blocks.length===0){notice('本回暂无'+m.who+'批注。');return;}
 
+  /* 把 blocks 拆成三类：top（回前）/ mid（夹批 / 回中）/ tail（卷末说明） */
+  const top=[], mid=[], tail=[];
   blocks.forEach(b=>{
-    const d=document.createElement('div');
-    d.className='cmt-block '+m.cls+(b.preface?' cmt-preface':'');
-    d.innerHTML='<span class="cmt-tag">'+b.tag+'</span><span class="cmt-text">'+b.html+'</span>';
-    if(b.where==='top'&&firstP)firstP.parentElement.insertBefore(d,firstP);
-    else wrap.appendChild(d);
+    const items=splitBlockToItems(b);
+    items.forEach(it=>{
+      if(b.where==='top'||b.preface) top.push(it);
+      else if(b.tail) tail.push(it);
+      else mid.push(it);
+    });
   });
+
+  /* 回前批：插到正文第一个元素（标题/段落/诗）之前 */
+  if(top.length){
+    const firstChild=wrap.firstElementChild;
+    top.reverse().forEach(it=>{
+      const d=makeAnno(m,it);
+      if(firstChild) firstChild.parentElement.insertBefore(d,firstChild);
+      else wrap.appendChild(d);
+    });
+  }
+
+  /* 夹批/回评：沿正文段落之间均匀散开（仿红楼段间嵌入） */
+  if(mid.length){
+    const ps=[...wrap.children].filter(el=>el.matches('p,.poem')&&el.offsetParent!==null&&!el.closest('.cmt-block,.baihua-block'));
+    /* 条目远多于段落数（名物注/大量条目）时，收束到正文末尾，不摊满段间 */
+    if(mid.length>ps.length*1.5){
+      /* 把所有 mid 合成一个块，追加到正文最后（仍走 splitBlockToItems 的结果，逐条独立块，紧凑排列） */
+      const last=[...wrap.children].filter(el=>!el.matches('.cmt-block,.notice')).pop();
+      let anchor=last;
+      mid.forEach(it=>{
+        const d=makeAnno(m,it);
+        if(anchor) anchor.insertAdjacentElement('afterend',d);
+        else wrap.appendChild(d);
+        anchor=d;
+      });
+    }else{
+      distributeBlocks(wrap,m,mid,ps);
+    }
+  }
+
+  /* 卷末说明 / 录文提示：统一贴到正文最后一个元素之后 */
+  if(tail.length){
+    const last=[...wrap.children].filter(el=>!el.matches('.cmt-block,.notice')).pop();
+    tail.forEach(it=>{
+      const d=makeAnno(m,it);
+      if(last) last.insertAdjacentElement('afterend',d);
+      else wrap.appendChild(d);
+    });
+  }
+}
+/* 把一个 block（可能含多条 cmt-sub）拆成独立的单条批注项 */
+function splitBlockToItems(b){
+  /* 若 block.html 本身无 cmt-sub 子项，就直接当一条 */
+  const tmp=document.createElement('div'); tmp.innerHTML=b.html;
+  const subs=tmp.querySelectorAll('.cmt-sub');
+  if(subs.length===0){
+    return [{tag:b.tag, html:b.html, preface:b.preface}];
+  }
+  /* 把 tmp 里每个 .cmt-sub 提成独立条；其前置说明文本（块首的裸文本）单独做一条 */
+  const out=[];
+  /* 处理第一个 cmt-sub 之前的「块首说明」 */
+  const first=subs[0];
+  let head='';
+  for(let n=tmp.firstChild;n&&n!==first;n=n.nextSibling){head+=n.nodeType===3?n.textContent.trim():n.outerHTML||'';}
+  if(head.trim()) out.push({tag:b.tag, html:head.trim(), preface:b.preface});
+  subs.forEach(s=>out.push({tag:b.tag, html:s.outerHTML, preface:false}));
+  return out;
+}
+/* 构造一个红楼风格的段间批注块：左彩线 + 米色小标签 */
+function makeAnno(m,it){
+  const d=document.createElement('div');
+  /* 金批整体用「朱批」色；其他八家统一「墨批」色 */
+  const cmtType = (m.cls==='cmt-jinpi') ? '朱批' : '墨批';
+  d.className='cmt-block '+m.cls+(it.preface?' cmt-preface':'');
+  d.innerHTML='<span class="src cmt-tag">'+esc(it.tag)+'</span><span class="cmt-text">'+it.html+'</span>';
+  return d;
+}
+/* 把一组批注均匀分配到正文段落之间 */
+function distributeBlocks(wrap,m,items,ps){
+  if(!ps.length){
+    /* 没有段落可插入时，全部追加到末尾 */
+    items.forEach(it=>wrap.appendChild(makeAnno(m,it)));
+    return;
+  }
+  const n=ps.length;
+  /* 若只有 1 条，放第一段之后；若条数 ≥ 段落数，每段后放一条；否则均匀散布 */
+  if(items.length===1){
+    ps[0].insertAdjacentElement('afterend',makeAnno(m,items[0]));
+    return;
+  }
+  /* 算法：把每条批注放到第 ceil(i*(n-1)/items.length) 段之后，并按段内倒序插，保持顺序 */
+  const byPos=new Array(n).fill(null).map(()=>[]);
+  items.forEach((it,i)=>{
+    const idx = Math.min(n-1, Math.floor(i*(n-1)/Math.max(1,items.length-1)));
+    byPos[idx].push(it);
+  });
+  for(let i=0;i<n;i++){
+    if(byPos[i].length===0) continue;
+    let anchor=ps[i];
+    byPos[i].forEach(it=>{
+      const d=makeAnno(m,it);
+      anchor.insertAdjacentElement('afterend',d);
+      anchor=d;
+    });
+  }
 }
 function notice(h){const d=document.createElement('div');d.className='notice';d.innerHTML=h;document.getElementById('contentWrap').appendChild(d);}
 
@@ -510,8 +589,8 @@ function collectZhongbo(data,m,blocks){
   if(num<=1){
     const items=(data.pin_ren||[]).map(p=>'<div class="cmt-sub"><b style="color:'+m.color+';">『'+esc(p.name)+'』</b>'+esc(p.text)+'</div>').join('');
     blocks.push({where:'top',tag:m.tag+'·卷首人品评',preface:true,
-      html:'<div style="font-size:13px;color:#8a7a62;margin-bottom:6px;">—— 明·钟惺（字伯敬）《水浒传人品评》　四知馆刊本卷首</div>'+items+
-           '<div class="cmt-sub" style="font-size:13px;color:#8a7a62;">（钟批本传世仅存前二回正文，回间眉批、侧批识典录文与正文混排过甚，暂不成层）</div>'});
+      html:'<div class="cmt-sub" style="font-size:13px;color:#8a7a62;">—— 明·钟惺（字伯敬）《水浒传人品评》　四知馆刊本卷首</div>'+items+
+           '<div class="cmt-sub" style="font-size:12.5px;color:#8a7a62;">（钟批本眉批、侧批传世录文与正文混排过甚，暂不成层）</div>'});
   }
   const ch=(data.chapters||[]).find(c=>c.num===num);
   if(ch&&ch.items&&ch.items.length){
@@ -579,7 +658,7 @@ function collectYuxiangdou(data,m,blocks){
     const cov=(data.coverage&&data.coverage.vols_with_comments)||[];
     const names=(data.volumes||[]).filter(v=>cov.indexOf(v.no)>=0).map(v=>v.name).join('、');
     if(names){
-      blocks.push({where:'bottom',tag:m.tag+'·录文说明',html:'<div class="cmt-sub" style="font-size:12.5px;color:#8a7a62;">评林本上栏评语系孤本影印＋机器录文，现仅 <b>'+esc(names)+'</b> 切分完整、可校读；其余各卷评语在录文中与下栏正文混排、残缺过甚，暂缺。</div>'});
+      blocks.push({where:'bottom',tail:true,tag:m.tag+'·录文说明',html:'<div class="cmt-sub" style="font-size:12.5px;color:#8a7a62;">评林本上栏评语系孤本影印＋机器录文，现仅 <b>'+esc(names)+'</b> 切分完整、可校读；其余各卷评语在录文中与下栏正文混排、残缺过甚，暂缺。</div>'});
     }
   }
 }
