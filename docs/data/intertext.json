@@ -1,0 +1,1501 @@
+{
+  "meta": {
+    "title": "《水浒传》互文网络数据",
+    "version": "2026-10-27",
+    "note": "本数据集为\"成书来源互文\"研究底座。包含源文元信息、4-gram 重叠检测、人物异写映射、情节承继人工标注。n-gram 检测为统计近似，不可视为定论；置信度 A 为学界公认直接承继，B 为情节母题强关联，C 为自动检测候选需人工复核。",
+    "method": {
+      "ngram_n": 4,
+      "window_size": 240,
+      "window_step": 120,
+      "auto_threshold": 4,
+      "baseline_version": "v120",
+      "caveats": [
+        "以《袁百二回》简体版为回次基线，金本等异文系另参",
+        "繁简字未转换，可能漏检部分异写",
+        "4-gram 重叠不区分\"直接抄袭\"\"共用叙事套语\"\"通用汉语词组\"",
+        "人名异写仅覆盖学界已知主要条目，未做全面异体字归一"
+      ]
+    },
+    "stats": {
+      "sources": 9,
+      "extant_full": 9,
+      "plot_parallels_total": 52,
+      "manual_confirmed": 12,
+      "auto_detected": 40,
+      "name_mappings": 56,
+      "covered_hui": 41,
+      "by_source": {
+        "dxyhs": 15,
+        "zaju_likui_fu_jing": 2,
+        "zaju_huanghua_yu": 2,
+        "zaju_shuang_xian_gong": 6,
+        "zaju_yanqing_boyu": 11,
+        "zaju_zheng_bao_en": 15,
+        "zaju_huan_lao_mo": 1
+      },
+      "by_relation": {
+        "plot_inherited": 12,
+        "ngram_overlap": 40
+      }
+    }
+  },
+  "sources": [
+    {
+      "id": "dxyhs",
+      "label": "大宋宣和遗事",
+      "era": "南宋末年-元初（约13世纪）",
+      "author": "无名氏（宋人旧本，经元人增益）",
+      "type": "讲史话本",
+      "chars": 55408,
+      "extant": "full",
+      "refs": [
+        "鲁迅《中国小说史略》元明传来之讲史",
+        "《士礼居丛书》本二卷系统"
+      ],
+      "note": "分元亨利贞四集。水浒故事集中在元集末段与亨集前半，杨志卖刀/生辰纲/宋江杀惜/九天玄女天书/三十六将/张叔夜招降/征方腊等核心母题已具雏形。",
+      "credibility": "B"
+    },
+    {
+      "id": "zaju_shuang_xian_gong",
+      "label": "黑旋风双献功",
+      "era": "元代·前期",
+      "author": "高文秀",
+      "type": "元杂剧",
+      "chars": 10874,
+      "extant": "full",
+      "note": "又名《双献头》。孙孔目泰安神州烧香，李逵化装庄家护送，杀白衙内、郭念儿，双献头归山。是高文秀\"黑旋风杂剧系列\"唯一存世完本。",
+      "credibility": "B",
+      "refs": [
+        "《元曲选》壬集",
+        "隋树森《元曲选外编》校对"
+      ]
+    },
+    {
+      "id": "zaju_yanqing_boyu",
+      "label": "同乐院燕青博鱼",
+      "era": "元代·前期",
+      "author": "李文蔚",
+      "type": "元杂剧",
+      "chars": 10517,
+      "extant": "full",
+      "note": "燕青因违限遭杖责双目失明，下山医眼，与燕顺、燕和兄弟结识同乐院博鱼，痛打与燕和妻王腊梅私通的杨衙内。",
+      "credibility": "B",
+      "refs": [
+        "《元曲选》己集"
+      ]
+    },
+    {
+      "id": "zaju_zheng_bao_en",
+      "label": "争报恩三虎下山",
+      "era": "元代",
+      "author": "无名氏",
+      "type": "元杂剧",
+      "chars": 14401,
+      "extant": "full",
+      "note": "关胜、徐宁、花荣先后在权家店被通判夫人李千娇救护，后李千娇遭二夫人王腊梅诬陷，三虎下山法场相救。",
+      "credibility": "B",
+      "refs": [
+        "《元曲选》辛集"
+      ]
+    },
+    {
+      "id": "zaju_likui_fu_jing",
+      "label": "梁山泊李逵负荆",
+      "era": "元代·前期",
+      "author": "康进之",
+      "type": "元杂剧",
+      "chars": 641,
+      "extant": "full",
+      "note": "宋刚、鲁智恩冒充宋江鲁智深抢王林之女满堂娇，李逵怒砍杏黄旗，下山对质后负荆请罪，擒贼将功折罪。是现存元水浒戏中与《水浒传》最吻合的剧本，第七十三回\"黑旋风乔捉鬼 梁山泊双献头\"情节据此改造。",
+      "credibility": "B+",
+      "refs": [
+        "《元曲选》壬集",
+        "学界通行认定此剧为《水浒》第七十三回直接祖本"
+      ]
+    },
+    {
+      "id": "zaju_huan_lao_mo",
+      "label": "都孔目风雨还牢末",
+      "era": "元代",
+      "author": "李致远",
+      "type": "元杂剧",
+      "chars": 270,
+      "extant": "full",
+      "note": "东平府孔目李荣祖救护史进、刘唐遭陷两次入牢，李逵劫法场救出全家归山。剧中\"李山儿\"与李逵重名，造成后世版本混淆。",
+      "credibility": "C+",
+      "refs": [
+        "《元曲选》癸集；本次录入为情节梗概+开场合璧"
+      ]
+    },
+    {
+      "id": "zaju_huanghua_yu",
+      "label": "鲁智深喜赏黄花峪",
+      "era": "元末明初",
+      "author": "无名氏",
+      "type": "元杂剧",
+      "chars": 423,
+      "extant": "full",
+      "note": "刘庆甫妻李幼奴被蔡衙内强占，杨雄解救未果，李逵假扮货郎深入水南寨营救，鲁智深于黄花峪云岩寺擒获蔡衙内。\"权豪势要强占人妻\"母题被视为《水浒传》高衙内情节的戏曲源头。",
+      "credibility": "C+",
+      "refs": [
+        "《孤本元明杂剧》本；本次录入关键折开场+情节梗概"
+      ]
+    },
+    {
+      "id": "zaju_zhangyi_shucai",
+      "label": "黑旋风仗义疏财",
+      "era": "明初",
+      "author": "朱有燉",
+      "type": "明杂剧",
+      "chars": 182,
+      "extant": "full",
+      "note": "赵都巡强抢李憋古之女，李逵、燕青假扮新娘痛打恶人，后上梁山发兵擒赵。教化色彩浓重。",
+      "credibility": "C",
+      "refs": [
+        "《明周宪王乐府三种》；本次录入情节梗概"
+      ]
+    },
+    {
+      "id": "zaju_baozi_heshang",
+      "label": "豹子和尚自还俗",
+      "era": "明初",
+      "author": "朱有燉",
+      "type": "明杂剧",
+      "chars": 175,
+      "extant": "full",
+      "note": "鲁智深因口角离山再出家，宋江派李逵、吴学究、妻子等轮番劝归，最终念及骨肉还俗。",
+      "credibility": "C",
+      "refs": [
+        "《明周宪王乐府三种》；本次录入情节梗概"
+      ]
+    }
+  ],
+  "xuanhe_36": [
+    {
+      "nick_old": "智多星吴加亮",
+      "name_old": "智多星吴加亮",
+      "name_shz": "吴用"
+    },
+    {
+      "nick_old": "玉麒麟卢进义",
+      "name_old": "玉麒麟卢进义",
+      "name_shz": "卢俊义"
+    },
+    {
+      "nick_old": "青面兽杨志",
+      "name_old": "青面兽杨志",
+      "name_shz": "杨志"
+    },
+    {
+      "nick_old": "混江龙李海",
+      "name_old": "混江龙李海",
+      "name_shz": "李俊"
+    },
+    {
+      "nick_old": "九纹龙史进",
+      "name_old": "九纹龙史进",
+      "name_shz": "史进"
+    },
+    {
+      "nick_old": "入云龙公孙胜",
+      "name_old": "入云龙公孙胜",
+      "name_shz": "公孙胜"
+    },
+    {
+      "nick_old": "浪里百跳张顺",
+      "name_old": "浪里百跳张顺",
+      "name_shz": "张顺"
+    },
+    {
+      "nick_old": "霹雳火秦明",
+      "name_old": "霹雳火秦明",
+      "name_shz": "秦明"
+    },
+    {
+      "nick_old": "活阎罗阮小七",
+      "name_old": "活阎罗阮小七",
+      "name_shz": "阮小七"
+    },
+    {
+      "nick_old": "立地太岁阮小五",
+      "name_old": "立地太岁阮小五",
+      "name_shz": "阮小五"
+    },
+    {
+      "nick_old": "短命二郎阮进",
+      "name_old": "短命二郎阮进",
+      "name_shz": "阮小二"
+    },
+    {
+      "nick_old": "大刀关必胜",
+      "name_old": "大刀关必胜",
+      "name_shz": "关胜"
+    },
+    {
+      "nick_old": "豹子头林冲",
+      "name_old": "豹子头林冲",
+      "name_shz": "林冲"
+    },
+    {
+      "nick_old": "黑旋风李逵",
+      "name_old": "黑旋风李逵",
+      "name_shz": "李逵"
+    },
+    {
+      "nick_old": "小旋风柴进",
+      "name_old": "小旋风柴进",
+      "name_shz": "柴进"
+    },
+    {
+      "nick_old": "金枪手徐宁",
+      "name_old": "金枪手徐宁",
+      "name_shz": "徐宁"
+    },
+    {
+      "nick_old": "扑天雕李应",
+      "name_old": "扑天雕李应",
+      "name_shz": "李应"
+    },
+    {
+      "nick_old": "赤发鬼刘唐",
+      "name_old": "赤发鬼刘唐",
+      "name_shz": "刘唐"
+    },
+    {
+      "nick_old": "一撞直董平",
+      "name_old": "一撞直董平",
+      "name_shz": "董平"
+    },
+    {
+      "nick_old": "插翅虎雷横",
+      "name_old": "插翅虎雷横",
+      "name_shz": "雷横"
+    },
+    {
+      "nick_old": "美髯公朱同",
+      "name_old": "美髯公朱同",
+      "name_shz": "朱仝"
+    },
+    {
+      "nick_old": "神行太保戴宗",
+      "name_old": "神行太保戴宗",
+      "name_shz": "戴宗"
+    },
+    {
+      "nick_old": "赛关索王雄",
+      "name_old": "赛关索王雄",
+      "name_shz": "杨雄"
+    },
+    {
+      "nick_old": "病尉迟孙立",
+      "name_old": "病尉迟孙立",
+      "name_shz": "孙立"
+    },
+    {
+      "nick_old": "小李广花荣",
+      "name_old": "小李广花荣",
+      "name_shz": "花荣"
+    },
+    {
+      "nick_old": "没羽箭张青",
+      "name_old": "没羽箭张青",
+      "name_shz": "张清"
+    },
+    {
+      "nick_old": "没遮拦穆横",
+      "name_old": "没遮拦穆横",
+      "name_shz": "穆弘"
+    },
+    {
+      "nick_old": "浪子燕青",
+      "name_old": "浪子燕青",
+      "name_shz": "燕青"
+    },
+    {
+      "nick_old": "花和尚鲁智深",
+      "name_old": "花和尚鲁智深",
+      "name_shz": "鲁智深"
+    },
+    {
+      "nick_old": "行者武松",
+      "name_old": "行者武松",
+      "name_shz": "武松"
+    },
+    {
+      "nick_old": "铁鞭呼延绰",
+      "name_old": "铁鞭呼延绰",
+      "name_shz": "呼延灼"
+    },
+    {
+      "nick_old": "急先锋索超",
+      "name_old": "急先锋索超",
+      "name_shz": "索超"
+    },
+    {
+      "nick_old": "弃命二郎石秀",
+      "name_old": "弃命二郎石秀",
+      "name_shz": "石秀"
+    },
+    {
+      "nick_old": "火船工张岑",
+      "name_old": "火船工张岑",
+      "name_shz": "张横"
+    },
+    {
+      "nick_old": "摸着云杜千",
+      "name_old": "摸着云杜千",
+      "name_shz": "杜迁"
+    },
+    {
+      "nick_old": "铁天王晁盖",
+      "name_old": "铁天王晁盖",
+      "name_shz": "晁盖"
+    }
+  ],
+  "name_mappings": [
+    {
+      "source_name": "一丈青张横",
+      "shz_name": "张横",
+      "occurrence_in_sources": 1
+    },
+    {
+      "source_name": "一撞直董平",
+      "shz_name": "董平",
+      "occurrence_in_sources": 1
+    },
+    {
+      "source_name": "九纹龙史进",
+      "shz_name": "史进",
+      "occurrence_in_sources": 1
+    },
+    {
+      "source_name": "入云龙公孙胜",
+      "shz_name": "公孙胜",
+      "occurrence_in_sources": 1
+    },
+    {
+      "source_name": "关必胜",
+      "shz_name": "关胜",
+      "occurrence_in_sources": 1
+    },
+    {
+      "source_name": "卢进义",
+      "shz_name": "卢俊义",
+      "occurrence_in_sources": 1
+    },
+    {
+      "source_name": "吴加亮",
+      "shz_name": "吴用",
+      "occurrence_in_sources": 9
+    },
+    {
+      "source_name": "吴学究",
+      "shz_name": "吴用",
+      "occurrence_in_sources": 11
+    },
+    {
+      "source_name": "呼延绰",
+      "shz_name": "呼延灼",
+      "occurrence_in_sources": 4
+    },
+    {
+      "source_name": "大刀关必胜",
+      "shz_name": "关胜",
+      "occurrence_in_sources": 1
+    },
+    {
+      "source_name": "孙立",
+      "shz_name": "孙立",
+      "occurrence_in_sources": 9
+    },
+    {
+      "source_name": "宋公明",
+      "shz_name": "宋江",
+      "occurrence_in_sources": 4
+    },
+    {
+      "source_name": "小李广花荣",
+      "shz_name": "花荣",
+      "occurrence_in_sources": 1
+    },
+    {
+      "source_name": "张叔夜",
+      "shz_name": "张叔夜",
+      "occurrence_in_sources": 2
+    },
+    {
+      "source_name": "张岑",
+      "shz_name": "张横",
+      "occurrence_in_sources": 2
+    },
+    {
+      "source_name": "张青",
+      "shz_name": "张清",
+      "occurrence_in_sources": 2
+    },
+    {
+      "source_name": "急先锋索超",
+      "shz_name": "索超",
+      "occurrence_in_sources": 1
+    },
+    {
+      "source_name": "扑天雕李应",
+      "shz_name": "李应",
+      "occurrence_in_sources": 1
+    },
+    {
+      "source_name": "插翅虎雷横",
+      "shz_name": "雷横",
+      "occurrence_in_sources": 1
+    },
+    {
+      "source_name": "摸着云杜千",
+      "shz_name": "杜迁",
+      "occurrence_in_sources": 1
+    },
+    {
+      "source_name": "晁盖",
+      "shz_name": "晁盖",
+      "occurrence_in_sources": 16
+    },
+    {
+      "source_name": "朱同",
+      "shz_name": "朱仝",
+      "occurrence_in_sources": 2
+    },
+    {
+      "source_name": "李山儿",
+      "shz_name": "李逵",
+      "occurrence_in_sources": 12
+    },
+    {
+      "source_name": "李幼奴",
+      "shz_name": "蔡衙内",
+      "occurrence_in_sources": 4
+    },
+    {
+      "source_name": "李海",
+      "shz_name": "李俊",
+      "occurrence_in_sources": 2
+    },
+    {
+      "source_name": "李进义",
+      "shz_name": "卢俊义",
+      "occurrence_in_sources": 5
+    },
+    {
+      "source_name": "杜千",
+      "shz_name": "杜迁",
+      "occurrence_in_sources": 2
+    },
+    {
+      "source_name": "没羽箭张青",
+      "shz_name": "张清",
+      "occurrence_in_sources": 1
+    },
+    {
+      "source_name": "没遮拦穆横",
+      "shz_name": "穆弘",
+      "occurrence_in_sources": 1
+    },
+    {
+      "source_name": "活阎罗阮小七",
+      "shz_name": "阮小七",
+      "occurrence_in_sources": 1
+    },
+    {
+      "source_name": "浪里百跳张顺",
+      "shz_name": "张顺",
+      "occurrence_in_sources": 1
+    },
+    {
+      "source_name": "混江龙李海",
+      "shz_name": "李俊",
+      "occurrence_in_sources": 1
+    },
+    {
+      "source_name": "火船工张岑",
+      "shz_name": "张横",
+      "occurrence_in_sources": 1
+    },
+    {
+      "source_name": "燕青",
+      "shz_name": "燕青",
+      "occurrence_in_sources": 34
+    },
+    {
+      "source_name": "王雄",
+      "shz_name": "杨雄",
+      "occurrence_in_sources": 2
+    },
+    {
+      "source_name": "短命二郎阮进",
+      "shz_name": "阮小二",
+      "occurrence_in_sources": 1
+    },
+    {
+      "source_name": "石秀",
+      "shz_name": "石秀",
+      "occurrence_in_sources": 1
+    },
+    {
+      "source_name": "神行太保戴宗",
+      "shz_name": "戴宗",
+      "occurrence_in_sources": 3
+    },
+    {
+      "source_name": "秦明",
+      "shz_name": "秦明",
+      "occurrence_in_sources": 2
+    },
+    {
+      "source_name": "穆横",
+      "shz_name": "穆弘",
+      "occurrence_in_sources": 2
+    },
+    {
+      "source_name": "立地太岁阮小五",
+      "shz_name": "阮小五",
+      "occurrence_in_sources": 1
+    },
+    {
+      "source_name": "美髯公朱同",
+      "shz_name": "朱仝",
+      "occurrence_in_sources": 1
+    },
+    {
+      "source_name": "董平",
+      "shz_name": "董平",
+      "occurrence_in_sources": 6
+    },
+    {
+      "source_name": "蔡疙疸",
+      "shz_name": "蔡衙内",
+      "occurrence_in_sources": 1
+    },
+    {
+      "source_name": "赛关索王雄",
+      "shz_name": "杨雄",
+      "occurrence_in_sources": 1
+    },
+    {
+      "source_name": "赤发鬼刘唐",
+      "shz_name": "刘唐",
+      "occurrence_in_sources": 1
+    },
+    {
+      "source_name": "金枪手徐宁",
+      "shz_name": "徐宁",
+      "occurrence_in_sources": 1
+    },
+    {
+      "source_name": "铁天王晁盖",
+      "shz_name": "晁盖",
+      "occurrence_in_sources": 1
+    },
+    {
+      "source_name": "铁鞭呼延绰",
+      "shz_name": "呼延灼",
+      "occurrence_in_sources": 2
+    },
+    {
+      "source_name": "阎婆惜",
+      "shz_name": "阎婆惜",
+      "occurrence_in_sources": 10
+    },
+    {
+      "source_name": "阮进",
+      "shz_name": "阮小二",
+      "occurrence_in_sources": 2
+    },
+    {
+      "source_name": "林冲",
+      "shz_name": "林冲",
+      "occurrence_in_sources": 2,
+      "note": "今本《水浒》人物，在《宣和遗事》或杂剧中以异名或未出现"
+    },
+    {
+      "source_name": "武松",
+      "shz_name": "武松",
+      "occurrence_in_sources": 1,
+      "note": "今本《水浒》人物，在《宣和遗事》或杂剧中以异名或未出现"
+    },
+    {
+      "source_name": "鲁智深",
+      "shz_name": "鲁智深",
+      "occurrence_in_sources": 18,
+      "note": "今本《水浒》人物，在《宣和遗事》或杂剧中以异名或未出现"
+    },
+    {
+      "source_name": "解珍",
+      "shz_name": "解珍",
+      "occurrence_in_sources": 0,
+      "note": "今本《水浒》人物，在《宣和遗事》或杂剧中以异名或未出现"
+    },
+    {
+      "source_name": "解宝",
+      "shz_name": "解宝",
+      "occurrence_in_sources": 0,
+      "note": "今本《水浒》人物，在《宣和遗事》或杂剧中以异名或未出现"
+    }
+  ],
+  "parallels": [
+    {
+      "id": "P019",
+      "src": "dxyhs",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "别唱新词天子甚喜畅怀而饮正是琉璃钟琥珀浓小槽酒滴珍珠红烹龙炮凤玉脂泣罗帏绣幕围春风吹龙笛击鼍鼓皓齿歌细腰舞况是青春日将暮桃花乱落如红雨努君终日酩酊醉酒不到刘伶坟上土饮多时也天子带酒观师师之貌越越的风韵俄不觉的天色渐晚则见诗曰窗外日光弹指过席",
+      "hui": 2,
+      "event": "高俅发迹",
+      "heroes": [],
+      "shared_4gram": 13,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 13 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P000",
+      "src": "dxyhs",
+      "src_anchor": "杨志卖刀/雪阻卖刀杀人",
+      "src_excerpt": "诗曰： \t　　暂时罢鼓膝间琴，闲把遗编阅古今。 \t　　常叹贤君务勤俭，深悲庸主事荒淫。 \t　　致平端自亲贤哲，稔乱无非近佞臣。 \t　　说破兴亡多少事，高山流水有知音。 \t　　茫茫往古，继继来今，上下三千余年，兴废百千万事。大概光风霁月之时少，阴雨晦冥之时多;衣冠文物之时少，干戈征战之时多。看破治乱两途，不出阴阳一理。中",
+      "hui": 12,
+      "event": "汴京城杨志卖刀",
+      "heroes": [
+        "杨志",
+        "孙立"
+      ],
+      "shared_4gram": 0,
+      "relation": "plot_inherited",
+      "confidence": "A",
+      "evidence": "宣和遗事：杨志颖州雪阻，货宝刀杀恶少，配卫州；孙立等十一人黄河岸劫救落草。水浒第十二回改为东京卖刀杀泼皮牛二，被大名府梁中书看中。"
+    },
+    {
+      "id": "P001",
+      "src": "dxyhs",
+      "src_anchor": "五花营劫生辰纲",
+      "src_excerpt": "诗曰： \t　　暂时罢鼓膝间琴，闲把遗编阅古今。 \t　　常叹贤君务勤俭，深悲庸主事荒淫。 \t　　致平端自亲贤哲，稔乱无非近佞臣。 \t　　说破兴亡多少事，高山流水有知音。 \t　　茫茫往古，继继来今，上下三千余年，兴废百千万事。大概光风霁月之时少，阴雨晦冥之时多;衣冠文物之时少，干戈征战之时多。看破治乱两途，不出阴阳一理。中",
+      "hui": 16,
+      "event": "吴用智取生辰纲",
+      "heroes": [
+        "晁盖",
+        "吴用",
+        "刘唐",
+        "阮小二",
+        "阮小五",
+        "阮小七"
+      ],
+      "shared_4gram": 0,
+      "relation": "plot_inherited",
+      "confidence": "A",
+      "evidence": "宣和遗事：五花营堤上，\"酒海花家\"借酒桶，晁盖铁天王为首劫蔡太师十万贯金珠，八人名单含吴加亮、刘唐、秦明、阮进、阮通、阮小七、燕青。水浒改黄泥冈，加入白胜、吴用、公孙胜，秦明未加入该段。"
+    },
+    {
+      "id": "P002",
+      "src": "dxyhs",
+      "src_anchor": "石碣村报信",
+      "src_excerpt": "诗曰： \t　　暂时罢鼓膝间琴，闲把遗编阅古今。 \t　　常叹贤君务勤俭，深悲庸主事荒淫。 \t　　致平端自亲贤哲，稔乱无非近佞臣。 \t　　说破兴亡多少事，高山流水有知音。 \t　　茫茫往古，继继来今，上下三千余年，兴废百千万事。大概光风霁月之时少，阴雨晦冥之时多;衣冠文物之时少，干戈征战之时多。看破治乱两途，不出阴阳一理。中",
+      "hui": 18,
+      "event": "宋公明私放晁天王",
+      "heroes": [
+        "宋江",
+        "晁盖"
+      ],
+      "shared_4gram": 0,
+      "relation": "plot_inherited",
+      "confidence": "A",
+      "evidence": "宣和遗事：押司宋江接文字星夜去石碣村报信，晁盖暮夜逃走。水浒第十八回情节几乎一致，只是\"右碣村\"改\"石碣村\"，\"铁天王\"已改为\"托塔天王\"。"
+    },
+    {
+      "id": "P003",
+      "src": "dxyhs",
+      "src_anchor": "杀阎婆惜吴伟",
+      "src_excerpt": "诗曰： \t　　暂时罢鼓膝间琴，闲把遗编阅古今。 \t　　常叹贤君务勤俭，深悲庸主事荒淫。 \t　　致平端自亲贤哲，稔乱无非近佞臣。 \t　　说破兴亡多少事，高山流水有知音。 \t　　茫茫往古，继继来今，上下三千余年，兴废百千万事。大概光风霁月之时少，阴雨晦冥之时多;衣冠文物之时少，干戈征战之时多。看破治乱两途，不出阴阳一理。中",
+      "hui": 21,
+      "event": "宋江怒杀阎婆惜",
+      "heroes": [
+        "宋江",
+        "阎婆惜"
+      ],
+      "shared_4gram": 0,
+      "relation": "plot_inherited",
+      "confidence": "A",
+      "evidence": "宣和遗事：宋江撞见阎婆惜与吴伟偎依，怒杀二人，题诗\"杀了阎婆惜，寰中显姓名\"。水浒改为只杀阎婆惜，删吴伟，改于第二十一回。"
+    },
+    {
+      "id": "P020",
+      "src": "dxyhs",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "待询问其人见了徽宗大怒此人是谁乃张天觉也言道陛下看看遭囚被虏由自信邪臣向此行踏你也恋不得皇宫内苑宠不得皓齿朱颜虐不得万邦黎庶有分离乡背井向五国城忍寒受饿言讫用手扯住天子衣望天门与一推林灵素叫苦不迭把天子推下九天来不知天子性命如何金风未动蝉先",
+      "hui": 31,
+      "event": "血溅鸳鸯楼",
+      "heroes": [],
+      "shared_4gram": 7,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 7 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P004",
+      "src": "dxyhs",
+      "src_anchor": "九天玄女庙得天书",
+      "src_excerpt": "诗曰： \t　　暂时罢鼓膝间琴，闲把遗编阅古今。 \t　　常叹贤君务勤俭，深悲庸主事荒淫。 \t　　致平端自亲贤哲，稔乱无非近佞臣。 \t　　说破兴亡多少事，高山流水有知音。 \t　　茫茫往古，继继来今，上下三千余年，兴废百千万事。大概光风霁月之时少，阴雨晦冥之时多;衣冠文物之时少，干戈征战之时多。看破治乱两途，不出阴阳一理。中",
+      "hui": 42,
+      "event": "还道村受三卷天书",
+      "heroes": [
+        "宋江"
+      ],
+      "shared_4gram": 0,
+      "relation": "plot_inherited",
+      "confidence": "A",
+      "evidence": "宣和遗事：宋江躲于屋后九天玄女庙，香案上得天书一卷列三十六人姓名。水浒第四十二回为还道村玄女庙授三卷天书，名单扩为一百零八人。"
+    },
+    {
+      "id": "P014",
+      "src": "dxyhs",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "城县石碣村住姓晁名盖人号唤他做铁天王带领得吴加亮刘唐秦明阮进阮通阮小七燕青等张大年令花约供指了文字将召保知在行着文字下郓城县根捉有那押司宋江接了文字看了星夜走去石碣村报与晁盖几个暮夜逃走去也宋江天晓却将文字呈押差董平引手三十人至右碣村根捕不",
+      "hui": 44,
+      "event": "第44回",
+      "heroes": [
+        "燕青",
+        "秦明",
+        "刘唐",
+        "阮小七",
+        "宋江",
+        "董平"
+      ],
+      "shared_4gram": 4,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 4 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P018",
+      "src": "dxyhs",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "十六将往朝东岳赛取金炉心愿朝廷无其奈何只得出榜招谕宋江等有那元帅姓张名叔夜的是世代将门之子前来招诱宋江和那三十六人归顺宋朝各受武功大夫诰敕分注诸路巡检使去也因此三路之寇悉得平定后遣宋江收方腊有功封节度使宣和五年七月初一日昧爽文武百官聚集于宫",
+      "hui": 54,
+      "event": "第54回",
+      "heroes": [
+        "宋江"
+      ],
+      "shared_4gram": 9,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 9 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P013",
+      "src": "dxyhs",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "送往卫州交管正行次撞着一汉高叫杨指使杨志抬头一觑却认得孙立指使孙立惊怪哥怎恁地犯罪杨志把那卖刀杀人的事一一说与孙立道罢各人自去那孙立心中思忖杨志因等候我了犯着这罪当初结义之时誓在厄难相救只得星夜奔归京师报与李进义等知道杨志犯罪因由这李进义同",
+      "hui": 63,
+      "event": "第63回",
+      "heroes": [
+        "孙立",
+        "杨志"
+      ],
+      "shared_4gram": 4,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 4 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P016",
+      "src": "dxyhs",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "上宋江才展开看了认得是个天书又写着三十六个姓名又题着四句道诗曰破国因山木兵刀用水工一朝充将领海内耸威风宋江读了口中不说心下思量这四句分明是说了我里姓名又把开天书一卷仔细观觑见有三十六将的姓名那三十六人道个甚底智多星吴加亮玉麒麟卢进义青面兽杨",
+      "hui": 71,
+      "event": "大聚义 / 英雄排座次",
+      "heroes": [
+        "林冲",
+        "花荣",
+        "秦明",
+        "刘唐",
+        "阮小七",
+        "孙立"
+      ],
+      "shared_4gram": 43,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 43 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P012",
+      "src": "dxyhs",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "物如人或如犬其色黑不能辨眉目夜出掠小儿食之至二秋乃息二月童贯进太师谭稹加节度宣和四年春正月加梁师成开府自来唤内侍官为宗臣是时童贯为太师领枢密院恩同宰相师成为开府亦与宰相同职每春秋大燕巍然坐于执政之上与人主讲劝酬之礼且家臣为师傅于义尤悖童贯领",
+      "hui": 81,
+      "event": "第81回",
+      "heroes": [
+        "林冲",
+        "杨志"
+      ],
+      "shared_4gram": 4,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 4 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P005",
+      "src": "dxyhs",
+      "src_anchor": "三十六将归聚张叔夜招降征方腊",
+      "src_excerpt": "诗曰： \t　　暂时罢鼓膝间琴，闲把遗编阅古今。 \t　　常叹贤君务勤俭，深悲庸主事荒淫。 \t　　致平端自亲贤哲，稔乱无非近佞臣。 \t　　说破兴亡多少事，高山流水有知音。 \t　　茫茫往古，继继来今，上下三千余年，兴废百千万事。大概光风霁月之时少，阴雨晦冥之时多;衣冠文物之时少，干戈征战之时多。看破治乱两途，不出阴阳一理。中",
+      "hui": 82,
+      "event": "梁山泊分金大买市",
+      "heroes": [
+        "宋江"
+      ],
+      "shared_4gram": 0,
+      "relation": "plot_inherited",
+      "confidence": "A",
+      "evidence": "宣和遗事：天书点三十六将，张叔夜招降，收方腊有功封节度使。水浒扩为百/百二十回，招安延后至八十二回，征方腊在九十回之后，且宋江未封节度使而被赐毒酒。"
+    },
+    {
+      "id": "P017",
+      "src": "dxyhs",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "箭张青没遮拦穆横浪子燕青花和尚鲁智深行者武松铁鞭呼延绰急先锋索超拼命二郎石秀火船工张岑摸着云杜千铁天王晁盖宋江看了人名末后有一行字写道天书付天罡院三十六员猛将使呼保义宋江为帅广行忠义殄灭奸邪宋江看了姓名见梁山泺上见有二十四人和俺共二十五人了",
+      "hui": 112,
+      "event": "第112回",
+      "heroes": [
+        "燕青",
+        "张青",
+        "索超",
+        "李逵",
+        "鲁智深",
+        "戴宗"
+      ],
+      "shared_4gram": 15,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 15 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P015",
+      "src": "dxyhs",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "事诗曰杀了阎婆惜寰中显姓名要捉凶身者梁山泺上寻是时郓城县官司得知帖巡检王成领大兵弓手前去宋公庄上捉宋江争柰宋江已走在屋后九天玄女庙里躲了那王成根捕不获只将宋江的父亲拿去宋江见官兵已退走出庙来拜谢玄女娘娘则见香案上一声响亮打一看时有一卷文书在",
+      "hui": 119,
+      "event": "第119回",
+      "heroes": [
+        "宋江"
+      ],
+      "shared_4gram": 6,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 6 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P011",
+      "src": "zaju_huan_lao_mo",
+      "src_anchor": "李孔目救护梁山人遭陷",
+      "src_excerpt": "《大妇小妻还牢末》（又名《都孔目风雨还牢末》） 元·李致远 （《元曲选》存本）  【楔子宋江开场】 (冲末扮宋江引偻儸上)(宋江词云)家住梁山泊，平生不种田。刀磨风刃快，斧蘸月痕圆。强劫机谋广，潜偷胆力全。弟兄三十六，个个敢争先。某姓宋名江字公明，绰号及时雨。  【情节概要】 东平府孔目李荣祖（字山儿，非李逵）因救护梁",
+      "hui": 0,
+      "event": "（多回累积）",
+      "heroes": [
+        "史进",
+        "刘唐",
+        "李逵"
+      ],
+      "shared_4gram": 0,
+      "relation": "plot_inherited",
+      "confidence": "B",
+      "evidence": "此剧以官府小吏（孔目）救护梁山好汉反遭迫害为戏剧冲突，水浒中宋江（押司）、朱仝（都头）、雷横（都头）、叶孔目等人物形象均延续此脉络。"
+    },
+    {
+      "id": "P007",
+      "src": "zaju_huanghua_yu",
+      "src_anchor": "权豪强占人妻",
+      "src_excerpt": "《鲁智深喜赏黄花峪》 元·无名氏 （《孤本元明杂剧》存本）  【第一折宋江开场】 (冲末扮宋江同吴学究引小偻儸上，云)自小为司吏，结识英雄辈。姓宋本名江。绰名顺天呼保义。某姓宋名江，字公明，曾为郓州郓城县把笔司吏。因带酒杀了阎婆惜，迭配江州牢城营。因打梁山过，遇着哥哥晁盖，打开了枷锁，救某上梁山，就让某第二把交椅坐。哥",
+      "hui": 7,
+      "event": "豹子头误入白虎堂",
+      "heroes": [
+        "林冲"
+      ],
+      "shared_4gram": 0,
+      "relation": "plot_inherited",
+      "confidence": "B",
+      "evidence": "《黄花峪》蔡衙内\"打死人如揭瓦\"强占李幼奴。学界认为\"权豪势要强占人妻\"是元水浒戏的固定母题，被《水浒》改造为第七回高衙内强占林娘子桥段。"
+    },
+    {
+      "id": "P051",
+      "src": "zaju_huanghua_yu",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "鲁智深喜赏黄花峪元无名氏孤本元明杂剧存本第一折宋江开场冲末扮宋江同吴学究引小偻儸上云自小为司吏结识英雄辈姓宋本名江绰名顺天呼保义某姓宋名江字公明曾为郓州郓城县把笔司吏因带酒杀了阎婆惜迭配江州牢城营因打梁山过遇着哥哥晁盖打开了枷锁救某上梁山就",
+      "hui": 78,
+      "event": "第78回",
+      "heroes": [
+        "鲁智深",
+        "宋江"
+      ],
+      "shared_4gram": 11,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 11 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P050",
+      "src": "zaju_likui_fu_jing",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "梁山泊李逵负荆元康进之录自元曲选录入为情节原曲段落拼合楔子冲末扮宋江同外扮吴学究净扮鲁智深领卒子上宋江诗云涧水潺潺绕寨门野花斜插渗青巾杏黄旗上七个字替天行道救生民某姓宋名江字公明绰号顺天呼保义者是也曾为郓州郓城县把笔司吏因带酒杀了阎婆惜迭配",
+      "hui": 36,
+      "event": "第36回",
+      "heroes": [
+        "李逵",
+        "鲁智深",
+        "宋江"
+      ],
+      "shared_4gram": 5,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 5 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P006",
+      "src": "zaju_likui_fu_jing",
+      "src_anchor": "冒名抢亲/砍旗负荆",
+      "src_excerpt": "《梁山泊李逵负荆》 元·康进之 （录自《元曲选》，录入为情节+原曲段落拼合）  【楔子】 (冲末扮宋江，同外扮吴学究，净扮鲁智深，领卒子上。宋江诗云)涧水潺潺绕寨门，野花斜插渗青巾。杏黄旗上七个字，替天行道救生民。某，姓宋名江，字公明，绰号顺天呼保义者是也。曾为郓州郓城县把笔司吏，因带酒杀了阎婆惜，迭配江州牢城。路经这",
+      "hui": 73,
+      "event": "黑旋风乔捉鬼 梁山泊双献头",
+      "heroes": [
+        "李逵",
+        "宋江",
+        "鲁智深"
+      ],
+      "shared_4gram": 3,
+      "relation": "plot_inherited",
+      "confidence": "A",
+      "evidence": "康进之《李逵负荆》：宋刚鲁智恩冒名抢满堂娇，李逵怒砍杏黄旗，下山对质后负荆。水浒第七十三回情节直接据此改写，只是把满堂娇改为刘太公之女，歹徒改名。"
+    },
+    {
+      "id": "P021",
+      "src": "zaju_shuang_xian_gong",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "子上则一刀搽旦云好汉挠我性命正末唱上小楼不要你将没作有则要你贪花恋酒我则见那一来一往一上一下摆脑摇头则为你这个不识羞和那个贼禽兽双双的成就云我不杀你你可唱波供旦云唱甚么那正末做揪搽旦科唱可唱你那quot眉儿镇常扢皱quot正末杀搽旦科云我把",
+      "hui": 17,
+      "event": "第17回",
+      "heroes": [],
+      "shared_4gram": 6,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 6 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P023",
+      "src": "zaju_shuang_xian_gong",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "黑旋风李逵杀了这白衙内来诗云从来白衙内做事忒狡猾拐了郭念儿一步一勾搭恼犯黑旋风登时人性发随你问旁人该杀不该杀写是写了不免将着这二颗头到梁山油上宋江哥哥根前献功去来唱小梁州谁着你一世为人将妇女偷见不得皓齿星眸你道有闲茶浪酒结绸缎天缘楱不枉了好",
+      "hui": 56,
+      "event": "第56回",
+      "heroes": [
+        "李逵",
+        "宋江"
+      ],
+      "shared_4gram": 4,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 4 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P022",
+      "src": "zaju_shuang_xian_gong",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "哥哥牢内囚风也不透做揪白行内科云我不杀你你唱波白衙内云着我唱甚么正来唱可唱你那quot夫妻每醉了还依旧quot正末杀白衙内科云我把两颗头都拿将来做一搭里放者再将他衣服上扯下一块来捻做个纸捻去腔子里蘸着热血在白粉壁上写道是宋江手下第十三个头领",
+      "hui": 61,
+      "event": "第61回",
+      "heroes": [
+        "李逵",
+        "宋江"
+      ],
+      "shared_4gram": 5,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 5 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P025",
+      "src": "zaju_shuang_xian_gong",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "神行太保戴宗打探李山儿消息说孙孔目兄弟到得泰安神州庙半山里草参亭子上回来早不见了他的浑家元来是被白衙内拐骗去了想这厮是个有权有势的人李山儿一个如何近傍得他为此与吴学究星夜领一枝人马前来接应幸喜孙孔目兄弟已先来了单不知李山儿的下落大小偻儸作速",
+      "hui": 73,
+      "event": "第73回",
+      "heroes": [
+        "戴宗",
+        "宋江"
+      ],
+      "shared_4gram": 6,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 6 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P008",
+      "src": "zaju_shuang_xian_gong",
+      "src_anchor": "泰安神州烧香护臂",
+      "src_excerpt": "那里，这早晚才来？（白衙内云）我也忙。你唤我做甚么？（搽旦云）如今孙孔目同我要往泰安神州烧香去，他说在火炉店里安下。我有一计，你便先去那里等着我。我有两句儿唱，你则听着，我便道：&quot;眉儿镇常扢皱&quot;，你便唱&quot;夫妻每醉了还依旧&quot;；我叫&quot;衙内&quot;，你叫&quot;念儿&quot;。我和你两个跳上马便走。（白衙内云）此计大妙。你先到那里，你便等着我；",
+      "hui": 74,
+      "event": "燕青智扑擎天柱",
+      "heroes": [
+        "李逵",
+        "燕青"
+      ],
+      "shared_4gram": 0,
+      "relation": "plot_inherited",
+      "confidence": "B",
+      "evidence": "《双献功》写泰安神州烧香，李逵化装护臂；水浒第七十四回燕青智扑擎天柱任原，地点同为泰安州东岳庙，李逵同去大闹寿张县，场景重合。"
+    },
+    {
+      "id": "P024",
+      "src": "zaju_shuang_xian_gong",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "风流幺篇虽则是婚姻注定前生有到的我黑爹爹一笔都匀那里也月下客冰上叟多管是杀人的领袖云俺如今回去见宋江哥哥他问道quot山儿你那泰安州的事怎么了quot我可也不说别的唱则献上这血沥沥两颗活人头下宋江引吴学究孙孔目同卒子上宋江云某乃宋江是也因为",
+      "hui": 120,
+      "event": "魂聚蓼儿洼",
+      "heroes": [
+        "戴宗",
+        "宋江"
+      ],
+      "shared_4gram": 5,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 5 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P031",
+      "src": "zaju_yanqing_boyu",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "一顿你又叫我怎的搽旦云这也是你自家的悔气着那厮打了我好不心疼哩我如今整备下好酒好食与你到后花园亭子上吃几杯酒一来就与你陪话二来和你取一回快乐杨衙内云你那里是我姐姐就是我的娘哩你只不要耍我搽旦云我怎么耍你我和你吃酒去来杨衙内云去去去同下正末拿",
+      "hui": 24,
+      "event": "第24回",
+      "heroes": [],
+      "shared_4gram": 6,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 6 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P026",
+      "src": "zaju_yanqing_boyu",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "冲末扮宋江同外扮吴学究领偻儸上宋江诗云幼小郓城为司吏因杀阎婆遭迭配宋江表字本公明人号顺天呼保义某姓宋名江字公明绰号顺天呼保义者也曾为济州郓城县把笔悟史因带酒杀了阎婆惜一脚踢翻烛台延烧了官房被官军拿某到官脊杖了六十迭配江州牢城军营因打梁山经过",
+      "hui": 32,
+      "event": "第32回",
+      "heroes": [
+        "宋江"
+      ],
+      "shared_4gram": 7,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 7 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P028",
+      "src": "zaju_yanqing_boyu",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "云哥也你请坐你是我重生的父母再养的爷娘请受您兄弟八拜咱正末做拜科燕二做扯科云且住我才医好了的眼不争你拜下去这血脉往上行就也无效了正末云恁的呵等我跪一跪权当作八拜燕二云君子你那里乡贯姓甚名谁正末云哥您兄弟不是歹人燕二云谁道你是歹人哩正末云哥也",
+      "hui": 43,
+      "event": "第43回",
+      "heroes": [
+        "燕青",
+        "宋江"
+      ],
+      "shared_4gram": 5,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 5 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P032",
+      "src": "zaju_yanqing_boyu",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "道悔不当初你可便恁时节省同燕大下杨衙内云大姐你方才放心了把这两个放在牢中牢死了俺两个做了永远夫妻可不快活也搽旦云衙内只等结果了他咱就没人管的着了恁着我这一片好心天也与俺这条儿糖吃同下第四折燕仁上云自家燕顺便是自与燕青分别后到于梁山泊上投见宋",
+      "hui": 47,
+      "event": "第47回",
+      "heroes": [
+        "燕青",
+        "燕顺",
+        "宋江"
+      ],
+      "shared_4gram": 4,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 4 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P030",
+      "src": "zaju_yanqing_boyu",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "你休怕者唱看那厮眼朦胧正着昏我将这大拇指去那厮人中里掐带云主人家有水将的些来唱新汲水那厮面皮上喷杨衙内做叹气科正末云哥也他不死哩唱那厮热拖拖的才出气杨衙内舒身科燕大云他早翻过身哩正末云他怎么肯死唱那厮他跌躞躞的恰还魂杨衙内做嘴脸调旦科正末云",
+      "hui": 61,
+      "event": "第61回",
+      "heroes": [
+        "燕青",
+        "宋江"
+      ],
+      "shared_4gram": 8,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 8 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P034",
+      "src": "zaju_yanqing_boyu",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "寨见我宋江哥哥去来唱离亭宴歇指煞半合儿歇息在牛王庙一直的走到梁山泊若见俺公明太保还了俺这石榴色茜红巾柳叶砌乌油甲荷叶样烟毡帽百炼钢打就的长朴刀五色绒刺下的香绵袄带云便是俺大哥也唱一齐的去那皖子城中送老上稍里不眠花下场头少不的落一会草宋江领偻",
+      "hui": 63,
+      "event": "第63回",
+      "heroes": [
+        "燕青",
+        "燕顺",
+        "戴宗",
+        "宋江"
+      ],
+      "shared_4gram": 5,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 5 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P027",
+      "src": "zaju_yanqing_boyu",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "了四十日宋江云你误了我几日假限正末云误了哥哥十日假限宋江云你知道我的军令误了我一日假限该咱处正末云笞四十宋江云误了两日呢正末云杖八十宋江云误了三日呢正末云处斩宋江云你误了几日正末云我误了哥哥十日假限宋江云你误了十日假限更待干罢小偻儸与我将燕",
+      "hui": 71,
+      "event": "大聚义 / 英雄排座次",
+      "heroes": [
+        "燕青",
+        "宋江"
+      ],
+      "shared_4gram": 4,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 4 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P033",
+      "src": "zaju_yanqing_boyu",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "难逃燕大云兄弟我被那奸夫淫妇险些儿断送了也正末云哥也我和你赶那厮去来同下燕二上云我趁着这月色微明连夜趱到汴梁救拔我那燕青兄弟去也正末上做撞见科喝云咄那里来的是甚么人燕二云你说你是那个正末云则我梁山泊好汉燕青的便是燕二云兄弟我便是卷毛虎燕顺燕",
+      "hui": 73,
+      "event": "第73回",
+      "heroes": [
+        "燕青",
+        "燕顺"
+      ],
+      "shared_4gram": 5,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 5 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P009",
+      "src": "zaju_yanqing_boyu",
+      "src_anchor": "燕青博鱼/同乐院痛打杨衙内",
+      "src_excerpt": "(冲末扮宋江同外扮吴学究领偻儸上)(宋江诗云)幼小郓城为司吏，因杀阎婆遭迭配。宋江表字本公明，人号顺天呼保义。某姓宋名江，字公明，绰号顺天呼保义者也。曾为济州郓城县把笔悟史，因带酒杀了阎婆惜，一脚踢翻烛台，延烧了官房，被官军拿某到官，脊杖了六十，迭配江州牢城军营。因打梁山经过，遇着晁盖哥哥，打加枷锁，救谋上山，就让某第",
+      "hui": 74,
+      "event": "燕青智扑擎天柱",
+      "heroes": [
+        "燕青"
+      ],
+      "shared_4gram": 0,
+      "relation": "plot_inherited",
+      "confidence": "B",
+      "evidence": "此剧是燕青为主角的仅存元杂剧，水浒中燕青的\"相扑\"\"市井气\"\"博鱼/博钱\"细节与此剧有血脉关系，但具体情节被重构。"
+    },
+    {
+      "id": "P029",
+      "src": "zaju_yanqing_boyu",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "则我是宋江手下第十五个头领浪子燕青哥也您兄弟不是歹人燕二云你不是歹人是贼的阿公哩君子你多大年纪也正末云您兄弟二十五岁了燕二云我痴长你两岁我认义你做个兄弟你意下如何正末云哥哥不弃嫌呵情愿与哥哥做个兄弟燕二云我听的说宋江哥哥手下三十六个头领多有",
+      "hui": 85,
+      "event": "第85回",
+      "heroes": [
+        "燕青",
+        "宋江"
+      ],
+      "shared_4gram": 4,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 4 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P035",
+      "src": "zaju_yanqing_boyu",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "儸冲上云某乃宋江是也今有兄弟燕青着绊有燕顺告假救他去了某如今亲领一枝军马接应燕青去来做见科宋江云宋青兄弟这桩事我遣神行太保戴宗打探明白早已知道也小偻儸将这奸夫淫妇与我绳缠索绑拿上山去缚在花标树上杀坏了者一面敲牛宰马杀羊造酒做一个庆喜的筵席词",
+      "hui": 120,
+      "event": "魂聚蓼儿洼",
+      "heroes": [
+        "燕青",
+        "燕顺",
+        "戴宗",
+        "宋江"
+      ],
+      "shared_4gram": 6,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 6 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P048",
+      "src": "zaju_zheng_bao_en",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "姓字您兄弟在姐姐房门前鞋底鸣脚步响姐姐在房里听得则道是他的通判相公来开的房门您兄弟蓦进门去灯烛直下见了您兄弟身材凛凛相貌堂堂教那姐姐可是怕也不怕我便道姐姐休惊莫怕则我是宋江手下第十三个头领弓手花荣我正与姐姐所说向上事被那丁都管和王腊梅搬调着",
+      "hui": 13,
+      "event": "第13回",
+      "heroes": [
+        "花荣",
+        "关胜",
+        "宋江"
+      ],
+      "shared_4gram": 4,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 4 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P040",
+      "src": "zaju_zheng_bao_en",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "娇姐姐呵怎了兀那厮你听着有仇的是丁都管和王腊梅有恩的是我那千娇姐姐切切的记在心上诗云正是虎着痛箭难舒爪鱼遭丝网怎番身运去打杀无义汉时来金赠有恩人下搽旦云呸傻弟子孩儿他每都去了你还不起来做甚么丁都管做起身科云倒一觉好睡也吃你打搅醒了我搽旦云咱",
+      "hui": 17,
+      "event": "第17回",
+      "heroes": [
+        "关胜",
+        "宋江",
+        "徐宁"
+      ],
+      "shared_4gram": 8,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 8 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P037",
+      "src": "zaju_zheng_bao_en",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "公明quot聚义的三十六个英雄汉那一个不应天上恶魔星绣衲袄千重花艳茜红巾万缕霞生肩担的无非长刀大斧腰挂的尽是鹊画雕翎赢了时舍性命大道上赶官军若输呵芦苇中潜身抹不着我影某宋江是也俺这梁山上离东平府不远每月差个头领下山打探事情去前者差大刀关胜下",
+      "hui": 20,
+      "event": "第20回",
+      "heroes": [
+        "花荣",
+        "关胜",
+        "宋江",
+        "徐宁"
+      ],
+      "shared_4gram": 5,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 5 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P049",
+      "src": "zaju_zheng_bao_en",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "丈波怎当他只留支剌信口开合秃厮儿如今这杀丈夫的这般结果有奸夫的可怎生折磨兄弟也我吃了那无情棒可也图甚么如今那做官的那里是萧何也波真个圣药王我可也千不合万不合一时间做事忒多罗没来由结识这个认义那个我正是识人多者是非多舌也罗平地起风波花荣云姐姐",
+      "hui": 21,
+      "event": "宋江杀惜",
+      "heroes": [
+        "花荣",
+        "关胜",
+        "宋江"
+      ],
+      "shared_4gram": 4,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 4 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P039",
+      "src": "zaju_zheng_bao_en",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "云你叫我怎么搽旦云姐姐一个卖狗肉的大汉打死了俺丁都管也正旦云在那里待我看咱好一个壮士也兀那汉子你为甚么打死俺家的人关胜云那壁娘子息怒听小人分辩恰才我道官人娘子买些香喷喷的狗肉吃那厮便道我是伴当他是娘子你怎么赶着我叫官人我便道那个伴当和娘子一",
+      "hui": 35,
+      "event": "第35回",
+      "heroes": [
+        "关胜",
+        "宋江"
+      ],
+      "shared_4gram": 5,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 5 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P041",
+      "src": "zaju_zheng_bao_en",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "这里说话也不是自在处咱去稍房里说话去来丁都管云小奶奶也说的是我和你再吃一杯儿咱同下第一折徐宁薄蓝上云行不更名坐不改姓某宋江哥哥手下第十二个头领金枪教手徐宁是也俺宋江哥哥每一月差一个头领下山去打探事情头一个月差关胜下山去了个月程期不见上山宋江",
+      "hui": 39,
+      "event": "第39回",
+      "heroes": [
+        "关胜",
+        "宋江",
+        "徐宁"
+      ],
+      "shared_4gram": 7,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 7 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P047",
+      "src": "zaju_zheng_bao_en",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "拿住我说我是贼叫将千娇姐姐来那姐姐放了我去又认我做兄弟又与我一只金钗做盘缠我问其故他说恰才那个是丁都管王腊梅他两个有些不伶俐的勾当姐夫是赵通判姐姐是李千娇一对儿女是金郎玉姐如今我打听千娇姐姐有难您兄弟问哥哥告了半个月假限背着些金珠财宝搭救他",
+      "hui": 43,
+      "event": "第43回",
+      "heroes": [
+        "花荣",
+        "宋江"
+      ],
+      "shared_4gram": 4,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 4 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P045",
+      "src": "zaju_zheng_bao_en",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "我那千娇姐姐早出罗网之灾徐宁云一点粥落地愿的俺千娇姐姐早脱罗网之灾店小二云喏报报报众云怎的店小二云大家耍子店小二做一手拿一碗口里一碗递科徐宁云哥哥怎生认的千娇姐姐来关胜云你两个兄弟不知前一月奉宋江哥哥的将令下的山来到权家店支家口不幸染了一场",
+      "hui": 49,
+      "event": "第49回",
+      "heroes": [
+        "关胜",
+        "宋江",
+        "徐宁"
+      ],
+      "shared_4gram": 6,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 6 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P036",
+      "src": "zaju_zheng_bao_en",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "x15x20x列表循环随机播放单曲循环单曲播放您的浏览器不支持audio元素杂剧争报恩三虎下山作者未知作者楔子冲末扮宋江引偻儸上宋江词云只因误杀阎婆惜逃出郓州城占下了八百里梁山泊搭造起百十座水兵营忠义堂高搠杏黄旗一面上写着quot替天行道宋",
+      "hui": 58,
+      "event": "三山聚义打青州",
+      "heroes": [
+        "关胜",
+        "宋江"
+      ],
+      "shared_4gram": 5,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 5 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P042",
+      "src": "zaju_zheng_bao_en",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "哥哥又差某徐宁接应关胜去到这权家店支家口得了一场冻天行的证候一卧不起在那店小二哥家安下房宿饭钱都欠了他的将我赶将出末白日里在那街市上讨饭吃夜晚来在那大人家稍房里安下天色晚了也我掩上这门歇息咱做睡科丁都管同搽旦上丁都管云小奶奶这里不是说话的所",
+      "hui": 59,
+      "event": "第59回",
+      "heroes": [
+        "关胜",
+        "宋江",
+        "徐宁"
+      ],
+      "shared_4gram": 4,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 4 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P046",
+      "src": "zaju_zheng_bao_en",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "山搭救他去因此上认的千娇姐姐不知您两个兄弟怎生认的他来徐宁云哥哥听您兄弟说我怎生认的那千娇姐姐前一月宋江哥哥差你下山去了个月期程不上山来宋江哥哥道徐宁你怎生不接应您关胜去以此又差某下山某到的那权家店支家口也得了一场冻天行的证候在那店小二家安",
+      "hui": 60,
+      "event": "晁盖中箭 / 曾头市",
+      "heroes": [
+        "花荣",
+        "关胜",
+        "宋江",
+        "徐宁"
+      ],
+      "shared_4gram": 4,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 4 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P010",
+      "src": "zaju_zheng_bao_en",
+      "src_anchor": "关胜徐宁花荣先后被救/法场相救",
+      "src_excerpt": "(冲末扮宋江引偻儸上)(宋江词云)只因误杀阎婆惜，逃出郓州城，占下了八百里梁山泊，搭造起百十座水兵营，忠义堂高搠杏黄旗一面，上写着&amp;quot;替天行道宋公明\" /> 古文岛 推荐 诗文 名句 古籍 作者 字词 APP 登录 0:00 / 0:00(朗诵：) 0 播放列表  0.25x 0.5x 0.75x 1.",
+      "hui": 62,
+      "event": "放冷箭燕青救主 劫法场石秀跳楼",
+      "heroes": [
+        "关胜",
+        "徐宁",
+        "花荣"
+      ],
+      "shared_4gram": 2,
+      "relation": "plot_inherited",
+      "confidence": "B",
+      "evidence": "此剧\"三虎下山法场救人\"是元水浒戏常见结构，水浒中劫法场（石秀跳楼、江州）亦延续此结构，但人物与情节已改写。"
+    },
+    {
+      "id": "P038",
+      "src": "zaju_zheng_bao_en",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "的吃关胜在古道云卖狗肉卖狗肉这里也无人某乃大刀关胜的便是奉宋江哥哥的将令每一个月差一个头领下山打探事情那一个月肯分的差着我离了梁山来到这权家店支家口染了一场病险些儿丢了性命甫能将息我这病好也要回那梁山去争奈手中无盘缠昨日晚间偷了人家一只狗煮",
+      "hui": 67,
+      "event": "第67回",
+      "heroes": [
+        "关胜",
+        "宋江"
+      ],
+      "shared_4gram": 4,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 4 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P044",
+      "src": "zaju_zheng_bao_en",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "过的好敢则是十年五载四分五落直这般踢腾了些旧窝巢徐宁云早则不曾冲撞着姐姐姐姐休怪受您兄弟两拜咱做拜科正旦背云你那里人氏姓甚名准徐宁云我是梁山泊宋江哥哥手下第十二个头领金枪教手徐宁你兄弟不是歹人那正旦云元来和关胜一伙都是梁山泊上好汉救人须救彻",
+      "hui": 93,
+      "event": "第93回",
+      "heroes": [
+        "关胜",
+        "宋江",
+        "徐宁"
+      ],
+      "shared_4gram": 6,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 6 字，可能是共用表述或互文片段，需人工复核。"
+    },
+    {
+      "id": "P043",
+      "src": "zaju_zheng_bao_en",
+      "src_anchor": "(滑窗检测)",
+      "src_excerpt": "姐姐李千娇你见我怎生来不肯屈驴腰徐宁云那壁厢是姐姐哩受你兄弟两拜咱搽旦云不中他是徐宁哩正旦唱喜得间别来身快乐做甚买卖度的昏朝敢则是靠些赌官博徐宁云您兄弟争奈亦手空拳不曾探望得姐姐休怪您兄弟也正旦唱幺篇你道赤手空拳本利少怕见我面情薄往日家私甚",
+      "hui": 113,
+      "event": "第113回",
+      "heroes": [
+        "关胜",
+        "宋江",
+        "徐宁"
+      ],
+      "shared_4gram": 4,
+      "relation": "ngram_overlap",
+      "confidence": "C",
+      "evidence": "4-gram 重叠 4 字，可能是共用表述或互文片段，需人工复核。"
+    }
+  ],
+  "lost_plays_note": [
+    "高文秀《黑旋风诗酒丽春园》《黑旋风大闹牡丹园》《黑旋风敷衍刘耍和》《黑旋风斗鸡会》《黑旋风穷风月》《双献头武松大报仇》",
+    "康进之《黑旋风老收心》",
+    "红字李二《折担儿武松打虎》《板踏儿黑旋风》《窄袖儿武松》《全火儿张弘》",
+    "杨显之《黑旋风乔断案》",
+    "李文蔚《燕青射雁》"
+  ]
+}

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>互文成书网络 · 水浒传数字人文</title>
+<link rel="stylesheet" href="css/style.css">
+<script src="vendor/echarts.min.js"></script>
+<script src="js/registry.js"></script>
+<style>
+.wrap{max-width:1180px;margin:0 auto;padding:26px 22px 80px;}
+.page-title{font-family:var(--font-serif);font-size:30px;color:var(--vermilion-deep);letter-spacing:4px;margin-bottom:6px;}
+.page-sub{color:var(--ink-muted);font-size:14px;line-height:1.9;margin-bottom:18px;max-width:940px;}
+.panel{background:var(--paper-warm);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:18px;}
+.panel h3{font-family:var(--font-serif);font-size:18px;color:var(--vermilion-deep);margin-bottom:10px;letter-spacing:2px;}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.tab{padding:7px 16px;border:1px solid var(--border);border-radius:18px;background:#fff;cursor:pointer;font-size:14px;}
+.tab.on{background:var(--vermilion-deep);color:#fff;border-color:var(--vermilion-deep);}
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:14px;}
+.stat{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center;}
+.stat .n{font-family:var(--font-serif);font-size:28px;color:var(--vermilion-deep);}
+.stat .l{font-size:12px;color:var(--ink-muted);margin-top:4px;}
+#net{width:100%;height:560px;}
+#evolve{width:100%;height:440px;}
+.card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:10px;}
+.card .hd{font-family:var(--font-serif);font-size:15px;color:var(--ink);margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.card .src-badge{font-size:12px;padding:1px 8px;border-radius:10px;background:var(--paper-warm);color:var(--vermilion-deep);border:1px solid var(--vermilion-deep);}
+.card .conf{font-size:11px;padding:1px 6px;border-radius:8px;}
+.cA{background:#e3efe4;color:#2f5d50;}
+.cB{background:#eef2f7;color:#2b4b7d;}
+.cC{background:#f7efe3;color:#8a5a1c;}
+.mem{display:inline-block;padding:2px 8px;border-radius:12px;background:var(--paper-warm);font-size:12px;margin:2px 4px 2px 0;}
+.ev{font-size:13px;color:var(--ink-light);line-height:1.85;}
+.ex{font-size:12.5px;color:var(--ink-muted);line-height:1.8;margin-top:6px;padding:8px 10px;border-left:2px solid #d7c6b1;background:#fbf5ec;border-radius:0 4px 4px 0;}
+table.mini{width:100%;border-collapse:collapse;font-size:13px;}
+table.mini th,table.mini td{border-bottom:1px solid var(--border);padding:5px 8px;text-align:left;vertical-align:top;}
+table.mini th{color:var(--ink-muted);font-weight:500;}
+.hint{font-size:12.5px;color:var(--ink-muted);line-height:1.9;margin-top:8px;}
+.arrow{color:var(--vermilion-deep);font-weight:bold;margin:0 4px;}
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.chip{padding:5px 12px;border-radius:16px;background:#fff;border:1px solid var(--border);font-size:13px;cursor:pointer;}
+.chip.on{background:var(--vermilion-deep);color:#fff;border-color:var(--vermilion-deep);}
+#plist{max-height:560px;overflow-y:auto;padding-right:6px;}
+@media(max-width:720px){.stat-row{grid-template-columns:repeat(2,1fr);}#net{height:460px;}#evolve{height:380px;}}
+</style>
+<link rel="icon" href="favicon.ico">
+</head>
+<body>
+<header class="topbar">
+  <div class="logo"><span class="seal">水</span><span>水浒传本体论</span></div>
+  <nav class="nav-links" id="nav">
+    <a href="index.html">首页</a>
+    <a href="read.html">版本阅读</a>
+    <a href="diff.html">异文对照</a>
+    <a href="search.html">批注检索</a>
+    <span class="nav-dd">
+      <span class="nav-dd-toggle" tabindex="0">数字研究 <b>▾</b></span>
+      <span class="nav-dd-menu">
+        <a href="stemma.html">版本谱系树</a>
+        <a href="reception.html">评点接受史</a>
+        <a href="emotion.html">情感曲线</a>
+        <a href="network.html">网络演化</a>
+        <a href="stylometry.html">文体计量</a>
+        <a href="hierarchy.html">梁山编制</a>
+        <a href="verse.html">韵文词牌</a>
+        <a href="couplet.html">回目格律</a>
+        <a href="intertext.html" class="active">互文成书</a>
+        <a href="games.html">互动游戏</a>
+      </span>
+    </span>
+    <a href="data.html">数据开放</a>
+    <a href="about.html">关于本站</a>
+    <a href="roadmap.html">路线图</a>
+  </nav>
+</header>
+
+<div class="wrap">
+  <div class="page-title">互文成书网络</div>
+  <div class="page-sub" id="sub">《水浒传》不是一人一时写定。本页把《大宋宣和遗事》与现存元明水浒杂剧作为成书来源层，
+  通过<strong>人工情节对表</strong>与<strong>4-gram 文字重叠检测</strong>双口径，绘制"源文 → 百二十回本"的互文网络；
+  并列出人名异写演化、存世剧目与佚目。方法、底本与不确定性见文末。</div>
+
+  <div class="stat-row" id="stats"></div>
+
+  <div class="tabs">
+    <div class="tab on" data-v="net">成书网络</div>
+    <div class="tab" data-v="evolve">人名演化</div>
+    <div class="tab" data-v="plist">互文对应</div>
+    <div class="tab" data-v="sources">源文底本</div>
+  </div>
+
+  <div class="panel">
+    <div id="net"></div>
+    <div id="evolve" style="display:none"></div>
+    <div id="plist-wrap" style="display:none">
+      <div class="filter-row" id="filterRow"></div>
+      <div id="plist"></div>
+    </div>
+    <div id="src-wrap" style="display:none">
+      <div id="srclist"></div>
+    </div>
+    <div class="hint" id="pagerHint"></div>
+  </div>
+
+  <div class="panel">
+    <h3>方法与边界</h3>
+    <div class="hint" id="method"></div>
+  </div>
+</div>
+
+<script>
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+let D=null;
+const SRC_COLOR={dxyhs:'#9e2b25'};
+const DEFAULT_SRC='#3f6b5e';
+fetch('data/intertext.json').then(r=>r.json()).then(d=>{D=d;init();}).catch(e=>{document.getElementById('sub').textContent='数据加载失败：'+e;});
+
+function init(){
+  const st=D.meta.stats;
+  document.getElementById('stats').innerHTML=`
+    <div class="stat"><div class="n">${st.sources}</div><div class="l">互文源文</div></div>
+    <div class="stat"><div class="n">${st.manual_confirmed}</div><div class="l">人工确认承继</div></div>
+    <div class="stat"><div class="n">${st.auto_detected}</div><div class="l">ngram 检测候选</div></div>
+    <div class="stat"><div class="n">${st.covered_hui}</div><div class="l">覆盖回次</div></div>
+    <div class="stat"><div class="n">${D.name_mappings.length}</div><div class="l">人名异写</div></div>
+  `;
+  drawNet(); drawEvolve(); renderPlist('all'); renderSources();
+  document.getElementById('method').innerHTML=`
+    <p>·<b>底本：</b>主线以袁无涯百二十回简体版（texts/versions/v120/jian）为对齐基线，回次编号沿用通行章回序。</p>
+    <p>·<b>人工情节对表（置信度 A/B）：</b>杨志卖刀、生辰纲、私放晁天王、宋江杀惜、九天玄女、招安征方腊等核心母题直接据《宣和遗事》原文定位；第七十三回"双献头"情节与康进之《李逵负荆》的直接对应为学界通说，已按 A 级登记；"权豪强占人妻"与第七回高衙内、"泰安烧香"与第七十四回燕青打擂之间为 B 级母题对应。</p>
+    <p>·<b>自动检测（置信度 C）：</b>以 240 字为窗口滑过源文，与每回做 4-gram 集合交集，重叠≥4 的候选列出。<b>4-gram 重叠不区分"直接承继""共用叙事套语""通用汉语词组"</b>，可能产生大量假阳性，请当作线索而非定论。</p>
+    <p>·<b>录入质量说明：</b>《大宋宣和遗事》四集完整录入（国学梦排印本）；《双献功》《燕青博鱼》《争报恩》三剧为全文直录；《李逵负荆》《还牢末》《黄花峪》《仗义疏财》《豹子和尚》五剧因公开站点反爬限制，录入为<b>关键折开场+情节梗概合璧本</b>，在源文可信度栏以 C+/C 标记，不可替代原刻本。待 Step 17 影像并置拿到高清扫本后再做二校。</p>
+    <p>·<b>佚目：</b>高文秀"黑旋风"系列五种、红字李二武松/张弘剧四种等均已失传，仅存剧名。这些佚目本身也是互文证据——它说明水浒人物在《水浒传》成书前已各自拥有独立舞台叙事。</p>
+    <p>·<b>繁简与异写字：</b>本次未做繁体→简体批量转换，原文保留录入面貌，故部分 4-gram 可能因繁简差异漏检；人名异写表仅覆盖学界已知主要条目。</p>
+  `;
+  // tabs
+  document.querySelectorAll('.tab').forEach(t=>{
+    t.onclick=()=>{
+      document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+      t.classList.add('on');
+      const v=t.dataset.v;
+      document.getElementById('net').style.display=v==='net'?'block':'none';
+      document.getElementById('evolve').style.display=v==='evolve'?'block':'none';
+      document.getElementById('plist-wrap').style.display=v==='plist'?'block':'none';
+      document.getElementById('src-wrap').style.display=v==='sources'?'block':'none';
+    };
+  });
+}
+
+function drawNet(){
+  const nodes=[], links=[];
+  const ids=new Set();
+  const bySrc={};
+  D.parallels.forEach(p=>{
+    if(!ids.has(p.src)){ids.add(p.src);nodes.push({name:srcLabel(p.src),category:0,value:30,itemStyle:{color:SRC_COLOR[p.src]||DEFAULT_SRC},label:{show:true,fontSize:13}});}
+    const key='h'+p.hui;
+    if(!ids.has(key)){
+      ids.add(key);
+      nodes.push({name:'第'+p.hui+'回·'+short(p.event),category:1,value:p.confidence==='A'?22:(p.confidence==='B'?16:10),
+        itemStyle:{color:p.confidence==='A'?'#9e2b25':(p.confidence==='B'?'#c97a45':'#9ca3af')},
+        label:{show:p.confidence!=='C',fontSize:10,color:'#555'}});
+    }
+    links.push({source:srcLabel(p.src),target:'第'+p.hui+'回·'+short(p.event),
+      value:p.confidence==='A'?12:(p.confidence==='B'?8:Math.max(p.shared_4gram,3)),
+      lineStyle:{color:p.confidence==='A'?'#9e2b25':(p.confidence==='B'?'#c97a45':'#c9c9c9'),width:p.confidence==='A'?2.4:(p.confidence==='B'?1.6:0.8),opacity:p.confidence==='A'?0.85:(p.confidence==='B'?0.65:0.35)}});
+    bySrc[p.src]=(bySrc[p.src]||0)+1;
+  });
+  const chart=echarts.init(document.getElementById('net'));
+  chart.setOption({
+    tooltip:{formatter:p=>{
+      if(p.dataType==='edge') return esc(p.data.source)+' → '+esc(p.data.target);
+      return esc(p.name);
+    }},
+    legend:[{data:['互文源文','水浒回次（A/B/C置信）'],top:6}],
+    series:[{
+      type:'graph',layout:'force',roam:true,
+      categories:[{name:'互文源文',itemStyle:{color:'#9e2b25'}},{name:'水浒回次'}],
+      data:nodes, links:links,
+      force:{repulsion:380,edgeLength:[60,180],gravity:0.08},
+      label:{position:'right'},
+      lineStyle:{curveness:0.12}
+    }]
+  });
+  document.getElementById('pagerHint').textContent='朱红粗线：学界公认直接承继（置信度 A）；橙色细线：母题强关联（B）；灰色虚线：4-gram 自动检测候选（C），可能含假阳性。节点可拖拽缩放。';
+}
+
+function drawEvolve(){
+  // 用桑基图：宣和遗事异名 → 水浒天罡
+  const nodes=[], links=[], ids=new Set();
+  function add(n,c){if(!ids.has(n)){ids.add(n);nodes.push({name:n,itemStyle:{color:c}});}}
+  D.xuanhe_36.forEach(x=>{
+    add('宣和·'+x.name_old,'#9e2b25');
+    add('水浒·'+x.name_shz,'#3f6b5e');
+    links.push({source:'宣和·'+x.name_old,target:'水浒·'+x.name_shz,value:1,
+      lineStyle:{color:x.name_old.endsWith(x.name_shz)||x.name_shz===x.name_old.split(/[\s·]/).pop()?'#3f6b5e':'#c97a45',opacity:0.6}});
+  });
+  const chart=echarts.init(document.getElementById('evolve'));
+  chart.setOption({
+    tooltip:{},
+    series:[{
+      type:'sankey',data:nodes,links:links,
+      left:30,right:140,top:20,bottom:20,
+      nodeWidth:14,nodeGap:8,
+      label:{fontSize:11},
+      lineStyle:{color:'gradient',curveness:0.5}
+    }]
+  });
+}
+
+function renderPlist(activeSrc){
+  // filter chips
+  const srcs=[{id:'all',label:'全部'}];
+  D.sources.forEach(s=>srcs.push({id:s.id,label:s.label}));
+  document.getElementById('filterRow').innerHTML=srcs.map(s=>`<div class="chip ${s.id===activeSrc?'on':''}" data-s="${s.id}">${esc(s.label)}</div>`).join('');
+  document.querySelectorAll('#filterRow .chip').forEach(c=>{
+    c.onclick=()=>renderPlist(c.dataset.s);
+  });
+  const list=D.parallels.filter(p=>activeSrc==='all'||p.src===activeSrc);
+  document.getElementById('plist').innerHTML=list.map(p=>{
+    const s=D.sources.find(x=>x.id===p.src);
+    return `<div class="card">
+      <div class="hd"><span class="src-badge">${esc(s?s.label:p.src)}</span>
+        <span class="conf c${p.confidence}">${p.confidence==='A'?'A 学界公认':(p.confidence==='B'?'B 母题强关联':'C 自动检测')}</span>
+        <span>→</span>
+        <a href="read.html?vid=v120&ch=${p.hui}" target="_blank">第 ${p.hui} 回 · ${esc(p.event)}</a>
+      </div>
+      <div class="ev">${esc(p.evidence)}</div>
+      ${p.heroes&&p.heroes.length?'<div style="margin-top:6px">'+p.heroes.map(h=>`<span class="mem">${esc(h)}</span>`).join('')+'</div>':''}
+      ${p.src_excerpt?`<div class="ex">源文片段：${esc(p.src_excerpt)}${p.shared_4gram?` <span style="color:#8b1a1a">· 共享 4-gram ${p.shared_4gram}</span>`:''}</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+function renderSources(){
+  document.getElementById('srclist').innerHTML=D.sources.map(s=>`
+    <div class="card">
+      <div class="hd"><span class="src-badge">${esc(s.label)}</span>
+        <span style="color:var(--ink-muted);font-size:12px;">${esc(s.era)} · ${esc(s.author)} · ${esc(s.type)}</span>
+        <span class="conf c${s.credibility.replace('+','')}">录入可信度 ${esc(s.credibility)}</span>
+      </div>
+      <div class="ev">${esc(s.note||'')}</div>
+      <div style="margin-top:6px;font-size:12.5px;color:var(--ink-muted);">
+        录入字数（清洗后汉字）：${s.chars.toLocaleString()}　存世情况：${s.extant==='full'?'全文存世':s.extant}
+        ${s.refs?'　参校：'+s.refs.map(r=>esc(r)).join('；'):''}
+      </div>
+    </div>
+  `).join('') + `<div class="card">
+    <div class="hd"><span class="src-badge">元代佚目</span><span style="color:var(--ink-muted);font-size:12px;">仅存剧名于《录鬼簿》《太和正音谱》</span></div>
+    <div class="ev">《录鬼簿》《太和正音谱》等著录的元代水浒戏中，至少 12 种已无完本传世。这些佚目的存在说明，在《水浒传》成书前，李逵、武松、燕青、张横等人物已拥有独立的杂剧专剧，水浒叙事是在丰富的戏曲/说话土壤上汇总而成的。</div>
+    <div style="margin-top:8px;">${D.lost_plays_note.map(x=>`<span class="mem">${esc(x)}</span>`).join('')}</div>
+  </div>`;
+}
+
+function srcLabel(id){const s=D.sources.find(x=>x.id===id);return s?s.label:id;}
+function short(s){s=String(s||'');return s.length>16?s.slice(0,15)+'…':s;}
+window.addEventListener('resize',()=>{echarts.getInstanceByDom(document.getElementById('net'))?.resize();echarts.getInstanceByDom(document.getElementById('evolve'))?.resize();});
+</script>
+</body>
+</html>
