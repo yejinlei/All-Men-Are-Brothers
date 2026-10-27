@@ -1,0 +1,928 @@
+{
+  "_note": "容与堂本《李卓吾先生批評忠義水滸伝》（日本国立公文書館藏 20 卷）原刻本扫描叶。站内图按 IIIF 尺寸参数压缩，长边 1200px、单文件 ≤ 200KB；orig_full 为原分辨率直链。",
+  "source": "国立公文書館デジタルアーカイブ（National Archives of Japan）",
+  "license": "https://www.digital.archives.go.jp/secondary-use",
+  "books": [
+    {
+      "item_id": "4470170",
+      "volume": "vol01",
+      "volume_label": "卷之一",
+      "label": "李卓吾先生批評忠義水滸伝１",
+      "item_url": "https://www.digital.archives.go.jp/item/4470170",
+      "total_canvases": 87,
+      "pages": [
+        {
+          "leaf": 1,
+          "file": "img/facsimile/rongyutang/vol01_leaf001.jpg",
+          "bytes": 163998,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784016600/iiif/M2019051014484758515_0001.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784016600/iiif/M2019051014484758515_0001.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 2,
+          "file": "img/facsimile/rongyutang/vol01_leaf002.jpg",
+          "bytes": 152055,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784016700/iiif/M2019051014484758515_0002.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784016700/iiif/M2019051014484758515_0002.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 3,
+          "file": "img/facsimile/rongyutang/vol01_leaf003.jpg",
+          "bytes": 169154,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784016800/iiif/M2019051014484758515_0003.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784016800/iiif/M2019051014484758515_0003.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 4,
+          "file": "img/facsimile/rongyutang/vol01_leaf004.jpg",
+          "bytes": 176322,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784016900/iiif/M2019051014484758515_0004.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784016900/iiif/M2019051014484758515_0004.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 5,
+          "file": "img/facsimile/rongyutang/vol01_leaf005.jpg",
+          "bytes": 174478,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017000/iiif/M2019051014484758515_0005.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017000/iiif/M2019051014484758515_0005.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 6,
+          "file": "img/facsimile/rongyutang/vol01_leaf006.jpg",
+          "bytes": 172238,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017100/iiif/M2019051014484758515_0006.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017100/iiif/M2019051014484758515_0006.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 7,
+          "file": "img/facsimile/rongyutang/vol01_leaf007.jpg",
+          "bytes": 169613,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017200/iiif/M2019051014484758515_0007.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017200/iiif/M2019051014484758515_0007.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 8,
+          "file": "img/facsimile/rongyutang/vol01_leaf008.jpg",
+          "bytes": 175117,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017300/iiif/M2019051014484758515_0008.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017300/iiif/M2019051014484758515_0008.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 9,
+          "file": "img/facsimile/rongyutang/vol01_leaf009.jpg",
+          "bytes": 175821,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017400/iiif/M2019051014484758515_0009.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017400/iiif/M2019051014484758515_0009.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 10,
+          "file": "img/facsimile/rongyutang/vol01_leaf010.jpg",
+          "bytes": 166844,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017500/iiif/M2019051014484758515_0010.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017500/iiif/M2019051014484758515_0010.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 11,
+          "file": "img/facsimile/rongyutang/vol01_leaf011.jpg",
+          "bytes": 171946,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017600/iiif/M2019051014484758515_0011.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017600/iiif/M2019051014484758515_0011.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 12,
+          "file": "img/facsimile/rongyutang/vol01_leaf012.jpg",
+          "bytes": 199089,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017700/iiif/M2019051014484758515_0012.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017700/iiif/M2019051014484758515_0012.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 13,
+          "file": "img/facsimile/rongyutang/vol01_leaf013.jpg",
+          "bytes": 185449,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017800/iiif/M2019051014484758515_0013.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017800/iiif/M2019051014484758515_0013.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 14,
+          "file": "img/facsimile/rongyutang/vol01_leaf014.jpg",
+          "bytes": 180577,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017900/iiif/M2019051014484758515_0014.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017900/iiif/M2019051014484758515_0014.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 15,
+          "file": "img/facsimile/rongyutang/vol01_leaf015.jpg",
+          "bytes": 186073,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018000/iiif/M2019051014484758515_0015.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018000/iiif/M2019051014484758515_0015.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 16,
+          "file": "img/facsimile/rongyutang/vol01_leaf016.jpg",
+          "bytes": 184654,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018100/iiif/M2019051014484758515_0016.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018100/iiif/M2019051014484758515_0016.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 17,
+          "file": "img/facsimile/rongyutang/vol01_leaf017.jpg",
+          "bytes": 185738,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018200/iiif/M2019051014484758515_0017.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018200/iiif/M2019051014484758515_0017.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 18,
+          "file": "img/facsimile/rongyutang/vol01_leaf018.jpg",
+          "bytes": 185936,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018300/iiif/M2019051014484758515_0018.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018300/iiif/M2019051014484758515_0018.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 19,
+          "file": "img/facsimile/rongyutang/vol01_leaf019.jpg",
+          "bytes": 190277,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018400/iiif/M2019051014484758515_0019.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018400/iiif/M2019051014484758515_0019.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 20,
+          "file": "img/facsimile/rongyutang/vol01_leaf020.jpg",
+          "bytes": 192142,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018500/iiif/M2019051014484758515_0020.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018500/iiif/M2019051014484758515_0020.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 21,
+          "file": "img/facsimile/rongyutang/vol01_leaf021.jpg",
+          "bytes": 183917,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018600/iiif/M2019051014484758515_0021.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018600/iiif/M2019051014484758515_0021.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 22,
+          "file": "img/facsimile/rongyutang/vol01_leaf022.jpg",
+          "bytes": 167248,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018700/iiif/M2019051014484758515_0022.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018700/iiif/M2019051014484758515_0022.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 23,
+          "file": "img/facsimile/rongyutang/vol01_leaf023.jpg",
+          "bytes": 192202,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018800/iiif/M2019051014484758515_0023.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018800/iiif/M2019051014484758515_0023.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 24,
+          "file": "img/facsimile/rongyutang/vol01_leaf024.jpg",
+          "bytes": 197226,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018900/iiif/M2019051014484758515_0024.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018900/iiif/M2019051014484758515_0024.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 25,
+          "file": "img/facsimile/rongyutang/vol01_leaf025.jpg",
+          "bytes": 185260,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019000/iiif/M2019051014484758515_0025.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019000/iiif/M2019051014484758515_0025.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 26,
+          "file": "img/facsimile/rongyutang/vol01_leaf026.jpg",
+          "bytes": 199890,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019100/iiif/M2019051014484758515_0026.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019100/iiif/M2019051014484758515_0026.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 27,
+          "file": "img/facsimile/rongyutang/vol01_leaf027.jpg",
+          "bytes": 194908,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019200/iiif/M2019051014484758515_0027.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019200/iiif/M2019051014484758515_0027.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 28,
+          "file": "img/facsimile/rongyutang/vol01_leaf028.jpg",
+          "bytes": 192744,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019300/iiif/M2019051014484758515_0028.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019300/iiif/M2019051014484758515_0028.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 29,
+          "file": "img/facsimile/rongyutang/vol01_leaf029.jpg",
+          "bytes": 191527,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019400/iiif/M2019051014484758515_0029.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019400/iiif/M2019051014484758515_0029.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 30,
+          "file": "img/facsimile/rongyutang/vol01_leaf030.jpg",
+          "bytes": 192337,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019500/iiif/M2019051014484758515_0030.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019500/iiif/M2019051014484758515_0030.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 31,
+          "file": "img/facsimile/rongyutang/vol01_leaf031.jpg",
+          "bytes": 183935,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019600/iiif/M2019051014484758515_0031.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019600/iiif/M2019051014484758515_0031.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 32,
+          "file": "img/facsimile/rongyutang/vol01_leaf032.jpg",
+          "bytes": 192895,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019700/iiif/M2019051014484758515_0032.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019700/iiif/M2019051014484758515_0032.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 33,
+          "file": "img/facsimile/rongyutang/vol01_leaf033.jpg",
+          "bytes": 189434,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019800/iiif/M2019051014484758515_0033.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019800/iiif/M2019051014484758515_0033.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 34,
+          "file": "img/facsimile/rongyutang/vol01_leaf034.jpg",
+          "bytes": 198818,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019900/iiif/M2019051014484758515_0034.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019900/iiif/M2019051014484758515_0034.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 35,
+          "file": "img/facsimile/rongyutang/vol01_leaf035.jpg",
+          "bytes": 192040,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020000/iiif/M2019051014484758515_0035.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020000/iiif/M2019051014484758515_0035.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 36,
+          "file": "img/facsimile/rongyutang/vol01_leaf036.jpg",
+          "bytes": 191852,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020100/iiif/M2019051014484758515_0036.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020100/iiif/M2019051014484758515_0036.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 37,
+          "file": "img/facsimile/rongyutang/vol01_leaf037.jpg",
+          "bytes": 195914,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020200/iiif/M2019051014484758515_0037.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020200/iiif/M2019051014484758515_0037.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 38,
+          "file": "img/facsimile/rongyutang/vol01_leaf038.jpg",
+          "bytes": 196775,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020300/iiif/M2019051014484758515_0038.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020300/iiif/M2019051014484758515_0038.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 39,
+          "file": "img/facsimile/rongyutang/vol01_leaf039.jpg",
+          "bytes": 193355,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020400/iiif/M2019051014484758515_0039.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020400/iiif/M2019051014484758515_0039.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 40,
+          "file": "img/facsimile/rongyutang/vol01_leaf040.jpg",
+          "bytes": 191721,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020500/iiif/M2019051014484758515_0040.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020500/iiif/M2019051014484758515_0040.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 41,
+          "file": "img/facsimile/rongyutang/vol01_leaf041.jpg",
+          "bytes": 185488,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020600/iiif/M2019051014484758515_0041.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020600/iiif/M2019051014484758515_0041.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 42,
+          "file": "img/facsimile/rongyutang/vol01_leaf042.jpg",
+          "bytes": 192917,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020700/iiif/M2019051014484758515_0042.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020700/iiif/M2019051014484758515_0042.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 43,
+          "file": "img/facsimile/rongyutang/vol01_leaf043.jpg",
+          "bytes": 193477,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020800/iiif/M2019051014484758515_0043.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020800/iiif/M2019051014484758515_0043.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 44,
+          "file": "img/facsimile/rongyutang/vol01_leaf044.jpg",
+          "bytes": 184852,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020900/iiif/M2019051014484758515_0044.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020900/iiif/M2019051014484758515_0044.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 45,
+          "file": "img/facsimile/rongyutang/vol01_leaf045.jpg",
+          "bytes": 185519,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021000/iiif/M2019051014484758515_0045.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021000/iiif/M2019051014484758515_0045.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 46,
+          "file": "img/facsimile/rongyutang/vol01_leaf046.jpg",
+          "bytes": 199559,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021100/iiif/M2019051014484758515_0046.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021100/iiif/M2019051014484758515_0046.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 47,
+          "file": "img/facsimile/rongyutang/vol01_leaf047.jpg",
+          "bytes": 190706,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021200/iiif/M2019051014484758515_0047.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021200/iiif/M2019051014484758515_0047.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 48,
+          "file": "img/facsimile/rongyutang/vol01_leaf048.jpg",
+          "bytes": 199371,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021300/iiif/M2019051014484758515_0048.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021300/iiif/M2019051014484758515_0048.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 49,
+          "file": "img/facsimile/rongyutang/vol01_leaf049.jpg",
+          "bytes": 198694,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021400/iiif/M2019051014484758515_0049.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021400/iiif/M2019051014484758515_0049.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 50,
+          "file": "img/facsimile/rongyutang/vol01_leaf050.jpg",
+          "bytes": 198416,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021500/iiif/M2019051014484758515_0050.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021500/iiif/M2019051014484758515_0050.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 51,
+          "file": "img/facsimile/rongyutang/vol01_leaf051.jpg",
+          "bytes": 193730,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021600/iiif/M2019051014484758515_0051.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021600/iiif/M2019051014484758515_0051.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 52,
+          "file": "img/facsimile/rongyutang/vol01_leaf052.jpg",
+          "bytes": 193297,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021700/iiif/M2019051014484758515_0052.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021700/iiif/M2019051014484758515_0052.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 53,
+          "file": "img/facsimile/rongyutang/vol01_leaf053.jpg",
+          "bytes": 193686,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021800/iiif/M2019051014484758515_0053.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021800/iiif/M2019051014484758515_0053.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 54,
+          "file": "img/facsimile/rongyutang/vol01_leaf054.jpg",
+          "bytes": 191915,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021900/iiif/M2019051014484758515_0054.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021900/iiif/M2019051014484758515_0054.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 55,
+          "file": "img/facsimile/rongyutang/vol01_leaf055.jpg",
+          "bytes": 191201,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022000/iiif/M2019051014484758515_0055.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022000/iiif/M2019051014484758515_0055.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 56,
+          "file": "img/facsimile/rongyutang/vol01_leaf056.jpg",
+          "bytes": 195459,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022100/iiif/M2019051014484758515_0056.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022100/iiif/M2019051014484758515_0056.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 57,
+          "file": "img/facsimile/rongyutang/vol01_leaf057.jpg",
+          "bytes": 199077,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022200/iiif/M2019051014484758515_0057.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022200/iiif/M2019051014484758515_0057.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 58,
+          "file": "img/facsimile/rongyutang/vol01_leaf058.jpg",
+          "bytes": 192858,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022300/iiif/M2019051014484758515_0058.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022300/iiif/M2019051014484758515_0058.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 59,
+          "file": "img/facsimile/rongyutang/vol01_leaf059.jpg",
+          "bytes": 195028,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022400/iiif/M2019051014484758515_0059.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022400/iiif/M2019051014484758515_0059.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 60,
+          "file": "img/facsimile/rongyutang/vol01_leaf060.jpg",
+          "bytes": 193153,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022500/iiif/M2019051014484758515_0060.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022500/iiif/M2019051014484758515_0060.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 61,
+          "file": "img/facsimile/rongyutang/vol01_leaf061.jpg",
+          "bytes": 185802,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022600/iiif/M2019051014484758515_0061.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022600/iiif/M2019051014484758515_0061.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 62,
+          "file": "img/facsimile/rongyutang/vol01_leaf062.jpg",
+          "bytes": 188768,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022700/iiif/M2019051014484758515_0062.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022700/iiif/M2019051014484758515_0062.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 63,
+          "file": "img/facsimile/rongyutang/vol01_leaf063.jpg",
+          "bytes": 189731,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022800/iiif/M2019051014484758515_0063.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022800/iiif/M2019051014484758515_0063.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 64,
+          "file": "img/facsimile/rongyutang/vol01_leaf064.jpg",
+          "bytes": 189667,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022900/iiif/M2019051014484758515_0064.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022900/iiif/M2019051014484758515_0064.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 65,
+          "file": "img/facsimile/rongyutang/vol01_leaf065.jpg",
+          "bytes": 195920,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023000/iiif/M2019051014484758515_0065.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023000/iiif/M2019051014484758515_0065.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 66,
+          "file": "img/facsimile/rongyutang/vol01_leaf066.jpg",
+          "bytes": 188171,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023100/iiif/M2019051014484758515_0066.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023100/iiif/M2019051014484758515_0066.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 67,
+          "file": "img/facsimile/rongyutang/vol01_leaf067.jpg",
+          "bytes": 196140,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023200/iiif/M2019051014484758515_0067.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023200/iiif/M2019051014484758515_0067.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 68,
+          "file": "img/facsimile/rongyutang/vol01_leaf068.jpg",
+          "bytes": 194690,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023300/iiif/M2019051014484758515_0068.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023300/iiif/M2019051014484758515_0068.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 69,
+          "file": "img/facsimile/rongyutang/vol01_leaf069.jpg",
+          "bytes": 192946,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023400/iiif/M2019051014484758515_0069.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023400/iiif/M2019051014484758515_0069.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 70,
+          "file": "img/facsimile/rongyutang/vol01_leaf070.jpg",
+          "bytes": 185281,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023500/iiif/M2019051014484758515_0070.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023500/iiif/M2019051014484758515_0070.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 71,
+          "file": "img/facsimile/rongyutang/vol01_leaf071.jpg",
+          "bytes": 185827,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023600/iiif/M2019051014484758515_0071.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023600/iiif/M2019051014484758515_0071.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 72,
+          "file": "img/facsimile/rongyutang/vol01_leaf072.jpg",
+          "bytes": 191975,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023700/iiif/M2019051014484758515_0072.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023700/iiif/M2019051014484758515_0072.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 73,
+          "file": "img/facsimile/rongyutang/vol01_leaf073.jpg",
+          "bytes": 190475,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023800/iiif/M2019051014484758515_0073.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023800/iiif/M2019051014484758515_0073.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 74,
+          "file": "img/facsimile/rongyutang/vol01_leaf074.jpg",
+          "bytes": 191938,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023900/iiif/M2019051014484758515_0074.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023900/iiif/M2019051014484758515_0074.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 75,
+          "file": "img/facsimile/rongyutang/vol01_leaf075.jpg",
+          "bytes": 187812,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024000/iiif/M2019051014484758515_0075.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024000/iiif/M2019051014484758515_0075.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 76,
+          "file": "img/facsimile/rongyutang/vol01_leaf076.jpg",
+          "bytes": 197566,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024100/iiif/M2019051014484758515_0076.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024100/iiif/M2019051014484758515_0076.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 77,
+          "file": "img/facsimile/rongyutang/vol01_leaf077.jpg",
+          "bytes": 197520,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024200/iiif/M2019051014484758515_0077.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024200/iiif/M2019051014484758515_0077.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 78,
+          "file": "img/facsimile/rongyutang/vol01_leaf078.jpg",
+          "bytes": 184954,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024300/iiif/M2019051014484758515_0078.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024300/iiif/M2019051014484758515_0078.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 79,
+          "file": "img/facsimile/rongyutang/vol01_leaf079.jpg",
+          "bytes": 185659,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024400/iiif/M2019051014484758515_0079.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024400/iiif/M2019051014484758515_0079.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 80,
+          "file": "img/facsimile/rongyutang/vol01_leaf080.jpg",
+          "bytes": 186103,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024500/iiif/M2019051014484758515_0080.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024500/iiif/M2019051014484758515_0080.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 81,
+          "file": "img/facsimile/rongyutang/vol01_leaf081.jpg",
+          "bytes": 190651,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024600/iiif/M2019051014484758515_0081.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024600/iiif/M2019051014484758515_0081.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 82,
+          "file": "img/facsimile/rongyutang/vol01_leaf082.jpg",
+          "bytes": 192929,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024700/iiif/M2019051014484758515_0082.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024700/iiif/M2019051014484758515_0082.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 83,
+          "file": "img/facsimile/rongyutang/vol01_leaf083.jpg",
+          "bytes": 185083,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024800/iiif/M2019051014484758515_0083.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024800/iiif/M2019051014484758515_0083.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 84,
+          "file": "img/facsimile/rongyutang/vol01_leaf084.jpg",
+          "bytes": 198690,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024900/iiif/M2019051014484758515_0084.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024900/iiif/M2019051014484758515_0084.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 85,
+          "file": "img/facsimile/rongyutang/vol01_leaf085.jpg",
+          "bytes": 189645,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784025000/iiif/M2019051014484758515_0085.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784025000/iiif/M2019051014484758515_0085.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 86,
+          "file": "img/facsimile/rongyutang/vol01_leaf086.jpg",
+          "bytes": 132013,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784025100/iiif/M2019051014484758515_0086.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784025100/iiif/M2019051014484758515_0086.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 87,
+          "file": "img/facsimile/rongyutang/vol01_leaf087.jpg",
+          "bytes": 97221,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784025200/iiif/M2019051014484758515_0087.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784025200/iiif/M2019051014484758515_0087.jp2/full/max/0/native.jpg"
+        }
+      ]
+    },
+    {
+      "item_id": "4445240",
+      "volume": "vol19",
+      "volume_label": "卷之十九",
+      "label": "李卓吾先生批評忠義水滸伝１９",
+      "item_url": "https://www.digital.archives.go.jp/item/4445240",
+      "total_canvases": 79,
+      "pages": [
+        {
+          "leaf": 1,
+          "file": "img/facsimile/rongyutang/vol19_leaf001.jpg",
+          "bytes": 159151,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784163800/iiif/M2019051014511658559_0001.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784163800/iiif/M2019051014511658559_0001.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 2,
+          "file": "img/facsimile/rongyutang/vol19_leaf002.jpg",
+          "bytes": 168695,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784163900/iiif/M2019051014511658559_0002.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784163900/iiif/M2019051014511658559_0002.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 3,
+          "file": "img/facsimile/rongyutang/vol19_leaf003.jpg",
+          "bytes": 197200,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784164000/iiif/M2019051014511658559_0003.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784164000/iiif/M2019051014511658559_0003.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 4,
+          "file": "img/facsimile/rongyutang/vol19_leaf004.jpg",
+          "bytes": 199089,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784164100/iiif/M2019051014511658559_0004.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784164100/iiif/M2019051014511658559_0004.jp2/full/max/0/native.jpg"
+        }
+      ]
+    },
+    {
+      "item_id": "4446087",
+      "volume": "vol20",
+      "volume_label": "卷之二十",
+      "label": "李卓吾先生批評忠義水滸伝２０",
+      "item_url": "https://www.digital.archives.go.jp/item/4446087",
+      "total_canvases": 78,
+      "pages": [
+        {
+          "leaf": 1,
+          "file": "img/facsimile/rongyutang/vol20_leaf001.jpg",
+          "bytes": 155278,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784171700/iiif/M2019051014512558561_0001.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784171700/iiif/M2019051014512558561_0001.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 2,
+          "file": "img/facsimile/rongyutang/vol20_leaf002.jpg",
+          "bytes": 165376,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784171800/iiif/M2019051014512558561_0002.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784171800/iiif/M2019051014512558561_0002.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 3,
+          "file": "img/facsimile/rongyutang/vol20_leaf003.jpg",
+          "bytes": 184834,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784171900/iiif/M2019051014512558561_0003.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784171900/iiif/M2019051014512558561_0003.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 4,
+          "file": "img/facsimile/rongyutang/vol20_leaf004.jpg",
+          "bytes": 187868,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784172000/iiif/M2019051014512558561_0004.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784172000/iiif/M2019051014512558561_0004.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 75,
+          "file": "img/facsimile/rongyutang/vol20_leaf075.jpg",
+          "bytes": 188933,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784179100/iiif/M2019051014512558561_0075.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784179100/iiif/M2019051014512558561_0075.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 76,
+          "file": "img/facsimile/rongyutang/vol20_leaf076.jpg",
+          "bytes": 193130,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784179200/iiif/M2019051014512558561_0076.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784179200/iiif/M2019051014512558561_0076.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 77,
+          "file": "img/facsimile/rongyutang/vol20_leaf077.jpg",
+          "bytes": 152288,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784179300/iiif/M2019051014512558561_0077.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784179300/iiif/M2019051014512558561_0077.jp2/full/max/0/native.jpg"
+        },
+        {
+          "leaf": 78,
+          "file": "img/facsimile/rongyutang/vol20_leaf078.jpg",
+          "bytes": 108382,
+          "w": 1200,
+          "h": 871,
+          "iiif_small": "https://www.digital.archives.go.jp/api/content/item/da12/C102784179400/iiif/M2019051014512558561_0078.jp2/full/!1200,1200/0/native.jpg",
+          "orig_full": "https://www.digital.archives.go.jp/api/content/item/da12/C102784179400/iiif/M2019051014512558561_0078.jp2/full/max/0/native.jpg"
+        }
+      ]
+    }
+  ]
+}

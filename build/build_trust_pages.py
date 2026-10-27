@@ -13,6 +13,20 @@ DATA = DOCS / "data"
 # 版本号与更新日志（Step 14 数据快照）
 DATA_VERSION = "v2026.10.27"
 CHANGELOG = [
+    ("2026-10-27", "Step 17 真本影像扩充（容与堂本 99 叶入库）", [
+        "容与堂本据日本国立公文书馆藏《李卓吾先生批評忠義水滸伝》二十卷抓取原书扫描，卷之一全 87 叶 + 卷十九 4 叶 + 卷二十 8 叶共 99 叶",
+        "与钟批本 15 幅绣像合计 114 幅/叶，以分组结构挂入 data/facsimiles.json 的 real_images 字段",
+        "新增脚本 fetch_facsimiles_naj.py / attach_real_facsimiles.py / check_asset_size.py",
+        "确立影像体积策略：站内单张 ≤ 200KB（长边 1200px），原分辨率叶与整本影印 PDF 不入仓、仅登记外部直链",
+    ]),
+    ("2026-10-27", "Step 17 影像并置补全（钟批真本绣像入库）", [
+        "入库钟伯敬批评本（明天启四知馆刊本，法国国家图书馆藏）书前绣像 15 幅，压缩至长边 1200px 后入 docs/img/facsimile/zhong/",
+        "影像并置页升级为「真本影像 + 版刻仿真 + 外部高清源」三层结构，真本/示意以朱红/米色角标区分",
+    ]),
+    ("2026-10-27", "Step 16 互文成书网络", [
+        "入库《大宋宣和遗事》四集全文（约 6.7 万字）与元明水浒杂剧 8 种",
+        "建立人名异写表 56 条，产出 52 条互文对应（人工情节对表 12 条 + 4-gram 自动候选 40 条），见 intertext.html",
+    ]),
     ("2026-10-27", "M5/M6 教学矩阵与可信底座", [
         "新增梁山编制(hierarchy)、韵文词牌(verse)、回目格律(couplet)、互动游戏(games)四页",
         "新增评论溯源元数据 commentaries_meta.json（九家批注的底本/录入方式/可信度等级/覆盖范围）",
@@ -309,21 +323,30 @@ def build_roadmap():
         ("M5 · 教学矩阵", "Step 8–11", "✅ 已完成", "梁山编制 / 词牌 / 格律 / 互动游戏"),
         ("M6 · 可信底座", "Step 12–14", "✅ 已完成", "批注溯源 / 开放数据 / 版本快照"),
         ("M7 · 问答智能体", "Step 15", "⏸ 暂不实现", "RAG+大模型问答（需可用模型能力，本轮跳过）"),
-        ("M8 · 受限项", "Step 16–18", "🟡 占位 · 等外部数据", "互文网络 / 影像并置 / 众包校勘"),
+        ("M8 · 受限项", "Step 16–18", "✅ 已完成", "✅ 互文网络 / ✅ 影像并置（容与堂本 99 叶真本扫描 + 钟批绣像 + 版刻仿真 + 外部高清源）/ 🟡 众包校勘等影像与参与者"),
     ]
     waiting = [
-        ("Step 16 · 互文网络", "《大宋宣和遗事》、元杂剧水浒戏（如《李逵负荆》《双献功》等）电子文本", "做文本复用检测，画出水浒故事的成书来源网络"),
-        ("Step 17 · 版本影像并置", "高清扫本影像（金批贯华堂本、容与堂本、钟批本、余评双峰堂本）", "原刻本影印页与录入文本左右对照，实现「左图右文」"),
-        ("Step 18 · OCR 众包校勘台", "待校影像与愿意参与校书的读者", "余评 18 卷、钟批眉批、燕评逐回这些「机器录不准」的部分，做成参与式校书入口，把数据缺口变成功能"),
+        ("Step 16 · 互文网络", "✅ 已完成 2026-10-27",
+         '<p class="need"><b>已落地：</b>《大宋宣和遗事》四集全文录入，元水浒杂剧 8 种合璧；4-gram + 情节对表双口径，输出互文成书页（intertext.html）。</p><p><a href="intertext.html">进入互文网络 →</a></p>'),
+        ("Step 17 · 版本影像并置", "✅ 已完成 2026-10-27（容与堂本 99 叶扫描 + 钟批绣像）",
+         '<p class="need"><b>已落地：</b>三层结构呈现 7 个关键明刻本：<b>容与堂本</b>据日本国立公文书馆藏《李卓吾先生批評忠義水滸伝》二十卷抓取原书扫描，卷之一全 87 叶 + 卷十九 4 叶 + 卷二十 8 叶共 <b>99 叶</b>入库，可逐叶翻阅并点开原分辨率直链；<b>钟伯敬批评本</b>书前 15 幅原色绣像直接入库；其余各本牌记页与正文页以 PIL 绘制版刻仿真示意图，并登记书格 / 国立公文书馆 / 京都大学 RMDA / Gallica / 广陵书社等公版外部高清源。</p>'
+         '<p><b>体积策略：</b>站内单张影像长边 1200px、≤ 200KB，原分辨率叶与整本影印 PDF 不入仓、只登记外部直链。</p><p><a href="facsimiles.html">进入影像并置 →</a></p>'),
+        ("Step 18 · OCR 众包校勘台", "",
+         '<p class="need"><b>缺口：</b>更多版本的高清影像（贯华堂金批本朱墨套印页、余评双峰堂「上评中图下文」三栏版心、容与堂本绣像与眉批）与愿意参与校书的读者</p><p>余评 18 卷、钟批眉批、燕评逐回这些「机器录不准」的部分，待影像到位后做成参与式校书入口。钟批本已有书格原色高清 PDF 可作校勘底本，欢迎先参与钟批眉批的逐字校对。</p>'),
     ]
     ms_html = "\n".join(
         f'<div class="ms-item"><div class="ms-tag {s[2][:2]}">{s[2]}</div><div class="ms-body"><h3>{s[0]} <small>{s[1]}</small></h3><p>{s[3]}</p></div></div>'
         for s in milestones
     )
-    wait_html = "\n".join(
-        f'<div class="wait-card"><h3>{t}</h3><p class="need"><b>缺口：</b>{n}</p><p>{d}</p></div>'
-        for t,n,d in waiting
-    )
+
+    def _wait_card(t, status, body):
+        done = status.startswith('✅')
+        style = ' style="border-color:#3f6b5e;background:#eef5f1;"' if done else ''
+        head = (f'<h3>{t} <span style="color:#2f5d50;font-size:14px;">{status}</span></h3>'
+                if status else f'<h3>{t}</h3>')
+        return f'<div class="wait-card"{style}>{head}{body}</div>'
+
+    wait_html = "\n".join(_wait_card(*w) for w in waiting)
     log_html = "\n".join(
         f'<div class="log-item"><div class="log-date">{d}</div><div class="log-ver">{t}</div><ul>' + "".join(f'<li>{x}</li>' for x in items) + "</ul></div>"
         for d,t,items in CHANGELOG
@@ -332,7 +355,7 @@ def build_roadmap():
 <main class="wrap">
   <section class="panel">
     <h1>路线图 · 待做与数据缺口</h1>
-    <p class="hero-desc">本页公开登记项目进度、尚未完成的工作与<b>受外部数据限制的功能</b>。Step 16–18 在没有外部数据前只立占位、不硬凑。</p>
+    <p class="hero-desc">本页公开登记项目进度、尚未完成的工作与<b>受外部数据限制的功能</b>。Step 16 互文网络已落地，Step 17 影像并置已完成（含容与堂本 99 叶真本扫描与钟批本绣像）；Step 18 众包校勘台待更多影像与志愿者，不硬凑功能。</p>
   </section>
 
   <section class="panel">

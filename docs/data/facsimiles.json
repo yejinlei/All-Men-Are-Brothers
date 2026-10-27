@@ -1,7 +1,7 @@
 {
   "_note": "Step 17 影像并置元数据：仿真书影 + 公版外部高清影印链接",
   "updated": "2026-10-27",
-  "method": "书影卡为本站以 PIL 绘制的版刻风格仿真示意，用于呈现各版本的版式特征（行格、框线、栏式、书坊牌记、绣像位置）；完整影印 PDF 请点击外部源前往下载（均为公版古籍）。",
+  "method": "三层结构：① 真本影像（原刻本扫描/绣像，站内小图，可点开原分辨率直链）；② 版式示意（程序绘制，呈现行格/框线/栏式/牌记等特征）；③ 外部高清源（公版影印 PDF 与馆藏在线浏览）。体积策略：站内单张影像 ≤ 200KB，原分辨率图不入仓。",
   "facsimiles": [
     {
       "id": "guohua",
@@ -38,7 +38,829 @@
         }
       ],
       "colophon_img": "img/facs/guohua_colophon.png",
-      "text_img": "img/facs/guohua_text.png"
+      "text_img": "img/facs/guohua_text.png",
+      "real_images": {
+        "title": "原刻本扫描叶 · 真本影像",
+        "sub": "李卓吾先生批評忠義水滸伝（容与堂本）· 日本国立公文書館藏 · 卷之一全卷入库，卷十九/卷二十抽样",
+        "credit": "国立公文書館デジタルアーカイブ（National Archives of Japan）藏本扫描，公版古籍，依该馆「二次利用」条款在线使用",
+        "note": "站内图为按 IIIF 尺寸参数压缩后的小图（长边 1200px、单张 ≤ 200KB）；点击任一叶打开原分辨率直链（外部、单叶数 MB，不入仓）。　<a href=\"read.html?vid=v100&ch=1\">对照本站文字层（容百回本）→</a>",
+        "available_here": 99,
+        "groups": [
+          {
+            "group": "vol01",
+            "label": "卷之一（李卓吾先生批評忠義水滸伝１）",
+            "note": "共 87 叶，本站入库 87 叶",
+            "images": [
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf001.jpg",
+                "caption": "卷之一·第1叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784016600/iiif/M2019051014484758515_0001.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 163998
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf002.jpg",
+                "caption": "卷之一·第2叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784016700/iiif/M2019051014484758515_0002.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 152055
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf003.jpg",
+                "caption": "卷之一·第3叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784016800/iiif/M2019051014484758515_0003.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 169154
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf004.jpg",
+                "caption": "卷之一·第4叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784016900/iiif/M2019051014484758515_0004.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 176322
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf005.jpg",
+                "caption": "卷之一·第5叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017000/iiif/M2019051014484758515_0005.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 174478
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf006.jpg",
+                "caption": "卷之一·第6叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017100/iiif/M2019051014484758515_0006.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 172238
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf007.jpg",
+                "caption": "卷之一·第7叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017200/iiif/M2019051014484758515_0007.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 169613
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf008.jpg",
+                "caption": "卷之一·第8叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017300/iiif/M2019051014484758515_0008.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 175117
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf009.jpg",
+                "caption": "卷之一·第9叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017400/iiif/M2019051014484758515_0009.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 175821
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf010.jpg",
+                "caption": "卷之一·第10叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017500/iiif/M2019051014484758515_0010.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 166844
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf011.jpg",
+                "caption": "卷之一·第11叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017600/iiif/M2019051014484758515_0011.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 171946
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf012.jpg",
+                "caption": "卷之一·第12叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017700/iiif/M2019051014484758515_0012.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 199089
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf013.jpg",
+                "caption": "卷之一·第13叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017800/iiif/M2019051014484758515_0013.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 185449
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf014.jpg",
+                "caption": "卷之一·第14叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784017900/iiif/M2019051014484758515_0014.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 180577
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf015.jpg",
+                "caption": "卷之一·第15叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018000/iiif/M2019051014484758515_0015.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 186073
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf016.jpg",
+                "caption": "卷之一·第16叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018100/iiif/M2019051014484758515_0016.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 184654
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf017.jpg",
+                "caption": "卷之一·第17叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018200/iiif/M2019051014484758515_0017.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 185738
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf018.jpg",
+                "caption": "卷之一·第18叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018300/iiif/M2019051014484758515_0018.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 185936
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf019.jpg",
+                "caption": "卷之一·第19叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018400/iiif/M2019051014484758515_0019.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 190277
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf020.jpg",
+                "caption": "卷之一·第20叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018500/iiif/M2019051014484758515_0020.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 192142
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf021.jpg",
+                "caption": "卷之一·第21叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018600/iiif/M2019051014484758515_0021.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 183917
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf022.jpg",
+                "caption": "卷之一·第22叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018700/iiif/M2019051014484758515_0022.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 167248
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf023.jpg",
+                "caption": "卷之一·第23叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018800/iiif/M2019051014484758515_0023.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 192202
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf024.jpg",
+                "caption": "卷之一·第24叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784018900/iiif/M2019051014484758515_0024.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 197226
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf025.jpg",
+                "caption": "卷之一·第25叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019000/iiif/M2019051014484758515_0025.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 185260
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf026.jpg",
+                "caption": "卷之一·第26叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019100/iiif/M2019051014484758515_0026.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 199890
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf027.jpg",
+                "caption": "卷之一·第27叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019200/iiif/M2019051014484758515_0027.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 194908
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf028.jpg",
+                "caption": "卷之一·第28叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019300/iiif/M2019051014484758515_0028.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 192744
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf029.jpg",
+                "caption": "卷之一·第29叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019400/iiif/M2019051014484758515_0029.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 191527
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf030.jpg",
+                "caption": "卷之一·第30叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019500/iiif/M2019051014484758515_0030.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 192337
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf031.jpg",
+                "caption": "卷之一·第31叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019600/iiif/M2019051014484758515_0031.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 183935
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf032.jpg",
+                "caption": "卷之一·第32叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019700/iiif/M2019051014484758515_0032.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 192895
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf033.jpg",
+                "caption": "卷之一·第33叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019800/iiif/M2019051014484758515_0033.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 189434
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf034.jpg",
+                "caption": "卷之一·第34叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784019900/iiif/M2019051014484758515_0034.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 198818
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf035.jpg",
+                "caption": "卷之一·第35叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020000/iiif/M2019051014484758515_0035.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 192040
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf036.jpg",
+                "caption": "卷之一·第36叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020100/iiif/M2019051014484758515_0036.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 191852
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf037.jpg",
+                "caption": "卷之一·第37叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020200/iiif/M2019051014484758515_0037.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 195914
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf038.jpg",
+                "caption": "卷之一·第38叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020300/iiif/M2019051014484758515_0038.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 196775
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf039.jpg",
+                "caption": "卷之一·第39叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020400/iiif/M2019051014484758515_0039.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 193355
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf040.jpg",
+                "caption": "卷之一·第40叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020500/iiif/M2019051014484758515_0040.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 191721
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf041.jpg",
+                "caption": "卷之一·第41叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020600/iiif/M2019051014484758515_0041.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 185488
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf042.jpg",
+                "caption": "卷之一·第42叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020700/iiif/M2019051014484758515_0042.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 192917
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf043.jpg",
+                "caption": "卷之一·第43叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020800/iiif/M2019051014484758515_0043.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 193477
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf044.jpg",
+                "caption": "卷之一·第44叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784020900/iiif/M2019051014484758515_0044.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 184852
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf045.jpg",
+                "caption": "卷之一·第45叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021000/iiif/M2019051014484758515_0045.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 185519
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf046.jpg",
+                "caption": "卷之一·第46叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021100/iiif/M2019051014484758515_0046.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 199559
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf047.jpg",
+                "caption": "卷之一·第47叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021200/iiif/M2019051014484758515_0047.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 190706
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf048.jpg",
+                "caption": "卷之一·第48叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021300/iiif/M2019051014484758515_0048.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 199371
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf049.jpg",
+                "caption": "卷之一·第49叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021400/iiif/M2019051014484758515_0049.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 198694
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf050.jpg",
+                "caption": "卷之一·第50叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021500/iiif/M2019051014484758515_0050.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 198416
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf051.jpg",
+                "caption": "卷之一·第51叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021600/iiif/M2019051014484758515_0051.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 193730
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf052.jpg",
+                "caption": "卷之一·第52叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021700/iiif/M2019051014484758515_0052.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 193297
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf053.jpg",
+                "caption": "卷之一·第53叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021800/iiif/M2019051014484758515_0053.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 193686
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf054.jpg",
+                "caption": "卷之一·第54叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784021900/iiif/M2019051014484758515_0054.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 191915
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf055.jpg",
+                "caption": "卷之一·第55叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022000/iiif/M2019051014484758515_0055.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 191201
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf056.jpg",
+                "caption": "卷之一·第56叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022100/iiif/M2019051014484758515_0056.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 195459
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf057.jpg",
+                "caption": "卷之一·第57叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022200/iiif/M2019051014484758515_0057.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 199077
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf058.jpg",
+                "caption": "卷之一·第58叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022300/iiif/M2019051014484758515_0058.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 192858
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf059.jpg",
+                "caption": "卷之一·第59叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022400/iiif/M2019051014484758515_0059.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 195028
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf060.jpg",
+                "caption": "卷之一·第60叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022500/iiif/M2019051014484758515_0060.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 193153
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf061.jpg",
+                "caption": "卷之一·第61叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022600/iiif/M2019051014484758515_0061.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 185802
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf062.jpg",
+                "caption": "卷之一·第62叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022700/iiif/M2019051014484758515_0062.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 188768
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf063.jpg",
+                "caption": "卷之一·第63叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022800/iiif/M2019051014484758515_0063.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 189731
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf064.jpg",
+                "caption": "卷之一·第64叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784022900/iiif/M2019051014484758515_0064.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 189667
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf065.jpg",
+                "caption": "卷之一·第65叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023000/iiif/M2019051014484758515_0065.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 195920
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf066.jpg",
+                "caption": "卷之一·第66叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023100/iiif/M2019051014484758515_0066.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 188171
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf067.jpg",
+                "caption": "卷之一·第67叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023200/iiif/M2019051014484758515_0067.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 196140
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf068.jpg",
+                "caption": "卷之一·第68叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023300/iiif/M2019051014484758515_0068.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 194690
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf069.jpg",
+                "caption": "卷之一·第69叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023400/iiif/M2019051014484758515_0069.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 192946
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf070.jpg",
+                "caption": "卷之一·第70叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023500/iiif/M2019051014484758515_0070.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 185281
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf071.jpg",
+                "caption": "卷之一·第71叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023600/iiif/M2019051014484758515_0071.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 185827
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf072.jpg",
+                "caption": "卷之一·第72叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023700/iiif/M2019051014484758515_0072.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 191975
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf073.jpg",
+                "caption": "卷之一·第73叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023800/iiif/M2019051014484758515_0073.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 190475
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf074.jpg",
+                "caption": "卷之一·第74叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784023900/iiif/M2019051014484758515_0074.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 191938
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf075.jpg",
+                "caption": "卷之一·第75叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024000/iiif/M2019051014484758515_0075.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 187812
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf076.jpg",
+                "caption": "卷之一·第76叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024100/iiif/M2019051014484758515_0076.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 197566
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf077.jpg",
+                "caption": "卷之一·第77叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024200/iiif/M2019051014484758515_0077.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 197520
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf078.jpg",
+                "caption": "卷之一·第78叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024300/iiif/M2019051014484758515_0078.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 184954
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf079.jpg",
+                "caption": "卷之一·第79叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024400/iiif/M2019051014484758515_0079.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 185659
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf080.jpg",
+                "caption": "卷之一·第80叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024500/iiif/M2019051014484758515_0080.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 186103
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf081.jpg",
+                "caption": "卷之一·第81叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024600/iiif/M2019051014484758515_0081.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 190651
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf082.jpg",
+                "caption": "卷之一·第82叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024700/iiif/M2019051014484758515_0082.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 192929
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf083.jpg",
+                "caption": "卷之一·第83叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024800/iiif/M2019051014484758515_0083.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 185083
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf084.jpg",
+                "caption": "卷之一·第84叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784024900/iiif/M2019051014484758515_0084.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 198690
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf085.jpg",
+                "caption": "卷之一·第85叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784025000/iiif/M2019051014484758515_0085.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 189645
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf086.jpg",
+                "caption": "卷之一·第86叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784025100/iiif/M2019051014484758515_0086.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 132013
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol01_leaf087.jpg",
+                "caption": "卷之一·第87叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784025200/iiif/M2019051014484758515_0087.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 97221
+              }
+            ]
+          },
+          {
+            "group": "vol19",
+            "label": "卷之十九（李卓吾先生批評忠義水滸伝１９）",
+            "note": "共 79 叶，本站入库 4 叶（抽样）",
+            "images": [
+              {
+                "file": "img/facsimile/rongyutang/vol19_leaf001.jpg",
+                "caption": "卷之十九·第1叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784163800/iiif/M2019051014511658559_0001.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 159151
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol19_leaf002.jpg",
+                "caption": "卷之十九·第2叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784163900/iiif/M2019051014511658559_0002.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 168695
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol19_leaf003.jpg",
+                "caption": "卷之十九·第3叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784164000/iiif/M2019051014511658559_0003.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 197200
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol19_leaf004.jpg",
+                "caption": "卷之十九·第4叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784164100/iiif/M2019051014511658559_0004.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 199089
+              }
+            ]
+          },
+          {
+            "group": "vol20",
+            "label": "卷之二十（李卓吾先生批評忠義水滸伝２０）",
+            "note": "共 78 叶，本站入库 8 叶（抽样）",
+            "images": [
+              {
+                "file": "img/facsimile/rongyutang/vol20_leaf001.jpg",
+                "caption": "卷之二十·第1叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784171700/iiif/M2019051014512558561_0001.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 155278
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol20_leaf002.jpg",
+                "caption": "卷之二十·第2叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784171800/iiif/M2019051014512558561_0002.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 165376
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol20_leaf003.jpg",
+                "caption": "卷之二十·第3叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784171900/iiif/M2019051014512558561_0003.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 184834
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol20_leaf004.jpg",
+                "caption": "卷之二十·第4叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784172000/iiif/M2019051014512558561_0004.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 187868
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol20_leaf075.jpg",
+                "caption": "卷之二十·第75叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784179100/iiif/M2019051014512558561_0075.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 188933
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol20_leaf076.jpg",
+                "caption": "卷之二十·第76叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784179200/iiif/M2019051014512558561_0076.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 193130
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol20_leaf077.jpg",
+                "caption": "卷之二十·第77叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784179300/iiif/M2019051014512558561_0077.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 152288
+              },
+              {
+                "file": "img/facsimile/rongyutang/vol20_leaf078.jpg",
+                "caption": "卷之二十·第78叶",
+                "orig": "https://www.digital.archives.go.jp/api/content/item/da12/C102784179400/iiif/M2019051014512558561_0078.jp2/full/max/0/native.jpg",
+                "w": 1200,
+                "h": 871,
+                "bytes": 108382
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "jinshengtan",
@@ -119,26 +941,109 @@
       "colophon_img": "img/facs/zhongbo_colophon.png",
       "text_img": "img/facs/zhongbo_text.png",
       "real_images": {
-        "source": "书格 cdn.shuge.org（法国国家图书馆藏明天启四知馆刊本原色扫描）",
-        "credit": "法国国家图书馆藏 CHINOIS 3992–3994，书格整理并公开，公版影像",
-        "total_original": 39,
+        "title": "书前绣像 · 真本影像",
+        "sub": "钟伯敬先生批评水浒忠义传 · 明天启四知馆刊本 · 法国国家图书馆藏 CHINOIS 3992–3994",
+        "credit": "书格（shuge.org）整理公开的法图藏原色扫描，公版影像",
+        "note": "书前绣像共 39 幅，本站入库 15 幅（站内小图）；其余及全部正文页请经下方「书格原色高清 PDF」下载整本（5.29 GB，法国图藏四知馆本 + 京都大学积庆堂本两种）。",
         "available_here": 15,
-        "images": [
-          "img/facsimile/zhong/xb1.jpg",
-          "img/facsimile/zhong/xb2.jpg",
-          "img/facsimile/zhong/xb3.jpg",
-          "img/facsimile/zhong/xb4.jpg",
-          "img/facsimile/zhong/xb5.jpg",
-          "img/facsimile/zhong/xb01.jpg",
-          "img/facsimile/zhong/xb03.jpg",
-          "img/facsimile/zhong/xb05.jpg",
-          "img/facsimile/zhong/xb06.jpg",
-          "img/facsimile/zhong/xb07.jpg",
-          "img/facsimile/zhong/xb08.jpg",
-          "img/facsimile/zhong/xb09.jpg",
-          "img/facsimile/zhong/xb13.jpg",
-          "img/facsimile/zhong/xb14.jpg",
-          "img/facsimile/zhong/xb15.jpg"
+        "groups": [
+          {
+            "group": "xiuxiang",
+            "label": "书前绣像（真本原色扫描）",
+            "note": "已入库 15 / 39 幅",
+            "images": [
+              {
+                "file": "img/facsimile/zhong/xb01.jpg",
+                "caption": "绣像",
+                "orig": "img/facsimile/zhong/xb01.jpg",
+                "bytes": 144735
+              },
+              {
+                "file": "img/facsimile/zhong/xb03.jpg",
+                "caption": "绣像",
+                "orig": "img/facsimile/zhong/xb03.jpg",
+                "bytes": 106102
+              },
+              {
+                "file": "img/facsimile/zhong/xb05.jpg",
+                "caption": "绣像",
+                "orig": "img/facsimile/zhong/xb05.jpg",
+                "bytes": 101397
+              },
+              {
+                "file": "img/facsimile/zhong/xb06.jpg",
+                "caption": "绣像",
+                "orig": "img/facsimile/zhong/xb06.jpg",
+                "bytes": 156398
+              },
+              {
+                "file": "img/facsimile/zhong/xb07.jpg",
+                "caption": "绣像",
+                "orig": "img/facsimile/zhong/xb07.jpg",
+                "bytes": 162726
+              },
+              {
+                "file": "img/facsimile/zhong/xb08.jpg",
+                "caption": "绣像",
+                "orig": "img/facsimile/zhong/xb08.jpg",
+                "bytes": 142843
+              },
+              {
+                "file": "img/facsimile/zhong/xb09.jpg",
+                "caption": "绣像",
+                "orig": "img/facsimile/zhong/xb09.jpg",
+                "bytes": 190100
+              },
+              {
+                "file": "img/facsimile/zhong/xb1.jpg",
+                "caption": "绣像",
+                "orig": "img/facsimile/zhong/xb1.jpg",
+                "bytes": 119215
+              },
+              {
+                "file": "img/facsimile/zhong/xb13.jpg",
+                "caption": "绣像",
+                "orig": "img/facsimile/zhong/xb13.jpg",
+                "bytes": 180163
+              },
+              {
+                "file": "img/facsimile/zhong/xb14.jpg",
+                "caption": "绣像",
+                "orig": "img/facsimile/zhong/xb14.jpg",
+                "bytes": 167365
+              },
+              {
+                "file": "img/facsimile/zhong/xb15.jpg",
+                "caption": "绣像",
+                "orig": "img/facsimile/zhong/xb15.jpg",
+                "bytes": 184176
+              },
+              {
+                "file": "img/facsimile/zhong/xb2.jpg",
+                "caption": "绣像",
+                "orig": "img/facsimile/zhong/xb2.jpg",
+                "bytes": 94584
+              },
+              {
+                "file": "img/facsimile/zhong/xb3.jpg",
+                "caption": "绣像",
+                "orig": "img/facsimile/zhong/xb3.jpg",
+                "bytes": 128708
+              },
+              {
+                "file": "img/facsimile/zhong/xb4.jpg",
+                "caption": "绣像",
+                "orig": "img/facsimile/zhong/xb4.jpg",
+                "bytes": 187174
+              },
+              {
+                "file": "img/facsimile/zhong/xb5.jpg",
+                "caption": "绣像",
+                "orig": "img/facsimile/zhong/xb5.jpg",
+                "bytes": 169045
+              }
+            ]
+          }
         ]
       }
     },

@@ -81,7 +81,7 @@ code{background:#faf5e7;padding:1px 5px;border-radius:3px;font-size:12.5px;}
 <main class="wrap">
   <section class="panel">
     <h1>路线图 · 待做与数据缺口</h1>
-    <p class="hero-desc">本页公开登记项目进度、尚未完成的工作与<b>受外部数据限制的功能</b>。Step 16 互文网络、Step 17 影像并置（含钟批本 15 幅真本绣像）已落地；Step 18 众包校勘台待容与堂/贯华堂/余评双峰堂等更多影像与志愿者，不硬凑。</p>
+    <p class="hero-desc">本页公开登记项目进度、尚未完成的工作与<b>受外部数据限制的功能</b>。Step 16 互文网络已落地，Step 17 影像并置已完成（含容与堂本 99 叶真本扫描与钟批本绣像）；Step 18 众包校勘台待更多影像与志愿者，不硬凑功能。</p>
   </section>
 
   <section class="panel">
@@ -93,25 +93,25 @@ code{background:#faf5e7;padding:1px 5px;border-radius:3px;font-size:12.5px;}
 <div class="ms-item"><div class="ms-tag ✅ ">✅ 已完成</div><div class="ms-body"><h3>M5 · 教学矩阵 <small>Step 8–11</small></h3><p>梁山编制 / 词牌 / 格律 / 互动游戏</p></div></div>
 <div class="ms-item"><div class="ms-tag ✅ ">✅ 已完成</div><div class="ms-body"><h3>M6 · 可信底座 <small>Step 12–14</small></h3><p>批注溯源 / 开放数据 / 版本快照</p></div></div>
 <div class="ms-item"><div class="ms-tag ⏸ ">⏸ 暂不实现</div><div class="ms-body"><h3>M7 · 问答智能体 <small>Step 15</small></h3><p>RAG+大模型问答（需可用模型能力，本轮跳过）</p></div></div>
-<div class="ms-item"><div class="ms-tag ✅ ">✅ 已完成</div><div class="ms-body"><h3>M8 · 受限项 <small>Step 16–18</small></h3><p>✅ 互文网络 / ✅ 影像并置（钟批真本绣像+版刻仿真+外部高清源）/ 🟡 众包校勘等影像与参与者</p></div></div></div>
+<div class="ms-item"><div class="ms-tag ✅ ">✅ 已完成</div><div class="ms-body"><h3>M8 · 受限项 <small>Step 16–18</small></h3><p>✅ 互文网络 / ✅ 影像并置（容与堂本 99 叶真本扫描 + 钟批绣像 + 版刻仿真 + 外部高清源）/ 🟡 众包校勘等影像与参与者</p></div></div></div>
   </section>
 
   <section class="panel">
     <h2>数据更新日志（CHANGELOG）</h2>
-    <div class="log-list"><div class="log-item"><div class="log-date">2026-10-27</div><div class="log-ver">M5/M6 教学矩阵与可信底座</div><ul><li>新增梁山编制(hierarchy)、韵文词牌(verse)、回目格律(couplet)、互动游戏(games)四页</li><li>新增评论溯源元数据 commentaries_meta.json（九家批注的底本/录入方式/可信度等级/覆盖范围）</li><li>新增数据开放(data.html)、关于本站(about.html)、路线图(roadmap.html)三页</li><li>回目格律：平仄判据公开（普通话四声），明写不合中古入声的局限</li><li>韵文抽取双通路兜底（逐行通道+段落通道），八版块数与词牌计数已落 JSON</li></ul></div>
+    <div class="log-list"><div class="log-item"><div class="log-date">2026-10-27</div><div class="log-ver">Step 17 真本影像扩充（容与堂本 99 叶入库）</div><ul><li>容与堂本据日本国立公文书馆藏《李卓吾先生批評忠義水滸伝》二十卷抓取原书扫描，卷之一全 87 叶 + 卷十九 4 叶 + 卷二十 8 叶共 99 叶</li><li>与钟批本 15 幅绣像合计 114 幅/叶，以分组结构挂入 data/facsimiles.json 的 real_images 字段</li><li>新增脚本 fetch_facsimiles_naj.py / attach_real_facsimiles.py / check_asset_size.py</li><li>确立影像体积策略：站内单张 ≤ 200KB（长边 1200px），原分辨率叶与整本影印 PDF 不入仓、仅登记外部直链</li></ul></div>
+<div class="log-item"><div class="log-date">2026-10-27</div><div class="log-ver">Step 17 影像并置补全（钟批真本绣像入库）</div><ul><li>入库钟伯敬批评本（明天启四知馆刊本，法国国家图书馆藏）书前绣像 15 幅，压缩至长边 1200px 后入 docs/img/facsimile/zhong/</li><li>影像并置页升级为「真本影像 + 版刻仿真 + 外部高清源」三层结构，真本/示意以朱红/米色角标区分</li></ul></div>
+<div class="log-item"><div class="log-date">2026-10-27</div><div class="log-ver">Step 16 互文成书网络</div><ul><li>入库《大宋宣和遗事》四集全文（约 6.7 万字）与元明水浒杂剧 8 种</li><li>建立人名异写表 56 条，产出 52 条互文对应（人工情节对表 12 条 + 4-gram 自动候选 40 条），见 intertext.html</li></ul></div>
+<div class="log-item"><div class="log-date">2026-10-27</div><div class="log-ver">M5/M6 教学矩阵与可信底座</div><ul><li>新增梁山编制(hierarchy)、韵文词牌(verse)、回目格律(couplet)、互动游戏(games)四页</li><li>新增评论溯源元数据 commentaries_meta.json（九家批注的底本/录入方式/可信度等级/覆盖范围）</li><li>新增数据开放(data.html)、关于本站(about.html)、路线图(roadmap.html)三页</li><li>回目格律：平仄判据公开（普通话四声），明写不合中古入声的局限</li><li>韵文抽取双通路兜底（逐行通道+段落通道），八版块数与词牌计数已落 JSON</li></ul></div>
 <div class="log-item"><div class="log-date">2026-10-27</div><div class="log-ver">M2-M4 可计算研究层上线</div><ul><li>版本谱系树 stemma（编辑距离 + n-gram 余弦双口径聚类）</li><li>评点接受史热力图 reception（九家 8229 条批语密度）</li><li>情感曲线 emotion（自建情感词典，按段落聚合）</li><li>网络演化与删点实验 network（核心网 183 节点/86 边，宋江 −24 连通片）</li><li>文体计量 stylometry（虚词+字符 n-gram，田虎王庆段距离明显）</li></ul></div>
 <div class="log-item"><div class="log-date">2026-05-19</div><div class="log-ver">M1 底座初成</div><ul><li>8 版本繁/简/白三语体语料落库（共 1938 回文件）</li><li>注册表 registry.json 确立为单一可信源</li><li>阅读器 / 异文对照 / 批注检索初版上线</li></ul></div></div>
   </section>
 
   <section class="panel">
-    <h2>待外部数据（Step 18 占位）</h2>
-    <p>以下功能<b>不依赖代码能力</b>，只缺公开可用的高清影像与参与者。如果你有可授权使用的资源，欢迎联系贡献。</p>
-    <div class="wait-grid"><div class="wait-card" style="border-color:#3f6b5e;background:#eef5f1;"><h3>Step 16 · 互文网络 <span style="color:#2f5d50;font-size:14px;">✅ 已完成 2026-10-27</span></h3><p class="need"><b>已落地：</b>《大宋宣和遗事》四集全文录入，元水浒杂剧8种合璧；4-gram + 情节对表双口径，输出互文成书页（intertext.html）。</p><p><a href="intertext.html">进入互文网络 →</a></p></div>
-<div class="wait-card" style="border-color:#3f6b5e;background:#eef5f1;"><h3>Step 17 · 版本影像并置 <span style="color:#2f5d50;font-size:14px;">✅ 已完成 2026-10-27（含真本绣像）</span></h3><p class="need"><b>已落地：</b>以「真本影像 + 版刻仿真 + 外部高清源」三层结构呈现 7 个关键明刻本：<br>
-<b>· 钟伯敬批评本</b>（明天启四知馆刊本，法国国家图书馆藏）——书前 <b>15 幅原色绣像</b>直接从书格公版影像入库，可点击放大；<br>
-<b>· 容与堂本 / 贯华堂金批本 / 余评双峰堂本 / 袁无涯全传本 / 大涤余人序本 / 陈洪绶水浒叶子</b>——牌记页与正文页采用 PIL 绘制的版刻风格仿真示意图（行格、框线、栏式、书坊牌记、眉批夹批位置、绣像位置均按原书还原），并登记书格、日本国立公文书馆、京都大学 RMDA、法国国家图书馆 Gallica、广陵书社/中华书局/国家图书馆出版社/沈阳出版社影印本、豆瓣书目页等公版外部高清源（原刻本 PDF 普遍在 500MB–5GB，不适合直接入仓）。<br>
-页面给出「回数 / 栏式 / 插图位置 / 批点形态 / 牌记书坊」五个版本辨识要点，真本影像与版式示意以朱红/米色角标明确区分。</p><p><a href="facsimiles.html">进入影像并置 →</a></p></div>
-<div class="wait-card"><h3>Step 18 · OCR 众包校勘台</h3><p class="need"><b>缺口：</b>更多版本的高清影像（容与堂本绣像与眉批、贯华堂金批本朱墨套印页、余评双峰堂"上评中图下文"三栏版心）与愿意参与校书的读者</p><p>余评 18 卷、钟批眉批（已入库 15 幅绣像但眉批与正文仍以录入文本为准）、燕评逐回这些「机器录不准」的部分，待影像到位后做成参与式校书入口，把数据缺口变成功能。钟批本已有书格原色高清 PDF 可作校勘底本（facsimiles.html 下载区），欢迎先参与钟批的眉批逐字校对。</p></div></div>
+    <h2>待外部数据（Step 16–18 占位）</h2>
+    <p>以下三项功能<b>不依赖代码能力</b>，只缺公开可用的电子文本或高清影像。如果你有可授权使用的资源，欢迎联系贡献。</p>
+    <div class="wait-grid"><div class="wait-card" style="border-color:#3f6b5e;background:#eef5f1;"><h3>Step 16 · 互文网络 <span style="color:#2f5d50;font-size:14px;">✅ 已完成 2026-10-27</span></h3><p class="need"><b>已落地：</b>《大宋宣和遗事》四集全文录入，元水浒杂剧 8 种合璧；4-gram + 情节对表双口径，输出互文成书页（intertext.html）。</p><p><a href="intertext.html">进入互文网络 →</a></p></div>
+<div class="wait-card" style="border-color:#3f6b5e;background:#eef5f1;"><h3>Step 17 · 版本影像并置 <span style="color:#2f5d50;font-size:14px;">✅ 已完成 2026-10-27（容与堂本 99 叶扫描 + 钟批绣像）</span></h3><p class="need"><b>已落地：</b>三层结构呈现 7 个关键明刻本：<b>容与堂本</b>据日本国立公文书馆藏《李卓吾先生批評忠義水滸伝》二十卷抓取原书扫描，卷之一全 87 叶 + 卷十九 4 叶 + 卷二十 8 叶共 <b>99 叶</b>入库，可逐叶翻阅并点开原分辨率直链；<b>钟伯敬批评本</b>书前 15 幅原色绣像直接入库；其余各本牌记页与正文页以 PIL 绘制版刻仿真示意图，并登记书格 / 国立公文书馆 / 京都大学 RMDA / Gallica / 广陵书社等公版外部高清源。</p><p><b>体积策略：</b>站内单张影像长边 1200px、≤ 200KB，原分辨率叶与整本影印 PDF 不入仓、只登记外部直链。</p><p><a href="facsimiles.html">进入影像并置 →</a></p></div>
+<div class="wait-card"><h3>Step 18 · OCR 众包校勘台</h3><p class="need"><b>缺口：</b>更多版本的高清影像（贯华堂金批本朱墨套印页、余评双峰堂「上评中图下文」三栏版心、容与堂本绣像与眉批）与愿意参与校书的读者</p><p>余评 18 卷、钟批眉批、燕评逐回这些「机器录不准」的部分，待影像到位后做成参与式校书入口。钟批本已有书格原色高清 PDF 可作校勘底本，欢迎先参与钟批眉批的逐字校对。</p></div></div>
   </section>
 
   <section class="panel">
@@ -119,7 +119,7 @@ code{background:#faf5e7;padding:1px 5px;border-radius:3px;font-size:12.5px;}
     <ul class="simple-list">
       <li>发现 OCR 讹字、批语错位、人物信息错误：可在阅读器批注旁或对应卡片页提交反馈（后续开放入口）。</li>
       <li>提供高清扫本影像：可直接用于 Step 17 影像并置与 Step 18 众包校勘。</li>
-      <li>提供高清元刻/明刻杂剧本影印：可对互文网络做二校（当前五剧为关键折+梗概合璧本，信度C级）。</li>
+      <li>补充《大宋宣和遗事》/水浒戏电子文本：可直接启动 Step 16 互文网络。</li>
       <li>代码与数据均在 GitHub 仓库，欢迎 fork / PR。</li>
     </ul>
     <p class="note">当前数据版本：<code>v2026.10.27</code></p>

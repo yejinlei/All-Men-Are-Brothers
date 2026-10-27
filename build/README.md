@@ -114,3 +114,22 @@ print('九家批语总条数', len(critics.load_all()))
 
 见 `requirements.txt`。缺 `jieba`/`opencc` 时相关模块自动降级（分词退回逐字、
 简繁退回原文），n-gram 类分析不依赖分词仍可运行。
+
+## 影像（Step 17）专用脚本
+
+```bash
+# 1) 抓取容与堂本真本扫描叶（日本国立公文书馆 IIIF，站内小图）
+python3 build/fetch_facsimiles_naj.py --max-px 1200 --concurrency 3   # 断点续传，可分批 --limit N
+# 2) 把真本影像挂到 docs/data/facsimiles.json（统一 real_images 结构）
+python3 build/attach_real_facsimiles.py
+# 3) 体积护栏：单张影像上限 200KB，--fix 就地重压超限影像
+python3 build/check_asset_size.py            # 只检查、超限则退出码 1
+python3 build/check_asset_size.py --fix      # 就地压缩到上限内
+```
+
+**体积策略（硬约束）**：站内单张影像 **长边 1200px、≤ 200KB**；原分辨率叶（单叶数 MB）
+与数百 MB–数 GB 的整本影印 PDF **不入仓**，只在 JSON 里登记外部直链（`orig_full` /
+`downloads`）。新增影像务必过一遍 `check_asset_size.py`。
+
+> 抓取注意：该馆对 Python 默认 TLS 指纹会回 403，故 `fetch_facsimiles_naj.py` 走 `curl` 取图；
+> 并发过高会触发限速，脚本已内置节流与退避，建议 `--concurrency 3`。
