@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>韵文词牌图谱 · 水浒传数字人文</title>
+<link rel="icon" href="favicon.ico">
+<link rel="stylesheet" href="css/style.css">
+<script src="vendor/echarts.min.js"></script>
+<script src="js/registry.js"></script>
+<style>
+.wrap{max-width:1180px;margin:0 auto;padding:26px 22px 80px;}
+.page-title{font-family:var(--font-serif);font-size:30px;color:var(--vermilion-deep);letter-spacing:4px;margin-bottom:6px;}
+.page-sub{color:var(--ink-muted);font-size:14px;line-height:1.9;margin-bottom:18px;max-width:920px;}
+.panel{background:var(--paper-warm);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:18px;}
+.panel h3{font-family:var(--font-serif);font-size:18px;color:var(--vermilion-deep);margin-bottom:10px;letter-spacing:2px;}
+.statbar{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:18px;}
+.stat{background:var(--paper-warm);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;}
+.stat .n{font-family:var(--font-serif);font-size:24px;color:var(--vermilion-deep);}
+.stat .l{font-size:12.5px;color:var(--ink-muted);margin-top:4px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+@media(max-width:860px){.grid2{grid-template-columns:1fr;}}
+.chart{width:100%;height:340px;}
+.ctl{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px;}
+select{padding:6px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:#fff;}
+table.mini{width:100%;border-collapse:collapse;font-size:13.5px;}
+table.mini th,table.mini td{border-bottom:1px solid var(--border);padding:6px 8px;text-align:left;vertical-align:top;}
+table.mini th{color:var(--ink-muted);font-weight:500;}
+.poem{font-family:var(--font-serif);line-height:1.95;color:var(--ink);white-space:pre-wrap;}
+.tag{display:inline-block;font-size:12px;padding:1px 8px;border-radius:9px;background:#efe3d0;color:#7a5a2a;}
+.hint{font-size:12.5px;color:var(--ink-muted);line-height:1.9;margin-top:8px;}
+.tblbox{max-height:520px;overflow:auto;border:1px solid var(--border);border-radius:8px;}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="logo"><span class="seal">水</span><span>水浒传本体论</span></div>
+  <nav class="nav-links">
+  <a href="index.html">首页</a>
+  <a href="index.html#versions">版本学</a>
+  <a href="index.html#heroes">108将</a>
+  <a href="themes.html">主题研究</a>
+  <a href="kg.html">知识图谱</a>
+  <a href="index.html#graph">关系图谱</a>
+  <a href="index.html#places">空间地理</a>
+  <a href="index.html#events">叙事结构</a>
+  <a href="index.html#weapons">兵器职官</a>
+  <a href="index.html#critics">评点学术</a>
+  <a href="index.html#derivatives">续书衍生</a>
+  <a href="index.html#ontology">本体推演</a>
+  <a href="read.html">版本阅读</a>
+  <a href="diff.html">异文对照</a>
+  <a href="search.html">批注检索</a>
+  <span class="nav-dd">
+      <span class="nav-dd-toggle active" tabindex="0" role="button">数字研究 <b>▾</b></span>
+      <span class="nav-dd-menu">
+        <a href="stemma.html">版本谱系树</a>
+        <a href="reception.html">评点接受史</a>
+        <a href="emotion.html">情感曲线</a>
+        <a href="network.html">网络演化</a>
+        <a href="stylometry.html">文体计量</a>
+        <a href="hierarchy.html">梁山编制</a>
+        <a href="verse.html" class="active">韵文词牌</a>
+        <a href="couplet.html">回目格律</a>
+        <a href="games.html">互动游戏</a>
+      </span>
+    </span>
+  </nav>
+</header>
+
+<div class="wrap">
+  <div class="page-title">韵文词牌图谱</div>
+  <div class="page-sub">章回小说夹诗带词：回前「詩曰」、回末「有詩爲證」、人物出场「但見」、场面收束「正是」。
+  本页把八版本正文中的韵文逐块抽出，统计锚点类型、句长与词牌，用来观察各版本「以诗为证」的习惯差异。</div>
+
+  <div class="statbar" id="stats"></div>
+
+  <div class="panel">
+    <h3>各版本韵文规模</h3>
+    <div id="chartScale" class="chart" style="height:380px"></div>
+    <div class="hint">柱＝韵文块数，折线＝韵文字数。折行整理本（如金批繁本）单块偏碎，块数会偏高，请看字数更稳。</div>
+  </div>
+
+  <div class="panel">
+    <div class="ctl">
+      <span>逐版细看：</span>
+      <select id="selVer"></select>
+      <span class="hint" id="verNote"></span>
+    </div>
+    <div class="grid2">
+      <div>
+        <h3>锚点类型分布</h3>
+        <div id="chartAnchor" class="chart"></div>
+      </div>
+      <div>
+        <h3>句长分布（4–12 字）</h3>
+        <div id="chartLen" class="chart"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>词牌命中（全书）</h3>
+    <div id="chartCipai" class="chart" style="height:320px"></div>
+    <div class="hint">词牌名多以《西江月》《鷓鴣天》形式标出，部分版本仅作「詞曰」不标牌名，故命中数偏少只表示该版本标注习惯，不等于词的多少。</div>
+  </div>
+
+  <div class="panel">
+    <h3>抽样复核</h3>
+    <div class="hint" style="margin-bottom:10px">下列为所选版本逐块抽出的原文（每版最多 60 块），可核对是否混入散文。点击行首回次可到阅读器核对同一回。</div>
+    <div class="tblbox">
+      <table class="mini" id="tbl"><thead><tr><th style="width:70px">回次</th><th style="width:150px">锚点</th><th>韵文</th></tr></thead><tbody id="tbody"></tbody></table>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>抽取方法与边界</h3>
+    <div class="hint" id="method"></div>
+  </div>
+</div>
+
+<script>
+function esc(s){return String(s==null?'':s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+let D=null, cScale, cAnchor, cLen, cCipai;
+const VERCOLOR={v120:'#9a1f1f',v100:'#b8860b',v70:'#2f5d50',jin70:'#4A6B8A',jin70_pi:'#7a4a8a',jinshengtan:'#a9622d',jiqin:'#3f6b5e',zsk:'#6b4423'};
+
+fetch('data/verse_index.json').then(r=>r.json()).then(d=>{D=d;init();})
+  .catch(e=>{document.getElementById('method').textContent='数据加载失败：'+e;});
+
+function init(){
+  const tot=D.totals, ids=Object.keys(tot);
+  const allBlocks=ids.reduce((a,k)=>a+tot[k].blocks,0);
+  const allChars=ids.reduce((a,k)=>a+tot[k].chars,0);
+  const nCipai=Object.keys(D.cipai).reduce((a,k)=>a+Object.keys(D.cipai[k]).length,0);
+  document.getElementById('stats').innerHTML=[
+    [allBlocks,'韵文块（八版本合计）'],[allChars.toLocaleString(),'韵文字数（合计）'],
+    [ids.length,'覆盖版本'],[Object.keys(D.anchors.v120||{}).length,'锚点类型（v120）']
+  ].map(x=>'<div class="stat"><div class="n">'+x[0]+'</div><div class="l">'+x[1]+'</div></div>').join('');
+
+  cScale=echarts.init(document.getElementById('chartScale'));
+  const order=Object.keys(tot).sort((a,b)=>tot[b].chars-tot[a].chars);
+  cScale.setOption({
+    tooltip:{trigger:'axis'},
+    legend:{data:['韵文块数','韵文字数'],top:0},
+    grid:{left:60,right:70,top:36,bottom:60},
+    xAxis:{type:'category',data:order.map(k=>tot[k].label),axisLabel:{rotate:22,fontSize:11}},
+    yAxis:[{type:'value',name:'块数'},{type:'value',name:'字数'}],
+    series:[
+      {name:'韵文块数',type:'bar',data:order.map(k=>tot[k].blocks),itemStyle:{color:'#9a1f1f'},barMaxWidth:34},
+      {name:'韵文字数',type:'line',yAxisIndex:1,data:order.map(k=>tot[k].chars),itemStyle:{color:'#2f5d50'},smooth:true}
+    ]
+  });
+
+  cCipai=echarts.init(document.getElementById('chartCipai'));
+  const agg={};
+  Object.values(D.cipai).forEach(o=>Object.keys(o).forEach(k=>agg[k]=(agg[k]||0)+o[k]));
+  const cs=Object.keys(agg).sort((a,b)=>agg[b]-agg[a]);
+  cCipai.setOption({
+    tooltip:{trigger:'axis'},
+    grid:{left:80,right:40,top:16,bottom:30},
+    xAxis:{type:'value'},
+    yAxis:{type:'category',data:cs.slice().reverse(),axisLabel:{fontFamily:'Songti SC, serif',fontSize:13}},
+    series:[{type:'bar',data:cs.slice().reverse().map(k=>agg[k]),itemStyle:{color:'#8b1a1a'},barMaxWidth:18,
+      label:{show:true,position:'right',fontSize:11}}]
+  });
+
+  cAnchor=echarts.init(document.getElementById('chartAnchor'));
+  cLen=echarts.init(document.getElementById('chartLen'));
+
+  const sel=document.getElementById('selVer');
+  ids.forEach(k=>sel.insertAdjacentHTML('beforeend','<option value="'+k+'">'+esc(tot[k].label)+'</option>'));
+  sel.value='v120';
+  sel.onchange=()=>show(sel.value);
+  show('v120');
+  window.addEventListener('resize',()=>{cScale.resize();cAnchor.resize();cLen.resize();cCipai.resize();});
+}
+
+function show(vid){
+  const tot=D.totals[vid];
+  document.getElementById('verNote').innerHTML='共 '+tot.blocks+' 块／'+tot.lines+' 句／'+tot.chars+' 字，块均 '+
+    tot.avg_line_chars+' 字；抽取通道：'+(tot.channel==='para'?'段落合并（折行整理本）':'逐行');
+
+  const a=D.anchors[vid]||{};
+  const ak=Object.keys(a).sort((x,y)=>a[y]-a[x]).slice(0,12);
+  cAnchor.setOption({
+    tooltip:{trigger:'item'},
+    grid:{left:120,right:50,top:10,bottom:30},
+    xAxis:{type:'value'},
+    yAxis:{type:'category',data:ak.slice().reverse(),axisLabel:{fontSize:12}},
+    series:[{type:'bar',data:ak.slice().reverse().map(k=>a[k]),itemStyle:{color:'#4A6B8A'},barMaxWidth:16,
+      label:{show:true,position:'right',fontSize:11}}]
+  },true);
+
+  const L=D.line_lens[vid]||{};
+  const lk=Object.keys(L).filter(k=>+k>=4&&+k<=12).sort((x,y)=>+x-+y);
+  cLen.setOption({
+    tooltip:{trigger:'axis'},
+    grid:{left:50,right:30,top:14,bottom:30},
+    xAxis:{type:'category',data:lk.map(k=>k+'字'),axisLabel:{fontSize:11}},
+    yAxis:{type:'value',name:'频次'},
+    series:[{type:'bar',data:lk.map(k=>L[k]),itemStyle:{color:'#b8860b'},barMaxWidth:26,
+             label:{show:true,position:'top',fontSize:10}}]
+  },true);
+
+  const rows=(D.samples||[]).filter(x=>x.v===vid);
+  document.getElementById('tbody').innerHTML=rows.map(x=>
+    '<tr><td><a href="read.html?vid='+vid+'&ch='+x.hui+'" target="_blank">第'+x.hui+'回</a></td>'+
+    '<td><span class="tag">'+esc(x.anchor)+'</span></td>'+
+    '<td class="poem">'+esc(x.text)+'</td></tr>').join('') ||
+    '<tr><td colspan="3" class="hint">该版本无抽样条目。</td></tr>';
+
+  document.getElementById('method').innerHTML='<b>抽取规则</b>：① 锚点行——行末为「：」且以 '
+    +'詩曰／詞曰／有詩爲證／古風／贊曰／箴曰／偈曰／格言曰／正是／但見／有分教／《词牌》 等固定套语收尾；'
+    +'② 锚点之后连续的短句行（≤40 字、自带标点、不以叙述词起头）并为一块，遇叙述恢复即止，'
+    +'块尾的「畢竟…且聽下回分解」一类章末套语已剥离；③ 无锚点的裸诗由结构判定（≥4 个 4–10 字整齐短句）。<br>'
+    +'<b>为何有两套通道</b>：多数版本「一段一行」，逐行判定即可；金批繁本等按列宽折行整理，'
+    +'须先按空行合并为段落再判定（页面已标出各版所用通道）。<br>'
+    +'<b>已知边界</b>：'+(D.caveat||'')+' 故块数略偏多属正常，宜看趋势而非绝对值；'
+    +'词牌名仅部分版本标出，命中数反映的是标注习惯。';
+}
+</script>
+</body>
+</html>

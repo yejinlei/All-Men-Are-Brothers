@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>互动游戏 · 水浒传数字人文</title>
+<link rel="icon" href="favicon.ico">
+<link rel="stylesheet" href="css/style.css">
+<script src="js/registry.js"></script>
+<style>
+.wrap{max-width:1100px;margin:0 auto;padding:26px 22px 80px;}
+.page-title{font-family:var(--font-serif);font-size:30px;color:var(--vermilion-deep);letter-spacing:4px;margin-bottom:6px;}
+.page-sub{color:var(--ink-muted);font-size:14px;line-height:1.9;margin-bottom:18px;max-width:900px;}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
+.tab{padding:8px 18px;border:1px solid var(--border);border-radius:20px;background:#fff;cursor:pointer;font-size:14px;}
+.tab.on{background:var(--vermilion-deep);color:#fff;border-color:var(--vermilion-deep);}
+.panel{background:var(--paper-warm);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:18px;}
+.panel h3{font-family:var(--font-serif);font-size:18px;color:var(--vermilion-deep);margin-bottom:10px;letter-spacing:2px;}
+.btn{padding:7px 16px;border:1px solid var(--vermilion-deep);background:#fff;color:var(--vermilion-deep);border-radius:18px;cursor:pointer;font-size:13.5px;}
+.btn:hover{background:var(--vermilion-deep);color:#fff;}
+.btn.solid{background:var(--vermilion-deep);color:#fff;}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:820px){.cols{grid-template-columns:1fr;}}
+.txtbox{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-family:var(--font-serif);font-size:15px;line-height:2;min-height:120px;}
+.txtbox .hitok{background:#cfe8d6;border-radius:3px;}
+.txtbox .missok{background:#f6d6d2;border-radius:3px;}
+.txtbox .pick{cursor:pointer;}
+.txtbox .pick:hover{background:#f3ead6;}
+.meta{font-size:12.5px;color:var(--ink-muted);margin-bottom:8px;line-height:1.8;}
+.bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px;}
+.msg{font-size:13.5px;color:#2f5d50;font-weight:600;}
+.msg.warn{color:#b8860b;}
+.opt{display:block;width:100%;text-align:left;padding:11px 14px;margin-bottom:8px;border:1px solid var(--border);border-radius:9px;background:#fff;cursor:pointer;font-size:14px;}
+.opt:hover{border-color:var(--vermilion-deep);}
+.opt.on{background:#fdf3e7;border-color:var(--vermilion-deep);}
+.orderslot{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.chipcard{padding:10px 14px;border:1px solid var(--border);border-radius:9px;background:#fff;cursor:pointer;font-size:14px;font-family:var(--font-serif);}
+.chipcard.on{background:#f6e0dd;border-color:var(--vermilion-deep);}
+.chipcard.done{background:#efe9dd;color:#8a7a5a;cursor:default;}
+.hero-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px;display:flex;gap:16px;}
+.hero-card img{width:130px;border-radius:8px;border:1px solid var(--border);}
+.hero-card .h1{font-family:var(--font-serif);font-size:21px;color:var(--vermilion-deep);letter-spacing:2px;margin-bottom:6px;}
+.hero-card .row{font-size:13.5px;line-height:1.95;color:var(--ink-light);}
+.hint{font-size:12.5px;color:var(--ink-muted);line-height:1.9;}
+table.mini{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:10px;}
+table.mini th,table.mini td{border-bottom:1px solid var(--border);padding:6px 8px;text-align:left;}
+table.mini th{color:var(--ink-muted);font-weight:500;}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="logo"><span class="seal">水</span><span>水浒传本体论</span></div>
+  <nav class="nav-links">
+  <a href="index.html">首页</a>
+  <a href="index.html#versions">版本学</a>
+  <a href="index.html#heroes">108将</a>
+  <a href="themes.html">主题研究</a>
+  <a href="kg.html">知识图谱</a>
+  <a href="index.html#graph">关系图谱</a>
+  <a href="index.html#places">空间地理</a>
+  <a href="index.html#events">叙事结构</a>
+  <a href="index.html#weapons">兵器职官</a>
+  <a href="index.html#critics">评点学术</a>
+  <a href="index.html#derivatives">续书衍生</a>
+  <a href="index.html#ontology">本体推演</a>
+  <a href="read.html">版本阅读</a>
+  <a href="diff.html">异文对照</a>
+  <a href="search.html">批注检索</a>
+  <span class="nav-dd">
+      <span class="nav-dd-toggle active" tabindex="0" role="button">数字研究 <b>▾</b></span>
+      <span class="nav-dd-menu">
+        <a href="stemma.html">版本谱系树</a>
+        <a href="reception.html">评点接受史</a>
+        <a href="emotion.html">情感曲线</a>
+        <a href="network.html">网络演化</a>
+        <a href="stylometry.html">文体计量</a>
+        <a href="hierarchy.html">梁山编制</a>
+        <a href="verse.html">韵文词牌</a>
+        <a href="couplet.html">回目格律</a>
+        <a href="games.html" class="active">互动游戏</a>
+      </span>
+    </span>
+  </nav>
+</header>
+
+<div class="wrap">
+  <div class="page-title">互动游戏</div>
+  <div class="page-sub">三则小游戏的数据全部取自站点真实字段与真实异文：异文找茬用两版本简体正文逐字比对，
+  回目排序用真实回目标题，梁山定位用真实的星号、绰号、职务与上山来源做匹配——不编造设定。</div>
+
+  <div class="tabs">
+    <span class="tab on" data-g="diff">① 异文找茬</span>
+    <span class="tab" data-g="order">② 回目排序</span>
+    <span class="tab" data-g="you">③ 你是梁山第几位</span>
+  </div>
+
+  <div id="gDiff">
+    <div class="panel">
+      <h3>异文找茬</h3>
+      <div class="bar">
+        <button class="btn solid" id="dNew">换一段</button>
+        <span class="msg" id="dMsg"></span>
+      </div>
+      <div class="meta" id="dMeta"></div>
+      <div class="cols">
+        <div><div class="meta">甲本</div><div class="txtbox" id="dA"></div></div>
+        <div><div class="meta">乙本（点出不同之处）</div><div class="txtbox" id="dB"></div></div>
+      </div>
+      <div class="hint" style="margin-top:10px">规则：乙本与甲本相比，被改写或增删的字词会以可点击方式给出；点中即算找出，点错会提示。找满三处即过关。
+      文本按字符级最长公共子序列比对，未匹配字符即为异文。</div>
+    </div>
+  </div>
+
+  <div id="gOrder" style="display:none">
+    <div class="panel">
+      <h3>回目排序</h3>
+      <div class="bar">
+        <button class="btn solid" id="oNew">换一组</button>
+        <span class="msg" id="oMsg"></span>
+      </div>
+      <div class="meta" id="oMeta"></div>
+      <div class="orderslot" id="oCards"></div>
+      <div class="hint">规则：点选卡片，按回次由早到晚依次归位。全部归位后自动判分。回目标题取自所选版本的真实回目。</div>
+    </div>
+  </div>
+
+  <div id="gYou" style="display:none">
+    <div class="panel">
+      <h3>你是梁山第几位</h3>
+      <div id="yQuiz"></div>
+      <div class="bar" style="margin-top:6px">
+        <button class="btn solid" id="yGo">看看我是谁</button>
+        <button class="btn" id="yReset">重答</button>
+        <span class="msg" id="yMsg"></span>
+      </div>
+    </div>
+    <div class="panel" id="yResult" style="display:none"></div>
+  </div>
+</div>
+
+<script>
+function esc(s){return String(s==null?'':s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+const VERS=[['v120','袁无涯百二十回'],['v100','容与堂百回本'],['v70','古本七十回']];
+
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');
+  const g=t.dataset.g;
+  document.getElementById('gDiff').style.display=(g==='diff')?'':'none';
+  document.getElementById('gOrder').style.display=(g==='order')?'':'none';
+  document.getElementById('gYou').style.display=(g==='you')?'':'none';
+});
+
+/* ---------------- ① 异文找茬 ---------------- */
+let dState={found:0,targets:new Set(),total:3,loaded:false};
+
+function lcsMark(a,b){
+  // 返回 b 中未匹配（即异文）的字符下标集合
+  const n=a.length,m=b.length;
+  const dp=new Array(n+1);
+  for(let i=0;i<=n;i++) dp[i]=new Int32Array(m+1);
+  for(let i=n-1;i>=0;i--)
+    for(let j=m-1;j>=0;j--)
+      dp[i][j]=(a[i]===b[j])?dp[i+1][j+1]+1:Math.max(dp[i+1][j],dp[i][j+1]);
+  const diffs=new Set(); let i=0,j=0;
+  while(i<n&&j<m){
+    if(a[i]===b[j]){i++;j++;}
+    else if(dp[i+1][j]>=dp[i][j+1]){i++;}
+    else {diffs.add(j);j++;}
+  }
+  while(j<m){diffs.add(j);j++;}
+  return diffs;
+}
+
+function segs(txt){
+  return txt.split('\n').map(s=>s.trim())
+    .filter(s=>s.length>=60&&s.length<=170&&!/^第[一二三四五六七八九十百]+回/.test(s)).slice(0,8);
+}
+
+async function newDiff(){
+  document.getElementById('dMsg').textContent='正在取文…';document.getElementById('dMsg').className='msg';
+  const [aId,bId]=Math.random()<0.5?['v120','v100']:['v100','v70'];
+  let a='',b='',hui=0,bestDiffs=null;
+  for(let tries=0;tries<10&&!bestDiffs;tries++){
+    hui=2+Math.floor(Math.random()*70);
+    try{
+      const ra=await fetch('texts/versions/'+aId+'/jian/ch'+String(hui).padStart(3,'0')+'.txt');
+      const rb=await fetch('texts/versions/'+bId+'/jian/ch'+String(hui).padStart(3,'0')+'.txt');
+      if(!ra.ok||!rb.ok) continue;
+      const sa=segs(await ra.text()),sb=segs(await rb.text());
+      let best=null;
+      for(const x of sa) for(const y of sb){
+        const d=lcsMark(x,y);
+        const ratio=d.size/Math.max(x.length,y.length);
+        const sc=ratio<=0.25?0:1;
+        if(d.size>=1&&(!best||sc<best.sc||(sc===best.sc&&d.size<best.d.size))) best={a:x,b:y,d:d,sc:sc};
+      }
+      if(best){a=best.a;b=best.b;bestDiffs=best.d;}
+    }catch(e){}
+  }
+  if(!a||!b||!bestDiffs){document.getElementById('dMsg').textContent='取文失败，请稍后再试。';return;}
+  const nameA=(VERS.find(v=>v[0]===aId)||['','甲本'])[1],nameB=(VERS.find(v=>v[0]===bId)||['','乙本'])[1];
+  const diffs=bestDiffs;
+
+  dState.targets=diffs;dState.found=0;dState.total=Math.min(3,diffs.size);
+  document.getElementById('dMeta').innerHTML='第 '+hui+' 回　甲本＝'+esc(nameA)+'　乙本＝'+esc(nameB)+
+    '　待找异文 '+dState.total+' 处（本段共 '+diffs.size+' 处）';
+  document.getElementById('dA').textContent=a;
+  const dB=document.getElementById('dB');dB.innerHTML='';
+  for(let k=0;k<b.length;k++){
+    const sp=document.createElement('span');
+    sp.textContent=b[k];sp.dataset.k=k;
+    if(diffs.has(k)){sp.className='pick';sp.onclick=()=>dHit(sp,true);}
+    else {sp.onclick=()=>dHit(sp,false);}
+    dB.appendChild(sp);
+  }
+  document.getElementById('dMsg').textContent='';
+}
+
+function dHit(sp,ok){
+  if(sp.classList.contains('hitok')) return;
+  if(ok){
+    sp.classList.add('hitok');dState.found++;
+    document.getElementById('dMsg').textContent='找出 '+dState.found+' / '+dState.total+' 处';
+    document.getElementById('dMsg').className='msg';
+    if(dState.found>=dState.total){
+      document.getElementById('dMsg').textContent='全部找出，过关！';
+      document.getElementById('dB').querySelectorAll('.pick').forEach(x=>{x.classList.add('hitok');x.classList.remove('pick');});
+    }
+  }else{
+    sp.classList.add('missok');setTimeout(()=>sp.classList.remove('missok'),700);
+    document.getElementById('dMsg').textContent='这个字两本相同，再找找。';
+    document.getElementById('dMsg').className='msg warn';
+  }
+}
+document.getElementById('dNew').onclick=newDiff;
+
+/* ---------------- ② 回目排序 ---------------- */
+let oData=null,oPick=[];
+async function newOrder(){
+  if(!oData){oData=await (await fetch('data/couplet.json')).json();}
+  const pool=oData.pairs.filter(p=>p.v==='v120'&&!p.single&&p.hui>=1&&p.hui<=100);
+  const chosen=[];
+  while(chosen.length<6){
+    const p=pool[Math.floor(Math.random()*pool.length)];
+    if(!chosen.find(x=>x.hui===p.hui)) chosen.push(p);
+  }
+  chosen.sort((x,y)=>x.hui-y.hui);
+  oPick=[];
+  const cards=chosen.slice().sort(()=>Math.random()-0.5);
+  document.getElementById('oCards').innerHTML=cards.map((p,i)=>
+    '<div class="chipcard" data-hui="'+p.hui+'">'+esc(p.up)+'／'+esc(p.down)+'</div>').join('');
+  document.getElementById('oMeta').innerHTML='本组 6 个回目打乱排列，请按回次从早到晚依次点选（第一次点到的是最早的一回）。';
+  document.getElementById('oMsg').textContent='';
+  document.querySelectorAll('#oCards .chipcard').forEach(c=>c.onclick=()=>oSelect(c));
+}
+
+function oSelect(c){
+  if(c.classList.contains('done')) return;
+  c.classList.add('done');oPick.push(+c.dataset.hui);
+  const done=document.querySelectorAll('#oCards .chipcard.done').length;
+  document.getElementById('oMsg').textContent='已归位 '+done+' / 6';
+  if(done===6) checkOrder();
+}
+
+function checkOrder(){
+  const sorted=oPick.slice().sort((a,b)=>a-b);
+  const ok=JSON.stringify(oPick)===JSON.stringify(sorted);
+  const msg=document.getElementById('oMsg');
+  msg.className='msg'+(ok?'':' warn');
+  msg.textContent=ok?'完全正确，六回次序无误！':'次序有误：'+oPick.join(' → ')+'　正确应为 '+sorted.join(' → ')+'（再点「换一组」重来）';
+}
+document.getElementById('oNew').onclick=newOrder;
+
+/* ---------------- ③ 你是梁山第几位 ---------------- */
+let org=null;
+const QUIZ=[
+  {k:'group',q:'你愿意在梁山担任何职？（职务分组）',opts:['五虎将','八骠骑','步军头领','水军头领','小彪将','步军将校','情报头领','特技头领','文职头领','钱粮管家','女将']},
+  {k:'faction',q:'你的来路更近哪一支？（上山来源）',opts:['元老系','郓城系','二龙山系','少华山系','江州系','登州系','降将系','特技系','援山系','大名府系','卢俊义系']},
+  {k:'weapon',q:'你惯用什么兵器？',opts:['刀','枪','棍／棒','鞭','弓／箭','叉／牌／飞刀','水战']},
+  {k:'tier',q:'你更想位列哪一档？',opts:['天罡','地煞']}
+];
+let yAns={};
+
+function buildQuiz(){
+  document.getElementById('yQuiz').innerHTML=QUIZ.map((q,i)=>{
+    return '<div style="margin-bottom:14px"><div style="font-family:var(--font-serif);font-size:15px;margin-bottom:8px">'+
+      (i+1)+'. '+esc(q.q)+'</div>'+
+      q.opts.map(o=>'<button class="opt" data-k="'+q.k+'" data-v="'+esc(o)+'">'+esc(o)+'</button>').join('')+'</div>';
+  }).join('');
+  document.querySelectorAll('#yQuiz .opt').forEach(b=>b.onclick=()=>{
+    const k=b.dataset.k;
+    yAns[k]=b.dataset.v;
+    document.querySelectorAll('#yQuiz .opt[data-k="'+k+'"]').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+  });
+}
+
+function weaponHit(w,pref){
+  w=(w||'');
+  if(!pref) return 0;
+  if(pref==='水战') return /水|船|桨|槳|篙|鱼|魚|网|網/.test(w)?3:0;
+  if(pref==='叉／牌／飞刀') return /叉|牌|飞刀|飛刀|标枪|標槍|弩/.test(w)?3:0;
+  if(pref==='弓／箭') return /弓|箭/.test(w)?3:0;
+  if(pref==='棍／棒') return /棍|棒/.test(w)?3:0;
+  return w.includes(pref)?3:0;
+}
+
+function scoreHero(h){
+  let s=0;
+  if(yAns.group&&h.group===yAns.group) s+=3;
+  if(yAns.faction&&h.faction===yAns.faction) s+=3;
+  s+=weaponHit(h.weapon,yAns.weapon);
+  if(yAns.tier&&h.tier===yAns.tier) s+=1;
+  return s;
+}
+
+async function doYou(){
+  if(!org){org=await (await fetch('data/org.json')).json();}
+  const answered=Object.keys(yAns).length;
+  if(answered<QUIZ.length){
+    document.getElementById('yMsg').textContent='还有 '+(QUIZ.length-answered)+' 题未答。';
+    document.getElementById('yMsg').className='msg warn';
+    return;
+  }
+  const scored=org.members.map(m=>({m,s:scoreHero(m)})).sort((a,b)=>b.s-a.s);
+  const top=scored.filter(x=>x.s===scored[0].s);
+  const pick=top[Math.floor(Math.random()*top.length)];
+  const h=pick.m;
+  const box=document.getElementById('yResult');
+  box.style.display='block';
+  box.innerHTML='<div class="hero-card">'+
+    (h.img?'<img src="'+esc(h.img)+'" alt="'+esc(h.name)+'">':'')+
+    '<div><div class="h1">第 '+h.rank+' 位　'+esc(h.star)+'　'+esc(h.nickname)+'　'+esc(h.name)+'</div>'+
+    '<div class="row">'+
+    '<div><b>职守</b>：'+esc(h.position)+'（'+esc(h.group)+'）</div>'+
+    '<div><b>上山来源</b>：'+esc(h.faction)+'　<b>出身</b>：'+esc(h.origin)+'</div>'+
+    '<div><b>兵器</b>：'+esc(h.weapon)+'</div>'+
+    '<div><b>出场</b>：第 '+h.appear+' 回　<b>结局</b>：'+esc(h.end)+'</div>'+
+    '<div style="margin-top:8px;line-height:1.95">'+esc(h.desc)+'</div>'+
+    '</div></div></div>'+
+    '<div class="hint" style="margin-top:10px">匹配依据（全部取自站内真实字段）：职守分组「'+esc(h.group)+'」、上山来源「'+esc(h.faction)+
+    '」、兵器「'+esc(h.weapon)+'」、星号档次「'+esc(h.tier)+'」，与你的选择相符项共 '+pick.s+' 分；同分者有 '+top.length+' 位，随机取一位。'+
+    '本测试只做字段匹配，不含任何性格臆断。</div>';
+  document.getElementById('yMsg').textContent='';
+}
+document.getElementById('yGo').onclick=doYou;
+document.getElementById('yReset').onclick=()=>{
+  yAns={};buildQuiz();document.getElementById('yResult').style.display='none';
+  document.getElementById('yMsg').textContent='';
+};
+
+buildQuiz();
+newDiff();
+newOrder();
+</script>
+</body>
+</html>

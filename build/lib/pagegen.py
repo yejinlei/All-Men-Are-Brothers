@@ -29,6 +29,10 @@ RESEARCH = [
     ('emotion.html', '情感曲线'),
     ('network.html', '网络演化'),
     ('stylometry.html', '文体计量'),
+    ('hierarchy.html', '梁山编制'),
+    ('verse.html', '韵文词牌'),
+    ('couplet.html', '回目格律'),
+    ('games.html', '互动游戏'),
 ]
 
 RESEARCH_LABEL = '数字研究'
@@ -62,6 +66,7 @@ def page(title, body, active='', head_extra='', scripts_extra='', echarts=True):
         '<meta charset="UTF-8">',
         '<meta name="viewport" content="width=device-width,initial-scale=1.0">',
         '<title>' + title + '</title>',
+        '<link rel="icon" href="favicon.ico">',
         '<link rel="stylesheet" href="css/style.css">',
     ]
     if echarts:

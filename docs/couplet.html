@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>回目格律分析 · 水浒传数字人文</title>
+<link rel="icon" href="favicon.ico">
+<link rel="stylesheet" href="css/style.css">
+<script src="vendor/echarts.min.js"></script>
+<script src="js/registry.js"></script>
+<style>
+.wrap{max-width:1180px;margin:0 auto;padding:26px 22px 80px;}
+.page-title{font-family:var(--font-serif);font-size:30px;color:var(--vermilion-deep);letter-spacing:4px;margin-bottom:6px;}
+.page-sub{color:var(--ink-muted);font-size:14px;line-height:1.9;margin-bottom:18px;max-width:920px;}
+.panel{background:var(--paper-warm);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:18px;}
+.panel h3{font-family:var(--font-serif);font-size:18px;color:var(--vermilion-deep);margin-bottom:10px;letter-spacing:2px;}
+.statbar{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px;}
+.stat{background:var(--paper-warm);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;}
+.stat .n{font-family:var(--font-serif);font-size:24px;color:var(--vermilion-deep);}
+.stat .l{font-size:12.5px;color:var(--ink-muted);margin-top:4px;}
+.chart{width:100%;height:340px;}
+.ctl{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px;}
+select,input[type=search]{padding:6px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:#fff;}
+input[type=search]{width:160px;}
+table.mini{width:100%;border-collapse:collapse;font-size:13.5px;}
+table.mini th,table.mini td{border-bottom:1px solid var(--border);padding:5px 8px;text-align:left;}
+table.mini th{color:var(--ink-muted);font-weight:500;position:sticky;top:0;background:var(--paper-warm);}
+.cp{font-family:var(--font-serif);font-size:15px;letter-spacing:1px;}
+.pz{font-family:monospace;font-size:13px;color:#2e5a88;letter-spacing:1px;}
+.ok{color:#2f5d50;font-weight:600;}
+.no{color:#b8860b;}
+.tblbox{max-height:560px;overflow:auto;border:1px solid var(--border);border-radius:8px;}
+.hint{font-size:12.5px;color:var(--ink-muted);line-height:1.9;margin-top:8px;}
+.legend span{display:inline-block;margin-right:14px;font-size:12.5px;color:var(--ink-muted);}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="logo"><span class="seal">水</span><span>水浒传本体论</span></div>
+  <nav class="nav-links">
+  <a href="index.html">首页</a>
+  <a href="index.html#versions">版本学</a>
+  <a href="index.html#heroes">108将</a>
+  <a href="themes.html">主题研究</a>
+  <a href="kg.html">知识图谱</a>
+  <a href="index.html#graph">关系图谱</a>
+  <a href="index.html#places">空间地理</a>
+  <a href="index.html#events">叙事结构</a>
+  <a href="index.html#weapons">兵器职官</a>
+  <a href="index.html#critics">评点学术</a>
+  <a href="index.html#derivatives">续书衍生</a>
+  <a href="index.html#ontology">本体推演</a>
+  <a href="read.html">版本阅读</a>
+  <a href="diff.html">异文对照</a>
+  <a href="search.html">批注检索</a>
+  <span class="nav-dd">
+      <span class="nav-dd-toggle active" tabindex="0" role="button">数字研究 <b>▾</b></span>
+      <span class="nav-dd-menu">
+        <a href="stemma.html">版本谱系树</a>
+        <a href="reception.html">评点接受史</a>
+        <a href="emotion.html">情感曲线</a>
+        <a href="network.html">网络演化</a>
+        <a href="stylometry.html">文体计量</a>
+        <a href="hierarchy.html">梁山编制</a>
+        <a href="verse.html">韵文词牌</a>
+        <a href="couplet.html" class="active">回目格律</a>
+        <a href="games.html">互动游戏</a>
+      </span>
+    </span>
+  </nav>
+</header>
+
+<div class="wrap">
+  <div class="page-title">回目格律分析</div>
+  <div class="page-sub">一百二十回回目都是对句：「张天师祈禳瘟疫／洪太尉误走妖魔」。同一回在不同版本里往往改字易词，
+  把上下句的字数与平仄量出来，就能看出各版本改回目的偏好，也能看哪一版更讲究「上仄下平」。</div>
+
+  <div class="statbar" id="stats"></div>
+
+  <div class="panel">
+    <h3>各版本对仗指标</h3>
+    <div id="chartCmp" class="chart" style="height:360px"></div>
+    <div class="hint">等长率＝上下句字数相同者占比（几乎全为 1，说明回目严守等长对句）；上仄下平率＝上句末字作仄、下句末字作平者占比。</div>
+  </div>
+
+  <div class="panel">
+    <div class="ctl">
+      <span>逐版细看：</span>
+      <select id="selVer"></select>
+      <input type="search" id="kw" placeholder="搜回目字词">
+      <span class="hint" id="cnt"></span>
+    </div>
+    <div class="grid2" id="grids" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+      <div><h3>上句字数分布</h3><div id="chartLen" class="chart" style="height:280px"></div></div>
+      <div><h3>末字平仄构成</h3><div id="chartEnd" class="chart" style="height:280px"></div></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>回目与平仄逐条对照</h3>
+    <div class="legend">
+      <span>○ 平声</span><span>● 仄声</span><span>△ 未辨（轻声／多音字）</span>
+    </div>
+    <div class="tblbox" style="margin-top:10px">
+      <table class="mini" id="tbl">
+        <thead><tr><th style="width:64px">回次</th><th>上句</th><th style="width:120px">平仄</th>
+        <th>下句</th><th style="width:120px">平仄</th><th style="width:92px">对仗</th></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>判定规则与局限</h3>
+    <div class="hint" id="method"></div>
+  </div>
+</div>
+
+<script>
+function esc(s){return String(s==null?'':s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+let D=null,cCmp,cLen,cEnd;
+let cur='v120';
+const state={kw:''};
+
+fetch('data/couplet.json').then(r=>r.json()).then(d=>{D=d;init();})
+  .catch(e=>{document.getElementById('method').textContent='数据加载失败：'+e;});
+
+function init(){
+  document.getElementById('stats').innerHTML=[
+    [D.n_pairs,'回目对句（八版本合计）'],[D.versions.length,'覆盖版本'],
+    [D.versions[0].eq_len_ratio.toFixed(2),'等长率（'+D.versions[0].label+'）'],
+    [D.versions[0].end_ok_ratio.toFixed(2),'上仄下平率（'+D.versions[0].label+'）']
+  ].map(x=>'<div class="stat"><div class="n">'+x[0]+'</div><div class="l">'+x[1]+'</div></div>').join('');
+
+  cCmp=echarts.init(document.getElementById('chartCmp'));
+  const vs=D.versions;
+  cCmp.setOption({
+    tooltip:{trigger:'axis'},
+    legend:{data:['等长率','上仄下平率','平均重字'],top:0},
+    grid:{left:60,right:50,top:36,bottom:64},
+    xAxis:{type:'category',data:vs.map(v=>v.label),axisLabel:{rotate:22,fontSize:11}},
+    yAxis:[{type:'value',name:'比例',max:1},{type:'value',name:'重字',max:3}],
+    series:[
+      {name:'等长率',type:'bar',data:vs.map(v=>v.eq_len_ratio),itemStyle:{color:'#4A6B8A'},barMaxWidth:26},
+      {name:'上仄下平率',type:'bar',data:vs.map(v=>v.end_ok_ratio),itemStyle:{color:'#9a1f1f'},barMaxWidth:26},
+      {name:'平均重字',type:'line',yAxisIndex:1,data:vs.map(v=>v.avg_dup),itemStyle:{color:'#b8860b'},smooth:true}
+    ]
+  });
+
+  cLen=echarts.init(document.getElementById('chartLen'));
+  cEnd=echarts.init(document.getElementById('chartEnd'));
+
+  const sel=document.getElementById('selVer');
+  vs.forEach(v=>sel.insertAdjacentHTML('beforeend','<option value="'+v.id+'">'+esc(v.label)+'</option>'));
+  sel.value=cur;
+  sel.onchange=()=>{cur=sel.value;renderVer();};
+  document.getElementById('kw').oninput=e=>{state.kw=e.target.value.trim();renderRows();};
+  renderVer();
+  window.addEventListener('resize',()=>{cCmp.resize();cLen.resize();cEnd.resize();});
+}
+
+function renderVer(){
+  const v=D.versions.find(x=>x.id===cur);
+  const L=v.up_len_hist||{};
+  const lk=Object.keys(L).sort((a,b)=>+a-+b);
+  cLen.setOption({
+    tooltip:{trigger:'axis'},
+    grid:{left:50,right:24,top:20,bottom:30},
+    xAxis:{type:'category',data:lk.map(k=>k+'字'),axisLabel:{fontSize:11}},
+    yAxis:{type:'value'},
+    series:[{type:'bar',data:lk.map(k=>L[k]),itemStyle:{color:'#2f5d50'},barMaxWidth:30,
+      label:{show:true,position:'top',fontSize:10}}]
+  },true);
+
+  const rows=D.pairs.filter(p=>p.v===cur);
+  let okEnd=0,eq=0,dup=0,paired=0;
+  rows.forEach(p=>{if(!p.single){paired++;if(p.end_ok)okEnd++;if(p.eq_len)eq++;dup+=p.dup;}});
+  const endData=[
+    {name:'上句末·仄',value:rows.filter(p=>!p.single&&p.up_p.slice(-1)==='●').length,itemStyle:{color:'#9a1f1f'}},
+    {name:'上句末·平',value:rows.filter(p=>!p.single&&p.up_p.slice(-1)==='○').length,itemStyle:{color:'#e0b9b4'}},
+    {name:'下句末·平',value:rows.filter(p=>!p.single&&p.down_p.slice(-1)==='○').length,itemStyle:{color:'#2f5d50'}},
+    {name:'下句末·仄',value:rows.filter(p=>!p.single&&p.down_p.slice(-1)==='●').length,itemStyle:{color:'#a8c5b8'}}
+  ];
+  cEnd.setOption({
+    tooltip:{trigger:'item'},
+    series:[{type:'pie',radius:['42%','72%'],data:endData,label:{fontSize:12}}]
+  },true);
+  renderRows();
+}
+
+function renderRows(){
+  const rows=D.pairs.filter(p=>p.v===cur).filter(p=>{
+    if(!state.kw) return true;
+    const hay=(p.up+p.down).toLowerCase();
+    return hay.includes(state.kw.toLowerCase());
+  });
+  document.getElementById('cnt').textContent='　共 '+rows.length+' 条回目';
+  document.getElementById('tbody').innerHTML=rows.map(p=>{
+    const okp=p.single?'—':(p.end_ok?'<span class="ok">合律</span>':'<span class="no">不合</span>');
+    return '<tr><td>第'+p.hui+'回</td>'+
+      '<td class="cp">'+esc(p.up)+'</td><td class="pz">'+esc(p.up_p||'')+'</td>'+
+      '<td class="cp">'+esc(p.down)+'</td><td class="pz">'+esc(p.down_p||'')+'</td>'+
+      '<td>'+okp+(p.dup>1?'　重字'+p.dup:'')+'</td></tr>';
+  }).join('') || '<tr><td colspan="6" class="hint">没有匹配的回目。</td></tr>';
+}
+
+document.getElementById('method').innerHTML='<b>切分</b>：去掉「第X回」前缀后，按空格切出上下句。<br>'+
+  '<b>平仄</b>：'+ (D.method||'') +'<br>'+
+  '<b>对仗</b>：以「上下句等长」与「上下句重字数」两项度量，未做词性对品，故只算浅层工整度。<br>'+
+  '<b>重要局限</b>：'+ (D.caveat||'') +'<br>'+
+  '例如「張天師祈禳瘟疫／洪太尉誤走妖魔」，上句末「疫」今读去声（仄）、下句末「魔」今读阳平（平），判为合律；'+
+  '而凡末字为古入声者（今读平声）会被判为不合律，正是本方法需要读者留意之处。';
+</script>
+</body>
+</html>
