@@ -22,19 +22,19 @@
       "sample_line": "話說大宋仁宗天子在位嘉祐三年三月三日五更三點天子駕坐紫宸殿受百",
       "downloads": [
         {
-          "label": "书格 高清影印 PDF",
-          "url": "https://s.shuge.org/rytshz",
-          "note": "容与堂本，含全部绣像"
+          "label": "国家图书馆出版社 2019 影印本（豆瓣）",
+          "url": "https://book.douban.com/subject/34446942/",
+          "note": "《容与堂刊忠义水浒传》6 册精装，原书高清灰度扫描"
         },
         {
-          "label": "国家图书馆影印本（2019）",
-          "url": "https://book.douban.com/subject/34446942/",
-          "note": "国家图书馆出版社 6 册精装"
+          "label": "书格《李卓吾先生批评忠义水浒传》条目",
+          "url": "https://www.shuge.org/ebook/li-zhuo-wu-xian-sheng-pi-ping-zhong-yi-shui-hu-zhuan/zh-hans/",
+          "note": "日本内阁文库藏本，PDF 下载见书格页"
         },
         {
           "label": "日本国立公文书馆（内阁文库）在线浏览",
-          "url": "https://www.digital.archives.go.jp/img/4446087",
-          "note": "李卓吾先生批评忠义水滸伝 20 册，公开发布"
+          "url": "https://www.digital.archives.go.jp/",
+          "note": "李卓吾先生批評忠義水滸伝 20 册"
         }
       ],
       "colophon_img": "img/facs/guohua_colophon.png",
@@ -61,12 +61,17 @@
         {
           "label": "中华书局 1975 影印本（豆瓣）",
           "url": "https://book.douban.com/subject/4836040/",
-          "note": "影印崇祯贯华堂刻本，8 册"
+          "note": "影印明崇祯贯华堂刻本，8 册"
         },
         {
           "label": "万卷出版社《贯华堂第五才子书》",
           "url": "https://book.douban.com/subject/3637020/",
           "note": "周锡山编校排印本"
+        },
+        {
+          "label": "天津古籍出版社 2006 金圣叹批评第五才子书",
+          "url": "https://book.douban.com/subject/1922658/",
+          "note": "影印贯华堂刻本"
         }
       ],
       "colophon_img": "img/facs/jinshengtan_colophon.png",
@@ -92,22 +97,50 @@
       "downloads": [
         {
           "label": "书格 原色高清 PDF（5.29G）",
-          "url": "https://t.shuge.org/zpshzt",
-          "note": "含法国图藏四知馆本 + 京都大学积庆堂本"
+          "url": "https://www.shuge.org/ebook/zhong-bojing-xian-sheng-pi-ping-shui-hu-zhuan/zh-hans/",
+          "note": "含法国图藏四知馆本 + 京都大学积庆堂本，OneDrive/百度网盘直链见书格页"
         },
         {
-          "label": "广陵书社 2018 影印本（豆瓣）",
-          "url": "https://book.douban.com/subject/35693998/",
-          "note": "二函十八册线装"
+          "label": "书格 独立版画插图 PDF（225M）",
+          "url": "https://www.shuge.org/ebook/zhong-bojing-xian-sheng-pi-ping-shui-hu-zhuan/zh-hans/",
+          "note": "仅下载书前 39 幅绣像 + 赞，便于快速预览"
         },
         {
-          "label": "京都大学藏积庆堂本",
+          "label": "法国国家图书馆藏本（Gallica）",
+          "url": "https://gallica.bnf.fr/",
+          "note": "著录编号 CHINOIS 3992/3993/3994"
+        },
+        {
+          "label": "京都大学附属图书馆藏积庆堂本",
           "url": "https://rmda.kulib.kyoto-u.ac.jp/",
-          "note": "京都大学贵重资料デジタルアーカイブ"
+          "note": "京都大学贵重资料デジタルアーカイブ，卷首 39 幅绣像可在线翻页"
         }
       ],
       "colophon_img": "img/facs/zhongbo_colophon.png",
-      "text_img": "img/facs/zhongbo_text.png"
+      "text_img": "img/facs/zhongbo_text.png",
+      "real_images": {
+        "source": "书格 cdn.shuge.org（法国国家图书馆藏明天启四知馆刊本原色扫描）",
+        "credit": "法国国家图书馆藏 CHINOIS 3992–3994，书格整理并公开，公版影像",
+        "total_original": 39,
+        "available_here": 15,
+        "images": [
+          "img/facsimile/zhong/xb1.jpg",
+          "img/facsimile/zhong/xb2.jpg",
+          "img/facsimile/zhong/xb3.jpg",
+          "img/facsimile/zhong/xb4.jpg",
+          "img/facsimile/zhong/xb5.jpg",
+          "img/facsimile/zhong/xb01.jpg",
+          "img/facsimile/zhong/xb03.jpg",
+          "img/facsimile/zhong/xb05.jpg",
+          "img/facsimile/zhong/xb06.jpg",
+          "img/facsimile/zhong/xb07.jpg",
+          "img/facsimile/zhong/xb08.jpg",
+          "img/facsimile/zhong/xb09.jpg",
+          "img/facsimile/zhong/xb13.jpg",
+          "img/facsimile/zhong/xb14.jpg",
+          "img/facsimile/zhong/xb15.jpg"
+        ]
+      }
     },
     {
       "id": "yuping",
@@ -130,12 +163,17 @@
         {
           "label": "沈阳出版社 2012 原大影印本（豆瓣）",
           "url": "https://book.douban.com/subject/6712465/",
-          "note": "精装上下卷，据原版原大影印"
+          "note": "精装上下卷，据日本轮王寺慈眼堂藏本原版原大影印，1236 幅插图"
         },
         {
-          "label": "百度网盘影印资源（社区整理）",
-          "url": "https://pan.baidu.com/s/1caXqPthlNsxCJMgz6cj19w?pwd=0000",
-          "note": "含古本小说集成 DjVu 版本"
+          "label": "文学古籍刊行社 1956 王古鲁影印本",
+          "url": "https://baike.baidu.com/item/水浒志传评林/2674291",
+          "note": "1956 年内部印行 1000 套（缺卷九两叶）"
+        },
+        {
+          "label": "百度百科：水浒志传评林（版本说明）",
+          "url": "https://baike.baidu.com/item/水浒志传评林/2674291",
+          "note": "版本源流、版式、插图数等详情"
         }
       ],
       "colophon_img": "img/facs/yuping_colophon.png",
@@ -224,14 +262,14 @@
       "sample_line": "刀筆小吏　爾身為義　敢笑黄巢不丈夫",
       "downloads": [
         {
-          "label": "书格 陈老莲水浒叶子 PDF",
-          "url": "https://www.shuge.org/",
-          "note": "收录于书格艺术类·明代版画合集"
+          "label": "陈洪绶《水浒叶子》多种影印本（豆瓣）",
+          "url": "https://book.douban.com/subject/1425045/",
+          "note": "多家出版社有彩印本（四川美术/江苏美术/上海人美）"
         },
         {
-          "label": "陈洪绶《水浒叶子》研究资料（豆瓣）",
-          "url": "https://book.douban.com/subject/1425045/",
-          "note": "多家出版社有彩印本"
+          "label": "陈老莲水浒叶子研究资料",
+          "url": "https://book.douban.com/subject_search?search_text=陈洪绶+水浒叶子",
+          "note": "豆瓣检索"
         }
       ],
       "colophon_img": "img/facs/chenhon_colophon.png",

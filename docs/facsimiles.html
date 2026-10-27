@@ -31,6 +31,18 @@
 .imgs img{width:100%;height:auto;border-radius:6px;border:1px solid var(--border);background:#e8ddc2;display:block;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
 .imgs .lbl{font-size:11.5px;color:var(--ink-muted);text-align:center;margin-top:4px;}
 .img-cell{margin-bottom:6px;}
+.real-gallery{margin-top:14px;border-top:1px dashed var(--border);padding-top:14px;}
+.real-gallery .gal-title{font-family:var(--font-serif);font-size:15px;color:var(--vermilion-deep);letter-spacing:1px;margin-bottom:4px;}
+.real-gallery .gal-sub{font-size:12.5px;color:var(--ink-muted);line-height:1.9;margin-bottom:10px;}
+.gal-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+@media(max-width:900px){.gal-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:560px){.gal-grid{grid-template-columns:repeat(2,1fr);}}
+.gal-grid a{display:block;}
+.gal-grid img{width:100%;height:auto;border-radius:4px;border:1px solid var(--border);background:#f4ecd6;display:block;transition:transform .2s;}
+.gal-grid a:hover img{transform:scale(1.03);box-shadow:0 4px 12px rgba(158,43,37,0.25);}
+.real-badge{display:inline-block;background:#9e2b25;color:#fff;font-size:11px;padding:2px 8px;border-radius:10px;margin-left:8px;vertical-align:middle;letter-spacing:1px;}
+.simu-badge{display:inline-block;background:#b59a6a;color:#fff;font-size:11px;padding:2px 8px;border-radius:10px;margin-left:8px;vertical-align:middle;letter-spacing:1px;}
+.credit-line{font-size:11.5px;color:var(--ink-muted);margin-top:8px;font-style:italic;line-height:1.8;}
 .hint-legend{font-size:12.5px;color:var(--ink-muted);line-height:1.9;margin-top:10px;}
 .tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
 .tab{padding:6px 14px;border-radius:18px;background:#fff;border:1px solid var(--border);font-size:13px;color:var(--ink);cursor:pointer;}
@@ -86,9 +98,10 @@
   袁无涯本的回前绣像、以及大涤余人序本（李玄伯本）那套奠定后世水浒图式的徽派版画。</div>
 
   <div class="note">
-    <b>关于影像</b>：本站展示的是<b>版刻风格仿真示意页</b>（程序自动绘制，仅用于呈现行格、框线、栏式、书坊牌记、批语位置等版式特征，并非原刻本摄影）。
-    每种版本下方都登记了公版高清影印 PDF 的外部永久链接——书格、日本国立公文书馆（内阁文库）、京都大学数字档案、广陵书社/中华书局影印本等，点击即可前往下载整本或在线翻阅原书。
-    之所以不直接把数百 MB~数 GB 的原刻本 PDF 入仓，是因为 GitHub Pages 仓库体积有限，且大 PDF 无法在线流畅翻阅；外部高清库是更稳妥的公版来源。
+    <b>关于影像</b>：本页已收录<b>钟伯敬先生批评水浒忠义传</b>（明天启四知馆刊本，法国国家图书馆藏）书前 15 幅原色绣像（书格公版影像，可点击放大），其牌记页与正文样页仍用版刻风格仿真图，以便与其他版本并列比对行格与版式。
+    其余各本（容与堂/贯华堂/双峰堂/袁无涯/大涤余人本/陈老莲水浒叶子）的牌记页与正文样页为本站以程序绘制的<b>版刻风格仿真示意图</b>，仅用于呈现行格、框线、栏式、书坊牌记、批语位置等版式差异，并非原刻本摄影。
+    每种版本下方都登记了公版高清影印 PDF 的外部永久链接——书格、日本国立公文书馆（内阁文库）、京都大学数字档案、法国国家图书馆 Gallica、广陵书社/中华书局/国家图书馆出版社影印本、豆瓣书目页与社区整理资源，点击即可前往下载整本或在线翻阅原书。
+    之所以不直接把数百 MB~数 GB 的原刻本 PDF 入仓，是因为 GitHub Pages 仓库体积有限，且大 PDF 无法在线流畅翻阅；外部高清库是更稳妥的公版来源。欢迎提供更多明刻本高清影像（金批贯华堂原刻、容与堂本绣像、余评双峰堂本三栏页等），可在 Step 18 校勘台启动后纳入并置。
   </div>
 
   <div class="tabs" id="tabs"></div>
@@ -137,10 +150,27 @@
       '<a class="dl-btn" href="'+d.url+'" target="_blank" rel="noopener">'+d.label+
       '<span class="dl-note">'+d.note+'</span></a>'
     ).join('');
+    const hasReal = !!(m.real_images && m.real_images.images && m.real_images.images.length);
+    const badge = hasReal
+      ? '<span class="real-badge">真本影像</span>'
+      : '<span class="simu-badge">版式示意</span>';
+    const gal = hasReal ? (
+      '<div class="real-gallery">'+
+        '<div class="gal-title">书前绣像（真本原色扫描）<span style="font-size:12px;color:var(--ink-muted);font-weight:normal;">　已入库 '+m.real_images.available_here+' / '+m.real_images.total_original+' 幅，可点击放大</span></div>'+
+        '<div class="gal-sub">'+m.real_images.source+'</div>'+
+        '<div class="gal-grid">'+
+          m.real_images.images.map((src,i)=>
+            '<a href="'+src+'" target="_blank" rel="noopener"><img src="'+src+'" alt="'+m.short+' 绣像 '+(i+1)+'" loading="lazy"></a>'
+          ).join('')+
+        '</div>'+
+        '<div class="credit-line">影像来源：'+m.real_images.credit+'。单张点击可在新窗口查看高清原图；书前其余 '+
+          (m.real_images.total_original - m.real_images.available_here)+' 幅及全部正文页请通过下方「书格原色高清 PDF」下载整本（5.29 GB，含法国图藏四知馆本 + 京都大学积庆堂本两种）。</div>'+
+      '</div>'
+    ) : '';
     box.innerHTML =
       '<div class="facs-row">'+
         '<div class="meta">'+
-          '<div class="ttl">'+m.full+'</div>'+
+          '<div class="ttl">'+m.full+badge+'</div>'+
           '<div><span class="k">刊刻年代</span>'+m.year+'</div>'+
           '<div><span class="k">刊刻书坊</span>'+m.printer+'</div>'+
           '<div><span class="k">现藏 / 底本</span>'+m.repo+'</div>'+
@@ -150,10 +180,11 @@
           '<div class="dls">'+dls+'</div>'+
         '</div>'+
         '<div class="imgs">'+
-          '<div class="img-cell"><img src="'+m.colophon_img+'" alt="'+m.short+' 牌记页"><div class="lbl">牌记页 / 书名页（示意）</div></div>'+
+          '<div class="img-cell"><img src="'+m.colophon_img+'" alt="'+m.short+' 牌记页"><div class="lbl">牌记页 / 书名页'+(hasReal?'（示意）':'（示意）')+'</div></div>'+
           '<div class="img-cell"><img src="'+m.text_img+'" alt="'+m.short+' 正文页"><div class="lbl">首卷正文样页（示意）</div></div>'+
         '</div>'+
-      '</div>';
+      '</div>'+
+      gal;
     listEl.appendChild(box);
   });
 
