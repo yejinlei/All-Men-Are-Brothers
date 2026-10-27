@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>影像并置 · 水浒传数字人文</title>
+<link rel="icon" href="favicon.ico">
+<link rel="stylesheet" href="css/style.css">
+<script src="js/registry.js"></script>
+<style>
+.wrap{max-width:1240px;margin:0 auto;padding:26px 22px 80px;}
+.page-title{font-family:var(--font-serif);font-size:30px;color:var(--vermilion-deep);letter-spacing:4px;margin-bottom:6px;}
+.page-sub{color:var(--ink-muted);font-size:14px;line-height:1.95;margin-bottom:14px;max-width:980px;}
+.note{background:#fbf4e1;border-left:3px solid var(--vermilion);padding:10px 14px;border-radius:6px;font-size:13px;color:#6b5420;line-height:1.9;margin-bottom:18px;}
+.panel{background:var(--paper-warm);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:22px;}
+.panel h3{font-family:var(--font-serif);font-size:20px;color:var(--vermilion-deep);margin:0 0 6px;letter-spacing:2px;}
+.sub{font-size:13px;color:var(--ink-muted);margin-bottom:14px;}
+.facs-row{display:grid;grid-template-columns:240px 1fr;gap:22px;align-items:stretch;}
+@media(max-width:900px){.facs-row{grid-template-columns:1fr;}}
+.meta{font-size:13.5px;line-height:1.95;color:var(--ink);}
+.meta .k{color:var(--ink-muted);display:inline-block;min-width:72px;}
+.meta .ttl{font-family:var(--font-serif);font-size:17px;color:var(--vermilion-deep);margin-bottom:6px;letter-spacing:1px;}
+.meta .feat{margin:6px 0 0 72px;padding-left:0;}
+.meta .feat li{list-style:none;position:relative;padding-left:14px;margin:2px 0;}
+.meta .feat li:before{content:"·";position:absolute;left:0;color:var(--vermilion);font-weight:700;}
+.dls{margin-top:10px;}
+.dl-btn{display:inline-block;margin:4px 6px 0 0;padding:5px 11px;background:#fff;border:1px solid var(--border);border-radius:20px;font-size:12.5px;color:var(--ink);text-decoration:none;}
+.dl-btn:hover{background:var(--vermilion);color:#fff;border-color:var(--vermilion);}
+.dl-note{font-size:11.5px;color:var(--ink-muted);margin-left:6px;}
+.imgs{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start;}
+.imgs img{width:100%;height:auto;border-radius:6px;border:1px solid var(--border);background:#e8ddc2;display:block;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
+.imgs .lbl{font-size:11.5px;color:var(--ink-muted);text-align:center;margin-top:4px;}
+.img-cell{margin-bottom:6px;}
+.hint-legend{font-size:12.5px;color:var(--ink-muted);line-height:1.9;margin-top:10px;}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+.tab{padding:6px 14px;border-radius:18px;background:#fff;border:1px solid var(--border);font-size:13px;color:var(--ink);cursor:pointer;}
+.tab.on{background:var(--vermilion);color:#fff;border-color:var(--vermilion);}
+.facsimile{scroll-margin-top:90px;}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="logo"><span class="seal">水</span><span>水浒传本体论</span></div>
+  <nav class="nav-links">
+  <a href="index.html">首页</a>
+  <a href="index.html#versions">版本学</a>
+  <a href="index.html#heroes">108将</a>
+  <a href="themes.html">主题研究</a>
+  <a href="kg.html">知识图谱</a>
+  <a href="index.html#graph">关系图谱</a>
+  <a href="index.html#places">空间地理</a>
+  <a href="index.html#events">叙事结构</a>
+  <a href="index.html#weapons">兵器职官</a>
+  <a href="index.html#critics">评点学术</a>
+  <a href="index.html#derivatives">续书衍生</a>
+  <a href="index.html#ontology">本体推演</a>
+  <a href="read.html">版本阅读</a>
+  <a href="diff.html">异文对照</a>
+  <a href="search.html">批注检索</a>
+  <a href="data.html">数据开放</a>
+  <a href="about.html">关于本站</a>
+  <a href="roadmap.html">路线图</a>
+  <span class="nav-dd">
+    <span class="nav-dd-toggle active" tabindex="0" role="button">数字研究 <b>▾</b></span>
+    <span class="nav-dd-menu">
+      <a href="stemma.html">版本谱系树</a>
+      <a href="reception.html">评点接受史</a>
+      <a href="emotion.html">情感曲线</a>
+      <a href="network.html">网络演化</a>
+      <a href="stylometry.html">文体计量</a>
+      <a href="hierarchy.html">梁山编制</a>
+      <a href="verse.html">韵文词牌</a>
+      <a href="couplet.html">回目格律</a>
+      <a href="intertext.html">互文成书</a>
+      <a href="facsimiles.html" class="active">影像并置</a>
+      <a href="games.html">互动游戏</a>
+    </span>
+  </span>
+</nav>
+</header>
+
+<div class="wrap">
+  <div class="page-title">版本影像并置</div>
+  <div class="page-sub">把《水浒传》几个关键明刻本的牌记页、首卷正文、版刻特征放在一处比对。
+  你能一眼看出容与堂本的单栏宽行、金批本的双行夹批、钟批本的眉批侧批、余评林本的上评中图下文三栏、
+  袁无涯本的回前绣像、以及大涤余人序本（李玄伯本）那套奠定后世水浒图式的徽派版画。</div>
+
+  <div class="note">
+    <b>关于影像</b>：本站展示的是<b>版刻风格仿真示意页</b>（程序自动绘制，仅用于呈现行格、框线、栏式、书坊牌记、批语位置等版式特征，并非原刻本摄影）。
+    每种版本下方都登记了公版高清影印 PDF 的外部永久链接——书格、日本国立公文书馆（内阁文库）、京都大学数字档案、广陵书社/中华书局影印本等，点击即可前往下载整本或在线翻阅原书。
+    之所以不直接把数百 MB~数 GB 的原刻本 PDF 入仓，是因为 GitHub Pages 仓库体积有限，且大 PDF 无法在线流畅翻阅；外部高清库是更稳妥的公版来源。
+  </div>
+
+  <div class="tabs" id="tabs"></div>
+  <div id="list"></div>
+
+  <div class="panel">
+    <h3>版本比对要点</h3>
+    <div class="sub">看这几个要素，就能分辨一本水浒是哪个系统</div>
+    <div style="font-size:13.5px;line-height:2.0;">
+      <b>① 回数</b>：容与堂本、钟批本 100 回；袁无涯本 120 回（多出征田虎、王庆）；金圣叹本 70 回（腰斩）；余象斗评林本是简本，卷次为 25 卷。<br>
+      <b>② 栏式</b>：余评林本是"上评、中图、下文"三栏（建阳书坊典型版式）；其他繁本都是单栏正文+眉批/夹批。<br>
+      <b>③ 插图位置</b>：容与堂本每回首插图两幅共 200 幅；袁无涯本卷首有 120 幅五字标目绣像；大涤余人序本版画集中在首册（徽派代表作）；陈洪绶水浒叶子是独立酒牌，不属于小说正文。<br>
+      <b>④ 批点形态</b>：金批是"回前总评+眉批+双行夹批"三件套，夹批朱墨套印；容本、钟本是眉批加少量旁批；余评林本批语在上栏。<br>
+      <b>⑤ 牌记与书坊</b>：容与堂（杭州）、贯华堂（苏州）、双峰堂（建阳）、书种堂/郁郁堂（苏州）、四知馆（明末）—— 不同书坊对应不同商业刻书传统。
+    </div>
+    <div class="hint-legend">
+      本页登记的版本影像信息来自：书格（shuge.org）、日本国立公文书馆 Digital Archive、京都大学附属图书馆贵重资料デジタルアーカイブ、
+      何蕴玲《水浒版本知见录》、马幼垣《水浒论衡》、王古鲁《水浒志传评林》影印本说明、郑振铎《中国古代版画史略》等公开文献。
+    </div>
+  </div>
+</div>
+
+<script>
+(async function(){
+  const resp = await fetch('data/facsimiles.json');
+  const data = await resp.json();
+  const list = data.facsimiles;
+  const tabs = document.getElementById('tabs');
+  const listEl = document.getElementById('list');
+  list.forEach((m, i) => {
+    const t = document.createElement('span');
+    t.className = 'tab' + (i===0?' on':'');
+    t.textContent = m.short;
+    t.onclick = () => {
+      document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+      t.classList.add('on');
+      document.getElementById('f-'+m.id).scrollIntoView({behavior:'smooth', block:'start'});
+    };
+    tabs.appendChild(t);
+
+    const box = document.createElement('div');
+    box.className = 'panel facsimile';
+    box.id = 'f-'+m.id;
+    const feats = m.features.map(f => '<li>'+f+'</li>').join('');
+    const dls = m.downloads.map(d =>
+      '<a class="dl-btn" href="'+d.url+'" target="_blank" rel="noopener">'+d.label+
+      '<span class="dl-note">'+d.note+'</span></a>'
+    ).join('');
+    box.innerHTML =
+      '<div class="facs-row">'+
+        '<div class="meta">'+
+          '<div class="ttl">'+m.full+'</div>'+
+          '<div><span class="k">刊刻年代</span>'+m.year+'</div>'+
+          '<div><span class="k">刊刻书坊</span>'+m.printer+'</div>'+
+          '<div><span class="k">现藏 / 底本</span>'+m.repo+'</div>'+
+          '<div><span class="k">版框行格</span>'+m.format+'</div>'+
+          '<div><span class="k">版本特征</span></div>'+
+          '<ul class="feat">'+feats+'</ul>'+
+          '<div class="dls">'+dls+'</div>'+
+        '</div>'+
+        '<div class="imgs">'+
+          '<div class="img-cell"><img src="'+m.colophon_img+'" alt="'+m.short+' 牌记页"><div class="lbl">牌记页 / 书名页（示意）</div></div>'+
+          '<div class="img-cell"><img src="'+m.text_img+'" alt="'+m.short+' 正文页"><div class="lbl">首卷正文样页（示意）</div></div>'+
+        '</div>'+
+      '</div>';
+    listEl.appendChild(box);
+  });
+
+  // 滚动时自动高亮 tab
+  const boxes = list.map(m => document.getElementById('f-'+m.id));
+  window.addEventListener('scroll', () => {
+    let idx = 0;
+    for(let i=0;i<boxes.length;i++){
+      const r = boxes[i].getBoundingClientRect();
+      if(r.top < 160) idx = i;
+    }
+    document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('on', i===idx));
+  });
+})();
+</script>
+</body>
+</html>

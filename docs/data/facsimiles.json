@@ -1,0 +1,241 @@
+{
+  "_note": "Step 17 影像并置元数据：仿真书影 + 公版外部高清影印链接",
+  "updated": "2026-10-27",
+  "method": "书影卡为本站以 PIL 绘制的版刻风格仿真示意，用于呈现各版本的版式特征（行格、框线、栏式、书坊牌记、绣像位置）；完整影印 PDF 请点击外部源前往下载（均为公版古籍）。",
+  "facsimiles": [
+    {
+      "id": "guohua",
+      "short": "国图容与堂本",
+      "full": "李卓吾先生批评忠义水浒传（容与堂本）",
+      "year": "明万历三十八年（1610）前后",
+      "printer": "杭州容与堂",
+      "colophon": "庚戌仲夏日虎林孫樸書于三生石畔",
+      "repo": "中国国家图书馆（甲本，罗原觉旧藏）；日本内阁文库亦藏一部",
+      "format": "半叶十一行，行二十二字，白口，四周单边；框高 21.3×14.4 厘米",
+      "features": [
+        "百回繁本中现存最早完整本",
+        "每回首有插图一叶两幅（黄应光、吴凤台刻，共两百幅）",
+        "眉批、夹批、回末总评俱全（学界多认为出自叶昼托名李贽）"
+      ],
+      "style": "rongyu",
+      "sample_chap": "第一回　張天師祈禳瘟疫　洪太尉誤走妖魔",
+      "sample_line": "話說大宋仁宗天子在位嘉祐三年三月三日五更三點天子駕坐紫宸殿受百",
+      "downloads": [
+        {
+          "label": "书格 高清影印 PDF",
+          "url": "https://s.shuge.org/rytshz",
+          "note": "容与堂本，含全部绣像"
+        },
+        {
+          "label": "国家图书馆影印本（2019）",
+          "url": "https://book.douban.com/subject/34446942/",
+          "note": "国家图书馆出版社 6 册精装"
+        },
+        {
+          "label": "日本国立公文书馆（内阁文库）在线浏览",
+          "url": "https://www.digital.archives.go.jp/img/4446087",
+          "note": "李卓吾先生批评忠义水滸伝 20 册，公开发布"
+        }
+      ],
+      "colophon_img": "img/facs/guohua_colophon.png",
+      "text_img": "img/facs/guohua_text.png"
+    },
+    {
+      "id": "jinshengtan",
+      "short": "贯华堂金批本",
+      "full": "第五才子书施耐庵水浒传（金圣叹贯华堂本）",
+      "year": "明崇祯十四年（1641）",
+      "printer": "苏州贯华堂",
+      "colophon": "貫華堂所藏古本　施耐庵撰　聖歎外書",
+      "repo": "贯华堂原刻本存世稀少，后世翻刻甚多；中华书局 1975 年据崇祯原刻影印",
+      "format": "半叶八行，行十九字，白口，左右双边；眉批、夹批、回前总评",
+      "features": [
+        "金圣叹\"腰斩\"七十回，新增\"惊恶梦\"结尾",
+        "评点系统最完整：三篇序、读第五才子书法、回前总评、双行夹批",
+        "清代以来最通行的水浒版本"
+      ],
+      "style": "guanhuatang",
+      "sample_chap": "楔子　張天師祈禱瘟疫　洪太尉誤走妖魔",
+      "sample_line": "一部大書七十回 吾讀之 只是一揮而就 妙絕",
+      "downloads": [
+        {
+          "label": "中华书局 1975 影印本（豆瓣）",
+          "url": "https://book.douban.com/subject/4836040/",
+          "note": "影印崇祯贯华堂刻本，8 册"
+        },
+        {
+          "label": "万卷出版社《贯华堂第五才子书》",
+          "url": "https://book.douban.com/subject/3637020/",
+          "note": "周锡山编校排印本"
+        }
+      ],
+      "colophon_img": "img/facs/jinshengtan_colophon.png",
+      "text_img": "img/facs/jinshengtan_text.png"
+    },
+    {
+      "id": "zhongbo",
+      "short": "钟伯敬批评本",
+      "full": "钟伯敬先生批评水浒忠义传",
+      "year": "明天启四至五年（1624—1626）",
+      "printer": "四知馆梓行（疑用积庆堂板刷印）",
+      "colophon": "鍾伯敬先生批評水滸忠義傳　四知館梓行",
+      "repo": "法国国家图书馆 CHINOIS 3992/3993/3994；京都大学附属图书馆藏积庆堂本",
+      "format": "半叶十二行，行二十六字，白口，四周单边；框高 20×12.8 厘米；有眉批、侧批、回末总评",
+      "features": [
+        "书前附绣像 39 幅（一图一赞）",
+        "题\"竟陵钟惺伯敬父批评\"，是晚明竟陵派评点小说的代表",
+        "书格公开的是法国国家图书馆原色扫描本（5.29GB）"
+      ],
+      "style": "zhongbo",
+      "sample_chap": "卷之一　第一回　張天師祈禳瘟疫　洪太尉誤走妖魔",
+      "sample_line": "鍾伯敬先生批評忠義水滸傳　竟陵鍾惺伯敬父批評",
+      "downloads": [
+        {
+          "label": "书格 原色高清 PDF（5.29G）",
+          "url": "https://t.shuge.org/zpshzt",
+          "note": "含法国图藏四知馆本 + 京都大学积庆堂本"
+        },
+        {
+          "label": "广陵书社 2018 影印本（豆瓣）",
+          "url": "https://book.douban.com/subject/35693998/",
+          "note": "二函十八册线装"
+        },
+        {
+          "label": "京都大学藏积庆堂本",
+          "url": "https://rmda.kulib.kyoto-u.ac.jp/",
+          "note": "京都大学贵重资料デジタルアーカイブ"
+        }
+      ],
+      "colophon_img": "img/facs/zhongbo_colophon.png",
+      "text_img": "img/facs/zhongbo_text.png"
+    },
+    {
+      "id": "yuping",
+      "short": "余象斗评林本",
+      "full": "京本增补校正全像忠义水浒志传评林（双峰堂本）",
+      "year": "明万历二十二年（1594）",
+      "printer": "福建建阳余氏双峰堂",
+      "colophon": "雙峰堂余子改正增評　士子買者可認雙峰堂為記",
+      "repo": "日本日光山轮王寺慈眼堂藏本（天海僧正旧藏），为现存最早最完整简本水浒",
+      "format": "半叶三栏式：上栏评语、中栏图、下栏正文；每页一图（1236 幅插图）",
+      "features": [
+        "现存最早的水浒简本（文简事繁本），约 37 万字",
+        "上评、中图、下文三栏版式，是连环画式通俗刊本的代表",
+        "王古鲁 1956 年据照片内部影印 1000 套，缺卷九两叶"
+      ],
+      "style": "shuangfeng",
+      "sample_chap": "卷之一　第一回　張天師祈禳瘟疫",
+      "sample_line": "且說宋朝天子仁宗在位 嘉祐三年 三月三日 天子陞殿",
+      "downloads": [
+        {
+          "label": "沈阳出版社 2012 原大影印本（豆瓣）",
+          "url": "https://book.douban.com/subject/6712465/",
+          "note": "精装上下卷，据原版原大影印"
+        },
+        {
+          "label": "百度网盘影印资源（社区整理）",
+          "url": "https://pan.baidu.com/s/1caXqPthlNsxCJMgz6cj19w?pwd=0000",
+          "note": "含古本小说集成 DjVu 版本"
+        }
+      ],
+      "colophon_img": "img/facs/yuping_colophon.png",
+      "text_img": "img/facs/yuping_text.png"
+    },
+    {
+      "id": "yuanwy",
+      "short": "袁无涯全传本",
+      "full": "李卓吾评忠义水浒全传（袁无涯书种堂/郁郁堂本）",
+      "year": "明万历四十二年（1614）前后初刻，崇祯郁郁堂重梓",
+      "printer": "苏州书种堂袁叔度无涯（后版归郁郁堂）",
+      "colophon": "李卓吾先生批評忠義水滸全書　出像評點　郁郁堂梓",
+      "repo": "北京大学图书馆、南京图书馆藏郁郁堂本；日本宫内厅书陵部亦藏",
+      "format": "半叶十行，行二十二字；卷首有 120 幅绣像（五字标目）；有眉批、双行夹批",
+      "features": [
+        "现存最早的百二十回足本（增插征田虎、王庆二十回）",
+        "1954 年人民文学出版社《水浒全传》以袁无涯系统为底本",
+        "郁郁堂重印本（国内现存最早郁郁堂刊本）藏南京图书馆"
+      ],
+      "style": "yuanwuya",
+      "sample_chap": "第一回　張天師祈禳瘟疫　洪太尉誤走妖魔",
+      "sample_line": "新鐫李氏藏本忠義水滸全書　施耐庵集撰　羅貫中纂修",
+      "downloads": [
+        {
+          "label": "广陵书社 郁郁堂本影印",
+          "url": "https://baijiahao.baidu.com/s?id=1796281570813491964",
+          "note": "四函三十六册，据南京图书馆藏甲本影印"
+        },
+        {
+          "label": "人民文学出版社 1975/2019 百二十回排印本",
+          "url": "https://book.douban.com/subject/1066830/",
+          "note": "通行袁系统整理本"
+        }
+      ],
+      "colophon_img": "img/facs/yuanwy_colophon.png",
+      "text_img": "img/facs/yuanwy_text.png"
+    },
+    {
+      "id": "dayuanren",
+      "short": "大涤余人序本（李玄伯旧藏）",
+      "full": "忠义水浒传（大涤余人序本 / 李玄伯原藏本）",
+      "year": "明万历—天启间（约十七世纪初叶）",
+      "printer": "明末杭州刊本（刻工含新安黄诚之、黄子立、刘启先）",
+      "colophon": "大滌餘人序　徽派版畫",
+      "repo": "原郑振铎旧藏，今归中国国家图书馆（残本存 44 回）",
+      "format": "版画集中于首册，单图不依回目；应为百幅，存 97 幅；图版心有篆书二至七字标目",
+      "features": [
+        "徽派版画名作，构图精细、人物传神，与容与堂本插图并不重复",
+        "芥子园本、袁无涯本、郁郁堂本的水浒图像均源出于此",
+        "郑振铎编入《中国古代版画丛刊初编》（1958）"
+      ],
+      "style": "daxu",
+      "sample_chap": "圖：魯智深拳打鎮關西　篆書標目",
+      "sample_line": "新安黃誠之　黃子立　劉啟先　刻",
+      "downloads": [
+        {
+          "label": "广陵书社 2018 钟批本附录李玄伯本图像",
+          "url": "https://baijiahao.baidu.com/s?id=1614887153044217510",
+          "note": "所缺三幅/两幅残图以芥子园本配补"
+        },
+        {
+          "label": "郑振铎辑《中国古代版画丛刊初编》",
+          "url": "https://book.douban.com/subject/1869812656/",
+          "note": "1958 年影印"
+        }
+      ],
+      "colophon_img": "img/facs/dayuanren_colophon.png",
+      "text_img": "img/facs/dayuanren_text.png"
+    },
+    {
+      "id": "chenhon",
+      "short": "陈洪绶水浒叶子",
+      "full": "陈老莲水浒叶子（博古酒牌）",
+      "year": "明崇祯末年（约 1640 年代）",
+      "printer": "明末刻本（徽州黄子立刻酒牌）",
+      "colophon": "水滸葉子　陳章侯畫",
+      "repo": "明末原刻本多有影印流传（如李一氓旧藏本）",
+      "format": "酒牌叶子，每叶一位好汉，旁书赞语四行；白描高古，变形奇崛",
+      "features": [
+        "陈洪绶（老莲，1598–1652）晚年白描精品",
+        "共绘宋江、林冲、武松、鲁智深、李逵等四十人（非 108 全数）",
+        "后世水浒人物画的母本之一，影响了崔子忠、任熊、张光宇等人"
+      ],
+      "style": "yezi",
+      "sample_chap": "及時雨宋江　　呼保義",
+      "sample_line": "刀筆小吏　爾身為義　敢笑黄巢不丈夫",
+      "downloads": [
+        {
+          "label": "书格 陈老莲水浒叶子 PDF",
+          "url": "https://www.shuge.org/",
+          "note": "收录于书格艺术类·明代版画合集"
+        },
+        {
+          "label": "陈洪绶《水浒叶子》研究资料（豆瓣）",
+          "url": "https://book.douban.com/subject/1425045/",
+          "note": "多家出版社有彩印本"
+        }
+      ],
+      "colophon_img": "img/facs/chenhon_colophon.png",
+      "text_img": "img/facs/chenhon_text.png"
+    }
+  ]
+}

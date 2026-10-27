@@ -35,6 +35,8 @@ RESEARCH = [
     ('hierarchy.html', '梁山编制'),
     ('verse.html', '韵文词牌'),
     ('couplet.html', '回目格律'),
+    ('intertext.html', '互文成书'),
+    ('facsimiles.html', '影像并置'),
     ('games.html', '互动游戏'),
 ]
 
