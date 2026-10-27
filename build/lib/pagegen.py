@@ -3,7 +3,7 @@
 """
 from __future__ import annotations
 
-# 全站主导航（与 docs/*.html 现有 15 项一致）
+# 全站主导航（与 docs/*.html 现有项一致）
 NAV = [
     ('index.html', '首页'),
     ('index.html#versions', '版本学'),
@@ -20,6 +20,9 @@ NAV = [
     ('read.html', '版本阅读'),
     ('diff.html', '异文对照'),
     ('search.html', '批注检索'),
+    ('data.html', '数据开放'),
+    ('about.html', '关于本站'),
+    ('roadmap.html', '路线图'),
 ]
 
 # 『数字研究』下拉：计算人文产出页

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>数据开放 · 水浒传本体论</title>
+<link rel="icon" href="favicon.ico">
+<link rel="stylesheet" href="css/style.css">
+<script src="js/registry.js"></script>
+<style>
+
+.api-tbl{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px;}
+.api-tbl th,.api-tbl td{border-bottom:1px solid #ece3cf;padding:8px 10px;vertical-align:top;text-align:left;}
+.api-tbl th{background:#f6efe0;color:#6b6155;font-weight:600;}
+.api-tbl code{background:#faf5e7;padding:1px 5px;border-radius:3px;font-size:12.5px;}
+.stat-card{display:inline-block;min-width:140px;text-align:center;padding:18px;margin:6px;border:1px solid #ece3cf;border-radius:6px;background:#fbf6e8;}
+.stat-card .num{font-size:32px;color:#9e2b25;font-family:var(--font-serif);font-weight:700;}
+.stat-card .lbl{font-size:13px;color:#6b6155;margin-top:4px;}
+.stat-card .sub{font-size:12px;color:#8a7a62;margin-top:4px;}
+.card-row{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;}
+.btn{padding:7px 14px;border:1px solid #c9b789;background:#f6efe0;color:#6b4e2c;border-radius:4px;cursor:pointer;font-family:var(--font-serif);}
+.btn:hover{background:#efe4c7;}
+blockquote{border-left:3px solid #c9b789;background:#fbf6e8;margin:10px 0;padding:10px 14px;color:#5a4c3e;font-size:14px;line-height:1.9;}
+blockquote code{background:#f2ead4;padding:1px 4px;border-radius:3px;}
+.note{font-size:12.5px;color:#8a7a62;}
+.simple-list{padding-left:20px;}
+.simple-list li{margin:6px 0;line-height:1.8;font-size:14.5px;color:#4a4033;}
+.pill{display:inline-block;padding:1px 8px;border-radius:10px;font-size:11.5px;margin-right:6px;font-weight:600;letter-spacing:.5px;}
+.pill.rel-A{background:#e7f2ea;color:#2a6a3f;}
+.pill.rel-B{background:#fff1d4;color:#8a5e19;}
+.pill.rel-C{background:#ffe4d6;color:#a64b1e;}
+.pill.rel-D{background:#eadff0;color:#5d3a7a;}
+
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="logo"><span class="seal">水</span><span>水浒传本体论</span></div>
+<nav class="nav-links">
+  <a href="index.html">首页</a>
+  <a href="index.html#versions">版本学</a>
+  <a href="index.html#heroes">108将</a>
+  <a href="themes.html">主题研究</a>
+  <a href="kg.html">知识图谱</a>
+  <a href="index.html#graph">关系图谱</a>
+  <a href="index.html#places">空间地理</a>
+  <a href="index.html#events">叙事结构</a>
+  <a href="index.html#weapons">兵器职官</a>
+  <a href="index.html#critics">评点学术</a>
+  <a href="index.html#derivatives">续书衍生</a>
+  <a href="index.html#ontology">本体推演</a>
+  <a href="read.html">版本阅读</a>
+  <a href="diff.html">异文对照</a>
+  <a href="search.html">批注检索</a>
+  <a href="data.html" class="active">数据开放</a>
+  <a href="about.html">关于本站</a>
+  <a href="roadmap.html">路线图</a>
+  <span class="nav-dd">
+    <span class="nav-dd-toggle" tabindex="0" role="button">数字研究 <b>▾</b></span>
+    <span class="nav-dd-menu">
+      <a href="stemma.html">版本谱系树</a>
+      <a href="reception.html">评点接受史</a>
+      <a href="emotion.html">情感曲线</a>
+      <a href="network.html">网络演化</a>
+      <a href="stylometry.html">文体计量</a>
+      <a href="hierarchy.html">梁山编制</a>
+      <a href="verse.html">韵文词牌</a>
+      <a href="couplet.html">回目格律</a>
+      <a href="games.html">互动游戏</a>
+    </span>
+  </span>
+</nav>
+</header>
+
+<main class="wrap">
+  <section class="panel">
+    <h1>数据开放 · API 与下载</h1>
+    <p class="hero-desc">本站所有结构化数据以静态 JSON 形式托管于 GitHub Pages，可直接作为教学、研究、二次开发的语料来源。使用前请阅读<a href="about.html">关于本站</a>与下列使用规范。</p>
+    <div class="card-row">
+      <div class="card stat-card">
+        <div class="num">8</div><div class="lbl">正文版本</div>
+        <div class="sub">繁／简／白三语体</div>
+      </div>
+      <div class="card stat-card">
+        <div class="num">9</div><div class="lbl">批注家</div>
+        <div class="sub">金批／容本／袁本／钟批／王评／余评／程注／冀注／燕评</div>
+      </div>
+      <div class="card stat-card">
+        <div class="num">108</div><div class="lbl">好汉卡</div>
+        <div class="sub">星号／派系／职务／画像</div>
+      </div>
+      <div class="card stat-card">
+        <div class="num">1691</div><div class="lbl">本体关系</div>
+        <div class="sub">529 节点 × 18 类关系</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>一、静态 JSON API</h2>
+    <p>所有接口均为 <code>GET</code> 请求，URL 前缀：<code>https://yejinlei.github.io/All-Men-Are-Brothers/data/</code></p>
+    <table class="api-tbl">
+      <thead><tr><th>路径</th><th>说明</th><th>字段要点</th></tr></thead>
+      <tbody>
+        <tr><td><code>registry.json</code></td><td>版本与批注注册表（单一可信源）</td><td>versions / commentaries 两个数组</td></tr>
+        <tr><td><code>heroes.json</code></td><td>108 将结构化数据</td><td>name/nick/star/rank/factions/post/weapons/img</td></tr>
+        <tr><td><code>places/*.json</code></td><td>地理节点</td><td>name/lat/lng/type/events</td></tr>
+        <tr><td><code>events/*.json</code></td><td>事件时间轴</td><td>chapter/title/place/people</td></tr>
+        <tr><td><code>factions/factions.json</code></td><td>派系/职务/兵器</td><td>分组索引</td></tr>
+        <tr><td><code>person_relations.json</code></td><td>人物关系（非本体扩展）</td><td>src/dst/type/chapter</td></tr>
+        <tr><td><code>kg_abox.json</code></td><td>本体 ABox（全部三元组）</td><td>nodes/edges/classes</td></tr>
+        <tr><td><code>critics/critics.json</code></td><td>评点家学术卡</td><td>id/name/era/work/school/core_view</td></tr>
+        <tr><td><code>commentaries_meta.json</code></td><td>九家批注溯源元数据</td><td>底本/录入方式/可信度等级/条数</td></tr>
+        <tr><td><code>stemma.json / critics_heatmap.json / emotion_curve.json / relation_timeline.json / centrality.json / stylometry.json / couplet.json / verse_index.json / org.json</code></td><td>数字人文研究层产物</td><td>供研究页直接消费</td></tr>
+      </tbody>
+    </table>
+
+    <h3>按版本/回次/语体取正文</h3>
+    <p>正文存放在 <code>texts/versions/&lt;vid&gt;/&lt;style&gt;/chapter_NNN.json</code>，其中 <code>vid</code> 取自注册表 <code>versions[].id</code>（<code>v120/v100/v70/jin70/jin70_pi/jinshengtan/jiqin/zsk</code>），<code>style</code> 取 <code>fan/jian/bai</code>（繁／简／白）。文件结构示例：</p>
+<pre><code>{
+  "num": 23,
+  "title_fan": "橫海郡柴進留賓 景陽岡武松打虎",
+  "title_jian": "横海郡柴进留宾 景阳冈武松打虎",
+  "title_baihua": "横海郡柴进留客 景阳冈武松打虎",
+  "content_fan": ["……", "……"],
+  "content_jian": ["……", "……"],
+  "content_baihua": ["……", "……"]
+}</code></pre>
+
+    <h3>批注数据</h3>
+    <p>批注文件位于 <code>texts/versions/&lt;file&gt;</code>，文件名见注册表 <code>commentaries[].file</code>。每家格式略有差异（见下表），阅读器加载逻辑在 <code>read.html</code> 中开源可对照。</p>
+    <table class="api-tbl">
+      <thead><tr><th>批注家</th><th>文件</th><th>结构</th><th>可信度</th></tr></thead>
+      <tbody id="cmt-rows"></tbody>
+    </table>
+  </section>
+
+  <section class="panel">
+    <h2>二、TEI XML 导出</h2>
+    <p>为兼容学界 TEI（Text Encoding Initiative）工作流，提供以下批量导出按钮。TEI 用 <code>&lt;note type="commentary" resp="…" anchored="false"&gt;</code> 对齐批语、用 <code>&lt;l&gt;</code> 标记韵文、用 <code>&lt;seg type="baihua"&gt;</code> 标注白话层。</p>
+    <div class="btn-row">
+      <button class="btn" id="btn-tei-jin70">金批七十回本（正文+金批）.tei.xml</button>
+      <button class="btn" id="btn-tei-v100">容与堂百回本（正文+容本批+王评）.tei.xml</button>
+      <button class="btn" id="btn-tei-v120">袁百二回本（正文+袁本批+余评+程注）.tei.xml</button>
+    </div>
+    <p class="note">由于 GitHub Pages 是静态托管，以上按钮在浏览器端即时拼装 TEI 文件，大版本可能需要数秒。导出的 TEI 可直接在 <a href="https://tei-c.org/" target="_blank" rel="noopener">TEI</a> 兼容工具（如 oXygen、TEI Publisher）中打开。</p>
+  </section>
+
+  <section class="panel">
+    <h2>三、引用本数据</h2>
+    <p>建议引用格式（GB/T 7714）：</p>
+<blockquote>
+《水浒传》数字人文站点开发组. 水浒传·多版本数字人文 [DB/OL]. 数据版本 <code id="data-ver"></code>. (2026-10-27). https://yejinlei.github.io/All-Men-Are-Brothers/
+</blockquote>
+    <p>单条批注引用示例：</p>
+<blockquote>
+[清]金圣叹. 第五才子书施耐庵水浒传·第二十三回回前批 [M]// 贯华堂原刻本, 明崇祯十四年(1641). 见：《水浒传》数字人文站点, <code>read.html?vid=jin70_pi&amp;ch=23</code>（数据版本 <code class="ver-inline"></code>，可信度 A 级精校）.
+</blockquote>
+  </section>
+
+  <section class="panel">
+    <h2>四、使用规范</h2>
+    <ul class="simple-list">
+      <li><b>非商业使用</b>：教学、研究、二次开发可自由使用，注明本站链接与数据版本号即可。</li>
+      <li><b>古本公版</b>：正文（八版本繁/简）出自公领域古籍整理，金圣叹、李卓吾等明清评点亦属公版。</li>
+      <li><b>白话层版权说明</b>：白话文为站点自行生成的词汇现代化版本，采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 协议，商业使用需联系作者。</li>
+      <li><b>现代校注</b>：冀勤校注为当代学者作品，摘录范围限于词典式释义（短句），如整书重印请使用正规出版社版本。</li>
+      <li><b>数据缺口</b>：可信度 B/C/D 级批注（机器 OCR 整理 / 二次文献转引 / 序跋总评）<b>不可直接引用作定论</b>，请回查原刻本；详见 <a href="roadmap.html">路线图</a>。</li>
+    </ul>
+  </section>
+</main>
+
+<script>
+
+document.getElementById('data-ver').textContent = 'v2026.10.27';
+document.querySelectorAll('.ver-inline').forEach(e=>e.textContent='v2026.10.27');
+const R={'A':'精校（可直接引用）','B':'机器整理待校','C':'二次文献转引','D':'仅存序跋总评'};
+fetch('data/commentaries_meta.json').then(r=>r.json()).then(d=>{
+  const tb=document.getElementById('cmt-rows');
+  d.items.forEach(it=>{
+    const cnt=it.counts.total||0;
+    tb.insertAdjacentHTML('beforeend',`<tr>
+      <td><b>${it.who}</b>（${it.tag}）</td>
+      <td><code>${it.provenance.blockprint||''}</code></td>
+      <td>${(it.provenance.coverage_types||[]).join('、')} · ${cnt} 条</td>
+      <td><span class="pill rel-${it.provenance.reliability}">${it.provenance.reliability}</span> ${R[it.provenance.reliability]||''}</td>
+    </tr>`);
+  });
+});
+function teiBoiler(label){
+  const head=`<?xml version="1.0" encoding="UTF-8"?>\n<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>\n<TEI xmlns="http://www.tei-c.org/ns/1.0">\n<teiHeader><fileDesc><titleStmt><title>水浒传 · ${label}</title></titleStmt><publicationStmt><p>《水浒传》数字人文站点导出</p></publicationStmt><sourceDesc><p>数据版本 v2026.10.27</p></sourceDesc></fileDesc></teiHeader>\n<text><body>\n`;
+  const tail=`\n</body></text></TEI>`;
+  return {head,tail};
+}
+async function exportTei(vid,label){
+  const reg=await(await fetch('data/registry.json')).json();
+  const ver=reg.versions.find(v=>v.id===vid);
+  if(!ver){alert('版本未找到');return;}
+  const [from,to]=ver.range;
+  let out=teiBoiler(label).head;
+  out+=`<div type="edition" n="${vid}"><head>${ver.full}</head>\n`;
+  for(let ch=from;ch<=to;ch++){
+    const nn=String(ch).padStart(3,'0');
+    try{
+      const j=await(await fetch(`texts/versions/${vid}/jian/chapter_${nn}.json`)).json();
+      out+=`<div type="chapter" n="${ch}"><head>${j.title_jian||''}</head>\n`;
+      (j.content_jian||[]).forEach(p=>{out+=`<p>${(p||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>\n`;});
+      out+=`</div>\n`;
+    }catch(e){}
+  }
+  out+=`</div>`+teiBoiler(label).tail;
+  const blob=new Blob([out],{type:'application/xml'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`shuihu_${vid}_v2026.10.27.tei.xml`;
+  a.click();
+}
+document.getElementById('btn-tei-jin70').onclick=()=>exportTei('jin70_pi','金圣叹评本（繁·简）');
+document.getElementById('btn-tei-v100').onclick=()=>exportTei('v100','容与堂百回本');
+document.getElementById('btn-tei-v120').onclick=()=>exportTei('v120','袁无涯百二十回本');
+
+</script>
+</body>
+</html>

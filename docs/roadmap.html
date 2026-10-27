@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>路线图 · 水浒传本体论</title>
+<link rel="icon" href="favicon.ico">
+<link rel="stylesheet" href="css/style.css">
+<script src="js/registry.js"></script>
+<style>
+
+.ms-list{display:flex;flex-direction:column;gap:10px;}
+.ms-item{display:flex;gap:14px;padding:12px 14px;border:1px solid #ece3cf;border-radius:6px;background:#fbf6e8;}
+.ms-tag{flex:0 0 110px;text-align:center;padding:6px 0;border-radius:4px;font-size:13px;font-weight:600;align-self:flex-start;}
+.ms-tag.✅{background:#e7f2ea;color:#2a6a3f;}
+.ms-tag.⏸{background:#efe4c7;color:#8a6d3b;}
+.ms-tag.🟡{background:#eadff0;color:#5d3a7a;}
+.ms-body h3{margin:0 0 4px 0;font-size:15.5px;color:#4a4033;}
+.ms-body h3 small{font-size:12px;color:#8a7a62;font-weight:400;margin-left:6px;}
+.ms-body p{margin:0;font-size:13.5px;color:#6b6155;line-height:1.7;}
+.log-list{display:flex;flex-direction:column;gap:8px;}
+.log-item{display:grid;grid-template-columns:110px 1fr;gap:10px;padding:10px 12px;border-left:3px solid #c9b789;background:#fbf6e8;border-radius:0 4px 4px 0;}
+.log-date{color:#9e2b25;font-weight:600;font-size:13px;}
+.log-ver{font-size:14px;color:#4a4033;}
+.log-ver ul{margin:6px 0 0 18px;padding:0;}
+.log-ver li{font-size:13px;color:#6b6155;line-height:1.7;list-style:disc;}
+.wait-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:10px;}
+.wait-card{padding:12px 14px;border:1px dashed #c9b789;border-radius:6px;background:#fdf9ec;}
+.wait-card h3{margin:0 0 6px 0;color:#6b4e2c;font-size:14.5px;}
+.wait-card p{margin:4px 0;font-size:13px;color:#5a4c3e;line-height:1.7;}
+.wait-card .need{color:#a64b1e;}
+.simple-list{padding-left:20px;}
+.simple-list li{margin:5px 0;line-height:1.8;font-size:14px;color:#4a4033;}
+code{background:#faf5e7;padding:1px 5px;border-radius:3px;font-size:12.5px;}
+.note{font-size:12.5px;color:#8a7a62;}
+@media(max-width:820px){.wait-grid{grid-template-columns:1fr;} .log-item{grid-template-columns:1fr;}}
+
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="logo"><span class="seal">水</span><span>水浒传本体论</span></div>
+<nav class="nav-links">
+  <a href="index.html">首页</a>
+  <a href="index.html#versions">版本学</a>
+  <a href="index.html#heroes">108将</a>
+  <a href="themes.html">主题研究</a>
+  <a href="kg.html">知识图谱</a>
+  <a href="index.html#graph">关系图谱</a>
+  <a href="index.html#places">空间地理</a>
+  <a href="index.html#events">叙事结构</a>
+  <a href="index.html#weapons">兵器职官</a>
+  <a href="index.html#critics">评点学术</a>
+  <a href="index.html#derivatives">续书衍生</a>
+  <a href="index.html#ontology">本体推演</a>
+  <a href="read.html">版本阅读</a>
+  <a href="diff.html">异文对照</a>
+  <a href="search.html">批注检索</a>
+  <a href="data.html">数据开放</a>
+  <a href="about.html">关于本站</a>
+  <a href="roadmap.html" class="active">路线图</a>
+  <span class="nav-dd">
+    <span class="nav-dd-toggle" tabindex="0" role="button">数字研究 <b>▾</b></span>
+    <span class="nav-dd-menu">
+      <a href="stemma.html">版本谱系树</a>
+      <a href="reception.html">评点接受史</a>
+      <a href="emotion.html">情感曲线</a>
+      <a href="network.html">网络演化</a>
+      <a href="stylometry.html">文体计量</a>
+      <a href="hierarchy.html">梁山编制</a>
+      <a href="verse.html">韵文词牌</a>
+      <a href="couplet.html">回目格律</a>
+      <a href="games.html">互动游戏</a>
+    </span>
+  </span>
+</nav>
+</header>
+
+<main class="wrap">
+  <section class="panel">
+    <h1>路线图 · 待做与数据缺口</h1>
+    <p class="hero-desc">本页公开登记项目进度、尚未完成的工作与<b>受外部数据限制的功能</b>。Step 16–18 在没有外部数据前只立占位、不硬凑。</p>
+  </section>
+
+  <section class="panel">
+    <h2>里程碑进度</h2>
+    <div class="ms-list"><div class="ms-item"><div class="ms-tag ✅ ">✅ 已完成</div><div class="ms-body"><h3>M1 · 计算底座 <small>Step 1</small></h3><p>工具箱 / 语料装载器 / 注册表单一可信源</p></div></div>
+<div class="ms-item"><div class="ms-tag ✅ ">✅ 已完成</div><div class="ms-body"><h3>M2 · 研究三件套 <small>Step 2–4</small></h3><p>版本谱系 / 接受史热力图 / 情感曲线</p></div></div>
+<div class="ms-item"><div class="ms-tag ✅ ">✅ 已完成</div><div class="ms-body"><h3>M3 · 网络可玩 <small>Step 5–6</small></h3><p>网络演化动画 / 删点实验</p></div></div>
+<div class="ms-item"><div class="ms-tag ✅ ">✅ 已完成</div><div class="ms-body"><h3>M4 · 计量报告 <small>Step 7</small></h3><p>文体计量（含方法学说明）</p></div></div>
+<div class="ms-item"><div class="ms-tag ✅ ">✅ 已完成</div><div class="ms-body"><h3>M5 · 教学矩阵 <small>Step 8–11</small></h3><p>梁山编制 / 词牌 / 格律 / 互动游戏</p></div></div>
+<div class="ms-item"><div class="ms-tag ✅ ">✅ 已完成</div><div class="ms-body"><h3>M6 · 可信底座 <small>Step 12–14</small></h3><p>批注溯源 / 开放数据 / 版本快照</p></div></div>
+<div class="ms-item"><div class="ms-tag ⏸ ">⏸ 暂不实现</div><div class="ms-body"><h3>M7 · 问答智能体 <small>Step 15</small></h3><p>RAG+大模型问答（需可用模型能力，本轮跳过）</p></div></div>
+<div class="ms-item"><div class="ms-tag 🟡 ">🟡 占位 · 等外部数据</div><div class="ms-body"><h3>M8 · 受限项 <small>Step 16–18</small></h3><p>互文网络 / 影像并置 / 众包校勘</p></div></div></div>
+  </section>
+
+  <section class="panel">
+    <h2>数据更新日志（CHANGELOG）</h2>
+    <div class="log-list"><div class="log-item"><div class="log-date">2026-10-27</div><div class="log-ver">M5/M6 教学矩阵与可信底座</div><ul><li>新增梁山编制(hierarchy)、韵文词牌(verse)、回目格律(couplet)、互动游戏(games)四页</li><li>新增评论溯源元数据 commentaries_meta.json（九家批注的底本/录入方式/可信度等级/覆盖范围）</li><li>新增数据开放(data.html)、关于本站(about.html)、路线图(roadmap.html)三页</li><li>回目格律：平仄判据公开（普通话四声），明写不合中古入声的局限</li><li>韵文抽取双通路兜底（逐行通道+段落通道），八版块数与词牌计数已落 JSON</li></ul></div>
+<div class="log-item"><div class="log-date">2026-10-27</div><div class="log-ver">M2-M4 可计算研究层上线</div><ul><li>版本谱系树 stemma（编辑距离 + n-gram 余弦双口径聚类）</li><li>评点接受史热力图 reception（九家 8229 条批语密度）</li><li>情感曲线 emotion（自建情感词典，按段落聚合）</li><li>网络演化与删点实验 network（核心网 183 节点/86 边，宋江 −24 连通片）</li><li>文体计量 stylometry（虚词+字符 n-gram，田虎王庆段距离明显）</li></ul></div>
+<div class="log-item"><div class="log-date">2026-05-19</div><div class="log-ver">M1 底座初成</div><ul><li>8 版本繁/简/白三语体语料落库（共 1938 回文件）</li><li>注册表 registry.json 确立为单一可信源</li><li>阅读器 / 异文对照 / 批注检索初版上线</li></ul></div></div>
+  </section>
+
+  <section class="panel">
+    <h2>待外部数据（Step 16–18 占位）</h2>
+    <p>以下三项功能<b>不依赖代码能力</b>，只缺公开可用的电子文本或高清影像。如果你有可授权使用的资源，欢迎联系贡献。</p>
+    <div class="wait-grid"><div class="wait-card"><h3>Step 16 · 互文网络</h3><p class="need"><b>缺口：</b>《大宋宣和遗事》、元杂剧水浒戏（如《李逵负荆》《双献功》等）电子文本</p><p>做文本复用检测，画出水浒故事的成书来源网络</p></div>
+<div class="wait-card"><h3>Step 17 · 版本影像并置</h3><p class="need"><b>缺口：</b>高清扫本影像（金批贯华堂本、容与堂本、钟批本、余评双峰堂本）</p><p>原刻本影印页与录入文本左右对照，实现「左图右文」</p></div>
+<div class="wait-card"><h3>Step 18 · OCR 众包校勘台</h3><p class="need"><b>缺口：</b>待校影像与愿意参与校书的读者</p><p>余评 18 卷、钟批眉批、燕评逐回这些「机器录不准」的部分，做成参与式校书入口，把数据缺口变成功能</p></div></div>
+  </section>
+
+  <section class="panel">
+    <h2>参与与贡献</h2>
+    <ul class="simple-list">
+      <li>发现 OCR 讹字、批语错位、人物信息错误：可在阅读器批注旁或对应卡片页提交反馈（后续开放入口）。</li>
+      <li>提供高清扫本影像：可直接用于 Step 17 影像并置与 Step 18 众包校勘。</li>
+      <li>补充《大宋宣和遗事》/水浒戏电子文本：可直接启动 Step 16 互文网络。</li>
+      <li>代码与数据均在 GitHub 仓库，欢迎 fork / PR。</li>
+    </ul>
+    <p class="note">当前数据版本：<code>v2026.10.27</code></p>
+  </section>
+</main>
+
+<script>
+
+</script>
+</body>
+</html>

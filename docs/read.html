@@ -112,6 +112,18 @@ background-repeat:no-repeat;background-position:right 12px center;}
 .cmt-sub{margin:2px 0;}
 .cmt-sub b{margin-right:4px;font-weight:600;}
 
+/* ======== 批注溯源浮层（Step 12 可信底座） ======== */
+.cmt-prov{position:absolute;z-index:60;max-width:340px;background:#fffdf5;border:1px solid #d9c89c;
+  border-radius:6px;box-shadow:0 6px 18px rgba(90,70,30,0.18);padding:10px 12px;font-size:12.5px;
+  line-height:1.75;color:#4a4033;font-family:var(--font-serif);display:none;pointer-events:none;}
+.cmt-prov.on{display:block;}
+.cmt-prov .prov-who{font-size:13.5px;font-weight:600;color:#6b4e2c;margin-bottom:4px;}
+.cmt-prov .prov-who .pill{margin-left:6px;}
+.cmt-prov .prov-row{margin-top:3px;color:#5a4c3e;}
+.cmt-prov .prov-row b{color:#6b4e2c;font-weight:600;margin-right:4px;}
+.cmt-prov .prov-limits{margin-top:6px;padding-top:6px;border-top:1px dashed #e6dcc1;color:#8a5e19;font-size:12px;}
+.cmt-block .cmt-tag{position:relative;cursor:help;}
+
 /* 只看批语模式 */
 body.cmt-only .content-wrap>p,
 body.cmt-only .content-wrap .poem,
@@ -144,33 +156,38 @@ body.cmt-only .cmt-block{margin:6px 0;padding:4px 0 4px 9px;}
   <div class="topbar">
     <div class="logo"><span class="seal">水</span><span>水浒传本体论</span></div>
     <nav class="nav-links">
-      <a href="index.html">首页</a>
-      <a href="index.html#versions">版本学</a>
-      <a href="index.html#heroes">108将</a>
-      <a href="themes.html">主题研究</a>
-      <a href="kg.html">知识图谱</a>
-      <a href="index.html#graph">关系图谱</a>
-      <a href="index.html#places">空间地理</a>
-      <a href="index.html#events">叙事结构</a>
-      <a href="index.html#weapons">兵器职官</a>
-      <a href="index.html#critics">评点学术</a>
-      <a href="index.html#derivatives">续书衍生</a>
-      <a href="index.html#ontology">本体推演</a>
-      <a href="read.html" class="active">版本阅读</a>
-      <a href="diff.html">异文对照</a>
-      <a href="search.html">批注检索</a>
-        <span class="nav-dd">
-      <span class="nav-dd-toggle" tabindex="0" role="button">数字研究 <b>▾</b></span>
-      <span class="nav-dd-menu">
-        <a href="couplet.html">回目格律</a>
-        <a href="games.html">互动游戏</a>
-        <a href="stemma.html">版本谱系树</a>
-        <a href="reception.html">评点接受史</a>
-        <a href="emotion.html">情感曲线</a>
-        <a href="network.html">网络演化</a>
-        <a href="stylometry.html">文体计量</a>
-      </span>
+  <a href="index.html">首页</a>
+  <a href="index.html#versions">版本学</a>
+  <a href="index.html#heroes">108将</a>
+  <a href="themes.html">主题研究</a>
+  <a href="kg.html">知识图谱</a>
+  <a href="index.html#graph">关系图谱</a>
+  <a href="index.html#places">空间地理</a>
+  <a href="index.html#events">叙事结构</a>
+  <a href="index.html#weapons">兵器职官</a>
+  <a href="index.html#critics">评点学术</a>
+  <a href="index.html#derivatives">续书衍生</a>
+  <a href="index.html#ontology">本体推演</a>
+  <a href="read.html" class="active">版本阅读</a>
+  <a href="diff.html">异文对照</a>
+  <a href="search.html">批注检索</a>
+  <a href="data.html">数据开放</a>
+  <a href="about.html">关于本站</a>
+  <a href="roadmap.html">路线图</a>
+  <span class="nav-dd">
+    <span class="nav-dd-toggle" tabindex="0" role="button">数字研究 <b>▾</b></span>
+    <span class="nav-dd-menu">
+      <a href="stemma.html">版本谱系树</a>
+      <a href="reception.html">评点接受史</a>
+      <a href="emotion.html">情感曲线</a>
+      <a href="network.html">网络演化</a>
+      <a href="stylometry.html">文体计量</a>
+      <a href="hierarchy.html">梁山编制</a>
+      <a href="verse.html">韵文词牌</a>
+      <a href="couplet.html">回目格律</a>
+      <a href="games.html">互动游戏</a>
     </span>
+  </span>
 </nav>
   </div>
   <div class="read-top">
@@ -544,9 +561,55 @@ function makeAnno(m,it){
   /* 金批整体用「朱批」色；其他八家统一「墨批」色 */
   const cmtType = (m.cls==='cmt-jinpi') ? '朱批' : '墨批';
   d.className='cmt-block '+m.cls+(it.preface?' cmt-preface':'');
-  d.innerHTML='<span class="src cmt-tag">'+esc(it.tag)+'</span><span class="cmt-text">'+it.html+'</span>';
+  d.innerHTML='<span class="src cmt-tag" data-cmt="'+esc(m.id)+'">'+esc(it.tag)+'</span><span class="cmt-text">'+it.html+'</span>';
   return d;
 }
+
+/* ========== 批注溯源卡（Step 12 可信底座） ========== */
+let CMT_META=null;
+const REL_TEXT={'A':'精校','B':'待校','C':'转引','D':'序跋'};
+const REL_COLOR={'A':'#2a6a3f','B':'#8a5e19','C':'#a64b1e','D':'#5d3a7a'};
+async function loadCmtMeta(){
+  if(CMT_META)return CMT_META;
+  try{ CMT_META=await(await fetch('data/commentaries_meta.json')).json(); }catch(e){ CMT_META={items:[]}; }
+  return CMT_META;
+}
+function ensureProvEl(){
+  let el=document.getElementById('cmt-prov');
+  if(!el){el=document.createElement('div');el.id='cmt-prov';el.className='cmt-prov';document.body.appendChild(el);}
+  return el;
+}
+function showProv(anchor, cmtId){
+  const meta=CMT_META; if(!meta||!meta.items)return;
+  const it=meta.items.find(x=>x.id===cmtId); if(!it||!it.provenance)return;
+  const p=it.provenance, cnt=it.counts.total||0;
+  const rel=p.reliability||'?';
+  const el=ensureProvEl();
+  el.innerHTML='<div class="prov-who">'+esc(it.who)+'（'+esc(it.tag)+'）'+
+    '<span class="pill" style="color:'+REL_COLOR[rel]+';background:'+rel+';">'+rel+'·'+esc(REL_TEXT[rel]||'')+'</span></div>'+
+    '<div class="prov-row"><b>底本</b>'+esc(p.blockprint||'—')+'</div>'+
+    '<div class="prov-row"><b>录入</b>'+esc(p.entry_method||'—')+'</div>'+
+    (p.digital_source?'<div class="prov-row"><b>电子底本</b>'+esc(p.digital_source)+'</div>':'')+
+    '<div class="prov-row"><b>覆盖</b>'+esc((p.coverage_types||[]).join('、'))+' · 约 '+cnt+' 条'+'</div>'+
+    (p.limits?'<div class="prov-limits">'+esc(p.limits)+'</div>':'');
+  const r=anchor.getBoundingClientRect();
+  el.style.left=(window.scrollX+r.left)+'px';
+  el.style.top=(window.scrollY+r.bottom+6)+'px';
+  el.classList.add('on');
+}
+function hideProv(){ const el=document.getElementById('cmt-prov'); if(el)el.classList.remove('on'); }
+document.addEventListener('mouseover', e=>{
+  const t=e.target.closest('.cmt-tag[data-cmt], [data-cmt-prov]');
+  if(!t)return;
+  const id=t.getAttribute('data-cmt')||t.getAttribute('data-cmt-prov');
+  if(!CMT_META){ loadCmtMeta().then(()=>showProv(t,id)); return; }
+  showProv(t,id);
+});
+document.addEventListener('mouseout', e=>{
+  const t=e.target.closest('.cmt-tag[data-cmt], [data-cmt-prov]');
+  if(t)hideProv();
+});
+loadCmtMeta();
 /* 把一组批注均匀分配到正文段落之间 */
 function distributeBlocks(wrap,m,items,ps){
   if(!ps.length){

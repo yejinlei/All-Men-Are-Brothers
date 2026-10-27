@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>关于本站 · 水浒传本体论</title>
+<link rel="icon" href="favicon.ico">
+<link rel="stylesheet" href="css/style.css">
+<script src="js/registry.js"></script>
+<style>
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.grid2>div{padding:10px 14px;border:1px solid #ece3cf;border-radius:6px;background:#fbf6e8;}
+.grid2 h3{margin:0 0 8px 0;color:#6b4e2c;font-size:15px;}
+@media(max-width:720px){.grid2{grid-template-columns:1fr;}}
+.simple-list{padding-left:20px;}
+.simple-list li{margin:5px 0;line-height:1.8;font-size:14.5px;color:#4a4033;}
+code{background:#faf5e7;padding:1px 5px;border-radius:3px;font-size:12.5px;}
+.note{font-size:12.5px;color:#8a7a62;}
+
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="logo"><span class="seal">水</span><span>水浒传本体论</span></div>
+<nav class="nav-links">
+  <a href="index.html">首页</a>
+  <a href="index.html#versions">版本学</a>
+  <a href="index.html#heroes">108将</a>
+  <a href="themes.html">主题研究</a>
+  <a href="kg.html">知识图谱</a>
+  <a href="index.html#graph">关系图谱</a>
+  <a href="index.html#places">空间地理</a>
+  <a href="index.html#events">叙事结构</a>
+  <a href="index.html#weapons">兵器职官</a>
+  <a href="index.html#critics">评点学术</a>
+  <a href="index.html#derivatives">续书衍生</a>
+  <a href="index.html#ontology">本体推演</a>
+  <a href="read.html">版本阅读</a>
+  <a href="diff.html">异文对照</a>
+  <a href="search.html">批注检索</a>
+  <a href="data.html">数据开放</a>
+  <a href="about.html" class="active">关于本站</a>
+  <a href="roadmap.html">路线图</a>
+  <span class="nav-dd">
+    <span class="nav-dd-toggle" tabindex="0" role="button">数字研究 <b>▾</b></span>
+    <span class="nav-dd-menu">
+      <a href="stemma.html">版本谱系树</a>
+      <a href="reception.html">评点接受史</a>
+      <a href="emotion.html">情感曲线</a>
+      <a href="network.html">网络演化</a>
+      <a href="stylometry.html">文体计量</a>
+      <a href="hierarchy.html">梁山编制</a>
+      <a href="verse.html">韵文词牌</a>
+      <a href="couplet.html">回目格律</a>
+      <a href="games.html">互动游戏</a>
+    </span>
+  </span>
+</nav>
+</header>
+
+<main class="wrap">
+  <section class="panel">
+    <h1>关于本站</h1>
+    <p class="hero-desc">本站是一个以《水浒传》为对象的<b>数字人文研究与教学平台</b>：在八版本三语体语料（共 1938 回文件）之上，叠加九家评点批注、本体知识库与若干可计算分析产物，目标是把小说从"文本"升级为「可计算的研究对象 + 可演示的教学平台」。</p>
+  </section>
+
+  <section class="panel">
+    <h2>一、站点定位</h2>
+    <ul class="simple-list">
+      <li><b>不是电子书</b>：不以"读完一本书"为目标，所有页面都围绕"比对、检索、计量、可视化"设计。</li>
+      <li><b>不是定论</b>：Step 4（情感曲线）、Step 7（文体计量）等结果都是<b>可计算假设</b>，页面会明写方法与不确定性，不替代学者判断。</li>
+      <li><b>可扩展</b>：版本与批注元数据集中于 <code>data/registry.json</code>（单一可信源），新增一个版本只需补语料目录 + 在注册表加一行，无需改动 HTML/JS。</li>
+      <li><b>全静态</b>：站点托管于 GitHub Pages，无后端，所有计算要么在构建期（<code>build/*.py</code>）离线完成、要么在浏览器里即时运行（阅读器对照、TEI 导出、小游戏）。</li>
+    </ul>
+  </section>
+
+  <section class="panel">
+    <h2>二、技术栈</h2>
+    <div class="grid2">
+      <div>
+        <h3>前端</h3>
+        <ul class="simple-list">
+          <li>纯静态 HTML/CSS/原生 JS（无构建依赖）</li>
+          <li>ECharts 5 本地 vendored（<code>vendor/echarts.min.js</code>，离线可用）</li>
+          <li>站点配色统一：朱砂 <code>#9e2b25</code>、靛青 <code>#2e5a88</code>、米黄底 <code>#f7f2e7</code></li>
+        </ul>
+      </div>
+      <div>
+        <h3>构建与分析</h3>
+        <ul class="simple-list">
+          <li>Python 3：numpy / scipy / scikit-learn / networkx / matplotlib</li>
+          <li>中文处理：jieba 分词、pypinyin 声调判平仄、opencc 简繁转换</li>
+          <li>所有脚本在 <code>build/</code>，可复现（见 <code>build/README.md</code>）</li>
+        </ul>
+      </div>
+      <div>
+        <h3>本体建模（OWL2 DL 思路）</h3>
+        <ul class="simple-list">
+          <li>7 大顶级类（人物／地点／事件／组织／物品／作品／评点）</li>
+          <li>18 类有向关系，边自带"首次出现回目"</li>
+          <li>三重数据校验（实体唯一/回次范围/版本隔离）</li>
+        </ul>
+      </div>
+      <div>
+        <h3>数据托管</h3>
+        <ul class="simple-list">
+          <li>GitHub Pages：yejinlei.github.io/All-Men-Are-Brothers</li>
+          <li>正文与批语均随仓库发布</li>
+          <li>数据版本号见 <a href="data.html">数据开放</a> 页</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>三、方法与不确定性说明（重要）</h2>
+    <ul class="simple-list">
+      <li><b>情感曲线</b>：使用<b>自建情感词典</b>（正负词+激烈度），按段落打分、按回聚合、滑动平滑。词典规模有限（约 2000 词），峰值识别对词典敏感；金批腰斩本结局的"惊恶梦"情感落差仅在金批七十回系统下可观察。</li>
+      <li><b>人物网络</b>：关系抽取自公开水浒本体与回目/正文共现规则，不做 NER 训练；"结拜/亲属/师徒"较准，"上下级/从属"依赖职务表；删点实验只反映<b>图结构</b>层面的连通性，不等同于文学意义上的"人物重要性"。</li>
+      <li><b>文体计量</b>：采用高频虚词频率 + 字符 3-gram 两种口径；田虎王庆段"不合群"是统计上<b>可观察的差异</b>，与"后人增插"的学术假说方向一致，但不直接证明作者不同——样本量、用字习惯（地名/官名差异）都会影响结果。</li>
+      <li><b>回目格律</b>：平仄以<b>普通话四声</b>判定（pypinyin），<b>不能识别中古入声</b>，故"上仄下平率 0.40"是今音近似值；对仗只做字数相等、重字比对等浅层指标，未做词性对品。</li>
+      <li><b>版本谱系</b>：对齐回次时已处理金批本的 <code>OFFSET=−1</code>（以故事回次而非文件回次为锚），但 v120 前 90 回与 v100 的"距离≈0"不代表完全相同，仍有大量细节异文。</li>
+      <li><b>批注可信度</b>：分为 A/B/C/D 四级（见 <a href="data.html">数据开放</a>），B 级以下批语可能含 OCR 讹字、回次偏移或出自二次文献，引用前请回查原刻本。</li>
+    </ul>
+  </section>
+
+  <section class="panel">
+    <h2>四、团队与致谢</h2>
+    <p>本项目为个人数字人文实验项目，在此向所有公开公版古籍文本、学术整理本与古籍数字平台（识典古籍、CADAL、Project Gutenberg 等）致谢。图像、评点、注疏等版权归原作者及出版方所有，本平台只作教学研究用途。</p>
+    <p>反馈与建议可通过 GitHub Issues 提交。影像、前源文本（《大宋宣和遗事》、元水浒戏）与余评/钟批等高保真爱眉批的众包校勘，见 <a href="roadmap.html">路线图</a>。</p>
+    <p class="note">当前数据版本：<code id="v"></code></p>
+  </section>
+</main>
+
+<script>
+document.getElementById('v').textContent='v2026.10.27';
+</script>
+</body>
+</html>
