@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>版本谱系树 · 水浒传数字人文</title>
+<link rel="stylesheet" href="css/style.css">
+<script src="vendor/echarts.min.js"></script>
+<script src="js/registry.js"></script>
+<style>
+.wrap{max-width:1180px;margin:0 auto;padding:26px 22px 80px;}
+.page-title{font-family:var(--font-serif);font-size:30px;color:var(--vermilion-deep);letter-spacing:4px;margin-bottom:6px;}
+.page-sub{color:var(--ink-muted);font-size:14px;line-height:1.9;margin-bottom:18px;max-width:900px;}
+.panel{background:var(--paper-warm);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:18px;}
+.panel h3{font-family:var(--font-serif);font-size:18px;color:var(--vermilion-deep);margin-bottom:10px;letter-spacing:2px;}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.tab{padding:7px 16px;border:1px solid var(--border);border-radius:18px;background:#fff;cursor:pointer;font-size:14px;}
+.tab.on{background:var(--vermilion-deep);color:#fff;border-color:var(--vermilion-deep);}
+#tree{width:100%;height:430px;}
+#heat{width:100%;height:430px;}
+#net{width:100%;height:430px;}
+.card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:10px;}
+.card .hd{font-family:var(--font-serif);font-size:15px;color:var(--ink);margin-bottom:6px;}
+.mem{display:inline-block;padding:2px 10px;border-radius:12px;background:var(--paper-warm);font-size:13px;margin:2px 4px 2px 0;}
+.ev{font-size:13px;color:var(--ink-light);line-height:1.8;}
+.tag{display:inline-block;font-size:12px;padding:1px 8px;border-radius:10px;margin-left:6px;}
+.ok{background:#e3efe4;color:#2f5d50;} .no{background:#f7e3e0;color:#8b1a1a;}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:16px;}
+.hint{font-size:12.5px;color:var(--ink-muted);line-height:1.8;margin-top:8px;}
+table.mini{width:100%;border-collapse:collapse;font-size:13px;}
+table.mini th,table.mini td{border-bottom:1px solid var(--border);padding:5px 6px;text-align:left;}
+table.mini th{color:var(--ink-muted);font-weight:500;}
+@media(max-width:720px){.grid2{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="logo"><span class="seal">水</span><span>水浒传本体论</span></div>
+  <nav class="nav-links">
+  <a href="index.html">首页</a>
+  <a href="index.html#versions">版本学</a>
+  <a href="index.html#heroes">108将</a>
+  <a href="themes.html">主题研究</a>
+  <a href="kg.html">知识图谱</a>
+  <a href="index.html#graph">关系图谱</a>
+  <a href="index.html#places">空间地理</a>
+  <a href="index.html#events">叙事结构</a>
+  <a href="index.html#weapons">兵器职官</a>
+  <a href="index.html#critics">评点学术</a>
+  <a href="index.html#derivatives">续书衍生</a>
+  <a href="index.html#ontology">本体推演</a>
+  <a href="read.html">版本阅读</a>
+  <a href="diff.html">异文对照</a>
+  <a href="search.html">批注检索</a>
+  <span class="nav-dd">
+      <span class="nav-dd-toggle active" tabindex="0" role="button">数字研究 <b>▾</b></span>
+      <span class="nav-dd-menu">
+        <a href="stemma.html" class="active">版本谱系树</a>
+        <a href="reception.html">评点接受史</a>
+        <a href="emotion.html">情感曲线</a>
+        <a href="network.html">网络演化</a>
+        <a href="stylometry.html">文体计量</a>
+      </span>
+    </span>
+  </nav>
+</header>
+
+<div class="wrap">
+  <div class="page-title">版本谱系树</div>
+  <div class="page-sub" id="sub">以可对齐回目的文字相似度，计算各版本两两距离（特征 n-gram 余弦 + 逐回字符编辑距离，双口径互校），
+  经平均连接聚类得到谱系树。距离越小，版本越近。</div>
+
+  <div class="tabs">
+    <div class="tab on" data-v="tree">谱系树</div>
+    <div class="tab" data-v="heat">距离矩阵</div>
+    <div class="tab" data-v="net">阈值网络</div>
+  </div>
+
+  <div class="panel">
+    <div id="tree"></div>
+    <div id="heat" style="display:none"></div>
+    <div id="net" style="display:none"></div>
+    <div class="hint" id="hint"></div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h3>聚类与支撑证据</h3>
+      <div id="clusters"></div>
+    </div>
+    <div class="panel">
+      <h3>版本学核对</h3>
+      <table class="mini" id="checks"></table>
+      <div class="hint" id="corr"></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>方法与边界</h3>
+    <div class="hint" id="method"></div>
+  </div>
+</div>
+
+<script>
+function esc(s){return String(s==null?'':s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+let D=null;
+fetch('data/stemma.json').then(r=>r.json()).then(d=>{D=d;init();}).catch(e=>{document.getElementById('sub').textContent='数据加载失败：'+e;});
+
+function toTree(node){
+  const o={name: node.name||'', value: node.h||0, symbolSize: node.children.length?7:14};
+  if(node.children&&node.children.length){
+    o.children=node.children.map(toTree);
+    o.label={show:false};
+  }else{
+    o.label={show:true,fontSize:13,fontFamily:'Songti SC, serif'};
+  }
+  return o;
+}
+
+let treeC,heatC,netC,cur='tree';
+function init(){
+  document.getElementById('method').innerHTML=D.method+'<br>金批繁本回次偏移：'+JSON.stringify(D.offsets)+'；双口径相关度 r = '+D.corr_edit_ngram+'。';
+  document.getElementById('corr').textContent='编辑距离与 n-gram 距离的相关系数 r = '+D.corr_edit_ngram+'（1 为完全一致）。';
+
+  treeC=echarts.init(document.getElementById('tree'));
+  heatC=echarts.init(document.getElementById('heat'));
+  netC=echarts.init(document.getElementById('net'));
+
+  treeC.setOption({
+    tooltip:{trigger:'item',formatter:p=>p.data.name?(p.data.name+'<br>合并高度 '+p.data.value):('合并高度 '+p.data.value)},
+    series:[{type:'tree',data:[toTree(D.tree)],orient:'LR',layout:'orthogonal',top:'4%',bottom:'4%',left:'6%',right:'24%',
+      symbol:'circle',symbolSize:8,lineStyle:{color:'#b0a08a',width:1.4},
+      label:{position:'right',verticalAlign:'middle',align:'left',fontSize:13,color:'#3a2a1a'},
+      leaves:{label:{position:'right',fontSize:13,color:'#3a2a1a'}},
+      expandAndCollapse:false,initialTreeDepth:-1,animationDuration:500}]
+  });
+
+  const L=D.labels, M=D.matrix.avg, cells=[];
+  for(let i=0;i<L.length;i++)for(let j=0;j<L.length;j++)cells.push([i,j,M[D.versions[i].id][D.versions[j].id]]);
+  heatC.setOption({
+    tooltip:{formatter:p=>L[p.value[1]]+' × '+L[p.value[0]]+'<br>距离 '+p.value[2].toFixed(3)},
+    grid:{left:70,right:60,top:30,bottom:60},
+    xAxis:{type:'category',data:L,axisLabel:{rotate:40,fontSize:11}},
+    yAxis:{type:'category',data:L,axisLabel:{fontSize:11}},
+    visualMap:{min:0,max:0.6,calculable:true,orient:'vertical',right:6,top:'middle',inRange:{color:['#fff7e6','#f2c14e','#c0392b']},text:['远','近']},
+    series:[{type:'heatmap',data:cells,label:{show:true,fontSize:9,formatter:p=>p.value[2].toFixed(2)},emphasis:{itemStyle:{shadowBlur:8}}}]
+  });
+
+  netC.setOption({
+    tooltip:{},
+    series:[{type:'graph',layout:'circular',data:D.labels.map(n=>({name:n,symbolSize:26})),
+      links:D.network_edges.map(e=>({source:e.source,target:e.target,value:e.dist,lineStyle:{width:Math.max(1,3-e.dist*4)}})),
+      roam:true,label:{show:true,fontSize:12},lineStyle:{color:'#c0392b',opacity:.45,curveness:.15},
+      emphasis:{focus:'adjacency'}}]
+  });
+
+  // 聚类卡片
+  document.getElementById('clusters').innerHTML=D.clusters.map((c,i)=>{
+    const mem=c.members.map(m=>'<span class="mem">'+esc(m)+'</span>').join('');
+    const ev=(c.evidence||[]).map(e=>'第'+e.num+'回 '+esc(e.title)+'（差 '+e.dist+'）').join('；');
+    return '<div class="card"><div class="hd">簇 '+(i+1)+'：'+esc(c.name)+'　紧致度 '+c.tightness+'</div>'+mem+
+      (ev?'<div class="ev" style="margin-top:8px">差异最大的回目：'+ev+'</div>':'')+'</div>';
+  }).join('');
+
+  document.getElementById('checks').innerHTML='<tr><th>核对项</th><th>值</th><th>判定</th></tr>'+
+    D.findings.map(f=>'<tr><td>'+esc(f.q)+'</td><td>'+f.value+'</td><td>'+esc(f.verdict)+'</td></tr>').join('');
+
+  document.getElementById('hint').textContent='谱系树：左侧为聚类合并次序，越靠下合并高度越大（越晚合、越远）；点击标签可高亮。';
+
+  document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+    cur=b.dataset.v;
+    ['tree','heat','net'].forEach(id=>document.getElementById(id).style.display=(id===cur?'block':'none'));
+    document.getElementById('hint').textContent={tree:'谱系树：左侧为聚类合并次序，越靠下合并高度越大（越晚合、越远）。',
+      heat:'距离矩阵：0 表示文字几乎相同；色越深越远。',net:'阈值网络：只画距离小于阈值的版本对，线越粗越近。'}[cur];
+    setTimeout(()=>{treeC.resize();heatC.resize();netC.resize();},50);
+  });
+  window.addEventListener('resize',()=>{treeC.resize();heatC.resize();netC.resize();});
+}
+</script>
+</body>
+</html>

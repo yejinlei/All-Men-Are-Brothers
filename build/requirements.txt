@@ -1,0 +1,8 @@
+# 水浒传数字人文站点 · 分析工具依赖
+# 安装：pip3 install -r build/requirements.txt
+numpy>=1.24
+scipy>=1.10
+networkx>=3.0
+matplotlib>=3.7
+jieba>=0.42
+opencc-python-reimplemented>=0.1.7

@@ -1172,3 +1172,14 @@ canvas#relCanvas:active { cursor: grabbing; }
 .place-dot.current circle{ fill:#c0392b !important; stroke-width:3px !important; stroke:#fff !important; }
 .place-dot.current text{ fill:#8b1a1a !important; font-weight:700 !important; }
 .journey-path{ stroke:#c0392b; stroke-width:1.8; fill:none; opacity:.55; stroke-dasharray:4 3; stroke-linecap:round; }
+
+/* ===== 顶部导航：『数字研究』下拉 ===== */
+.nav-dd { position: relative; display: inline-block; }
+.nav-dd-toggle { padding: 6px 10px; font-size: 14px; color: var(--ink-light); border-radius: 4px; cursor: pointer; display: inline-block; user-select: none; }
+.nav-dd-toggle b { font-size: 10px; color: var(--vermilion); }
+.nav-dd:hover .nav-dd-toggle, .nav-dd:focus-within .nav-dd-toggle { background: var(--vermilion-deep); color: var(--paper); }
+.nav-dd:hover .nav-dd-toggle b, .nav-dd:focus-within .nav-dd-toggle b { color: var(--paper); }
+.nav-dd-menu { display: none; position: absolute; top: 100%; right: 0; margin-top: 6px; background: #fff; border: 1px solid var(--border); border-radius: 8px; box-shadow: var(--shadow); min-width: 172px; padding: 6px; z-index: 300; }
+.nav-dd:hover .nav-dd-menu, .nav-dd:focus-within .nav-dd-menu { display: block; }
+.nav-dd-menu a { display: block; padding: 8px 14px; font-size: 14px; color: var(--ink-light); border-radius: 5px; text-decoration: none; white-space: nowrap; }
+.nav-dd-menu a:hover, .nav-dd-menu a.active { background: var(--paper-warm); color: var(--vermilion-deep); }

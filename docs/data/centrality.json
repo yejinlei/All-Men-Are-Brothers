@@ -1,0 +1,328 @@
+{
+ "generated": "2026-10-27",
+ "method": "中心性与删点实验在「核心关系网」（剔除职级从属）上进行：职级从属关系近乎全部以宋江为上级，会形成单星结构、掩盖人物间真实关系。完整关系网见 relation_timeline.json。",
+ "n_nodes": 183,
+ "n_edges": 86,
+ "full_graph": {
+  "n_nodes": 183,
+  "n_edges": 250,
+  "n_relations": 326,
+  "n_unique_pairs": 250
+ },
+ "baseline": {
+  "components": 110,
+  "giant_size": 53,
+  "giant_ratio": 0.2896,
+  "avg_path": 3.135,
+  "clustering": 0.058
+ },
+ "top_degree": [
+  {
+   "name": "宋江",
+   "value": 22
+  },
+  {
+   "name": "武松",
+   "value": 10
+  },
+  {
+   "name": "鲁智深",
+   "value": 9
+  },
+  {
+   "name": "林冲",
+   "value": 7
+  },
+  {
+   "name": "史进",
+   "value": 5
+  },
+  {
+   "name": "晁盖",
+   "value": 5
+  },
+  {
+   "name": "卢俊义",
+   "value": 3
+  },
+  {
+   "name": "吴用",
+   "value": 3
+  },
+  {
+   "name": "公孙胜",
+   "value": 3
+  },
+  {
+   "name": "李逵",
+   "value": 3
+  },
+  {
+   "name": "阮小二",
+   "value": 3
+  },
+  {
+   "name": "张横",
+   "value": 3
+  },
+  {
+   "name": "阮小五",
+   "value": 3
+  },
+  {
+   "name": "潘金莲",
+   "value": 3
+  },
+  {
+   "name": "杨志",
+   "value": 2
+  }
+ ],
+ "top_betweenness": [
+  {
+   "name": "宋江",
+   "value": 0.0617
+  },
+  {
+   "name": "武松",
+   "value": 0.0255
+  },
+  {
+   "name": "鲁智深",
+   "value": 0.0159
+  },
+  {
+   "name": "林冲",
+   "value": 0.015
+  },
+  {
+   "name": "晁盖",
+   "value": 0.0145
+  },
+  {
+   "name": "吴用",
+   "value": 0.0089
+  },
+  {
+   "name": "史进",
+   "value": 0.0066
+  },
+  {
+   "name": "公孙胜",
+   "value": 0.0061
+  },
+  {
+   "name": "李逵",
+   "value": 0.0061
+  },
+  {
+   "name": "卢俊义",
+   "value": 0.0031
+  },
+  {
+   "name": "杨志",
+   "value": 0.0031
+  },
+  {
+   "name": "穆弘",
+   "value": 0.0031
+  },
+  {
+   "name": "张氏(林娘子)",
+   "value": 0.0031
+  },
+  {
+   "name": "史文恭",
+   "value": 0.003
+  },
+  {
+   "name": "曾弄",
+   "value": 0.003
+  }
+ ],
+ "top_closeness": [
+  {
+   "name": "宋江",
+   "value": 0.1651
+  },
+  {
+   "name": "鲁智深",
+   "value": 0.1315
+  },
+  {
+   "name": "武松",
+   "value": 0.1259
+  },
+  {
+   "name": "林冲",
+   "value": 0.1189
+  },
+  {
+   "name": "晁盖",
+   "value": 0.117
+  },
+  {
+   "name": "吴用",
+   "value": 0.1152
+  },
+  {
+   "name": "史进",
+   "value": 0.1152
+  },
+  {
+   "name": "李逵",
+   "value": 0.1109
+  },
+  {
+   "name": "高俅",
+   "value": 0.1101
+  },
+  {
+   "name": "方腊",
+   "value": 0.1092
+  },
+  {
+   "name": "孔明",
+   "value": 0.1061
+  },
+  {
+   "name": "孔亮",
+   "value": 0.1061
+  },
+  {
+   "name": "花荣",
+   "value": 0.1054
+  },
+  {
+   "name": "戴宗",
+   "value": 0.1054
+  },
+  {
+   "name": "宋清",
+   "value": 0.1054
+  }
+ ],
+ "experiments": [
+  {
+   "name": "宋江",
+   "components": 123,
+   "giant_ratio": 0.1593,
+   "giant_size": 29,
+   "avg_path": 3.2217,
+   "clustering": 0.0296,
+   "d_components": 13,
+   "d_giant": -24
+  },
+  {
+   "name": "武松",
+   "components": 116,
+   "giant_ratio": 0.2363,
+   "giant_size": 43,
+   "avg_path": 3.0166,
+   "clustering": 0.0432,
+   "d_components": 6,
+   "d_giant": -10
+  },
+  {
+   "name": "林冲",
+   "components": 114,
+   "giant_ratio": 0.2582,
+   "giant_size": 47,
+   "avg_path": 3.049,
+   "clustering": 0.0522,
+   "d_components": 4,
+   "d_giant": -6
+  },
+  {
+   "name": "鲁智深",
+   "components": 114,
+   "giant_ratio": 0.2637,
+   "giant_size": 48,
+   "avg_path": 3.1622,
+   "clustering": 0.0517,
+   "d_components": 4,
+   "d_giant": -5
+  },
+  {
+   "name": "吴用",
+   "components": 111,
+   "giant_ratio": 0.2692,
+   "giant_size": 49,
+   "avg_path": 3.0357,
+   "clustering": 0.0559,
+   "d_components": 1,
+   "d_giant": -4
+  },
+  {
+   "name": "公孙胜",
+   "components": 112,
+   "giant_ratio": 0.2747,
+   "giant_size": 50,
+   "avg_path": 3.0155,
+   "clustering": 0.0619,
+   "d_components": 2,
+   "d_giant": -3
+  },
+  {
+   "name": "李逵",
+   "components": 111,
+   "giant_ratio": 0.2747,
+   "giant_size": 50,
+   "avg_path": 3.08,
+   "clustering": 0.0563,
+   "d_components": 1,
+   "d_giant": -3
+  },
+  {
+   "name": "卢俊义",
+   "components": 111,
+   "giant_ratio": 0.2802,
+   "giant_size": 51,
+   "avg_path": 3.0024,
+   "clustering": 0.0583,
+   "d_components": 1,
+   "d_giant": -2
+  },
+  {
+   "name": "花荣",
+   "components": 110,
+   "giant_ratio": 0.2857,
+   "giant_size": 52,
+   "avg_path": 3.1516,
+   "clustering": 0.0583,
+   "d_components": 0,
+   "d_giant": -1
+  },
+  {
+   "name": "戴宗",
+   "components": 110,
+   "giant_ratio": 0.2857,
+   "giant_size": 52,
+   "avg_path": 3.1516,
+   "clustering": 0.0583,
+   "d_components": 0,
+   "d_giant": -1
+  },
+  {
+   "name": "关胜",
+   "components": 109,
+   "giant_ratio": 0.2912,
+   "giant_size": 53,
+   "avg_path": 3.135,
+   "clustering": 0.0583,
+   "d_components": -1,
+   "d_giant": 0
+  },
+  {
+   "name": "柴进",
+   "components": 109,
+   "giant_ratio": 0.2912,
+   "giant_size": 53,
+   "avg_path": 3.135,
+   "clustering": 0.0583,
+   "d_components": -1,
+   "d_giant": 0
+  }
+ ],
+ "fig": "fig/centrality.png"
+}

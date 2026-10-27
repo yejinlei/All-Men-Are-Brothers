@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>评点接受史 · 水浒传数字人文</title>
+<link rel="stylesheet" href="css/style.css">
+<script src="vendor/echarts.min.js"></script>
+<script src="js/registry.js"></script>
+<style>
+.wrap{max-width:1240px;margin:0 auto;padding:26px 22px 80px;}
+.page-title{font-family:var(--font-serif);font-size:30px;color:var(--vermilion-deep);letter-spacing:4px;margin-bottom:6px;}
+.page-sub{color:var(--ink-muted);font-size:14px;line-height:1.9;margin-bottom:18px;max-width:940px;}
+.panel{background:var(--paper-warm);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:18px;}
+.panel h3{font-family:var(--font-serif);font-size:18px;color:var(--vermilion-deep);margin-bottom:10px;letter-spacing:2px;}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+.tab{padding:7px 16px;border:1px solid var(--border);border-radius:18px;background:#fff;cursor:pointer;font-size:14px;}
+.tab.on{background:var(--vermilion-deep);color:#fff;border-color:var(--vermilion-deep);}
+#heat{width:100%;height:420px;}
+.crit{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:14px;}
+.dot{width:11px;height:11px;border-radius:3px;flex:none;}
+.crit .who{width:92px;font-family:var(--font-serif);}
+.crit .era{width:82px;color:var(--ink-muted);font-size:12.5px;}
+.crit .n{width:74px;text-align:right;color:var(--ink-light);}
+.crit a{margin-left:auto;font-size:12.5px;color:var(--vermilion);text-decoration:none;}
+.hint{font-size:12.5px;color:var(--ink-muted);line-height:1.8;margin-top:8px;}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="logo"><span class="seal">水</span><span>水浒传本体论</span></div>
+  <nav class="nav-links">
+  <a href="index.html">首页</a>
+  <a href="index.html#versions">版本学</a>
+  <a href="index.html#heroes">108将</a>
+  <a href="themes.html">主题研究</a>
+  <a href="kg.html">知识图谱</a>
+  <a href="index.html#graph">关系图谱</a>
+  <a href="index.html#places">空间地理</a>
+  <a href="index.html#events">叙事结构</a>
+  <a href="index.html#weapons">兵器职官</a>
+  <a href="index.html#critics">评点学术</a>
+  <a href="index.html#derivatives">续书衍生</a>
+  <a href="index.html#ontology">本体推演</a>
+  <a href="read.html">版本阅读</a>
+  <a href="diff.html">异文对照</a>
+  <a href="search.html">批注检索</a>
+  <span class="nav-dd">
+      <span class="nav-dd-toggle active" tabindex="0" role="button">数字研究 <b>▾</b></span>
+      <span class="nav-dd-menu">
+        <a href="stemma.html">版本谱系树</a>
+        <a href="reception.html" class="active">评点接受史</a>
+        <a href="emotion.html">情感曲线</a>
+        <a href="network.html">网络演化</a>
+        <a href="stylometry.html">文体计量</a>
+      </span>
+    </span>
+  </nav>
+</header>
+
+<div class="wrap">
+  <div class="page-title">评点接受史</div>
+  <div class="page-sub" id="sub">九家批注，自明万历至当代，跨越四百年。横轴回目 0–120，纵轴按评点家年代排序，
+  色深表示该回受到的批语密度——一眼看出「哪一回最受评点家关注」。</div>
+
+  <div class="panel">
+    <div class="tabs">
+      <div class="tab on" data-m="count">按批语条数</div>
+      <div class="tab" data-m="chars">按批语字数</div>
+      <div class="tab" data-m="norm">按行归一化</div>
+    </div>
+    <div id="heat"></div>
+    <div class="hint" id="hint"></div>
+  </div>
+
+  <div class="panel">
+    <h3>九家批注</h3>
+    <div id="list"></div>
+    <div class="hint" id="total"></div>
+  </div>
+</div>
+
+<script>
+function esc(s){return String(s==null?'':s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+let D=null,metric='count',chart=null;
+fetch('data/critics_heatmap.json').then(r=>r.json()).then(d=>{D=d;init();}).catch(e=>{document.getElementById('sub').textContent='数据加载失败：'+e;});
+
+function matrix(m){
+  const rows=D.critics.map(c=>D[m==='chars'?'matrix_chars':'matrix_count'][c.id]);
+  if(m!=='norm')return rows;
+  return rows.map(r=>{const mx=Math.max.apply(null,r)||1;return r.map(v=>+(v/mx).toFixed(3));});
+}
+function render(){
+  const L=[],data=[];
+  for(let h=0;h<=D.max_hui;h++)L.push(h);
+  const rows=matrix(metric);
+  let mx=0;
+  D.critics.forEach((c,y)=>{rows[y].forEach((v,x)=>{data.push([x,y,v]);if(v>mx)mx=v;});});
+  const names=D.critics.map(c=>c.tag+'·'+c.era);
+  chart.setOption({
+    tooltip:{formatter:p=>'第'+L[p.value[0]]+'回<br>'+names[p.value[1]]+'<br>值 '+p.value[2]},
+    grid:{left:96,right:60,top:20,bottom:44},
+    xAxis:{type:'category',data:L,axisLabel:{interval:9,fontSize:11},name:'回目',nameLocation:'middle',nameGap:26,nameTextStyle:{fontSize:12}},
+    yAxis:{type:'category',data:names,axisLabel:{fontSize:11.5}},
+    visualMap:{min:0,max:mx,calculable:true,orient:'vertical',right:8,top:'middle',inRange:{color:['#fff8ec','#f6c65b','#c0392b']}},
+    series:[{type:'heatmap',data:data,progressive:2000,emphasis:{itemStyle:{borderColor:'#8b1a1a',borderWidth:1}},
+      label:{show:false}}]
+  },true);
+  document.getElementById('hint').textContent={
+    count:'按批语条数：九家合计 '+D.grand_total+' 条，与批注检索页载入数一致。',
+    chars:'按批语字数：可看出王望如、金圣叹、冀勤等长篇批注家的分布。',
+    norm:'按行归一化：抹平各家总产量差异，只看「关注分布的形状」。'}[metric];
+}
+function init(){
+  chart=echarts.init(document.getElementById('heat'));
+  render();
+  document.getElementById('list').innerHTML=D.critics.map(c=>
+    '<div class="crit"><span class="dot" style="background:'+c.color+'"></span>'+
+    '<span class="who">'+esc(c.who)+'</span><span class="era">'+esc(c.era)+'（'+c.year+'）</span>'+
+    '<span class="n">'+c.total+' 条</span><span class="n">'+c.chars+' 字</span>'+
+    '<a href="search.html">在检索页查看 →</a></div>').join('');
+  document.getElementById('total').textContent='注：冀勤校注为当代注本，条目数最众；余象斗、程穆衡现存卷目尚不全（见文档）。';
+  document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+    metric=b.dataset.m;render();
+  });
+  window.addEventListener('resize',()=>chart.resize());
+}
+</script>
+</body>
+</html>

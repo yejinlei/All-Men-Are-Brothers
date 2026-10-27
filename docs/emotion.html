@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>情节情感曲线 · 水浒传数字人文</title>
+<link rel="stylesheet" href="css/style.css">
+<script src="vendor/echarts.min.js"></script>
+<script src="js/registry.js"></script>
+<style>
+.wrap{max-width:1240px;margin:0 auto;padding:26px 22px 80px;}
+.page-title{font-family:var(--font-serif);font-size:30px;color:var(--vermilion-deep);letter-spacing:4px;margin-bottom:6px;}
+.page-sub{color:var(--ink-muted);font-size:14px;line-height:1.9;margin-bottom:18px;max-width:940px;}
+.panel{background:var(--paper-warm);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:18px;}
+.panel h3{font-family:var(--font-serif);font-size:18px;color:var(--vermilion-deep);margin-bottom:10px;letter-spacing:2px;}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+.tab{padding:7px 16px;border:1px solid var(--border);border-radius:18px;background:#fff;cursor:pointer;font-size:14px;}
+.tab.on{background:var(--vermilion-deep);color:#fff;border-color:var(--vermilion-deep);}
+#curve{width:100%;height:430px;}
+table.mini{width:100%;border-collapse:collapse;font-size:13.5px;}
+table.mini th,table.mini td{border-bottom:1px solid var(--border);padding:6px;text-align:left;}
+table.mini th{color:var(--ink-muted);font-weight:500;}
+.hint{font-size:12.5px;color:var(--ink-muted);line-height:1.8;margin-top:8px;}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="logo"><span class="seal">水</span><span>水浒传本体论</span></div>
+  <nav class="nav-links">
+  <a href="index.html">首页</a>
+  <a href="index.html#versions">版本学</a>
+  <a href="index.html#heroes">108将</a>
+  <a href="themes.html">主题研究</a>
+  <a href="kg.html">知识图谱</a>
+  <a href="index.html#graph">关系图谱</a>
+  <a href="index.html#places">空间地理</a>
+  <a href="index.html#events">叙事结构</a>
+  <a href="index.html#weapons">兵器职官</a>
+  <a href="index.html#critics">评点学术</a>
+  <a href="index.html#derivatives">续书衍生</a>
+  <a href="index.html#ontology">本体推演</a>
+  <a href="read.html">版本阅读</a>
+  <a href="diff.html">异文对照</a>
+  <a href="search.html">批注检索</a>
+  <span class="nav-dd">
+      <span class="nav-dd-toggle active" tabindex="0" role="button">数字研究 <b>▾</b></span>
+      <span class="nav-dd-menu">
+        <a href="stemma.html">版本谱系树</a>
+        <a href="reception.html">评点接受史</a>
+        <a href="emotion.html" class="active">情感曲线</a>
+        <a href="network.html">网络演化</a>
+        <a href="stylometry.html">文体计量</a>
+      </span>
+    </span>
+  </nav>
+</header>
+
+<div class="wrap">
+  <div class="page-title">情节情感曲线</div>
+  <div class="page-sub" id="sub">以自建情感词典对繁／简原文逐回打分（不用白话层），得到全书的「情感心电图」与「激烈度曲线」。
+  仅供参考的可计算指标，非定论。</div>
+
+  <div class="panel">
+    <div class="tabs" id="mtabs">
+      <div class="tab on" data-m="pol">情感极性</div>
+      <div class="tab" data-m="aro">激烈度</div>
+    </div>
+    <div class="tabs" id="vtabs"></div>
+    <div id="curve"></div>
+    <div class="hint" id="hint"></div>
+  </div>
+
+  <div class="panel">
+    <h3>情节高潮与曲线值</h3>
+    <table class="mini" id="events"></table>
+    <div class="hint" id="lex"></div>
+  </div>
+</div>
+
+<script>
+function esc(s){return String(s==null?'':s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+let D=null,metric='pol',chart=null;
+const SHOW=['v120','v100','v70'];
+const on={v120:true,v100:false,v70:true};
+fetch('data/emotion_curve.json').then(r=>r.json()).then(d=>{D=d;init();}).catch(e=>{document.getElementById('sub').textContent='数据加载失败：'+e;});
+
+function series(vid){
+  const v=D.versions[vid];
+  const key=(metric==='pol')?'smoothed':'smoothed_aro';
+  return {name:v.short+'（'+v.name.slice(0,10)+'）',type:'line',smooth:true,symbol:'none',
+    lineStyle:{width:1.8,color:v.color},itemStyle:{color:v.color},
+    data:v[key]};
+}
+function render(){
+  const peaks = metric==='pol' ? D.peaks.map(p=>p.num) : [];
+  chart.setOption({
+    tooltip:{trigger:'axis'},
+    legend:{top:0,textStyle:{fontSize:12}},
+    grid:{left:54,right:24,top:44,bottom:40},
+    xAxis:{type:'value',min:1,max:120,name:'回目',nameLocation:'middle',nameGap:26},
+    yAxis:{type:'value',name:metric==='pol'?'情感极性':'激烈度',scale:true},
+    series:SHOW.filter(v=>on[v]).map(vid=>{
+      const s=series(vid);
+      if(vid==='v120'&&peaks.length){s.markLine={silent:true,symbol:'none',
+        lineStyle:{color:'#b8860b',opacity:.35,type:'dashed'},data:peaks.map(n=>({xAxis:n}))};}
+      return s;
+    })
+  },true);
+  const v=D.versions.v120;
+  document.getElementById('hint').textContent = metric==='pol'
+    ? '情感极性 =（正向词−负向词）/(正向词+负向词+1)，经 3 回滑动平滑；虚线为自动检出的峰值回目。'
+    : '激烈度 = 打斗/杀戮类词语密度（每千字），反映情节的紧张程度。';
+}
+function init(){
+  chart=echarts.init(document.getElementById('curve'));
+  document.getElementById('vtabs').innerHTML=SHOW.map(vid=>{
+    const v=D.versions[vid];
+    return '<div class="tab'+(on[vid]?' on':'')+'" data-v="'+vid+'" style="'+(on[vid]?'':'')+'">'+esc(v.short)+'</div>';
+  }).join('');
+  render();
+  document.querySelectorAll('#mtabs .tab').forEach(b=>b.onclick=()=>{
+    document.querySelectorAll('#mtabs .tab').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+    metric=b.dataset.m;render();
+  });
+  document.querySelectorAll('#vtabs .tab').forEach(b=>b.onclick=()=>{
+    const vid=b.dataset.v;on[vid]=!on[vid];b.classList.toggle('on',on[vid]);render();
+  });
+  const vids=SHOW;
+  document.getElementById('events').innerHTML='<tr><th>回目</th><th>情节</th>'+vids.map(v=>'<th>'+esc(D.versions[v].short)+'</th>').join('')+'</tr>'+
+    D.events.map(ev=>'<tr><td>第'+ev.hui+'回</td><td>'+esc(ev.label)+'</td>'+
+      vids.map(v=>'<td>'+(ev.values[v]!=null?ev.values[v]:'—')+'</td>').join('')+'</tr>').join('');
+  document.getElementById('lex').textContent='词典规模：正向 '+D.lexicon_sizes.pos+' 词、负向 '+D.lexicon_sizes.neg+' 词、激烈度 '+D.lexicon_sizes.arousal+' 词。'+D.note;
+  window.addEventListener('resize',()=>chart.resize());
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>人物网络演化 · 水浒传数字人文</title>
+<link rel="stylesheet" href="css/style.css">
+<script src="vendor/echarts.min.js"></script>
+<script src="js/registry.js"></script>
+<style>
+.wrap{max-width:1240px;margin:0 auto;padding:26px 22px 80px;}
+.page-title{font-family:var(--font-serif);font-size:30px;color:var(--vermilion-deep);letter-spacing:4px;margin-bottom:6px;}
+.page-sub{color:var(--ink-muted);font-size:14px;line-height:1.9;margin-bottom:18px;max-width:960px;}
+.panel{background:var(--paper-warm);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:18px;}
+.panel h3{font-family:var(--font-serif);font-size:18px;color:var(--vermilion-deep);margin-bottom:10px;letter-spacing:2px;}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+.tab{padding:7px 16px;border:1px solid var(--border);border-radius:18px;background:#fff;cursor:pointer;font-size:14px;}
+.tab.on{background:var(--vermilion-deep);color:#fff;border-color:var(--vermilion-deep);}
+.toolrow{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:10px;font-size:14px;}
+#graph{width:100%;height:520px;}
+#cent{width:100%;height:380px;display:none;}
+input[type=range]{width:260px;}
+.chipline{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+.chip{padding:4px 12px;border-radius:14px;border:1px solid var(--border);background:#fff;cursor:pointer;font-size:13px;display:inline-flex;align-items:center;gap:6px;}
+.chip.off{opacity:.4;}
+.dot{width:10px;height:10px;border-radius:3px;display:inline-block;}
+table.mini{width:100%;border-collapse:collapse;font-size:13.5px;}
+table.mini th,table.mini td{border-bottom:1px solid var(--border);padding:6px;text-align:left;}
+table.mini th{color:var(--ink-muted);font-weight:500;}
+.hint{font-size:12.5px;color:var(--ink-muted);line-height:1.8;margin-top:8px;}
+.det{font-size:13.5px;color:var(--ink-light);line-height:1.9;margin-top:10px;min-height:52px;}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="logo"><span class="seal">水</span><span>水浒传本体论</span></div>
+  <nav class="nav-links">
+  <a href="index.html">首页</a>
+  <a href="index.html#versions">版本学</a>
+  <a href="index.html#heroes">108将</a>
+  <a href="themes.html">主题研究</a>
+  <a href="kg.html">知识图谱</a>
+  <a href="index.html#graph">关系图谱</a>
+  <a href="index.html#places">空间地理</a>
+  <a href="index.html#events">叙事结构</a>
+  <a href="index.html#weapons">兵器职官</a>
+  <a href="index.html#critics">评点学术</a>
+  <a href="index.html#derivatives">续书衍生</a>
+  <a href="index.html#ontology">本体推演</a>
+  <a href="read.html">版本阅读</a>
+  <a href="diff.html">异文对照</a>
+  <a href="search.html">批注检索</a>
+  <span class="nav-dd">
+      <span class="nav-dd-toggle active" tabindex="0" role="button">数字研究 <b>▾</b></span>
+      <span class="nav-dd-menu">
+        <a href="stemma.html">版本谱系树</a>
+        <a href="reception.html">评点接受史</a>
+        <a href="emotion.html">情感曲线</a>
+        <a href="network.html" class="active">网络演化</a>
+        <a href="stylometry.html">文体计量</a>
+      </span>
+    </span>
+  </nav>
+</header>
+
+<div class="wrap">
+  <div class="page-title">人物网络演化</div>
+  <div class="page-sub">拖动回目滑杆（或点「▶ 播放」），看梁山人物关系怎样随故事推进一层层长出来；
+  切换到「删点实验」，看这些人里谁最不可替代。</div>
+
+  <div class="panel" id="tab-evo">
+    <div class="toolrow">
+      <span>回目：<b id="huiNow">0</b></span>
+      <input type="range" id="hui" min="0" max="120" value="0" step="1">
+      <button class="tab" id="play">▶ 播放</button>
+      <button class="tab" id="reset">⟲ 重置</button>
+      <span id="stat" style="color:var(--ink-muted)"></span>
+    </div>
+    <div class="chipline" id="chips"></div>
+    <div id="graph"></div>
+    <div class="det" id="det">点击任一人物节点，查看其身份与关系。</div>
+    <div class="hint">节点出场回取自人物表 appear（估算）；边的首次成关系回目优先取 relation.chapter。</div>
+  </div>
+
+  <div class="panel" id="tab-cent" style="display:none">
+    <h3>影响力与删点实验</h3>
+    <div id="cent"></div>
+    <table class="mini" id="exp" style="margin-top:12px"></table>
+    <div class="hint" id="cnote"></div>
+  </div>
+
+  <div class="tabs" style="position:fixed;right:22px;bottom:22px;background:#fff;padding:8px;border:1px solid var(--border);border-radius:24px;box-shadow:var(--shadow);">
+    <div class="tab on" data-v="evo">网络演化</div>
+    <div class="tab" data-v="cent">删点实验</div>
+  </div>
+</div>
+
+<script>
+function esc(s){return String(s==null?'':s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+let T=null,C=null,gc=null,cc=null,pos=null,timer=null;
+const typeOff={};
+Promise.all([fetch('data/relation_timeline.json').then(r=>r.json()),fetch('data/centrality.json').then(r=>r.json())])
+  .then(([a,b])=>{T=a;C=b;init();}).catch(e=>{document.querySelector('.page-sub').textContent='数据加载失败：'+e;});
+
+function layout(nodes,links,W,H){
+  const p={}; const cx=W/2,cy=H/2;
+  nodes.forEach((n,i)=>{const a=2*Math.PI*i/nodes.length;p[n.id]={x:cx+W*0.36*Math.cos(a),y:cy+H*0.38*Math.sin(a)};});
+  const k=Math.sqrt(W*H/nodes.length);
+  for(let it=0;it<260;it++){
+    const d={}; nodes.forEach(n=>d[n.id]={x:0,y:0});
+    for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){
+      const a=nodes[i].id,b=nodes[j].id;
+      let dx=p[a].x-p[b].x,dy=p[a].y-p[b].y,dd=Math.hypot(dx,dy)||.01;
+      const f=k*k/dd,ux=dx/dd,uy=dy/dd;
+      d[a].x+=ux*f;d[a].y+=uy*f;d[b].x-=ux*f;d[b].y-=uy*f;
+    }
+    links.forEach(e=>{const a=e.source,b=e.target;if(!p[a]||!p[b])return;
+      let dx=p[a].x-p[b].x,dy=p[a].y-p[b].y,dd=Math.hypot(dx,dy)||.01,f=dd*dd/k,ux=dx/dd,uy=dy/dd;
+      d[a].x-=ux*f;d[a].y-=uy*f;d[b].x+=ux*f;d[b].y+=uy*f;});
+    const t=W*0.09*(1-it/260);
+    nodes.forEach(n=>{const q=d[n.id],dl=Math.hypot(q.x,q.y)||.01;
+      p[n.id].x=Math.min(W-18,Math.max(18,p[n.id].x+q.x/dl*t));
+      p[n.id].y=Math.min(H-18,Math.max(18,p[n.id].y+q.y/dl*t));});
+  }
+  return p;
+}
+
+function draw(hui){
+  document.getElementById('huiNow').textContent=hui;
+  const onEdges=T.edges.filter(e=>e.first_hui!=null&&e.first_hui<=hui&&!typeOff[e.type]);
+  const shown=new Set();onEdges.forEach(e=>{shown.add(e.source);shown.add(e.target);});
+  const nodes=T.nodes.map(n=>{
+    const vis=shown.has(n.name);
+    return {id:n.name,name:n.name,x:pos[n.name].x,y:pos[n.name].y,symbolSize:vis?11:4,
+      itemStyle:{color:T.types.find(t=>t.name===(T.edges.find(e=>e.source===n.name||e.target===n.name)||{}).type)?.color||'#8a7d6a',
+        opacity:vis?1:0.12},label:{show:vis,fontSize:10}};
+  });
+  gc.setOption({series:[{type:'graph',layout:'none',data:nodes,roam:true,
+    links:onEdges.map(e=>({source:e.source,target:e.target,lineStyle:{width:1.1,opacity:.35}})),
+    emphasis:{focus:'adjacency'}}]},false);
+  document.getElementById('stat').textContent='已现 '+shown.size+' 人 / 关系 '+onEdges.length+' 条';
+}
+function init(){
+  document.getElementById('cnote').textContent=C.method;
+  document.getElementById('exp').innerHTML='<tr><th>移除</th><th>连通分量</th><th>最大分量</th><th>平均路径</th><th>聚类系数</th></tr>'+
+    C.experiments.map(r=>'<tr><td>'+esc(r.name)+'</td><td>'+r.components+'</td><td>'+r.giant_size+'（'+r.giant_ratio+'）</td><td>'+r.avg_path+'</td><td>'+r.clustering+'</td></tr>').join('');
+  document.getElementById('chips').innerHTML=T.types.map(t=>
+    '<span class="chip" data-t="'+esc(t.name)+'"><span class="dot" style="background:'+t.color+'"></span>'+esc(t.name)+' '+t.count+'</span>').join('');
+
+  gc=echarts.init(document.getElementById('graph'));
+  cc=echarts.init(document.getElementById('cent'));
+  const W=document.getElementById('graph').clientWidth||1100,H=520;
+  pos=layout(T.nodes,T.edges,W,H);
+
+  cc.setOption({tooltip:{},grid:{left:70,right:24,top:20,bottom:30},
+    xAxis:{type:'value',name:'度'},yAxis:{type:'category',data:C.top_degree.map(r=>r.name).reverse(),axisLabel:{fontSize:12}},
+    series:[{type:'bar',data:C.top_degree.map(r=>r.value).reverse(),itemStyle:{color:'#c0392b'},label:{show:true,position:'right'}}]});
+
+  draw(0);
+  document.getElementById('hui').oninput=e=>draw(+e.target.value);
+  document.getElementById('reset').onclick=()=>{document.getElementById('hui').value=0;draw(0);};
+  document.getElementById('play').onclick=function(){
+    if(timer){clearInterval(timer);timer=null;this.textContent='▶ 播放';return;}
+    this.textContent='⏸ 暂停';
+    let h=+document.getElementById('hui').value;
+    timer=setInterval(()=>{h++;if(h>120){clearInterval(timer);timer=null;document.getElementById('play').textContent='▶ 播放';return;}
+      document.getElementById('hui').value=h;draw(h);},420);
+  };
+  document.querySelectorAll('#chips .chip').forEach(ch=>ch.onclick=()=>{
+    const t=ch.dataset.t;typeOff[t]=!typeOff[t];ch.classList.toggle('off',!!typeOff[t]);draw(+document.getElementById('hui').value);});
+  gc.on('click',p=>{if(p.dataType!=='node')return;const n=T.nodes.find(x=>x.name===p.name)||{};
+    document.getElementById('det').innerHTML='<b>'+esc(p.name)+'</b>'+(n.nickname?'　'+esc(n.nickname):'')+
+      '<br>天罡地煞：'+esc(n.star||'—')+'　排名：'+(n.rank||'—')+'　派系：'+esc(n.faction||'—')+
+      '<br>出场回：'+(n.first_hui||'—');});
+  document.querySelectorAll('.tabs .tab').forEach(b=>b.onclick=()=>{
+    document.querySelectorAll('.tabs .tab').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+    const v=b.dataset.v;
+    document.getElementById('tab-evo').style.display=v==='evo'?'block':'none';
+    document.getElementById('tab-cent').style.display=v==='cent'?'block':'none';
+    setTimeout(()=>{gc.resize();cc.resize();},60);
+  });
+  window.addEventListener('resize',()=>{gc.resize();cc.resize();});
+}
+</script>
+</body>
+</html>

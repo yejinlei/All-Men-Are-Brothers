@@ -235,7 +235,17 @@ footer { padding:40px 24px; text-align:center; border-top:1px solid var(--border
     <a href="read.html">版本阅读</a>
     <a href="diff.html">异文对照</a>
     <a href="search.html">批注检索</a>
-  </nav>
+      <span class="nav-dd">
+      <span class="nav-dd-toggle" tabindex="0" role="button">数字研究 <b>▾</b></span>
+      <span class="nav-dd-menu">
+        <a href="stemma.html">版本谱系树</a>
+        <a href="reception.html">评点接受史</a>
+        <a href="emotion.html">情感曲线</a>
+        <a href="network.html">网络演化</a>
+        <a href="stylometry.html">文体计量</a>
+      </span>
+    </span>
+</nav>
 </header>
 
 <!-- ============ 首页 ============ -->
@@ -287,6 +297,26 @@ footer { padding:40px 24px; text-align:center; border-top:1px solid var(--border
     <a href="search.html" style="display:block; padding:22px 24px; background:linear-gradient(135deg,#8a6d3b,#b8860b); color:#fff; border-radius:10px; text-decoration:none; box-shadow:var(--shadow);">
       <div style="font-family:var(--font-serif); font-size:20px; letter-spacing:3px; margin-bottom:6px;">🔎 批注检索</div>
       <div style="font-size:13px; opacity:.9; line-height:1.7;">九家评点全文检索·繁简通用·按评点家/批语类型筛选·命中高亮·点击跳转到阅读器对应回目</div>
+    </a>
+    <a href="stemma.html" style="display:block; padding:22px 24px; background:linear-gradient(135deg,#8b1a1a,#c0392b); color:#fff; border-radius:10px; text-decoration:none; box-shadow:var(--shadow);">
+      <div style="font-family:var(--font-serif); font-size:20px; letter-spacing:3px; margin-bottom:6px;">🌳 版本谱系树</div>
+      <div style="font-size:13px; opacity:.9; line-height:1.7;">八版本两两距离（n-gram＋编辑距离双口径）·平均连接聚类·距离矩阵·阈值网络·聚类支撑证据</div>
+    </a>
+    <a href="reception.html" style="display:block; padding:22px 24px; background:linear-gradient(135deg,#6a3f8a,#8a5a9a); color:#fff; border-radius:10px; text-decoration:none; box-shadow:var(--shadow);">
+      <div style="font-family:var(--font-serif); font-size:20px; letter-spacing:3px; margin-bottom:6px;">🔥 评点接受史</div>
+      <div style="font-size:13px; opacity:.9; line-height:1.7;">九家批注四百年跨度·回目×评点家热力图·条数/字数/归一化三口径·哪一回最受关注</div>
+    </a>
+    <a href="emotion.html" style="display:block; padding:22px 24px; background:linear-gradient(135deg,#a9622d,#d08a3a); color:#fff; border-radius:10px; text-decoration:none; box-shadow:var(--shadow);">
+      <div style="font-family:var(--font-serif); font-size:20px; letter-spacing:3px; margin-bottom:6px;">📈 情感曲线</div>
+      <div style="font-size:13px; opacity:.9; line-height:1.7;">自建情感词典逐回打分·全书心电图与激烈度曲线·峰值事件标注·多版本对照</div>
+    </a>
+    <a href="network.html" style="display:block; padding:22px 24px; background:linear-gradient(135deg,#2f6f6f,#4a9a9a); color:#fff; border-radius:10px; text-decoration:none; box-shadow:var(--shadow);">
+      <div style="font-family:var(--font-serif); font-size:20px; letter-spacing:3px; margin-bottom:6px;">🕸️ 网络演化</div>
+      <div style="font-size:13px; opacity:.9; line-height:1.7;">回目滑杆逐回生长·关系类型筛选·点选查看·度/介数中心性与删点实验（离了谁就散架）</div>
+    </a>
+    <a href="stylometry.html" style="display:block; padding:22px 24px; background:linear-gradient(135deg,#4a5a2a,#6b7a3a); color:#fff; border-radius:10px; text-decoration:none; box-shadow:var(--shadow);">
+      <div style="font-family:var(--font-serif); font-size:20px; letter-spacing:3px; margin-bottom:6px;">📐 文体计量</div>
+      <div style="font-size:13px; opacity:.9; line-height:1.7;">功能词＋字符 2-gram 特征·叙事段落相似度·滑动窗口归类——征田虎/王庆文体之辨</div>
     </a>
   </div>
 
