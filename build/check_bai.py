@@ -12,7 +12,7 @@ VDIR = os.path.join(ROOT, "docs", "texts", "versions")
 VERSIONS = ["v120", "v100", "v70", "jin70", "jin70_pi", "jinshengtan", "jiqin", "zsk"]
 
 HAN = re.compile(r"[\u4e00-\u9fff]")
-VERSE_LEAD = re.compile(r"(诗曰|词曰|有诗为证|有词为证|正是|但见|只见|有分教|赞曰|偈曰|古风|歌曰|箴曰|道是|却似|怎见得|常言道|自古道|话说|真个|端的|格言曰|赋曰|制曰|诏曰|又诗曰|又词曰|口号|山歌)")
+VERSE_LEAD = re.compile(r"(诗曰|词曰|有诗为证|有词为证|正是|但见|只见|有分教|赞曰|偈曰|颂曰|表曰|奏曰|疏曰|古风|歌曰|箴曰|道是|却似|怎见得|常言道|自古道|话说|真个|端的|格言曰|赋曰|制曰|诏曰|又诗曰|又词曰|口号|山歌)")
 SPEECH = re.compile(r"(道：|道:|说道|问道|答道|叫道|喝道|禀道|奏道|应道|骂道|笑道|回说|说：|说:)")
 HARD = ["曰", "矣", "焉", "汝", "吾", "哉", "兮"]
 
@@ -37,7 +37,7 @@ def is_verse(s):
     return max(len(p) for p in parts) <= 9
 
 
-HARD_EXCEPT = ("支吾", "吾辈", "吾等", "吾人", "汝宁", "汝南", "汝州", "汝阴", "汝阳", "金吾")  # 现代词/专名中含 hard 字者
+HARD_EXCEPT = ("支吾", "吾辈", "吾等", "吾人", "汝宁", "汝南", "汝州", "汝阴", "汝阳", "金吾", "锟吾")  # 现代词/专名中含 hard 字者
 
 
 def count_hard(t):
@@ -45,6 +45,14 @@ def count_hard(t):
     for w in HARD_EXCEPT:
         t2 = t2.replace(w, "")
     return {w: t2.count(w) for w in HARD}
+
+
+def _body(lines):
+    """取正文区（「----------」分隔线之前的正文）；带校注的底本附注区不计入正文统计。"""
+    for i, l in enumerate(lines):
+        if l.strip().startswith("--------------------"):
+            return lines[:i]
+    return lines
 
 
 def check_chapter(ver, num):
@@ -58,12 +66,13 @@ def check_chapter(ver, num):
            "verse_mismatch": 0, "hard": 0, "ratio": 0.0, "note": ""}
     if not res["struct_ok"]:
         res["note"] = "行数 %d vs %d" % (len(jl), len(bl))
-    n = min(len(jl), len(bl))
+    jb, bb = _body(jl), _body(bl)
+    n = min(len(jb), len(bb))
     for i in range(n):
-        if is_verse(jl[i]) and jl[i].strip() != bl[i].strip():
+        if is_verse(jb[i]) and jb[i].strip() != bb[i].strip():
             res["verse_mismatch"] += 1
-    jt = "\n".join(l for l in jl if not is_verse(l))
-    bt = "\n".join(l for l in bl if not is_verse(l))
+    jt = "\n".join(l for l in jb if not is_verse(l))
+    bt = "\n".join(l for l in bb if not is_verse(l))
     res["hard"] = sum(count_hard(bt).values())
     jh, bh = len(HAN.findall(jt)), len(HAN.findall(bt))
     res["ratio"] = round(bh / jh, 3) if jh else 0.0
