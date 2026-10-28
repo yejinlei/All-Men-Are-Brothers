@@ -12,7 +12,7 @@ VDIR = os.path.join(ROOT, "docs", "texts", "versions")
 VERSIONS = ["v120", "v100", "v70", "jin70", "jin70_pi", "jinshengtan", "jiqin", "zsk"]
 
 HAN = re.compile(r"[\u4e00-\u9fff]")
-VERSE_LEAD = re.compile(r"(诗曰|词曰|有诗为证|有词为证|正是|但见|只见|有分教|赞曰|偈曰|古风|歌曰)")
+VERSE_LEAD = re.compile(r"(诗曰|词曰|有诗为证|有词为证|正是|但见|只见|有分教|赞曰|偈曰|古风|歌曰|箴曰|道是|却似|怎见得|常言道|自古道|话说|真个|端的)")
 SPEECH = re.compile(r"(道：|道:|说道|问道|答道|叫道|喝道|禀道|奏道|应道|骂道|笑道|回说|说：|说:)")
 HARD = ["曰", "矣", "焉", "汝", "吾", "哉", "兮"]
 
@@ -23,12 +23,14 @@ def is_verse(s):
         return False
     if re.match(r"^第[一二三四五六七八九十百零〇两]+回", s) or s.startswith("引首") or s.startswith("楔子"):
         return False
+    if VERSE_LEAD.search(s):     # 含「诗曰/但见/正是/有分教」等引导语的行是引导行/叙述行，不算纯韵文行
+        return False
     if SPEECH.search(s):
         return False
     parts = [p for p in re.split(r"[，。；：！？、,;:!?]", s) if p.strip()]
     if len(parts) < 2:
         return False
-    if len(s) > 60:      # 长行多为叙述长句（如 cross-句短读却被逗号切碎），不计入韵文，避免误报
+    if len(s) > 90:              # 超长行多为叙述长句（被逗号切碎而误判），排除
         return False
     return max(len(p) for p in parts) <= 9
 
