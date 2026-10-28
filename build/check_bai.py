@@ -27,6 +27,8 @@ def is_verse(s):
         return False
     if SPEECH.search(s):
         return False
+    if s.endswith("：") or s.endswith(":"):
+        return False
     parts = [p for p in re.split(r"[，。；：！？、,;:!?]", s) if p.strip()]
     if len(parts) < 2:
         return False
@@ -35,7 +37,7 @@ def is_verse(s):
     return max(len(p) for p in parts) <= 9
 
 
-HARD_EXCEPT = ("支吾", "吾辈", "吾等", "吾人", "汝宁", "汝南", "汝州", "汝阴", "汝阳")  # 现代词/专名中含 hard 字者
+HARD_EXCEPT = ("支吾", "吾辈", "吾等", "吾人", "汝宁", "汝南", "汝州", "汝阴", "汝阳", "金吾")  # 现代词/专名中含 hard 字者
 
 
 def count_hard(t):
