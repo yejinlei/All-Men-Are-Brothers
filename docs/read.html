@@ -85,17 +85,17 @@ background-repeat:no-repeat;background-position:right 8px center;}
 .baihua-block{margin:20px 0 28px;padding:12px 18px;background:rgba(245,242,232,0.9);border:1px solid rgb(227,217,196);border-radius:3px;font-size:16px;line-height:2;color:#4a4538;}
 .baihua-block .baihua-label{display:inline-block;background:#9f946f;color:#fff;font-size:12px;padding:1px 10px;border-radius:10px;margin-right:10px;letter-spacing:2px;font-family:var(--font-serif);vertical-align:1px;font-weight:500;}
 
-/* ======== 批注块（仿《红楼未完》段间嵌入版：左竖线 + 渐隐底 + 米色胶囊标签） ======== */
-.cmt-block{margin:3px 0;padding:2px 0 2px 9px;border-radius:0 2px 2px 0;font-size:14.5px;line-height:28.275px;color:var(--anno-ink,#5a4c3e);font-family:var(--font-serif);background:linear-gradient(90deg,rgba(120,90,50,0.06),rgba(120,90,50,0) 70%);border-left:2px solid rgba(120,90,50,0.4);}
-.cmt-block .cmt-tag{display:inline-block;padding:0 6px;border-radius:8px;font-size:11.5px;font-weight:500;margin-right:7px;letter-spacing:0.5px;vertical-align:1px;color:#6b6155;background:rgba(240,230,209,0.9);font-family:var(--font-serif);line-height:22px;}
+/* ======== 批注块（仿《红楼未完》段间嵌入版：左竖线 + 渐隐底 + 彩色胶囊标签） ======== */
+.cmt-block{margin:3px 0;padding:2px 0 2px 10px;border-radius:0 3px 3px 0;font-size:14.5px;line-height:28.275px;color:var(--anno-ink,#5a4c3e);font-family:var(--font-serif);background:linear-gradient(90deg,rgba(120,90,50,0.08),rgba(120,90,50,0) 72%);border-left:3px solid rgba(120,90,50,0.45);}
+.cmt-block .cmt-tag{display:inline-block;padding:0 7px;border-radius:4px;font-size:11.5px;font-weight:600;margin-right:8px;letter-spacing:0.5px;vertical-align:1px;color:#fff;font-family:var(--font-serif);line-height:22px;}
 .cmt-block .cmt-text{white-space:normal;}
 .cmt-block .cmt-text p{text-indent:0;margin:0;}
 
-/* 朱批系（金圣叹——原批多为朱色，配 #9e2b25） */
-.cmt-jinpi{color:rgb(158,43,37);background:linear-gradient(90deg,rgba(158,43,37,0.055),rgba(158,43,37,0) 70%);border-left-color:rgba(158,43,37,0.4);}
-.cmt-jinpi .cmt-tag{color:#6b6155;background:rgba(240,230,209,0.9);}
+/* 朱批系（金圣叹——原批多为朱色，鲜明朱红 #a8231d） */
+.cmt-jinpi{color:#a8231d;background:linear-gradient(90deg,rgba(168,35,29,0.10),rgba(168,35,29,0.02) 55%,rgba(168,35,29,0) 78%);border-left:3px solid #a8231d;}
+.cmt-jinpi .cmt-tag{color:#fff;background:#a8231d;}
 
-/* 墨批系（其余八家统一青绿基调 #3f6b5e，不单独调色；标签均为米色） */
+/* 墨批系（其余八家统一青绿基调 #2f6f5f，标签深绿底白字） */
 .cmt-lizhuo,
 .cmt-yuanwy,
 .cmt-zhongbo,
@@ -103,7 +103,7 @@ background-repeat:no-repeat;background-position:right 8px center;}
 .cmt-chengzhu,
 .cmt-yuxiangdou,
 .cmt-yannanshang,
-.cmt-jiqin{color:rgb(63,107,94);background:linear-gradient(90deg,rgba(63,107,94,0.055),rgba(63,107,94,0) 70%);border-left-color:rgba(63,107,94,0.35);}
+.cmt-jiqin{color:#2f5c4e;background:linear-gradient(90deg,rgba(47,111,95,0.10),rgba(47,111,95,0.02) 55%,rgba(47,111,95,0) 78%);border-left:3px solid #2f6f5f;}
 .cmt-lizhuo .cmt-tag,
 .cmt-yuanwy .cmt-tag,
 .cmt-zhongbo .cmt-tag,
@@ -111,7 +111,7 @@ background-repeat:no-repeat;background-position:right 8px center;}
 .cmt-chengzhu .cmt-tag,
 .cmt-yuxiangdou .cmt-tag,
 .cmt-yannanshang .cmt-tag,
-.cmt-jiqin .cmt-tag{color:#6b6155;background:rgba(240,230,209,0.9);}
+.cmt-jiqin .cmt-tag{color:#fff;background:#2f6f5f;}
 
 /* 回前批/序/卷首：底色与墨批一致，保留视觉位置标识，不加浓色块 */
 .cmt-block.cmt-preface{}
