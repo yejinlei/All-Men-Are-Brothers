@@ -12,7 +12,7 @@ VDIR = os.path.join(ROOT, "docs", "texts", "versions")
 VERSIONS = ["v120", "v100", "v70", "jin70", "jin70_pi", "jinshengtan", "jiqin", "zsk"]
 
 HAN = re.compile(r"[\u4e00-\u9fff]")
-VERSE_LEAD = re.compile(r"(诗曰|词曰|有诗为证|有词为证|正是|但见|只见|有分教|赞曰|偈曰|古风|歌曰|箴曰|道是|却似|怎见得|常言道|自古道|话说|真个|端的)")
+VERSE_LEAD = re.compile(r"(诗曰|词曰|有诗为证|有词为证|正是|但见|只见|有分教|赞曰|偈曰|古风|歌曰|箴曰|道是|却似|怎见得|常言道|自古道|话说|真个|端的|格言曰|赋曰|制曰|诏曰|又诗曰|又词曰|口号|山歌)")
 SPEECH = re.compile(r"(道：|道:|说道|问道|答道|叫道|喝道|禀道|奏道|应道|骂道|笑道|回说|说：|说:)")
 HARD = ["曰", "矣", "焉", "汝", "吾", "哉", "兮"]
 
@@ -35,8 +35,13 @@ def is_verse(s):
     return max(len(p) for p in parts) <= 9
 
 
+HARD_EXCEPT = ("支吾", "吾辈", "吾等", "吾人", "汝宁", "汝南", "汝州", "汝阴", "汝阳")  # 现代词/专名中含 hard 字者
+
+
 def count_hard(t):
     t2 = VERSE_LEAD.sub("", t)
+    for w in HARD_EXCEPT:
+        t2 = t2.replace(w, "")
     return {w: t2.count(w) for w in HARD}
 
 
