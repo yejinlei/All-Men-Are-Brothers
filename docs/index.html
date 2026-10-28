@@ -582,7 +582,7 @@ footer { padding:40px 24px; text-align:center; border-top:1px solid var(--border
   <div class="section-head">
     <div class="kicker">READER</div>
     <h2>版 本 阅 读</h2>
-    <div class="sub">八版本 × 繁/简/白 三版切换；金批、容与堂、袁无涯、钟伯敬、王望如、余象斗、程穆衡、冀勤、燕南尚生九家批注按版本选择显示</div>
+    <div class="sub">八版本 × 繁/简/白 三版切换；金批、容与堂、袁无涯、钟伯敬、王望如、余象斗、程穆衡、冀勤、燕南尚生九家批注随版本自动显示</div>
   </div>
   <div class="reader-toolbar">
     <label>版本</label>
@@ -590,13 +590,6 @@ footer { padding:40px 24px; text-align:center; border-top:1px solid var(--border
     <div class="divider"></div>
     <label>回目</label>
     <select id="chapSelect"></select>
-    <div class="divider"></div>
-    <label>批注</label>
-    <select id="commentSelect">
-      <option value="all">全部显示</option>
-      <!-- 各批注家选项由 js/registry.js（注册表）动态生成，新增批注家无需改本文件 -->
-      <option value="none">隐藏批注</option>
-    </select>
     <div class="divider"></div>
     <button class="lang-btn active" data-lang="fan">繁</button>
     <button class="lang-btn" data-lang="jian">简</button>

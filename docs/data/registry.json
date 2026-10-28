@@ -1,7 +1,7 @@
 {
   "_note": "水浒传数字人文站点 · 版本与批注注册表（单一可信源 / single source of truth）。新增一个版本：在 versions 里加一条并补齐 texts/versions/<id>/ 语料目录即可，各页面运行时自动读取，无需改动任何 HTML/JS。新增一家批注同理。完整性校验：python3 build/register_version.py --check",
   "schema_version": 1,
-  "updated": "2026-10-27",
+  "updated": "2026-10-28",
   "site": {
     "title": "水浒传 · 多版本数字人文",
     "short": "水浒传本体论",
@@ -190,7 +190,11 @@
         "jin70_pi",
         "jinshengtan"
       ],
-      "note": "贯华堂七十回本系统"
+      "inlineVer": [
+        "jin70_pi",
+        "jinshengtan"
+      ],
+      "note": "贯华堂七十回本系统；夹批随正文「」内嵌（jin70_pi / jinshengtan 两版正文本体带批），其余版本仅回前总批"
     },
     {
       "id": "lizhuo",

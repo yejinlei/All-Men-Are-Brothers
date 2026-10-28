@@ -25,7 +25,7 @@
       {"id": "zsk", "order": 8, "short": "征四寇", "shortDiff": "寇", "label": "征四寇", "name": "征四寇（简本）", "cls": "gold", "color": "#8a6d3b", "range": [82, 120], "system": "简本·续书", "status": "ready"}
     ],
     commentaries: [
-      {"id": "jinpi", "order": 1, "tag": "金批", "who": "金圣叹", "cls": "cmt-jinpi", "chipCls": "red", "color": "#8b1a1a", "file": "jinpi_comments.json", "kind": "jin", "okVer": ["v70", "jin70", "jin70_pi", "jinshengtan"]},
+      {"id": "jinpi", "order": 1, "tag": "金批", "who": "金圣叹", "cls": "cmt-jinpi", "chipCls": "red", "color": "#8b1a1a", "file": "jinpi_comments.json", "kind": "jin", "okVer": ["v70", "jin70", "jin70_pi", "jinshengtan"], "inlineVer": ["jin70_pi", "jinshengtan"]},
       {"id": "lizhuo", "order": 2, "tag": "容本", "who": "李卓吾", "cls": "cmt-lizhuo", "chipCls": "gold", "color": "#8b4513", "file": "lizhuo_comments.json", "kind": "li", "okVer": ["v100", "jiqin"]},
       {"id": "yuanwy", "order": 3, "tag": "袁本", "who": "袁无涯", "cls": "cmt-yuanwy", "chipCls": "indigo", "color": "#2e5a88", "file": "yuanwy_comments.json", "kind": "yuan", "okVer": ["v120"]},
       {"id": "zhongbo", "order": 4, "tag": "钟批", "who": "钟伯敬", "cls": "cmt-zhongbo", "chipCls": "", "color": "#7a5195", "file": "zhongbo_comments.json", "kind": "zhong", "okVer": ["v100", "jiqin"]},

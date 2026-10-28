@@ -934,8 +934,9 @@ function bindRelSearch(){
 }
 
 /* ---------- 阅读器 ---------- */
-let RD = { ver:'v120', chap:0, lang:'fan', comment:'all', data:null, chapters:[], comments:[], notes:[] };
+let RD = { ver:'v120', chap:0, lang:'fan', data:null, chapters:[], comments:[], notes:[] };
 function initReader() {
+  buildExtra();   /* 构建批注家配置（依赖注册表）——此前遗漏调用，导致首页批注不显示 */
   const verSelect = document.getElementById('verSelect');
   const statusEl = document.getElementById('readerStatus');
   /* 版本下拉：清单与名称来自「注册表」（单一可信源：data/registry.json），
@@ -949,18 +950,7 @@ function initReader() {
   if(!pickList.length) { statusEl.textContent='版本索引加载失败，请刷新页面重试'; return; }
   // 默认选第一个可用版本
   if(!pickList.find(v=>v.id===RD.ver)) RD.ver = pickList[0].id;
-  // 批注下拉：由注册表生成（新增批注家无需改 index.html）
-  const cs=document.getElementById('commentSelect');
-  if(cs){
-    const optAll=new Option('全部显示','all'), optNone=new Option('隐藏批注','none');
-    cs.innerHTML=''; cs.appendChild(optAll);
-    (typeof Registry!=='undefined'?Registry.comments():[]).forEach(c=>{
-      cs.appendChild(new Option((c.tag?c.tag+' · ':'')+(c.who||c.id), c.id));
-    });
-    cs.appendChild(optNone);
-    RD.comment=normCmt(RD.comment);
-    cs.value=RD.comment;
-  }
+  /* 批注不再由用户选择：随版本自动挂载（autoCmts / hasCmt / verHasInlinePi） */
   verSelect.innerHTML = pickList.map(v=>{
     const cnt = (idxMap[v.id] && idxMap[v.id].count) ||
                 (Array.isArray(v.range) ? v.range[1] - v.range[0] + 1 : '?');
@@ -976,7 +966,6 @@ function initReader() {
       RD.lang=b.dataset.lang; loadChapter();
     });
   });
-  document.getElementById('commentSelect').addEventListener('change', e=>{ RD.comment=e.target.value; loadChapter(); });
   document.getElementById('prevBtn').addEventListener('click',()=>{ if(RD.chap>0){RD.chap--; loadChapter();} });
   document.getElementById('nextBtn').addEventListener('click',()=>{ if(RD.chap<RD.chapters.length-1){RD.chap++; loadChapter();} });
   loadChapter();
@@ -1032,10 +1021,9 @@ async function loadChapter() {
 
 function renderChapter(txt, chap) {
   const content = document.getElementById('readerContent');
-  const notesBox = document.getElementById('readerNotes');
   let html = `<h2 class="ch-title">${chap.title}</h2>`;
-  // 回前总批（金圣叹）
-  if(RD.comment!=='none' && (RD.comment==='all'||RD.comment==='jinpi') && chap.zongpi) {
+  // 回前总批（金圣叹）：该版本适用金批时显示
+  if(chap.zongpi && hasCmt('jinpi')) {
     html += `<div class="zongpi"><b style="color:var(--gold);">【金圣叹回前总批】</b><br/>${chap.zongpi}</div>`;
   }
   // 正文分段
@@ -1051,42 +1039,39 @@ function renderChapter(txt, chap) {
       if(verseBuf.length>0 && line.length<30) { verseBuf.push(line); return; }
       flushVerse();
     } else { flushVerse(); }
-    // 夹批处理（「」）：金批模式下抽出为段间 cmt-block；其他模式移除
+    // 夹批处理（「」）：仅内嵌夹批的版本抽出为段间 cmt-block；对话引号（如 jin70）原样保留
+    const inlinePi = verHasInlinePi();
     let p = line;
-    const showJinpi = RD.comment!=='none' && (RD.comment==='all'||RD.comment==='jinpi');
     const piBlocks = [];
-    p = p.replace(/「([^」]+)」/g, (m,c)=>{
-      if(showJinpi){
+    if(inlinePi){
+      p = p.replace(/「([^」]+)」/g, (m,c)=>{
         // 拆分多条夹批（源文里有时用 ○ 分隔多条；换行也视为分隔）
         c.split(/[○●]\s*|\n+/).filter(x=>x.trim()).forEach(t=>{
           const safe = String(t.trim()).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
           piBlocks.push(`<div class="cmt-block cmt-jinpi"><span class="cmt-tag">夹批</span>${safe}</div>`);
         });
-      }
-      return ''; // 夹批从行内移除
-    });
+        return '';
+      });
+    }
     // 注释 (N)
-    p = p.replace(/\((\d+)\)/g, (m,n)=>{
-      if(RD.comment==='none' || RD.comment==='jinpi' || RD.comment==='lizhuo' || RD.comment==='yuanwy') return '';
-      return `<sup class="pi" data-note="${n}">${n}</sup>`;
-    });
+    p = p.replace(/\((\d+)\)/g, (m,n)=>`<sup class="pi" data-note="${n}">${n}</sup>`);
     html += `<p>${p}</p>`;
     if(piBlocks.length) html += piBlocks.join('');
   });
   flushVerse();
   content.innerHTML = html;
-
-  // 注释区
-  if(RD.comment!=='none' && RD.comment!=='jinpi' && RD.comment!=='lizhuo' && RD.comment!=='yuanwy' && !EXTRA[RD.comment] && RD.notes.length) {
-    const chapNotes = RD.notes.filter(n=>n.chap===chap.id || n.chapter===chap.title);
-    if(chapNotes.length) {
-      notesBox.style.display='block';
-      notesBox.innerHTML = `<h4>注 释（${chapNotes.length}条）</h4>` + chapNotes.map(n=>`<div class="note"><b>(${n.no||n.id})</b>${n.text}</div>`).join('');
-    } else { notesBox.style.display='none'; }
-  } else { notesBox.style.display='none'; }
+  // 页下注释与其余各家批注统一由 applyExtraComments() 渲染进 #readerNotes
 }
 
-/* ---------- 批注层（钟批/王评/程注/余评/燕评 等）：由注册表构建 ---------- */
+/* ---------- 批注层：随版本自动挂载（不再由用户选择） ---------- */
+/* 当前版本适用的批注家（注册表 okVer 决定） */
+function autoCmts(){ return (typeof Registry!=='undefined') ? Registry.commentsFor(RD.ver) : []; }
+function hasCmt(id){ return autoCmts().some(c=>c.id===id); }
+/* 该版本正文本体是否内嵌「」夹批（取自注册表 jinpi.inlineVer） */
+function verHasInlinePi(){
+  const c=(typeof Registry!=='undefined')?Registry.comment('jinpi'):null;
+  return !!(c&&Array.isArray(c.inlineVer)&&c.inlineVer.indexOf(RD.ver)>=0);
+}
 let EXTRA={};
 /* 兼容历史 key（旧下拉值 / 旧 localStorage）→ 注册表 id */
 const CMT_ALIAS={ jin:'jinpi', li:'lizhuo', yuan:'yuanwy', zhong:'zhongbo', wang:'wangping', cheng:'chengzhu', yu:'yuxiangdou', yan:'yannanshang' };
@@ -1106,10 +1091,32 @@ function normCmt(k){
   return 'none';
 }
 const EXTRA_CACHE={};
+/* 中文数字（「第N回」匹配用） */
+function cnNum(n){
+  const c='零一二三四五六七八九';
+  function u(m){
+    if(m<10)return c[m];
+    if(m<20)return '十'+(m%10?c[m%10]:'');
+    if(m<100){const t=Math.floor(m/10),r=m%10;return c[t]+'十'+(r?c[r]:'');}
+    const h=Math.floor(m/100),r=m%100;return c[h]+'百'+(r===0?'':(r<10?'零'+c[r]:u(r)));
+  }
+  return u(n);
+}
 function extraItems(kind,data,chap){
   const num = (chap && chap.num!=null) ? chap.num : RD.chap;
   const out=[];
-  if(kind==='zhong'){
+  if(kind==='li'||kind==='yuan'){
+    /* 容与堂 / 袁无涯：回评 + 卷首序文与〈读法〉 */
+    const tgt = num<=0 ? null : ('第'+cnNum(num)+'回');
+    let firstMatch=null;
+    if(num<=0 && /引首|楔子|张天师/.test((chap&&chap.title)||'')) firstMatch=(data.chapters||[]).find(c=>c.chapter==='引首+第一回');
+    if(!firstMatch) firstMatch=(data.chapters||[]).find(c=>c.chapter&&c.chapter===tgt)||(data.chapters||[]).find(c=>c.chapter==='全书');
+    if(num<=1){
+      (data.chapters||[]).forEach(c=>{(c.preface_comments||[]).forEach(p=>out.push({k:'序·'+(p.author||''),v:p.text}));});
+      (data.art_theory||[]).forEach(a=>out.push({k:'读法·'+(a.keyword||''),v:(a.point||'')+(a.source?'（'+a.source+'）':'')}));
+    }
+    if(firstMatch)(firstMatch.chapter_comments||[]).forEach(cc=>out.push({k:(cc.type||'回评')+(cc.anchor?'·'+cc.anchor:''),v:cc.text}));
+  }else if(kind==='zhong'){
     if(num<=1)(data.pin_ren||[]).forEach(p=>out.push({k:'人品评·'+p.name,v:p.text}));
     const zch=(data.chapters||[]).find(c=>c.num===num);
     if(zch)(zch.items||[]).forEach(it=>out.push({k:it.k||'批语',v:it.v}));
@@ -1117,12 +1124,26 @@ function extraItems(kind,data,chap){
     const tgt='第'+num+'回';
     (data.chapters||[]).filter(c=>c.chapter===tgt).forEach(c=>out.push({k:(c.vol||'')+' '+(c.type||'总评'),v:c.text}));
   }else if(kind==='cheng'){
-    const no=num<1?1:num;const vols=data.volumes||[];
-    const vol=vols.find(v=>v.no===no)||vols.find(v=>v.no===no+1)||vols.find(v=>v.no===no-1);
-    if(vol)(vol.items||[]).forEach(it=>out.push({k:it.k,v:it.v}));
+    /* 程穆衡《水浒传注略》：按回扁平 dict{ 注号:"词条——释义" } */
+    const ch=data[String(num)];
+    if(ch){
+      Object.keys(ch).filter(k=>/^\d+$/.test(k)&&ch[k]).sort((a,b)=>+a-+b).forEach(k=>{
+        let v=String(ch[k]), head='注'+k, body=v;
+        const sep=v.search(/[—–-]{2}/);
+        if(sep<0){
+          const m=v.match(/^([\u4e00-\u9fa5A-Za-z0-9·《》"']{1,18})(?:\s+|\.)(补\s*)?([\s\S]*)$/);
+          if(m){ head=m[1]+(m[2]?'〔补〕':''); body=(m[3]||'').trim(); }
+        }else{ head=v.slice(0,sep).trim(); body=v.slice(sep).replace(/^[—\-]+/,'').trim(); }
+        out.push({k:head,v:body});
+      });
+    }
   }else if(kind==='yan'){
     if(num<=1){
-      if(data.xu)out.push({k:'叙·'+data.xu.title,v:data.xu.text});
+      if(data.xu)out.push({k:'叙·'+data.xu.title, v:data.xu.text});
+      if(data.huowen){
+        out.push({k:'新或问·'+data.huowen.title, v:(data.huowen.note||'')});
+        (data.huowen.excerpts||[]).forEach(e=>out.push({k:'存世引文'+(e.cite?'·'+e.cite:''), v:e.text}));
+      }
       (data.shiming||[]).forEach(x=>out.push({k:'命名释义·'+x.name,v:x.text}));
     }
   }else if(kind==='yu'){
@@ -1142,21 +1163,29 @@ function extraItems(kind,data,chap){
 }
 async function applyExtraComments(chap){
   const box=document.getElementById('readerNotes');
-  const cfg=EXTRA[RD.comment];
-  if(!cfg){ box.style.display='none'; return; }
-  if(!cfg.ok.includes(RD.ver)){
-    box.style.display='block';
-    box.innerHTML='<h4>'+cfg.tag+'·'+cfg.who+'</h4><div class="note">此批注（'+cfg.tag+'）仅适用于对应版本，请切换到：'+cfg.ok.join(' / ')+'</div>';
-    return;
+  const parts=[];
+  /* 页下注释（冀勤校注本页下注，随版本） */
+  if(RD.notes && RD.notes.length){
+    const cn=String(chap.num);
+    const chapNotes=RD.notes.filter(n=>String(n.chap)===cn || n.chapter===chap.title);
+    if(chapNotes.length) parts.push('<h4>冀注·冀勤校注（'+chapNotes.length+'条）</h4>'+
+      chapNotes.map(n=>'<div class="note"><b>('+(n.no||n.id)+')</b>'+n.text+'</div>').join(''));
   }
-  if(!(cfg.file in EXTRA_CACHE)) EXTRA_CACHE[cfg.file]= await loadJSON('texts/versions/'+cfg.file);
-  const data=EXTRA_CACHE[cfg.file];
-  if(!data){ box.style.display='none'; return; }
-  const items=extraItems(cfg.kind,data,chap);
+  /* 其余各家批注（金批夹批已随正文段间嵌入；冀注已作页下注列出） */
+  for(const c of autoCmts()){
+    if(c.id==='jinpi') continue;
+    if(c.id==='jiqin') continue;
+    const cfg=EXTRA[c.id]; if(!cfg) continue;
+    if(!(cfg.file in EXTRA_CACHE)) EXTRA_CACHE[cfg.file]= await loadJSON('texts/versions/'+cfg.file);
+    const data=EXTRA_CACHE[cfg.file]; if(!data) continue;
+    const items=extraItems(cfg.kind,data,chap);
+    if(!items.length) continue;
+    parts.push('<h4 style="color:'+cfg.color+';">'+cfg.tag+'·'+cfg.who+'（'+items.length+'条）</h4>'+
+      items.map(it=>'<div class="note"><b style="color:'+cfg.color+';">〔'+it.k+'〕</b>'+it.v+'</div>').join(''));
+  }
+  if(!parts.length){ box.style.display='none'; box.innerHTML=''; return; }
   box.style.display='block';
-  if(!items.length){ box.innerHTML='<h4>'+cfg.tag+'·'+cfg.who+'</h4><div class="note">本回暂无'+cfg.who+'批注。</div>'; return; }
-  box.innerHTML='<h4 style="color:'+cfg.color+';">'+cfg.tag+'·'+cfg.who+'（'+items.length+'条）</h4>'+
-    items.map(it=>'<div class="note"><b style="color:'+cfg.color+';">〔'+it.k+'〕</b>'+it.v+'</div>').join('');
+  box.innerHTML=parts.join('');
 }
 
 /* ---------- 启动 ---------- */

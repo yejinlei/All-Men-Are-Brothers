@@ -214,14 +214,7 @@ body.cmt-only .cmt-block{margin:6px 0;padding:4px 0 4px 9px;}
       </span>
 
       <span class="tool-group">
-        <span class="tool-label">批注：</span>
-        <span class="btn-group" id="cmtGroup">
-          <button class="ui-btn cmt-btn cm-none" data-cmt="none">关闭</button>
-          <!-- 其余批注家按钮由 js/registry.js（注册表）动态生成，新增批注家无需改本文件 -->
-        </span>
-      </span>
-
-      <span class="tool-group">
+        <label class="chk"><input type="checkbox" id="chkHideCmt">隐藏批注</label>
         <label class="chk"><input type="checkbox" id="chkCmtOnly">只看批语</label>
         <label class="chk"><input type="checkbox" id="chkBai">附白话文</label>
       </span>
@@ -247,11 +240,11 @@ const state = {
   vid: sp.get('vid') || 'v70',
   ch:  parseInt(sp.get('ch') || '0', 10),
   lang: sp.get('lang') || localStorage.getItem('sh_lang') || 'fan',
-  cmt:  sp.get('cmt')  || localStorage.getItem('sh_cmt')  || 'jinpi',
+  hideCmt: sp.get('nocmt')==='1' || localStorage.getItem('sh_nocmt')==='1',  /* 批注随版本自动挂载，只留一个总开关 */
   onlyCmt: sp.get('only')==='1' || localStorage.getItem('sh_only')==='1',
   withBai: sp.get('bai')==='1'  || localStorage.getItem('sh_bai')==='1',
   versions: [], chapters: {},
-  comments: { jinpi:null, jiqin:null, lizhuo:null, yuanwy:null, zhongbo:null, wangping:null, chengzhu:null, yuxiangdou:null, yannanshang:null },
+  comments: {},
   baiCache: {}
 };
 /* 加载序号：切换版本/回目时递增，用于丢弃「过期」的异步响应，避免旧请求覆盖新页面 */
@@ -290,27 +283,12 @@ async function loadText(p){const r=await fetch(p);if(!r.ok)return null;return r.
 async function boot(){
   await Registry.load();                       /* 加载版本/批注注册表（单一可信源） */
   buildMeta();
-  /* 批注家回退：localStorage 里若残留已移除的批注家，归位到可用值 */
-  if(!CMT[state.cmt]) state.cmt='jinpi';
-  if(!CMT[state.cmt]) state.cmt='none';
   /* 版本回退：默认版本若不在注册表内，取第一个 */
   if(!Registry.version(state.vid)){const f=Registry.versions()[0];if(f)state.vid=f.id;}
 
   const idx = await loadJSON('texts/versions/versions_index.json');
   state.versions = idx.versions;
   const hasData = new Set((idx.versions||[]).map(v=>v.id));
-
-  /* 批注按钮：由注册表生成 */
-  const cg = document.getElementById('cmtGroup');
-  Registry.comments().forEach(c=>{
-    const b=document.createElement('button');
-    b.className='ui-btn cmt-btn cm-'+c.id;
-    b.dataset.cmt=c.id;
-    b.textContent=c.tag||c.id;
-    b.title=(c.who||'')+(c.note?(' · '+c.note):'');
-    b.style.setProperty('--cmtc', c.color||'#8a7a62');
-    cg.appendChild(b);
-  });
 
   /* 版本按钮：由注册表生成（顺序/简称/配色均取自注册表） */
   const vg = document.getElementById('verGroup');
@@ -335,26 +313,11 @@ async function boot(){
     };
   });
 
-  // 批注按钮
-  document.querySelectorAll('.cmt-btn').forEach(b=>{
-    if(b.dataset.cmt===state.cmt)b.classList.add('active');
-    b.onclick=()=>{
-      const prev=state.cmt;
-      state.cmt=b.dataset.cmt;localStorage.setItem('sh_cmt',state.cmt);
-      document.querySelectorAll('.cmt-btn').forEach(x=>x.classList.remove('active'));
-      b.classList.add('active');
-      // 金批/全部模式下夹批是嵌入在正文里的（来自 fan/jian 正文文件的「」标记），
-      // 切换时需重新渲染正文，否则夹批块不会出现在段间。
-      const needRerender = (prev==='jinpi'||state.cmt==='jinpi'||prev==='all'||state.cmt==='all'||prev==='none'||state.cmt==='none');
-      if(needRerender){ loadChap().catch(e=>console.error(e)); }
-      else { applyCmt().catch(e=>console.error(e)); }
-    };
-  });
-
-  // 勾选
-  const cc=document.getElementById('chkCmtOnly'), cb=document.getElementById('chkBai');
-  cc.checked=state.onlyCmt; cb.checked=state.withBai;
+  // 勾选：隐藏批注 / 只看批语 / 附白话文
+  const ch=document.getElementById('chkHideCmt'), cc=document.getElementById('chkCmtOnly'), cb=document.getElementById('chkBai');
+  ch.checked=state.hideCmt; cc.checked=state.onlyCmt; cb.checked=state.withBai;
   document.body.classList.toggle('cmt-only',state.onlyCmt);
+  ch.onchange=()=>{state.hideCmt=ch.checked;localStorage.setItem('sh_nocmt',state.hideCmt?'1':'0');loadChap().catch(e=>console.error(e));};
   cc.onchange=()=>{state.onlyCmt=cc.checked;localStorage.setItem('sh_only',state.onlyCmt?'1':'0');document.body.classList.toggle('cmt-only',state.onlyCmt);};
   cb.onchange=()=>{state.withBai=cb.checked;localStorage.setItem('sh_bai',state.withBai?'1':'0');loadChap().catch(e=>console.error(e));};
 
@@ -397,23 +360,33 @@ async function loadVer(first){
 }
 function syncURL(){const u=new URL(location.href);u.searchParams.set('vid',state.vid);u.searchParams.set('ch',state.ch);history.replaceState({},'',u.toString());}
 
+/* 该版本正文本体是否内嵌「」夹批（取自注册表 jinpi.inlineVer）。
+   非内嵌版本（如 jin70）的「」是对话引号，必须原样保留，不可当夹批抽走。 */
+function verHasInlinePi(){
+  const j=CMT['jinpi'];
+  return !!(j&&Array.isArray(j.inlineVer)&&j.inlineVer.indexOf(state.vid)>=0);
+}
 function renderTxt(txt){
-  const showJinpi = state.cmt==='jinpi'||state.cmt==='all';
+  const inlinePi = verHasInlinePi();
+  const showJinpi = inlinePi && !state.hideCmt;
   // 第一步：全文级别提取所有「」夹批（支持跨行跨段，使用非贪婪匹配）
   // 用占位符替换，避免分段把夹批切断
   const piStore = [];
   const piRe = /「([^」]+?)」/g;
   let cleaned = txt;
-  if(showJinpi){
-    cleaned = cleaned.replace(piRe, (m,c)=>{
-      const idx = piStore.length;
-      piStore.push(c);
-      return `\u0000PI${idx}\u0000`;
-    });
-  } else {
-    // 非金批模式直接删除所有「」夹批（支持跨行跨段）
-    cleaned = cleaned.replace(/「[\s\S]+?」/g,'');
+  if(inlinePi){
+    if(showJinpi){
+      cleaned = cleaned.replace(piRe, (m,c)=>{
+        const idx = piStore.length;
+        piStore.push(c);
+        return `\u0000PI${idx}\u0000`;
+      });
+    } else {
+      // 隐藏批注模式：删除内嵌夹批标记（支持跨行跨段）
+      cleaned = cleaned.replace(/「[\s\S]+?」/g,'');
+    }
   }
+  // 非内嵌版本：正文「」为对话引号，原样保留
   // 第二步：段落拆分（按双换行）
   const bs=cleaned.split(/\n\s*\n/);
   let h='';
@@ -516,26 +489,34 @@ function go(n){
 }
 
 /* ========== 批注 ========== */
+/* 当前版本适用的批注家（由注册表 okVer 决定）——不再由用户选择 */
+function cmtIdsForVer(){
+  if(state.hideCmt) return [];
+  return Registry.commentsFor(state.vid).map(c=>c.id);
+}
 async function applyCmt(my){
-  // 清理旧批注块，但保留正文内嵌的金批夹批（renderTxt 已根据 state.cmt 直接渲染为 cmt-jinpi）
+  // 清理旧批注块，但保留正文内嵌的金批夹批（renderTxt 依 inlineVer 渲染为 cmt-jinpi）
   document.querySelectorAll('.cmt-block:not(.cmt-jinpi),.notice').forEach(e=>e.remove());
-  if(state.cmt==='none')return;
-  const m=CMT[state.cmt];if(!m)return;
-
-  if(!state.comments[state.cmt]){
-    try{state.comments[state.cmt]=await loadJSON('texts/versions/'+m.file);}catch(e){state.comments[state.cmt]=null;}
+  for(const id of cmtIdsForVer()){
+    await applyOneCmt(id, my);
+    if(my!==undefined && my!==reqSeq) return;   /* 正文已换，放弃过期批注 */
   }
-  if(my!==undefined&&my!==reqSeq)return;      /* 正文已换，放弃过期批注 */
-  const data=state.comments[state.cmt];
+}
+async function applyOneCmt(cmtId, my){
+  const m=CMT[cmtId]; if(!m) return;
+  if(!m.okVer.includes(state.vid)) return;      /* 版本不适用（理论上已被 commentsFor 过滤） */
+  if(!state.comments[cmtId]){
+    try{state.comments[cmtId]=await loadJSON('texts/versions/'+m.file);}catch(e){state.comments[cmtId]=null;}
+  }
+  if(my!==undefined&&my!==reqSeq)return;
+  const data=state.comments[cmtId];
   if(!data){notice('加载'+m.who+'批失败。');return;}
-  if(!m.okVer.includes(state.vid)){notice('此批注（<b>'+m.tag+'</b>）仅适用于 '+m.okVer.map(v=>VER_NAME[v]||v).join(' / ')+'，请切换到相应版本查看。');return;}
 
   const wrap=document.getElementById('contentWrap');
-  const firstP=wrap.querySelector('p');
   const blocks=[];
 
-  if(state.cmt==='jinpi'){
-    // 金批夹批已由 renderTxt 直接从正文「」标记渲染为段间 cmt-jinpi 块，
+  if(cmtId==='jinpi'){
+    // 金批夹批已由 renderTxt 从正文「」渲染为段间 cmt-jinpi 块，
     // 这里只把 comments.json 的回前总批（preface）插到正文最前。
     const sub=m.extract(data);
     let ch=sub[String(state.ch)];
@@ -549,16 +530,20 @@ async function applyCmt(my){
     }
     return;
   }
-  if(state.cmt==='lizhuo'||state.cmt==='yuanwy') collectChapters(data,m,blocks);
-  else if(state.cmt==='wangping') collectWangping(data,m,blocks);
-  else if(state.cmt==='zhongbo') collectZhongbo(data,m,blocks);
-  else if(state.cmt==='chengzhu') collectChengzhu(data,m,blocks);
-  else if(state.cmt==='yuxiangdou') collectYuxiangdou(data,m,blocks);
-  else if(state.cmt==='yannanshang') collectYannanshang(data,m,blocks);
+  if(cmtId==='lizhuo'||cmtId==='yuanwy') collectChapters(data,m,blocks);
+  else if(cmtId==='wangping') collectWangping(data,m,blocks);
+  else if(cmtId==='zhongbo') collectZhongbo(data,m,blocks);
+  else if(cmtId==='chengzhu') collectChengzhu(data,m,blocks);
+  else if(cmtId==='yuxiangdou') collectYuxiangdou(data,m,blocks);
+  else if(cmtId==='yannanshang') collectYannanshang(data,m,blocks);
   else collectDict(data,m,blocks);
 
-  if(blocks.length===0){notice('本回暂无'+m.who+'批注。');return;}
+  if(blocks.length===0)return;   /* 多家叠加时静默，不逐家提示 */
 
+  insertBlocks(wrap,m,blocks);
+}
+/* 把某一家批注的 blocks 插入正文（回前 / 段间 / 卷末） */
+function insertBlocks(wrap,m,blocks){
   /* 把 blocks 拆成三类：top（回前）/ mid（夹批 / 回中）/ tail（卷末说明） */
   const top=[], mid=[], tail=[];
   blocks.forEach(b=>{
@@ -585,7 +570,6 @@ async function applyCmt(my){
     const ps=[...wrap.children].filter(el=>el.matches('p,.poem')&&el.offsetParent!==null&&!el.closest('.cmt-block,.baihua-block'));
     /* 条目远多于段落数（名物注/大量条目）时，收束到正文末尾，不摊满段间 */
     if(mid.length>ps.length*1.5){
-      /* 把所有 mid 合成一个块，追加到正文最后（仍走 splitBlockToItems 的结果，逐条独立块，紧凑排列） */
       const last=[...wrap.children].filter(el=>!el.matches('.cmt-block,.notice')).pop();
       let anchor=last;
       mid.forEach(it=>{
@@ -729,7 +713,7 @@ function collectDict(data,m,blocks){
       if(typeof v==='string')items.push('<div class="cmt-sub"><b style="color:'+m.color+';">〔'+(i+1)+'〕</b>'+esc(v)+'</div>');
       else if(v&&typeof v==='object')Object.entries(v).forEach(([kk,vv])=>{items.push('<div class="cmt-sub"><b style="color:'+m.color+';">〔'+(i+1)+'·'+esc(kk)+'〕</b>'+esc(String(vv))+'</div>');});
     });
-    const label = state.cmt==='jiqin'?m.tag+'·名物注释':m.tag+'·夹批';
+    const label = m.id==='jiqin'?m.tag+'·名物注释':m.tag+'·夹批';
     blocks.push({where:'bottom',tag:label,html:items.join('')});
   }
 }
