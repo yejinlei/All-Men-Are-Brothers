@@ -12,56 +12,62 @@
 
 /* ======== 顶部：全站导航 + 阅读器工具栏（整体吸顶，仿红楼梦参考图） ======== */
 .read-header-all{position:sticky;top:0;z-index:100;background:rgba(253,248,238,0.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border,#e6dcc4);}
-.read-header-all .topbar{position:static;background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom:1px solid var(--border,#e6dcc4);}
+.read-header-all .topbar{
+  position:static;background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;
+  max-width:860px;margin:0 auto;padding:0 16px;
+  display:flex;align-items:center;gap:14px;height:44px;
+  border-bottom:none;overflow:hidden;
+}
+.read-header-all .topbar .logo{font-size:16px;flex-shrink:0;display:flex;align-items:center;gap:6px;}
+.read-header-all .topbar .logo .seal{width:26px;height:26px;font-size:13px;}
+.read-header-all .topbar .logo span:last-child{display:none;} /* 单行模式下「水浒传本体论」隐藏，靠印章识别 */
+.read-header-all .topbar .nav-links{
+  display:flex;gap:2px;flex:1;flex-wrap:nowrap;overflow-x:auto;
+  scrollbar-width:none;-ms-overflow-style:none;padding:0;
+}
+.read-header-all .topbar .nav-links::-webkit-scrollbar{display:none;}
+.read-header-all .topbar .nav-links a{
+  padding:4px 8px;font-size:13px;letter-spacing:0.5px;white-space:nowrap;
+}
+.read-header-all .topbar .nav-links .nav-dd{display:none;} /* 单行模式下隐藏数字研究下拉，避免撑高 */
 .read-header-all .topbar .nav-links a.active{background:var(--vermilion-deep);color:var(--paper);}
-.read-top{position:static;background:transparent;border-bottom:none;}
-.read-top-inner{max-width:860px;margin:0 auto;padding:12px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:12px 22px;font-size:15px;color:var(--ink,#3a2a1a);}
-@media(max-width:760px){.read-header-all .topbar{padding:6px 12px;}}
-.read-header-all .topbar .logo{font-size:18px;}
-.read-header-all .topbar .logo .seal{width:30px;height:30px;font-size:15px;}
 
-.tool-group{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-.tool-label{color:var(--ink-muted,#8a7a62);letter-spacing:2px;font-size:15px;}
+.read-top{position:static;background:transparent;border-bottom:1px solid var(--border,#e6dcc4);}
+.read-top-inner{
+  max-width:860px;margin:0 auto;padding:8px 16px;
+  display:flex;flex-wrap:nowrap;align-items:center;gap:10px;
+  font-size:13px;color:var(--ink,#3a2a1a);overflow-x:auto;
+  scrollbar-width:none;-ms-overflow-style:none;
+}
+.read-top-inner::-webkit-scrollbar{display:none;}
+
+.tool-group{display:flex;align-items:center;gap:4px;flex-shrink:0;}
+.tool-label{color:var(--ink-muted,#8a7a62);letter-spacing:1px;font-size:12px;margin-right:2px;}
 
 /* 回目下拉 */
-.chap-select{appearance:none;background:#fdf3df;border:1px solid var(--border,#e6dcc4);border-radius:6px;padding:7px 34px 7px 14px;font-family:var(--font-serif);font-size:15px;color:var(--ink,#3a2a1a);cursor:pointer;min-width:260px;max-width:460px;
-background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%238a7a62' stroke-width='1.5' fill='none' stroke-linecap='round'/></svg>");
-background-repeat:no-repeat;background-position:right 12px center;}
+.chap-select{appearance:none;background:#fdf3df;border:1px solid var(--border,#e6dcc4);border-radius:4px;padding:4px 26px 4px 10px;font-family:var(--font-serif);font-size:13px;color:var(--ink,#3a2a1a);cursor:pointer;min-width:120px;max-width:320px;
+background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 10 7'><path d='M1 1l4 4 4-4' stroke='%238a7a62' stroke-width='1.5' fill='none' stroke-linecap='round'/></svg>");
+background-repeat:no-repeat;background-position:right 8px center;}
 .chap-select:focus{outline:none;border-color:var(--vermilion,#9c2a2a);}
 
 /* 通用按钮组 */
-.btn-group{display:inline-flex;gap:4px;flex-wrap:wrap;}
-.ui-btn{padding:6px 14px;background:transparent;border:1px solid var(--border,#e6dcc4);border-radius:6px;font-family:var(--font-serif);font-size:15px;color:var(--ink,#3a2a1a);cursor:pointer;transition:all .2s;letter-spacing:1px;}
+.btn-group{display:inline-flex;gap:2px;flex-wrap:nowrap;}
+.ui-btn{padding:4px 9px;background:transparent;border:1px solid var(--border,#e6dcc4);border-radius:4px;font-family:var(--font-serif);font-size:13px;color:var(--ink,#3a2a1a);cursor:pointer;transition:all .2s;letter-spacing:0.5px;line-height:1.4;}
 .ui-btn:hover{background:#fdf3df;border-color:#d9cba5;}
 
 /* 版本按钮 */
-.ver-btn.active{background:var(--vermilion,#9c2a2a);color:#fdf3df;border-color:var(--vermilion,#9c2a2a);box-shadow:0 2px 6px rgba(156,42,42,0.15);}
+.ver-btn.active{background:var(--vermilion,#9c2a2a);color:#fdf3df;border-color:var(--vermilion,#9c2a2a);box-shadow:0 1px 4px rgba(156,42,42,0.15);}
 
 /* 语体按钮 */
 .lang-btn.active{background:#5a4632;color:#fdf3df;border-color:#5a4632;}
 
-/* 批注按钮 */
-.cmt-btn.active{background:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.06);font-weight:700;}
-.cmt-btn.active.cm-none{background:#eee;color:#888;border-color:#ccc;}
-.cmt-btn.active.cm-jinpi{color:#b8860b;background:#fff8e6;border-color:#d4a83b;}
-.cmt-btn.active.cm-lizhuo{color:#8b4513;background:#faf1e7;border-color:#a96639;}
-.cmt-btn.active.cm-yuanwy{color:#2e5a88;background:#eef3f8;border-color:#4a7aa8;}
-.cmt-btn.active.cm-zhongbo{color:#7a5195;background:#f6f0fa;border-color:#a887c0;}
-.cmt-btn.active.cm-wangping{color:#5a7d3a;background:#f2f6e9;border-color:#86a866;}
-.cmt-btn.active.cm-chengzhu{color:#2f6f6f;background:#edf5f5;border-color:#5f9c9c;}
-.cmt-btn.active.cm-jiqin{color:#4a7a49;background:#eef5ec;border-color:#6b9a6a;}
-.cmt-btn.active.cm-yuxiangdou{color:#a9622d;background:#faf1e4;border-color:#c98b58;}
-.cmt-btn.active.cm-yannanshang{color:#8a6d3b;background:#f7f2e8;border-color:#b09a6e;}
-/* 通用配色：任何新增批注家只要在注册表里给了 color，激活态自动取色（无需改本文件） */
-.cmt-btn.active{color:var(--cmtc,#8a7a62);background:color-mix(in srgb,var(--cmtc,#8a7a62) 10%,#fff);border-color:color-mix(in srgb,var(--cmtc,#8a7a62) 45%,#fff);}
-.cmt-btn.disabled{opacity:.4;cursor:not-allowed;}
-
-/* 勾选开关（仿红楼梦参考图） */
-.chk{display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-size:15px;color:var(--ink-muted,#8a7a62);user-select:none;}
-.chk input[type=checkbox]{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:2px solid var(--border,#c9bfa3);border-radius:3px;background:#fdf8ee;cursor:pointer;position:relative;transition:all .15s;vertical-align:middle;margin:0;}
+/* 勾选开关（小一号图标式） */
+.chk{display:inline-flex;align-items:center;gap:3px;cursor:pointer;font-size:12px;color:var(--ink-muted,#8a7a62);user-select:none;padding:3px 6px;border:1px solid transparent;border-radius:4px;}
+.chk:hover{color:var(--ink,#3a2a1a);background:#fdf3df;border-color:var(--border,#e6dcc4);}
+.chk input[type=checkbox]{appearance:none;-webkit-appearance:none;width:14px;height:14px;border:1.5px solid var(--border,#c9bfa3);border-radius:2px;background:#fdf8ee;cursor:pointer;position:relative;transition:all .15s;vertical-align:middle;margin:0;}
 .chk input[type=checkbox]:checked{background:var(--vermilion,#9c2a2a);border-color:var(--vermilion,#9c2a2a);}
-.chk input[type=checkbox]:checked::after{content:"";position:absolute;left:4px;top:1px;width:5px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg);}
-.chk:hover{color:var(--ink,#3a2a1a);}
+.chk input[type=checkbox]:checked::after{content:"";position:absolute;left:3px;top:0;width:4px;height:7px;border:solid #fff;border-width:0 1.5px 1.5px 0;transform:rotate(45deg);}
+.chk.on{color:var(--vermilion,#9c2a2a);background:#fdf0ee;border-color:#e8c0bd;}
 
 /* ======== 正文区 ======== */
 .chap-title{font-size:28px;font-weight:700;text-align:center;color:var(--vermilion-deep,#261810);margin:10px 0 6px;letter-spacing:6px;font-family:var(--font-serif);}
@@ -144,9 +150,10 @@ body.cmt-only .cmt-block{margin:6px 0;padding:4px 0 4px 9px;}
 
 @media(max-width:760px){
   .read-wrap{padding:14px 16px 60px;}
-  .chap-select{min-width:0;max-width:100%;width:100%;}
+  .chap-select{min-width:100px;max-width:200px;}
   .chap-title{font-size:24px;letter-spacing:3px;}
   .content-wrap{font-size:16px;}
+  .read-header-all .topbar .nav-links a{padding:3px 6px;font-size:12px;}
 }
 </style>
   <link rel="icon" href="favicon.ico">
@@ -214,9 +221,9 @@ body.cmt-only .cmt-block{margin:6px 0;padding:4px 0 4px 9px;}
       </span>
 
       <span class="tool-group">
-        <label class="chk"><input type="checkbox" id="chkHideCmt">隐藏批注</label>
-        <label class="chk"><input type="checkbox" id="chkCmtOnly">只看批语</label>
-        <label class="chk"><input type="checkbox" id="chkBai">附白话文</label>
+        <label class="chk" title="隐藏批注（仅看正文）"><input type="checkbox" id="chkHideCmt">无批</label>
+        <label class="chk" title="只看批语（隐藏正文）"><input type="checkbox" id="chkCmtOnly">批语</label>
+        <label class="chk" title="正文后附白话文翻译"><input type="checkbox" id="chkBai" checked>附白</label>
       </span>
     </div>
   </div>
@@ -316,10 +323,13 @@ async function boot(){
   // 勾选：隐藏批注 / 只看批语 / 附白话文
   const ch=document.getElementById('chkHideCmt'), cc=document.getElementById('chkCmtOnly'), cb=document.getElementById('chkBai');
   ch.checked=state.hideCmt; cc.checked=state.onlyCmt; cb.checked=state.withBai;
+  ch.parentElement.classList.toggle('on',state.hideCmt);
+  cc.parentElement.classList.toggle('on',state.onlyCmt);
+  cb.parentElement.classList.toggle('on',state.withBai);
   document.body.classList.toggle('cmt-only',state.onlyCmt);
-  ch.onchange=()=>{state.hideCmt=ch.checked;localStorage.setItem('sh_nocmt',state.hideCmt?'1':'0');loadChap().catch(e=>console.error(e));};
-  cc.onchange=()=>{state.onlyCmt=cc.checked;localStorage.setItem('sh_only',state.onlyCmt?'1':'0');document.body.classList.toggle('cmt-only',state.onlyCmt);};
-  cb.onchange=()=>{state.withBai=cb.checked;localStorage.setItem('sh_bai',state.withBai?'1':'0');loadChap().catch(e=>console.error(e));};
+  ch.onchange=()=>{state.hideCmt=ch.checked;ch.parentElement.classList.toggle('on',state.hideCmt);localStorage.setItem('sh_nocmt',state.hideCmt?'1':'0');loadChap().catch(e=>console.error(e));};
+  cc.onchange=()=>{state.onlyCmt=cc.checked;cc.parentElement.classList.toggle('on',state.onlyCmt);localStorage.setItem('sh_only',state.onlyCmt?'1':'0');document.body.classList.toggle('cmt-only',state.onlyCmt);};
+  cb.onchange=()=>{state.withBai=cb.checked;cb.parentElement.classList.toggle('on',state.withBai);localStorage.setItem('sh_bai',state.withBai?'1':'0');loadChap().catch(e=>console.error(e));};
 
   await loadVer(true);
 }
