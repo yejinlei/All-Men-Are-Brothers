@@ -15,7 +15,7 @@
 .read-header-all .topbar{
   position:static;background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;
   max-width:860px;margin:0 auto;padding:0 16px;
-  display:flex;align-items:center;gap:14px;height:44px;
+  display:flex;align-items:center;gap:14px;height:42px;min-height:0;
   border-bottom:none;overflow:hidden;
 }
 .read-header-all .topbar .logo{font-size:16px;flex-shrink:0;display:flex;align-items:center;gap:6px;}
@@ -34,12 +34,14 @@
 
 .read-top{position:static;background:transparent;border-bottom:1px solid var(--border,#e6dcc4);}
 .read-top-inner{
-  max-width:860px;margin:0 auto;padding:8px 16px;
-  display:flex;flex-wrap:nowrap;align-items:center;gap:10px;
-  font-size:13px;color:var(--ink,#3a2a1a);overflow-x:auto;
-  scrollbar-width:none;-ms-overflow-style:none;
+  max-width:860px;margin:0 auto;padding:5px 16px;
+  display:flex;flex-direction:column;align-items:stretch;gap:5px;
+  font-size:13px;color:var(--ink,#3a2a1a);
 }
-.read-top-inner::-webkit-scrollbar{display:none;}
+.tb-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap;overflow-x:auto;
+  scrollbar-width:none;-ms-overflow-style:none;}
+.tb-row::-webkit-scrollbar{display:none;}
+.tb-checks{margin-left:auto;}
 
 .tool-group{display:flex;align-items:center;gap:4px;flex-shrink:0;}
 .tool-label{color:var(--ink-muted,#8a7a62);letter-spacing:1px;font-size:12px;margin-right:2px;}
@@ -201,30 +203,32 @@ body.cmt-only .cmt-block{margin:6px 0;padding:4px 0 4px 9px;}
   </div>
   <div class="read-top">
     <div class="read-top-inner">
-      <span class="tool-group">
+      <div class="tb-row">
         <span class="tool-label">版本：</span>
         <span class="btn-group" id="verGroup"></span>
-      </span>
+      </div>
 
-      <span class="tool-group">
-        <span class="tool-label">回目：</span>
-        <select id="selChap" class="chap-select" title="快速选择回目"></select>
-      </span>
-
-      <span class="tool-group">
-        <span class="tool-label">语体：</span>
-        <span class="btn-group">
-          <button class="ui-btn lang-btn" data-lang="fan">繁</button>
-          <button class="ui-btn lang-btn" data-lang="jian">简</button>
-          <button class="ui-btn lang-btn" data-lang="bai">白</button>
+      <div class="tb-row">
+        <span class="tool-group">
+          <span class="tool-label">回目：</span>
+          <select id="selChap" class="chap-select" title="快速选择回目"></select>
         </span>
-      </span>
 
-      <span class="tool-group">
-        <label class="chk" title="隐藏批注（仅看正文）"><input type="checkbox" id="chkHideCmt">无批</label>
-        <label class="chk" title="只看批语（隐藏正文）"><input type="checkbox" id="chkCmtOnly">批语</label>
-        <label class="chk" title="正文后附白话文翻译"><input type="checkbox" id="chkBai" checked>附白</label>
-      </span>
+        <span class="tool-group">
+          <span class="tool-label">语体：</span>
+          <span class="btn-group">
+            <button class="ui-btn lang-btn" data-lang="fan">繁</button>
+            <button class="ui-btn lang-btn" data-lang="jian">简</button>
+            <button class="ui-btn lang-btn" data-lang="bai">白</button>
+          </span>
+        </span>
+
+        <span class="tool-group tb-checks">
+          <label class="chk" title="隐藏批注（仅看正文）"><input type="checkbox" id="chkHideCmt">无批</label>
+          <label class="chk" title="只看批语（隐藏正文）"><input type="checkbox" id="chkCmtOnly">批语</label>
+          <label class="chk" title="正文后附白话文翻译"><input type="checkbox" id="chkBai" checked>附白</label>
+        </span>
+      </div>
     </div>
   </div>
 </header>
