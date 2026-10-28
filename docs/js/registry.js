@@ -31,7 +31,7 @@
       {"id": "zhongbo", "order": 4, "tag": "钟批", "who": "钟伯敬", "cls": "cmt-zhongbo", "chipCls": "", "color": "#7a5195", "file": "zhongbo_comments.json", "kind": "zhong", "okVer": ["v100", "jiqin"]},
       {"id": "wangping", "order": 5, "tag": "王评", "who": "王望如", "cls": "cmt-wangping", "chipCls": "jade", "color": "#5a7d3a", "file": "wangping_comments.json", "kind": "wang", "okVer": ["v70", "jin70", "jin70_pi", "jinshengtan"]},
       {"id": "yuxiangdou", "order": 6, "tag": "余评", "who": "余象斗", "cls": "cmt-yuxiangdou", "chipCls": "", "color": "#a9622d", "file": "yuxiangdou_comments.json", "kind": "yu", "okVer": ["v120", "v100", "v70", "jin70", "jin70_pi", "jinshengtan", "jiqin", "zsk"]},
-      {"id": "chengzhu", "order": 7, "tag": "程注", "who": "程穆衡", "cls": "cmt-chengzhu", "chipCls": "jade", "color": "#2f6f6f", "file": "chengzhu_notes.json", "kind": "cheng", "okVer": ["v120", "v100", "jiqin"]},
+      {"id": "chengzhu", "order": 7, "tag": "程注", "who": "程穆衡", "cls": "cmt-chengzhu", "chipCls": "jade", "color": "#2f6f6f", "file": "chengzhu_notes.json", "kind": "cheng", "okVer": ["v120", "v100", "v70", "jin70", "jin70_pi", "jinshengtan", "jiqin"]},
       {"id": "jiqin", "order": 8, "tag": "冀注", "who": "冀勤校注", "cls": "cmt-jiqin", "chipCls": "jade", "color": "#2f5d50", "file": "jiqin_notes.json", "kind": "jiqin", "okVer": ["v100", "jiqin"]},
       {"id": "yannanshang", "order": 9, "tag": "燕评", "who": "燕南尚生", "cls": "cmt-yannanshang", "chipCls": "gold", "color": "#8a6d3b", "file": "yannanshang_comments.json", "kind": "yan", "okVer": ["v120", "v100", "v70", "jin70", "jin70_pi", "jinshengtan", "jiqin", "zsk"]}
     ]

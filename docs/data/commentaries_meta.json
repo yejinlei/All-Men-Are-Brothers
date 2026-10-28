@@ -233,25 +233,33 @@
       "note": "《水浒传注略》名物训注",
       "counts": {
         "exists": true,
-        "total": 750,
-        "chapter_count": 0,
-        "chapter_range": []
+        "total_preface": 0,
+        "total_inline": 0,
+        "total": 435,
+        "chapter_count": 66,
+        "chapter_range": [
+          0,
+          70
+        ]
       },
       "provenance": {
         "blockprint": "清程穆衡撰《水浒传注略》（手稿本，分二卷）",
         "holding": "南京图书馆藏清抄本；收入《水浒传资料汇编》（马蹄疾编，中华书局 1980；朱一玄《水浒传资料汇编》2002）",
-        "digital_source": "据《水浒传资料汇编》排印本条目逐条辑出，注条按关键词定位到所在回次",
-        "entry_method": "二次文献辑录＋回次人工标注",
-        "reliability": "C",
-        "reliability_desc": "二次文献转引——375 条名物/地理/制度训注已收，部分条目的回次定位依关键词近似，可能有前后一两回偏差",
+        "digital_source": "读书网（dushu.com）公版清道光二十五年王氏听香阁刻《水浒传注略》整理本",
+        "entry_method": "公版电子文本自动解析，按回切分词条/释义",
+        "reliability": "B",
+        "reliability_desc": "精校——435条名物训注（名物/方言/制度/典故）按回挂载到回末注释区；楔子至70回中缺第六、十六、六十九、七十四回（源站缺页）；条目为词条-释义对，点击\"程注\"按钮显示",
         "coverage_types": [
           "名物训注",
           "地理制度考"
         ],
         "limits": "无文学评点；原文生僻字排印本有讹；部分条目跨回出现",
         "first_added": "2026-06",
-        "last_revised": "2026-10-27"
-      }
+        "last_revised": "2026-10-28"
+      },
+      "coverage_types": [
+        "回末名物训注"
+      ]
     },
     {
       "id": "jiqin",

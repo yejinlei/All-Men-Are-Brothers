@@ -814,16 +814,31 @@ function collectYannanshang(data,m,blocks){
   blocks.push({where:'top',tag:m.tag+'·卷首',preface:true,html:html});
 }
 
-/* —— 程穆衡《水浒传注略》：卷次对应回次 —— */
+/* —— 程穆衡《水浒传注略》：名物训注，按回为扁平dict{no:"词条——释义"} —— */
 function collectChengzhu(data,m,blocks){
-  const cur=state.chapters[state.vid].chapters[state.ch];
-  const num=(cur&&cur.num!=null)?cur.num:(state.ch<1?1:state.ch);
-  const no=num<1?1:num;
-  const vols=data.volumes||[];
-  const vol=vols.find(v=>v.no===no)||vols.find(v=>v.no===no+1)||vols.find(v=>v.no===no-1);
-  if(!vol||!vol.items||!vol.items.length)return;
-  blocks.push({where:'bottom',tag:m.tag+'·名物注',html:vol.items.map(it=>
-    '<div class="cmt-sub"><b style="color:'+m.color+';">〔'+esc(it.k)+'〕</b>'+esc(it.v)+'</div>').join('')});
+  const ch=data[String(state.ch)];
+  if(!ch)return;
+  const keys=Object.keys(ch).filter(k=>/^\d+$/.test(k)&&ch[k]);
+  if(!keys.length)return;
+  // 按注号数字序
+  keys.sort((a,b)=>+a-+b);
+  const items=keys.map((k,i)=>{
+    let v=ch[k];
+    // 词条/释义分隔：优先找"——"；否则词条通常是开头2-8个汉字（到第一个空格/标点或补字标记前）
+    let head='注'+k, body=v;
+    let sep=v.search(/[—–-]{2}/);
+    if(sep<0){
+      // 匹配开头词条（含"补"标记，如"过街老鼠 补 ..."）
+      let m=v.match(/^([\u4e00-\u9fa5A-Za-z0-9·《》"']{1,18})(?:\s+|\.)(补\s*)?([\s\S]*)$/);
+      if(m){ head=m[1]+(m[2]?'〔补〕':''); body=(m[3]||'').trim(); }
+    }else{
+      head=v.slice(0,sep).trim();
+      body=v.slice(sep).replace(/^[—\-]+/,'').trim();
+    }
+    return '<div class="cmt-sub"><b style="color:'+m.color+';">〔'+esc(head)+'〕</b>'+esc(body)+'</div>';
+  });
+  blocks.push({where:'bottom',tag:m.tag+'·名物训注',html:items.join('')+
+    '<div class="cmt-sub" style="font-size:12px;color:#8a7a62;">（《水浒传注略》依金七十回本编排，原注条目序与回次对应；缺第六、十六、六十九、七十回四卷，系源站缺页）</div>'});
 }
 
 /* —— 余象斗《水浒志传评林》：卷首叙 + 上栏评语（按卷对应回次） —— */
