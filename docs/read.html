@@ -339,10 +339,15 @@ async function boot(){
   document.querySelectorAll('.cmt-btn').forEach(b=>{
     if(b.dataset.cmt===state.cmt)b.classList.add('active');
     b.onclick=()=>{
+      const prev=state.cmt;
       state.cmt=b.dataset.cmt;localStorage.setItem('sh_cmt',state.cmt);
       document.querySelectorAll('.cmt-btn').forEach(x=>x.classList.remove('active'));
       b.classList.add('active');
-      applyCmt().catch(e=>console.error(e));
+      // 金批/全部模式下夹批是嵌入在正文里的（来自 fan/jian 正文文件的「」标记），
+      // 切换时需重新渲染正文，否则夹批块不会出现在段间。
+      const needRerender = (prev==='jinpi'||state.cmt==='jinpi'||prev==='all'||state.cmt==='all'||prev==='none'||state.cmt==='none');
+      if(needRerender){ loadChap().catch(e=>console.error(e)); }
+      else { applyCmt().catch(e=>console.error(e)); }
     };
   });
 
@@ -393,14 +398,63 @@ async function loadVer(first){
 function syncURL(){const u=new URL(location.href);u.searchParams.set('vid',state.vid);u.searchParams.set('ch',state.ch);history.replaceState({},'',u.toString());}
 
 function renderTxt(txt){
-  const bs=txt.split(/\n\s*\n/);let h='';
+  const showJinpi = state.cmt==='jinpi'||state.cmt==='all';
+  // 第一步：全文级别提取所有「」夹批（支持跨行跨段，使用非贪婪匹配）
+  // 用占位符替换，避免分段把夹批切断
+  const piStore = [];
+  const piRe = /「([^」]+?)」/g;
+  let cleaned = txt;
+  if(showJinpi){
+    cleaned = cleaned.replace(piRe, (m,c)=>{
+      const idx = piStore.length;
+      piStore.push(c);
+      return `\u0000PI${idx}\u0000`;
+    });
+  } else {
+    // 非金批模式直接删除所有「」夹批（支持跨行跨段）
+    cleaned = cleaned.replace(/「[\s\S]+?」/g,'');
+  }
+  // 第二步：段落拆分（按双换行）
+  const bs=cleaned.split(/\n\s*\n/);
+  let h='';
   bs.forEach(b=>{
     b=b.trim();if(!b)return;
-    const ls=b.split(/\n/).map(l=>l.trim()).filter(Boolean);
-    const poem=ls.length>=2&&ls.every(l=>l.length<30)&&(/诗|曰|词|古风|偈|吟|赋|歌/.test(ls[0])||ls.every(l=>/[，。？！,?.!]$/.test(l)));
-    if(poem){h+='<div class="poem">';ls.forEach(l=>h+='<p>'+esc(l)+'</p>');h+='</div>';}
-    else if(/^第[一二三四五六七八九十百零]+回|^楔子|^引首/.test(ls[0])&&ls[0].length<40){h+='<h3>'+esc(ls.join(' '))+'</h3>';}
-    else ls.forEach(l=>h+='<p>'+esc(l)+'</p>');
+    const rawLs=b.split(/\n/).map(l=>l.trim()).filter(Boolean);
+    // 诗块判定
+    const poem=rawLs.length>=2&&rawLs.every(l=>l.length<30)&&(/诗|曰|词|古风|偈|吟|赋|歌/.test(rawLs[0])||rawLs.every(l=>/[，。？！,?.!]$/.test(l)));
+    if(poem){
+      let ph='';
+      rawLs.forEach(l=>{
+        // 替换占位符为夹批块（诗行后追加批语）
+        let line = l.replace(/\u0000PI(\d+)\u0000/g,(m,i)=>{
+          const c=piStore[parseInt(i)];
+          c.split(/[○●]\s*|\n+/).filter(x=>x.trim()).forEach(t=>{
+            ph+=`<div class="cmt-block cmt-jinpi"><span class="cmt-tag">夹批</span>${esc(t.trim())}</div>`;
+          });
+          return '';
+        });
+        if(line) ph+='<p>'+esc(line)+'</p>';
+      });
+      h+='<div class="poem">'+ph+'</div>';
+    }
+    else if(/^第[一二三四五六七八九十百零]+回|^楔子|^引首/.test(rawLs[0])&&rawLs[0].length<40){
+      let t=rawLs.join(' ').replace(/\u0000PI\d+\u0000/g,'').replace(/\s+/g,' ').trim();
+      h+='<h3>'+esc(t)+'</h3>';
+    }
+    else {
+      rawLs.forEach(l=>{
+        let piHtml='';
+        let line = l.replace(/\u0000PI(\d+)\u0000/g,(m,i)=>{
+          const c=piStore[parseInt(i)];
+          c.split(/[○●]\s*|\n+/).filter(x=>x.trim()).forEach(t=>{
+            piHtml+=`<div class="cmt-block cmt-jinpi"><span class="cmt-tag">夹批</span>${esc(t.trim())}</div>`;
+          });
+          return '';
+        });
+        if(line) h+='<p>'+esc(line)+'</p>';
+        if(piHtml) h+=piHtml;
+      });
+    }
   });
   return h;
 }
@@ -463,7 +517,8 @@ function go(n){
 
 /* ========== 批注 ========== */
 async function applyCmt(my){
-  document.querySelectorAll('.cmt-block,.notice').forEach(e=>e.remove());
+  // 清理旧批注块，但保留正文内嵌的金批夹批（renderTxt 已根据 state.cmt 直接渲染为 cmt-jinpi）
+  document.querySelectorAll('.cmt-block:not(.cmt-jinpi),.notice').forEach(e=>e.remove());
   if(state.cmt==='none')return;
   const m=CMT[state.cmt];if(!m)return;
 
@@ -479,6 +534,21 @@ async function applyCmt(my){
   const firstP=wrap.querySelector('p');
   const blocks=[];
 
+  if(state.cmt==='jinpi'){
+    // 金批夹批已由 renderTxt 直接从正文「」标记渲染为段间 cmt-jinpi 块，
+    // 这里只把 comments.json 的回前总批（preface）插到正文最前。
+    const sub=m.extract(data);
+    let ch=sub[String(state.ch)];
+    if(!ch)for(const k of [String(state.ch-1),String(state.ch+1)]){if(sub[k]&&sub[k].preface){ch=sub[k];break;}}
+    if(ch&&ch.preface){
+      const d=document.createElement('div');
+      d.className='cmt-block cmt-jinpi cmt-preface';
+      d.innerHTML='<span class="cmt-tag">回前批</span>'+esc(ch.preface).replace(/\n/g,'<br>');
+      const fc=wrap.firstElementChild;
+      if(fc) fc.parentElement.insertBefore(d,fc); else wrap.appendChild(d);
+    }
+    return;
+  }
   if(state.cmt==='lizhuo'||state.cmt==='yuanwy') collectChapters(data,m,blocks);
   else if(state.cmt==='wangping') collectWangping(data,m,blocks);
   else if(state.cmt==='zhongbo') collectZhongbo(data,m,blocks);

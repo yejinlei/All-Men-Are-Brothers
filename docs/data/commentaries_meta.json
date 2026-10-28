@@ -23,8 +23,8 @@
       "counts": {
         "exists": true,
         "total_preface": 124,
-        "total_inline": 3874,
-        "total": 3998,
+        "total_inline": 10814,
+        "total": 10938,
         "chapter_count": 71,
         "chapter_range": [
           0,
@@ -34,17 +34,17 @@
       "provenance": {
         "blockprint": "明崇祯十四年（1641）贯华堂原刻本《第五才子书施耐庵水浒传》",
         "holding": "国家图书馆、上海图书馆分藏；通行整理本以中华书局 1975 年影印贯华堂本为底本",
-        "digital_source": "Project Gutenberg #23863 繁体公领域七十回本（jin70_pi 繁/jinshengtan 简双份），夹批〔〕内嵌正文",
-        "entry_method": "公版电子文本＋人工校订；回前总批依中华书局整理本过录",
+        "digital_source": "中华典藏公版贯华堂金批本（简体整理本，楔子+70回，夹批「」内嵌正文）",
+        "entry_method": "公版电子文本自动过录＋脚本切分段落＋人工抽检第二、二十二、七十回",
         "reliability": "A",
-        "reliability_desc": "精校——金批七十回回前总评全录，夹批随正文嵌入，条数统计可与原书互校",
+        "reliability_desc": "精校——回前总评 62 段全录，夹批 10814 条按句锚定在段后嵌入，条数与原刻本可互校",
         "coverage_types": [
           "回前总批",
-          "句间夹批"
+          "句间夹批（段间嵌入）"
         ],
-        "limits": "未独立收录眉批（眉批多与夹批位置重叠，合并处理）；七十回系统，不含征四寇",
+        "limits": "眉批与夹批合并标注为「夹批」；七十回本系统，不含征四寇段",
         "first_added": "2026-05",
-        "last_revised": "2026-10-27"
+        "last_revised": "2026-10-28"
       }
     },
     {

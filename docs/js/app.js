@@ -1051,11 +1051,19 @@ function renderChapter(txt, chap) {
       if(verseBuf.length>0 && line.length<30) { verseBuf.push(line); return; }
       flushVerse();
     } else { flushVerse(); }
-    // 夹批处理（「」）
+    // 夹批处理（「」）：金批模式下抽出为段间 cmt-block；其他模式移除
     let p = line;
+    const showJinpi = RD.comment!=='none' && (RD.comment==='all'||RD.comment==='jinpi');
+    const piBlocks = [];
     p = p.replace(/「([^」]+)」/g, (m,c)=>{
-      if(RD.comment==='none' || RD.comment==='jiqin' || RD.comment==='lizhuo' || RD.comment==='yuanwy') return '';
-      return `<span class="comment-inline" title="${c}">${c}</span>`;
+      if(showJinpi){
+        // 拆分多条夹批（源文里有时用 ○ 分隔多条；换行也视为分隔）
+        c.split(/[○●]\s*|\n+/).filter(x=>x.trim()).forEach(t=>{
+          const safe = String(t.trim()).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+          piBlocks.push(`<div class="cmt-block cmt-jinpi"><span class="cmt-tag">夹批</span>${safe}</div>`);
+        });
+      }
+      return ''; // 夹批从行内移除
     });
     // 注释 (N)
     p = p.replace(/\((\d+)\)/g, (m,n)=>{
@@ -1063,6 +1071,7 @@ function renderChapter(txt, chap) {
       return `<sup class="pi" data-note="${n}">${n}</sup>`;
     });
     html += `<p>${p}</p>`;
+    if(piBlocks.length) html += piBlocks.join('');
   });
   flushVerse();
   content.innerHTML = html;
